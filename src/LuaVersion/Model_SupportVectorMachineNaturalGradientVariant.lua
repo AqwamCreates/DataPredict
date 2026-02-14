@@ -30,17 +30,29 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
-local SupportVectorMachineNaturalGradientVariantModel = {}
+local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-SupportVectorMachineNaturalGradientVariantModel.__index = SupportVectorMachineNaturalGradientVariantModel
+local SupportVectorMachineIterativeReweightedLeastSquaresVariantModel = {}
 
-setmetatable(SupportVectorMachineNaturalGradientVariantModel, GradientMethodBaseModel)
+SupportVectorMachineIterativeReweightedLeastSquaresVariantModel.__index = SupportVectorMachineIterativeReweightedLeastSquaresVariantModel
+
+setmetatable(SupportVectorMachineIterativeReweightedLeastSquaresVariantModel, GradientMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 1
 
 local defaultCValue = 1
+
+local defaultKernelFunction = "Linear"
+
+local defaultGamma = 1
+
+local defaultDegree = 3
+
+local defaultSigma = 1
+
+local defaultR = 0
 
 local function hingeFunction(value)
 	
@@ -54,17 +66,131 @@ local function misclassificationMaskFunction(value)
 	
 end
 
-local function seperatorFunction(x) 
+local seperatorFunction = function (x) 
 
 	return ((x > 0) and 1) or ((x < 0) and -1) or 0
 
 end
 
-local function calculatePMatrix(featureMatrix)
+local function createDistanceMatrix(distanceFunction, matrix1, matrix2)
+
+	local numberOfData1 = #matrix1
+
+	local numberOfData2 = #matrix2
+
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
+
+	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
+
+	for i = 1, numberOfData1, 1 do
+
+		for j = 1, numberOfData2, 1 do
+
+			distanceMatrix[i][j] = distanceFunctionToApply({matrix1[i]}, {matrix2[j]})
+
+		end
+
+	end
+
+	return distanceMatrix
+
+end
+
+local kernelFunctionList = {
+
+	["Linear"] = function(featureMatrix)
+
+		local kernelMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
+
+		return kernelMatrix
+
+	end,
+
+	["Polynomial"] = function(featureMatrix, kernelParameters)
+
+		local degree = kernelParameters.degree
+
+		local gamma = kernelParameters.gamma
+
+		local r = kernelParameters.r
+
+		local dotProductedFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
+
+		local scaledDotProductedFeatureMatrix = AqwamTensorLibrary:multiply(dotProductedFeatureMatrix, gamma)
+
+		local addedFeatureMatrix = AqwamTensorLibrary:add(scaledDotProductedFeatureMatrix, r)
+
+		local kernelMatrix = AqwamTensorLibrary:power(addedFeatureMatrix, degree)
+
+		return kernelMatrix
+
+	end,
+
+	["RadialBasisFunction"] = function(featureMatrix, kernelParameters)
+
+		local sigma = kernelParameters.sigma
+
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, featureMatrix)
+
+		local squaredDistanceMatrix = AqwamTensorLibrary:power(distanceMatrix, 2)
+
+		local sigmaSquaredVector = AqwamTensorLibrary:power(sigma, 2)
+
+		local multipliedSigmaSquaredVector = AqwamTensorLibrary:multiply(-2, sigmaSquaredVector)
+
+		local zMatrix = AqwamTensorLibrary:divide(squaredDistanceMatrix, multipliedSigmaSquaredVector)
+
+		local kernelMatrix = AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
+
+		return kernelMatrix
+
+	end,
+
+	["Sigmoid"] = function(featureMatrix, kernelParameters)
+
+		local gamma = kernelParameters.gamma
+
+		local r = kernelParameters.r
+
+		local dotProductedFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
+
+		local kernelMatrixPart1 = AqwamTensorLibrary:multiply(gamma, dotProductedFeatureMatrix)
+
+		local kernelMatrixPart2 = AqwamTensorLibrary:add(kernelMatrixPart1, r)
+
+		local kernelMatrix = AqwamTensorLibrary:applyFunction(math.tanh, kernelMatrixPart2)
+
+		return kernelMatrix
+
+	end,
+
+	["Cosine"] = function(featureMatrix, kernelParameters)
+
+		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
+
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, zeroMatrix)
+
+		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
+
+		local kernelMatrix = AqwamTensorLibrary:dotProduct(kernelMappingMatrix, AqwamTensorLibrary:transpose(kernelMappingMatrix))
+
+		return kernelMatrix
+
+	end,
+
+}
+
+local function calculatePMatrix(featureMatrix, kernelFunction, kernelParameters)
+	
+	local kernelFunction = kernelFunctionList[kernelFunction]
+	
+	if (not kernelFunction) then error("Invalid kernel function.") end
+	
+	local kernelMatrix = kernelFunction(featureMatrix, kernelParameters)
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 
-	local pMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
+	local pMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, kernelMatrix, featureMatrix)
 
 	pMatrix = AqwamTensorLibrary:inverse(pMatrix)
 
@@ -74,7 +200,7 @@ local function calculatePMatrix(featureMatrix)
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:calculateCost(hypothesisVector, labelVector)
+function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:calculateCost(hypothesisVector, labelVector)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -98,7 +224,7 @@ function SupportVectorMachineNaturalGradientVariantModel:calculateCost(hypothesi
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
@@ -108,13 +234,13 @@ function SupportVectorMachineNaturalGradientVariantModel:calculateHypothesisVect
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:calculateLossFunctionDerivativeVector(lossGradientVector)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
 	local featureMatrix = self.featureMatrix
 	
-	local pMatrix = self.pMatrix or calculatePMatrix(featureMatrix)
+	local pMatrix = self.pMatrix or calculatePMatrix(featureMatrix, self.kernelFunction, self.kernelParameters)
 
 	if (not featureMatrix) then error("Feature matrix not found.") end
 	
@@ -126,7 +252,7 @@ function SupportVectorMachineNaturalGradientVariantModel:calculateLossFunctionDe
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -150,7 +276,7 @@ function SupportVectorMachineNaturalGradientVariantModel:gradientDescent(lossFun
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:update(lossGradientVector, clearAllMatrices)
+function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:update(lossGradientVector, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -170,35 +296,49 @@ function SupportVectorMachineNaturalGradientVariantModel:update(lossGradientVect
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel.new(parameterDictionary)
+function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewSupportVectorMachineNaturalGradientVariantModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewSupportVectorMachineIterativeReweightedLeastSquaresVariantModel = GradientMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewSupportVectorMachineNaturalGradientVariantModel, SupportVectorMachineNaturalGradientVariantModel)
+	setmetatable(NewSupportVectorMachineIterativeReweightedLeastSquaresVariantModel, SupportVectorMachineIterativeReweightedLeastSquaresVariantModel)
 	
-	NewSupportVectorMachineNaturalGradientVariantModel:setName("SupportVectorMachineNaturalGradientVariant")
+	NewSupportVectorMachineIterativeReweightedLeastSquaresVariantModel:setName("SupportVectorMachineIterativeReweightedLeastSquaresVariant")
 
-	NewSupportVectorMachineNaturalGradientVariantModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewSupportVectorMachineIterativeReweightedLeastSquaresVariantModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
-	NewSupportVectorMachineNaturalGradientVariantModel.cValue = parameterDictionary.cValue or defaultCValue
+	NewSupportVectorMachineIterativeReweightedLeastSquaresVariantModel.cValue = parameterDictionary.cValue or defaultCValue
 
-	NewSupportVectorMachineNaturalGradientVariantModel.Regularizer = parameterDictionary.Regularizer
+	NewSupportVectorMachineIterativeReweightedLeastSquaresVariantModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewSupportVectorMachineIterativeReweightedLeastSquaresVariantModel.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
 
-	return NewSupportVectorMachineNaturalGradientVariantModel
+	NewSupportVectorMachineIterativeReweightedLeastSquaresVariantModel.kernelParameters = {
+
+		degree = parameterDictionary.degree or defaultDegree,
+
+		gamma = parameterDictionary.gamma or defaultGamma,
+
+		sigma = parameterDictionary.sigma or defaultSigma,
+
+		r = parameterDictionary.r or defaultR
+
+	}
+
+	return NewSupportVectorMachineIterativeReweightedLeastSquaresVariantModel
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:setRegularizer(Regularizer)
+function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:train(featureMatrix, labelVector)
+function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
@@ -224,7 +364,7 @@ function SupportVectorMachineNaturalGradientVariantModel:train(featureMatrix, la
 	
 	local cost
 	
-	self.pMatrix = calculatePMatrix(featureMatrix)
+	self.pMatrix = calculatePMatrix(featureMatrix, self.kernelFunction, self.kernelParameters)
 
 	repeat
 
@@ -272,7 +412,7 @@ function SupportVectorMachineNaturalGradientVariantModel:train(featureMatrix, la
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:predict(featureMatrix, returnOriginalOutput)
+function SupportVectorMachineIterativeReweightedLeastSquaresVariantModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -292,4 +432,4 @@ function SupportVectorMachineNaturalGradientVariantModel:predict(featureMatrix, 
 
 end
 
-return SupportVectorMachineNaturalGradientVariantModel
+return SupportVectorMachineIterativeReweightedLeastSquaresVariantModel

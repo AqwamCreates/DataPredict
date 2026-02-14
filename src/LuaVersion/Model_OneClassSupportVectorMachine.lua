@@ -238,11 +238,11 @@ local kernelFunctionList = {
 
 }
 
-local function calculateCost(modelParameters, individualKernelMatrix, kernelMatrix, labelVector, cValue)
+local function calculateCost(modelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, cValue)
 
 	-- The dotProduct() only takes two arguments here to reduce computational time
 
-	local predictedVector = AqwamTensorLibrary:dotProduct(individualKernelMatrix, modelParameters)
+	local predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, modelParameters)
 
 	local costVector = AqwamTensorLibrary:subtract(predictedVector, labelVector)
 
@@ -280,15 +280,15 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 
 end
 
-local function calculateModelParameters(modelParameters, individualKernelMatrix, labelVector, cValue)
+local function calculateModelParameters(modelParameters, mappedFeatureMatrix, labelVector, cValue)
 
-	local predictionVector = AqwamTensorLibrary:dotProduct(individualKernelMatrix, modelParameters) -- m x 1
+	local predictionVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, modelParameters) -- m x 1
 	
 	local errorVector = AqwamTensorLibrary:subtract(predictionVector, labelVector) -- m x 1
 	
-	local transposedIndividualKernelMatrix = AqwamTensorLibrary:transpose(individualKernelMatrix)
+	local transposedMappedFeatureMatrix = AqwamTensorLibrary:transpose(mappedFeatureMatrix)
 	
-	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedIndividualKernelMatrix, errorVector) -- n x m, m x 1
+	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedMappedFeatureMatrix, errorVector) -- n x m, m x 1
 	
 	local NewModelParameters = AqwamTensorLibrary:multiply(-cValue, dotProductErrorVector)
 
@@ -391,7 +391,7 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	local cost
 	
-	local weightedKernelMatrix
+	local weightedMappedFeatureMatrix
 	
 	local predictedVector
 	
@@ -425,9 +425,9 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 			
 		end
 		
-		weightedKernelMatrix = AqwamTensorLibrary:multiply(mappedFeatureMatrix, etaMatrix)
+		weightedMappedFeatureMatrix = AqwamTensorLibrary:multiply(mappedFeatureMatrix, etaMatrix)
 
-		ModelParameters = calculateModelParameters(ModelParameters, weightedKernelMatrix, labelVector, cValue)
+		ModelParameters = calculateModelParameters(ModelParameters, weightedMappedFeatureMatrix, labelVector, cValue)
 		
 		predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 		

@@ -238,11 +238,11 @@ local kernelFunctionList = {
 
 }
 
-local function calculateCost(modelParameters, individualKernelMatrix, kernelMatrix, labelVector, cValue, epsilon)
+local function calculateCost(modelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, cValue, epsilon)
 
 	-- The dotProduct() only takes two arguments here to reduce computational time
 
-	local predictedVector = AqwamTensorLibrary:dotProduct(individualKernelMatrix, modelParameters)
+	local predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, modelParameters)
 
 	local errorVector = AqwamTensorLibrary:subtract(predictedVector, labelVector)
 	
@@ -286,9 +286,9 @@ local function calculateCost(modelParameters, individualKernelMatrix, kernelMatr
 
 end
 
-local function calculateModelParameters(modelParameters, individualKernelMatrix, labelVector, cValue, epsilon)
+local function calculateModelParameters(modelParameters, mappedFeatureMatrix, transposedMappedFeatureMatrix, labelVector, cValue, epsilon)
 
-	local predictionVector = AqwamTensorLibrary:dotProduct(individualKernelMatrix, modelParameters) -- m x 1
+	local predictionVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, modelParameters) -- m x 1
 
 	local errorVector = AqwamTensorLibrary:subtract(predictionVector, labelVector) -- m x 1
 	
@@ -297,10 +297,8 @@ local function calculateModelParameters(modelParameters, individualKernelMatrix,
 	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, -errorValue - epsilon) end, errorVector)
 	
 	local slackVariableVector = AqwamTensorLibrary:add(positiveSlackVariableVector, negativeSlackVariableVector)
-	
-	local transposedIndividualKernelMatrix = AqwamTensorLibrary:transpose(individualKernelMatrix)
 
-	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedIndividualKernelMatrix, slackVariableVector) -- n x m, m x 1
+	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedMappedFeatureMatrix, slackVariableVector) -- n x m, m x 1
 
 	local NewModelParameters = AqwamTensorLibrary:multiply(-cValue, dotProductErrorVector)
 
@@ -380,6 +378,8 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
 
 	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
+	
+	local transposedMappedFeatureMatrix = AqwamTensorLibrary:transpose(mappedFeatureMatrix)
 
 	local costArray = {}
 
@@ -407,7 +407,7 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		ModelParameters = calculateModelParameters(ModelParameters, mappedFeatureMatrix, labelVector, cValue, epsilon)
+		ModelParameters = calculateModelParameters(ModelParameters, mappedFeatureMatrix, transposedMappedFeatureMatrix, labelVector, cValue, epsilon)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

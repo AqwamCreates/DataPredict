@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorRegressionNaturalGradientVariant
+# [API Reference](../../API.md) - [Models](../Models.md) - SupportVectorRegressionCovariancePreconditionedVariant
 
 SupportVectorRegressionNaturalGradientVariant is a supervised machine learning model that predicts values of -1 and 1 only.
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorRegressionNaturalGradientVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number, epsilon: number): ModelObject
+SupportVectorRegressionCovariancePreconditionedVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number, epsilon: number): ModelObject
 ```
 
 #### Parameters:
@@ -39,7 +39,7 @@ SupportVectorRegressionNaturalGradientVariant.new(maximumNumberOfIterations: int
 Set a regularization for the model by inputting the optimizer object.
 
 ```
-SupportVectorRegressionNaturalGradientVariant:setRegularizer(Regularizer: RegularizerObject)
+SupportVectorRegressionCovariancePreconditionedVariant:setRegularizer(Regularizer: RegularizerObject)
 ```
 
 #### Parameters:
@@ -51,7 +51,7 @@ SupportVectorRegressionNaturalGradientVariant:setRegularizer(Regularizer: Regula
 Train the model.
 
 ```
-SupportVectorRegressionNaturalGradientVariant:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+SupportVectorRegressionCovariancePreconditionedVariant:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:
@@ -69,7 +69,7 @@ SupportVectorRegressionNaturalGradientVariant:train(featureMatrix: Matrix, label
 Predict the value for a given data.
 
 ```
-SupportVectorRegressionNaturalGradientVariant:predict(featureMatrix: Matrix): Matrix
+SupportVectorRegressionCovariancePreconditionedVariant:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:

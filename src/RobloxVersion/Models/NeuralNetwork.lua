@@ -1030,7 +1030,11 @@ function NeuralNetworkModel:calculateCost(hypothesisMatrix, logisticMatrix)
 
 		Regularizer = RegularizerArray[layerNumber + 1]
 
-		if (Regularizer ~=  0) then totalCost = totalCost + Regularizer:calculateCost(weightMatrix, hasBiasNeuronArray[layerNumber]) end
+		if (Regularizer ~= 0) then 
+			
+			totalCost = totalCost + Regularizer:calculateCost(weightMatrix, hasBiasNeuronArray[layerNumber]) 
+			
+		end
 		
 	end
 

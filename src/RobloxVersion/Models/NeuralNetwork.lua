@@ -936,7 +936,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 		
 		local weightNumber = layerNumber - 1
 		
-		local hasBiasNeuronOnCurrentLayer = hasBiasNeuronArray[layerNumber - 1]
+		local hasBiasNeuron = hasBiasNeuronArray[layerNumber - 1]
 
 		local learningRate = learningRateArray[layerNumber]
 
@@ -954,7 +954,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		if (Regularizer ~= 0) then
 
-			local regularizationDerivativeMatrix = Regularizer:calculate(weightMatrix, hasBiasNeuronOnCurrentLayer)
+			local regularizationDerivativeMatrix = Regularizer:calculate(weightMatrix, hasBiasNeuron)
 
 			costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivativeMatrix)
 

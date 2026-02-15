@@ -44,9 +44,9 @@ function Ridge.new(parameterDictionary)
 	
 	NewRidge:setName("Ridge")
 	
-	NewRidge:setCalculateCostFunction(function(weightMatrix)
+	NewRidge:setCalculateCostFunction(function(weightMatrix, hasBias)
 		
-		weightMatrix = NewRidge:adjustWeightMatrix(weightMatrix)
+		weightMatrix = NewRidge:adjustWeightMatrix(weightMatrix, hasBias)
 
 		local squaredWeightMatrix = AqwamTensorLibrary:power(weightMatrix, 2)
 
@@ -56,9 +56,9 @@ function Ridge.new(parameterDictionary)
 
 	end)
 	
-	NewRidge:setCalculateFunction(function(weightMatrix)
+	NewRidge:setCalculateFunction(function(weightMatrix, hasBias)
 		
-		weightMatrix = NewRidge:adjustWeightMatrix(weightMatrix)
+		weightMatrix = NewRidge:adjustWeightMatrix(weightMatrix, hasBias)
 		
 		return AqwamTensorLibrary:multiply(2, NewRidge.lambda, weightMatrix)
 		

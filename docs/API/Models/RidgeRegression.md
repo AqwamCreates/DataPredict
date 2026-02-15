@@ -20,7 +20,7 @@ RidgeRegression.new(lambda: number): ModelObject
 
 #### Parameters:
 
-* lambda: Sets the value for L2 regularization.
+* lambda: Controls how much it should "memorize" the data. The lower the value, the more it "memorize" instead of "generalize".
 
 #### Returns:
 

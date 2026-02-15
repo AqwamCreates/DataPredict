@@ -172,7 +172,7 @@ end
 
 local cutOffValueList = getCutOffValueList()
 
-function BinaryRegressionModel:calculateCost(hypothesisVector, labelVector)
+function BinaryRegressionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisVector, labelVector)
 
@@ -180,7 +180,7 @@ function BinaryRegressionModel:calculateCost(hypothesisVector, labelVector)
 	
 	local Regularizer = self.Regularizer
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
 
 	local averageCost = totalCost / #labelVector
 
@@ -236,7 +236,7 @@ function BinaryRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 
 end
 
-function BinaryRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function BinaryRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -250,7 +250,7 @@ function BinaryRegressionModel:gradientDescent(lossFunctionDerivativeVector, num
 	
 	if (Regularizer) then
 
-		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
 
 		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, regularizationDerivatives)
 
@@ -272,7 +272,7 @@ function BinaryRegressionModel:gradientDescent(lossFunctionDerivativeVector, num
 
 end
 
-function BinaryRegressionModel:update(lossGradientVector, clearAllMatrices)
+function BinaryRegressionModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -280,7 +280,7 @@ function BinaryRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 	
 	if (clearAllMatrices) then 
 
@@ -358,6 +358,8 @@ function BinaryRegressionModel:train(featureMatrix, labelVector)
 	
 	local Optimizer = self.Optimizer
 	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
+	
 	local costArray = {}
 
 	local numberOfIterations = 0
@@ -374,7 +376,7 @@ function BinaryRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector)
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
 
 		end)
 
@@ -388,7 +390,7 @@ function BinaryRegressionModel:train(featureMatrix, labelVector)
 
 		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, labelVector)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	

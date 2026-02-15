@@ -30,11 +30,11 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
-local SupportVectorMachineNaturalGradientVariantModel = {}
+local SupportVectorMachineCovariancePreconditionedVariantModel = {}
 
-SupportVectorMachineNaturalGradientVariantModel.__index = SupportVectorMachineNaturalGradientVariantModel
+SupportVectorMachineCovariancePreconditionedVariantModel.__index = SupportVectorMachineCovariancePreconditionedVariantModel
 
-setmetatable(SupportVectorMachineNaturalGradientVariantModel, GradientMethodBaseModel)
+setmetatable(SupportVectorMachineCovariancePreconditionedVariantModel, GradientMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -74,7 +74,7 @@ local function calculatePMatrix(featureMatrix)
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:calculateCost(hypothesisVector, labelVector)
+function SupportVectorMachineCovariancePreconditionedVariantModel:calculateCost(hypothesisVector, labelVector)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -98,7 +98,7 @@ function SupportVectorMachineNaturalGradientVariantModel:calculateCost(hypothesi
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function SupportVectorMachineCovariancePreconditionedVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
@@ -108,15 +108,15 @@ function SupportVectorMachineNaturalGradientVariantModel:calculateHypothesisVect
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+function SupportVectorMachineCovariancePreconditionedVariantModel:calculateLossFunctionDerivativeVector(lossGradientVector)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
 	local featureMatrix = self.featureMatrix
-	
-	local pMatrix = self.pMatrix or calculatePMatrix(featureMatrix)
 
 	if (not featureMatrix) then error("Feature matrix not found.") end
+	
+	local pMatrix = self.pMatrix or calculatePMatrix(featureMatrix)
 	
 	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(pMatrix, lossGradientVector)
 
@@ -126,7 +126,7 @@ function SupportVectorMachineNaturalGradientVariantModel:calculateLossFunctionDe
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function SupportVectorMachineCovariancePreconditionedVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -150,7 +150,7 @@ function SupportVectorMachineNaturalGradientVariantModel:gradientDescent(lossFun
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:update(lossGradientVector, clearAllMatrices)
+function SupportVectorMachineCovariancePreconditionedVariantModel:update(lossGradientVector, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -170,35 +170,35 @@ function SupportVectorMachineNaturalGradientVariantModel:update(lossGradientVect
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel.new(parameterDictionary)
+function SupportVectorMachineCovariancePreconditionedVariantModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewSupportVectorMachineNaturalGradientVariantModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewSupportVectorMachineCovariancePreconditionedVariantModel = GradientMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewSupportVectorMachineNaturalGradientVariantModel, SupportVectorMachineNaturalGradientVariantModel)
+	setmetatable(NewSupportVectorMachineCovariancePreconditionedVariantModel, SupportVectorMachineCovariancePreconditionedVariantModel)
 	
-	NewSupportVectorMachineNaturalGradientVariantModel:setName("SupportVectorMachineNaturalGradientVariant")
+	NewSupportVectorMachineCovariancePreconditionedVariantModel:setName("SupportVectorMachineCovariancePreconditionedVariant")
 
-	NewSupportVectorMachineNaturalGradientVariantModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewSupportVectorMachineCovariancePreconditionedVariantModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
-	NewSupportVectorMachineNaturalGradientVariantModel.cValue = parameterDictionary.cValue or defaultCValue
+	NewSupportVectorMachineCovariancePreconditionedVariantModel.cValue = parameterDictionary.cValue or defaultCValue
 
-	NewSupportVectorMachineNaturalGradientVariantModel.Regularizer = parameterDictionary.Regularizer
+	NewSupportVectorMachineCovariancePreconditionedVariantModel.Regularizer = parameterDictionary.Regularizer
 
-	return NewSupportVectorMachineNaturalGradientVariantModel
+	return NewSupportVectorMachineCovariancePreconditionedVariantModel
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:setRegularizer(Regularizer)
+function SupportVectorMachineCovariancePreconditionedVariantModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:train(featureMatrix, labelVector)
+function SupportVectorMachineCovariancePreconditionedVariantModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
@@ -272,7 +272,7 @@ function SupportVectorMachineNaturalGradientVariantModel:train(featureMatrix, la
 
 end
 
-function SupportVectorMachineNaturalGradientVariantModel:predict(featureMatrix, returnOriginalOutput)
+function SupportVectorMachineCovariancePreconditionedVariantModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -292,4 +292,4 @@ function SupportVectorMachineNaturalGradientVariantModel:predict(featureMatrix, 
 
 end
 
-return SupportVectorMachineNaturalGradientVariantModel
+return SupportVectorMachineCovariancePreconditionedVariantModel

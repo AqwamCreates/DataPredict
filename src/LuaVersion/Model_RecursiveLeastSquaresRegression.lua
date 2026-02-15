@@ -36,21 +36,11 @@ RecursiveLeastSquaresRegressionModel.__index = RecursiveLeastSquaresRegressionMo
 
 setmetatable(RecursiveLeastSquaresRegressionModel, BaseModel)
 
-local defaultLossFunction = "L2"
-
 local defaultForgetFactor = 1
 
 local defaultUseLogProbabilities = false
 
 local defaultModelParametersInitializationMode = "Zero"
-
-local lossFunctionList = {
-	
-	["L1"] = math.abs,
-	
-	["L2"] = function (value) return math.pow(value, 2) end
-	
-}
 
 local function calculateGaussianProbability(useLogProbabilities, thresholdVector, meanVector, standardDeviationVector)
 
@@ -90,8 +80,6 @@ function RecursiveLeastSquaresRegressionModel.new(parameterDictionary)
 
 	NewRecursiveLeastSquaresRegressionModel:setName("RecursiveLeastSquaresRegression")
 	
-	NewRecursiveLeastSquaresRegressionModel.lossFunction = parameterDictionary.lossFunction or defaultLossFunction
-	
 	NewRecursiveLeastSquaresRegressionModel.forgetFactor = parameterDictionary.forgetFactor or defaultForgetFactor
 	
 	NewRecursiveLeastSquaresRegressionModel.useLogProbabilities = NewRecursiveLeastSquaresRegressionModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
@@ -107,12 +95,6 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
 	local numberOfFeatures = #featureMatrix[1]
-	
-	local lossFunction = self.lossFunction
-	
-	local lossFunctionToApply = lossFunctionList[lossFunction]
-
-	if (not lossFunctionToApply) then error("Invalid loss function.") end
 	
 	local forgetFactor = self.forgetFactor
 	
@@ -150,8 +132,6 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 	
 	local betaChangeVector
 	
-	local cost = 0
-	
 	for dataIndex, unwrappedFeatureVector in ipairs(featureMatrix) do
 		
 		featureVector = {unwrappedFeatureVector}
@@ -182,15 +162,9 @@ function RecursiveLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 		if (forgetFactor ~= 1) then errorCovarianceMatrix = AqwamTensorLibrary:divide(errorCovarianceMatrix, forgetFactor) end
 		
-		cost = cost + lossFunctionToApply(lossValue)
-		
 	end
 	
 	self.ModelParameters = {betaVector, errorCovarianceMatrix}
-	
-	cost = cost / numberOfData
-
-	return {cost}
 
 end
 

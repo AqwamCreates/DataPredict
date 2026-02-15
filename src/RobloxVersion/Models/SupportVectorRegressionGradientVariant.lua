@@ -214,10 +214,10 @@ function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelV
 
 	local Optimizer = self.Optimizer
 	
+	local functionToApply = function(errorValue) return ((errorValue > epsilon) and (errorValue - epsilon)) or ((errorValue < -epsilon) and (errorValue + epsilon)) or 0 end
+	
 	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 	
-	local functionToApply = function(errorValue) return ((errorValue > epsilon) and (errorValue - epsilon)) or ((errorValue < -epsilon) and (errorValue + epsilon)) or 0 end
-
 	local costArray = {}
 
 	local numberOfIterations = 0

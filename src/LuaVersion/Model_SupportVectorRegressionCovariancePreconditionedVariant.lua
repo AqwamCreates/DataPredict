@@ -58,7 +58,7 @@ local function calculatePMatrix(featureMatrix)
 
 end
 
-function SupportVectorRegressionCovariancePreconditionedVariantModel:calculateCost(hypothesisVector, labelVector)
+function SupportVectorRegressionCovariancePreconditionedVariantModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -76,7 +76,7 @@ function SupportVectorRegressionCovariancePreconditionedVariantModel:calculateCo
 	
 	local Regularizer = self.Regularizer
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
 
 	local averageCost = (self.cValue * totalCost) / #labelVector
 
@@ -112,7 +112,7 @@ function SupportVectorRegressionCovariancePreconditionedVariantModel:calculateLo
 
 end
 
-function SupportVectorRegressionCovariancePreconditionedVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function SupportVectorRegressionCovariancePreconditionedVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -124,7 +124,7 @@ function SupportVectorRegressionCovariancePreconditionedVariantModel:gradientDes
 
 	if (Regularizer) then
 
-		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
 
 		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, regularizationDerivatives)
 
@@ -136,7 +136,7 @@ function SupportVectorRegressionCovariancePreconditionedVariantModel:gradientDes
 
 end
 
-function SupportVectorRegressionCovariancePreconditionedVariantModel:update(lossGradientVector, clearAllMatrices)
+function SupportVectorRegressionCovariancePreconditionedVariantModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -144,7 +144,7 @@ function SupportVectorRegressionCovariancePreconditionedVariantModel:update(loss
 
 	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (clearAllMatrices) then 
 
@@ -209,7 +209,9 @@ function SupportVectorRegressionCovariancePreconditionedVariantModel:train(featu
 	local epsilon = self.epsilon
 	
 	local functionToApply = function(errorValue) return ((errorValue > epsilon) and (errorValue - epsilon)) or ((errorValue < -epsilon) and (errorValue + epsilon)) or 0 end
-
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
+	
 	local costArray = {}
 
 	local numberOfIterations = 0
@@ -228,7 +230,7 @@ function SupportVectorRegressionCovariancePreconditionedVariantModel:train(featu
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector)
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
 
 		end)
 
@@ -246,7 +248,7 @@ function SupportVectorRegressionCovariancePreconditionedVariantModel:train(featu
 		
 		lossGradientVector = AqwamTensorLibrary:multiply(cValue, lossGradientVector)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	

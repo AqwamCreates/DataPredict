@@ -44,9 +44,9 @@ function Lasso.new(parameterDictionary)
 	
 	NewLasso:setName("Lasso")
 	
-	NewLasso:setCalculateCostFunction(function(weightMatrix)
+	NewLasso:setCalculateCostFunction(function(weightMatrix, hasBias)
 		
-		weightMatrix = NewLasso:adjustWeightMatrix(weightMatrix)
+		weightMatrix = NewLasso:adjustWeightMatrix(weightMatrix, hasBias)
 
 		local absoluteWeightMatrix = AqwamTensorLibrary:applyFunction(math.abs, weightMatrix)
 
@@ -56,9 +56,9 @@ function Lasso.new(parameterDictionary)
 
 	end)
 	
-	NewLasso:setCalculateFunction(function(weightMatrix)
+	NewLasso:setCalculateFunction(function(weightMatrix, hasBias)
 		
-		weightMatrix = NewLasso:adjustWeightMatrix(weightMatrix)
+		weightMatrix = NewLasso:adjustWeightMatrix(weightMatrix, hasBias)
 		
 		local signMatrix = AqwamTensorLibrary:applyFunction(math.sign, weightMatrix)
 		

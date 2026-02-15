@@ -138,7 +138,7 @@ function LinearRegressionModel:gradientDescent(lossFunctionDerivativeVector, num
 
 end
 
-function LinearRegressionModel:update(lossGradientVector, clearAllMatrices, hasBias)
+function LinearRegressionModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -254,7 +254,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, labelVector)
 
-		self:update(lossGradientVector, true, hasBias)
+		self:update(lossGradientVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

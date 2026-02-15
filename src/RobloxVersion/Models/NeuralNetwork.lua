@@ -936,7 +936,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 		
 		local weightNumber = layerNumber - 1
 		
-		local hasBiasNeuron = hasBiasNeuronArray[layerNumber - 1]
+		local hasBiasNeuronOnCurrentLayer = (hasBiasNeuronArray[layerNumber - 1] == 1)
 
 		local learningRate = learningRateArray[layerNumber]
 
@@ -946,7 +946,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		local costFunctionDerivativeMatrix = costFunctionDerivativeMatrixArray[weightNumber]
 
-		local hasBiasNeuronOnNextLayer = hasBiasNeuronArray[layerNumber]
+		local hasBiasNeuronOnNextLayer = (hasBiasNeuronArray[layerNumber] == 1)
 
 		if (type(costFunctionDerivativeMatrix) == "number") then costFunctionDerivativeMatrix = {{costFunctionDerivativeMatrix}} end
 
@@ -954,7 +954,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		if (Regularizer ~= 0) then
 
-			local regularizationDerivativeMatrix = Regularizer:calculate(weightMatrix, hasBiasNeuron)
+			local regularizationDerivativeMatrix = Regularizer:calculate(weightMatrix, hasBiasNeuronOnCurrentLayer)
 
 			costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivativeMatrix)
 
@@ -974,7 +974,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		local newWeightMatrix = AqwamTensorLibrary:subtract(weightMatrix, costFunctionDerivativeMatrix)
 
-		if (hasBiasNeuronOnNextLayer == 1) then -- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
+		if (hasBiasNeuronOnNextLayer) then -- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
 
 			for i = 1, #newWeightMatrix, 1 do newWeightMatrix[i][1] = 0 end
 
@@ -1030,7 +1030,7 @@ function NeuralNetworkModel:calculateCost(hypothesisMatrix, logisticMatrix)
 	
 	for layerNumber, weightMatrix in ipairs(ModelParameters) do
 		
-		hasBiasNeuron = hasBiasNeuronArray[layerNumber]
+		hasBiasNeuron = (hasBiasNeuronArray[layerNumber] == 1)
 
 		Regularizer = RegularizerArray[layerNumber + 1]
 

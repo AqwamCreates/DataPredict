@@ -1923,9 +1923,9 @@ function NeuralNetworkModel:showDetails()
 	
 	local maximumLearningRateLength = string.len("Learning Rate")
 	
-	local maximumOptimizerLength = string.len("Optimizer Added")
+	local maximumOptimizerLength = string.len("Optimizer")
 	
-	local maximumRegularizerLength = string.len("Regularizer Added")
+	local maximumRegularizerLength = string.len("Regularizer")
 	
 	local maximumDropoutRateLength = string.len("Dropout Rate")
 
@@ -1986,8 +1986,8 @@ function NeuralNetworkModel:showDetails()
 		string.format("%-" .. maximumBiasLength .. "s", "Has Bias Neuron") .. " | " ..
 		string.format("%-" .. maximumActivationLength .. "s", "Activation Function") .. " | " ..
 		string.format("%-" .. maximumLearningRateLength .. "s", "Learning Rate") .. " | " ..
-		string.format("%-" .. maximumOptimizerLength .. "s", "Optimizer Name") .. " | " ..
-		string.format("%-" .. maximumRegularizerLength .. "s", "Regularizer Name") .. " | " .. 
+		string.format("%-" .. maximumOptimizerLength .. "s", "Optimizer") .. " | " ..
+		string.format("%-" .. maximumRegularizerLength .. "s", "Regularizer") .. " | " .. 
 		string.format("%-" .. maximumDropoutRateLength .. "s", "Dropout Rate") .. " |" .. 
 		"\n"
 

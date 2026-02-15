@@ -42,7 +42,7 @@ local defaultLearningRate = 0.3
 
 local defaultEpsilon = 1e-14
 
-function PoissonRegressionModel:calculateCost(hypothesisVector, labelVector)
+function PoissonRegressionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -58,7 +58,7 @@ function PoissonRegressionModel:calculateCost(hypothesisVector, labelVector)
 	
 	local Regularizer = self.Regularizer
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
 
 	local averageCost = totalCost / #labelVector
 
@@ -94,7 +94,7 @@ function PoissonRegressionModel:calculateLossFunctionDerivativeVector(lossGradie
 
 end
 
-function PoissonRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function PoissonRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -108,7 +108,7 @@ function PoissonRegressionModel:gradientDescent(lossFunctionDerivativeVector, nu
 
 	if (Regularizer) then
 
-		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
 
 		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, regularizationDerivatives)
 
@@ -130,7 +130,7 @@ function PoissonRegressionModel:gradientDescent(lossFunctionDerivativeVector, nu
 
 end
 
-function PoissonRegressionModel:update(lossGradientVector, clearAllMatrices)
+function PoissonRegressionModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -138,7 +138,7 @@ function PoissonRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (clearAllMatrices) then 
 
@@ -211,6 +211,8 @@ function PoissonRegressionModel:train(featureMatrix, labelVector)
 	local numberOfIterations = 0
 	
 	local cost
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
 	repeat
 
@@ -222,7 +224,7 @@ function PoissonRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector)
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
 
 		end)
 
@@ -236,7 +238,7 @@ function PoissonRegressionModel:train(featureMatrix, labelVector)
 
 		local lossGradientVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

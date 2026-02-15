@@ -1024,15 +1024,19 @@ function NeuralNetworkModel:calculateCost(hypothesisMatrix, logisticMatrix)
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
+	local hasBiasNeuron
+	
 	local Regularizer
 	
 	for layerNumber, weightMatrix in ipairs(ModelParameters) do
+		
+		hasBiasNeuron = hasBiasNeuronArray[layerNumber]
 
 		Regularizer = RegularizerArray[layerNumber + 1]
 
 		if (Regularizer ~= 0) then 
 			
-			totalCost = totalCost + Regularizer:calculateCost(weightMatrix, hasBiasNeuronArray[layerNumber]) 
+			totalCost = totalCost + Regularizer:calculateCost(weightMatrix, hasBiasNeuron) 
 			
 		end
 		

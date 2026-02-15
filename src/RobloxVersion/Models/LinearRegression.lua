@@ -221,14 +221,14 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local Optimizer = self.Optimizer
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
 	local costArray = {}
 
 	local numberOfIterations = 0
 	
 	local cost
-	
-	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 	
 	repeat
 

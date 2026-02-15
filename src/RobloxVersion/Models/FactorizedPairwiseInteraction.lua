@@ -148,7 +148,7 @@ local lossFunctionGradientList = {
 
 }
 
-function FactorizedPairwiseInteractionModel:calculateCost(hypothesisVector, labelVector)
+function FactorizedPairwiseInteractionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -164,7 +164,7 @@ function FactorizedPairwiseInteractionModel:calculateCost(hypothesisVector, labe
 	
 	local Regularizer = self.Regularizer
 	
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(latentWeightVectorMatrix) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(latentWeightVectorMatrix, hasBias) end
 
 	local averageCost = totalCost / #labelVector
 
@@ -298,7 +298,7 @@ function FactorizedPairwiseInteractionModel:calculateLossFunctionDerivativeVecto
 
 end
 
-function FactorizedPairwiseInteractionModel:gradientDescent(latentWeightLossFunctionDerivativeMatrix, numberOfData)
+function FactorizedPairwiseInteractionModel:gradientDescent(latentWeightLossFunctionDerivativeMatrix, numberOfData, hasBias)
 	
 	local latentWeightVectorMatrix = self.ModelParameters
 	
@@ -310,7 +310,7 @@ function FactorizedPairwiseInteractionModel:gradientDescent(latentWeightLossFunc
 	
 	if (Regularizer) then
 
-		local latentWeightRegularizationDerivatives = Regularizer:calculate(latentWeightVectorMatrix)
+		local latentWeightRegularizationDerivatives = Regularizer:calculate(latentWeightVectorMatrix, hasBias)
 
 		latentWeightLossFunctionDerivativeMatrix = AqwamTensorLibrary:add(latentWeightLossFunctionDerivativeMatrix, latentWeightRegularizationDerivatives)
 
@@ -334,7 +334,7 @@ function FactorizedPairwiseInteractionModel:gradientDescent(latentWeightLossFunc
 
 end
 
-function FactorizedPairwiseInteractionModel:update(lossGradientVector, clearAllMatrices)
+function FactorizedPairwiseInteractionModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -342,7 +342,7 @@ function FactorizedPairwiseInteractionModel:update(lossGradientVector, clearAllM
 
 	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (clearAllMatrices) then 
 
@@ -421,6 +421,8 @@ function FactorizedPairwiseInteractionModel:train(featureMatrix, labelVector)
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local Optimizer = self.Optimizer
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
 	local costArray = {}
 
@@ -438,7 +440,7 @@ function FactorizedPairwiseInteractionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector)
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
 
 		end)
 
@@ -452,7 +454,7 @@ function FactorizedPairwiseInteractionModel:train(featureMatrix, labelVector)
 
 		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, labelVector)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

@@ -24,7 +24,12 @@ LinearRegression.new(maximumNumberOfIterations: integer, learningRate: number, c
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* costFunction: The function to calculate the cost of each training. Available options are "MeanSquaredError" and "MeanAbsoluteError".
+* costFunction: The function to calculate the cost of each training. Available options are:
+
+| Function                     | Input Range (From Predicted Label Vector And Label Vector) | Output Range | Characteristics                                 | Use Cases                                                              |
+|------------------------------|------------------------------------------------------------|--------------|-------------------------------------------------|------------------------------------------------------------------------|
+| MeanSquaredError (Default)   | (-∞, ∞)                                                    | [0, ∞)       | Quadratic penalty, sensitive to outliers        | Regression with normally distributed errors, when outliers are minimal |
+| MeanAbsoluteError            | (-∞, ∞)                                                    | [0, ∞)       | Linear penalty, robust to outliers              | Robust regression, when dataset contains outliers, median prediction   |
 
 #### Returns:
 

@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-GaussNewtonRegression.new(maximumNumberOfIterations: integer, learningRate: number, costFunction: string): ModelObject
+GaussNewtonRegression.new(maximumNumberOfIterations: integer, learningRate: number): ModelObject
 ```
 
 #### Parameters:

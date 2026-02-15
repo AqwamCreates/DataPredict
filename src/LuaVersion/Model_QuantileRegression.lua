@@ -54,7 +54,7 @@ local function quantileLoss(hypothesisValue, labelValue, tau)
 	
 end
 
-function QuantileRegressionModel:calculateCost(hypothesisVector, labelVector)
+function QuantileRegressionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 
@@ -64,7 +64,7 @@ function QuantileRegressionModel:calculateCost(hypothesisVector, labelVector)
 	
 	local Regularizer = self.Regularizer
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
 
 	local averageCost = totalCost / #labelVector
 
@@ -100,7 +100,7 @@ function QuantileRegressionModel:calculateLossFunctionDerivativeMatrix(lossGradi
 
 end
 
-function QuantileRegressionModel:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
+function QuantileRegressionModel:gradientDescent(lossFunctionDerivativeMatrix, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeMatrix) == "number") then lossFunctionDerivativeMatrix = {{lossFunctionDerivativeMatrix}} end
 	
@@ -114,7 +114,7 @@ function QuantileRegressionModel:gradientDescent(lossFunctionDerivativeMatrix, n
 
 	if (Regularizer) then
 
-		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
 
 		lossFunctionDerivativeMatrix = AqwamTensorLibrary:add(lossFunctionDerivativeMatrix, regularizationDerivatives)
 
@@ -136,7 +136,7 @@ function QuantileRegressionModel:gradientDescent(lossFunctionDerivativeMatrix, n
 
 end
 
-function QuantileRegressionModel:update(lossGradientMatrix, clearAllMatrices)
+function QuantileRegressionModel:update(lossGradientMatrix, hasBias, clearAllMatrices)
 
 	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
@@ -215,6 +215,8 @@ function QuantileRegressionModel:train(featureMatrix, labelVector)
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local Optimizer = self.Optimizer
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
 	local costArray = {}
 
@@ -232,7 +234,7 @@ function QuantileRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector)
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
 
 		end)
 
@@ -246,7 +248,7 @@ function QuantileRegressionModel:train(featureMatrix, labelVector)
 
 		local lossGradientMatrix = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
-		self:update(lossGradientMatrix, true)
+		self:update(lossGradientMatrix, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

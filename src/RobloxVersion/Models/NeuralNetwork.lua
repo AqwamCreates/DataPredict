@@ -935,6 +935,8 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 	for layerNumber = 2, numberOfLayers, 1 do
 		
 		local weightNumber = layerNumber - 1
+		
+		local hasBiasNeuron = hasBiasNeuronArray[layerNumber - 1]
 
 		local learningRate = learningRateArray[layerNumber]
 
@@ -952,7 +954,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		if (Regularizer ~= 0) then
 
-			local regularizationDerivativeMatrix = Regularizer:calculate(weightMatrix)
+			local regularizationDerivativeMatrix = Regularizer:calculate(weightMatrix, hasBiasNeuron)
 
 			costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivativeMatrix)
 
@@ -1011,6 +1013,8 @@ function NeuralNetworkModel:calculateCost(hypothesisMatrix, logisticMatrix)
 	local numberOfLayers = #self.numberOfNeuronsArray
 
 	local RegularizerArray = self.RegularizerArray
+	
+	local hasBiasNeuronArray = self.hasBiasNeuronArray
 
 	local ModelParameters = self.ModelParameters
 	
@@ -1019,13 +1023,23 @@ function NeuralNetworkModel:calculateCost(hypothesisMatrix, logisticMatrix)
 	local costVector = AqwamTensorLibrary:applyFunction(functionToApply, hypothesisMatrix, logisticMatrix)
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
+	
+	local hasBiasNeuron
+	
+	local Regularizer
+	
+	for layerNumber, weightMatrix in ipairs(ModelParameters) do
+		
+		hasBiasNeuron = hasBiasNeuronArray[layerNumber]
 
-	for layerNumber = 1, (numberOfLayers - 1), 1 do
+		Regularizer = RegularizerArray[layerNumber + 1]
 
-		local Regularizer = RegularizerArray[layerNumber + 1]
-
-		if (Regularizer ~=  0) then totalCost = totalCost + Regularizer:calculateCost(ModelParameters[layerNumber]) end
-
+		if (Regularizer ~= 0) then 
+			
+			totalCost = totalCost + Regularizer:calculateCost(weightMatrix, hasBiasNeuron) 
+			
+		end
+		
 	end
 
 	local cost = totalCost / #logisticMatrix

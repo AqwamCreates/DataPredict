@@ -52,7 +52,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 19 Models
+	-- Regression - 20 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -71,6 +71,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	SupportVectorRegression = require(Models.SupportVectorRegression),
 	
 	SupportVectorRegressionGradientVariant = require(Models.SupportVectorRegressionGradientVariant),
+	
+	SupportVectorRegressionCovariancePreconditionedVariant = require(Models.SupportVectorRegressionCovariancePreconditionedVariant),
 	
 	KNearestNeighboursRegressor = require(Models.KNearestNeighboursRegressor),
 	
@@ -92,7 +94,7 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	IterativeReweightedLeastSquaresRegression = require(Models.IterativeReweightedLeastSquaresRegression),
 	
-	-- Classification - 13 Models
+	-- Classification - 14 Models
 	
 	BinaryRegression = require(Models.BinaryRegression),
 	
@@ -100,11 +102,13 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	NeuralNetwork = require(Models.NeuralNetwork),
 	
-	OrdinaryLeastSquaresNeuralNetwork = require(Models.OrdinaryLeastSquaresNeuralNetwork),
-	
 	SupportVectorMachine = require(Models.SupportVectorMachine),
 
 	SupportVectorMachineGradientVariant = require(Models.SupportVectorMachineGradientVariant),
+	
+	SupportVectorMachineCovariancePreconditionedVariant = require(Models.SupportVectorMachineCovariancePreconditionedVariant),
+	
+	SupportVectorMachineIterativeReweightedLeastSquaresVariant = require(Models.SupportVectorMachineIterativeReweightedLeastSquaresVariant),
 	
 	NearestCentroid = require(Models.NearestCentroid),
 	

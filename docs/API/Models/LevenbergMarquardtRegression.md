@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LevenbergMarquardtRegression.new(maximumNumberOfIterations: integer, learningRate: number, costFunction: string): ModelObject
+LevenbergMarquardtRegression.new(maximumNumberOfIterations: integer, learningRate: number, lambda: number): ModelObject
 ```
 
 #### Parameters:
@@ -23,6 +23,8 @@ LevenbergMarquardtRegression.new(maximumNumberOfIterations: integer, learningRat
 * maximumNumberOfIterations: How many times should the model needed to be trained.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
+
+* lambda: Controls how much it should "memorize" the data. The lower the value, the more it "memorize" instead of "generalize".
 
 #### Returns:
 

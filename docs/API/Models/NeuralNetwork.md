@@ -26,8 +26,6 @@ NeuralNetwork.new(maximumNumberOfIterations: integer, costFunction: string): Mod
 
 * maximumNumberOfIterations: How many times should the model needed to be trained. [Default: 500]
 
-* costFunction: The function to calculate the cost of each training. Available options are:
-
 * costFunction: The function to calculate the cost of each training. Available options are: 
 
 | Function                   | Input Range (From Final Activation Layer And Label Vector) | Output Range | Characteristics                                 | Use Cases                                                              |

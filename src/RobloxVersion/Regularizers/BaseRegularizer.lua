@@ -58,8 +58,6 @@ function BaseRegularizer:adjustWeightMatrix(weightMatrix, hasBias)
 	
 	if (not hasBias) then return weightMatrix end
 	
-	local firstRowWeightMatrix = weightMatrix[1]
-	
 	local newWeightMatrix = self:deepCopyTable(weightMatrix)
 	
 	local firstRowWeightMatrix = newWeightMatrix[1]

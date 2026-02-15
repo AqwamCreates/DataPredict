@@ -236,7 +236,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 		self:iterationWait()
 
-		local hypothesisVector = self:calculateHypothesisVector(featureMatrix)
+		local hypothesisVector = self:calculateHypothesisVector(featureMatrix, true)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 

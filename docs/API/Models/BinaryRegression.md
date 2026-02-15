@@ -40,13 +40,12 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 
 * costFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
 
-  * BinaryCrossEntropy (Default)
-
-  * HingeLoss
- 
-  * MeanSquaredError
-
-  * MeanAbsoluteError
+| Function                     | Input Range (From Binary Function Output And Label Vector) | Output Range | Characteristics                                 | Use Cases                                                              |
+|------------------------------|------------------------------------------------------------|--------------|-------------------------------------------------|------------------------------------------------------------------------|
+| BinaryCrossEntropy (Default) | (0, 1)                                                     | (0, ∞)       | Penalizes confident wrong predictions heavily   | Probabilistic-based classification                                     |
+| HingeLoss                    | (-∞, ∞)                                                    | (0, ∞)       | Creates max-margin decision boundary            | Maximum margin classification, text categorization                     |
+| MeanSquaredError             | (-∞, ∞)                                                    | [0, ∞)       | Quadratic penalty, sensitive to outliers        | Regression with normally distributed errors, when outliers are minimal |
+| MeanAbsoluteError            | (-∞, ∞)                                                    | [0, ∞)       | Linear penalty, robust to outliers              | Robust regression, when dataset contains outliers, median prediction   |
 
 #### Returns:
 

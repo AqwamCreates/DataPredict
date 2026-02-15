@@ -36,6 +36,8 @@ BaseModel.__index = BaseModel
 
 setmetatable(BaseModel, BaseInstance)
 
+local defaultModelParametersInitializationMode = "Zero"
+
 function BaseModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -211,6 +213,18 @@ function BaseModel:initializeMatrixBasedOnMode(dimensionSizeArray, dimensionSize
 		error("Invalid matrix initialization mode.")
 
 	end
+	
+end
+
+function BaseModel:checkIfFeatureMatrixHasBias(featureMatrix)
+	
+	for _, unwrappedFeatureVector in ipairs(featureMatrix) do
+		
+		if (unwrappedFeatureVector[1] ~= 1) then return false end
+		
+	end
+	
+	return true
 	
 end
 

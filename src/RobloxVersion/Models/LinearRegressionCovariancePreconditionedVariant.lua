@@ -213,14 +213,14 @@ function LinearRegressionCovariancePreconditionedVariantModel:train(featureMatri
 	if (not lossFunctionGradientFunctionToApply) then error("Invalid cost function.") end
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
 	local costArray = {}
 
 	local numberOfIterations = 0
 	
 	local cost
-	
-	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 	
 	self.pMatrix = calculatePMatrix(featureMatrix)
 

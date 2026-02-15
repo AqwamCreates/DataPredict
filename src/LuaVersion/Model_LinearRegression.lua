@@ -58,7 +58,7 @@ local lossFunctionGradientList = {
 
 }
 
-function LinearRegressionModel:calculateCost(hypothesisVector, labelVector)
+function LinearRegressionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 
@@ -68,7 +68,7 @@ function LinearRegressionModel:calculateCost(hypothesisVector, labelVector)
 	
 	local Regularizer = self.Regularizer
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
 
 	local averageCost = totalCost / #labelVector
 
@@ -102,7 +102,7 @@ function LinearRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 
 end
 
-function LinearRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function LinearRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -116,7 +116,7 @@ function LinearRegressionModel:gradientDescent(lossFunctionDerivativeVector, num
 
 	if (Regularizer) then
 
-		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
 
 		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, regularizationDerivatives)
 
@@ -138,7 +138,7 @@ function LinearRegressionModel:gradientDescent(lossFunctionDerivativeVector, num
 
 end
 
-function LinearRegressionModel:update(lossGradientVector, clearAllMatrices)
+function LinearRegressionModel:update(lossGradientVector, clearAllMatrices, hasBias)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -146,7 +146,7 @@ function LinearRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (clearAllMatrices) then 
 
@@ -195,8 +195,10 @@ function LinearRegressionModel:setRegularizer(Regularizer)
 end
 
 function LinearRegressionModel:train(featureMatrix, labelVector)
+	
+	local numberOfData = #featureMatrix
 
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
@@ -225,18 +227,20 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	local numberOfIterations = 0
 	
 	local cost
-
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
+	
 	repeat
 
 		numberOfIterations = numberOfIterations + 1
 
 		self:iterationWait()
 
-		local hypothesisVector = self:calculateHypothesisVector(featureMatrix, true)
+		local hypothesisVector = self:calculateHypothesisVector(featureMatrix)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector)
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
 
 		end)
 
@@ -250,7 +254,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, labelVector)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientVector, true, hasBias)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

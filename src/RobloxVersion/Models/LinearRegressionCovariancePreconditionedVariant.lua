@@ -142,7 +142,7 @@ function LinearRegressionCovariancePreconditionedVariantModel:gradientDescent(lo
 
 end
 
-function LinearRegressionCovariancePreconditionedVariantModel:update(lossGradientVector, clearAllMatrices, hasBias)
+function LinearRegressionCovariancePreconditionedVariantModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -248,7 +248,7 @@ function LinearRegressionCovariancePreconditionedVariantModel:train(featureMatri
 
 		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, labelVector)
 
-		self:update(lossGradientVector, true, hasBias)
+		self:update(lossGradientVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	

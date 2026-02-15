@@ -274,7 +274,7 @@ function OrdinalRegressionModel:setThresholdRegularizer(ThresholdRegularizer)
 
 end
 
-function OrdinalRegressionModel:calculateCost(hypothesisMatrix, labelVector)
+function OrdinalRegressionModel:calculateCost(hypothesisMatrix, labelVector, hasBias)
 
 	local epsilon = self.epsilon
 
@@ -306,7 +306,7 @@ function OrdinalRegressionModel:calculateCost(hypothesisMatrix, labelVector)
 
 	local WeightRegularizer = self.WeightRegularizer
 
-	if (WeightRegularizer) then totalCost = totalCost + WeightRegularizer:calculateCost(weightMatrix) end
+	if (WeightRegularizer) then totalCost = totalCost + WeightRegularizer:calculateCost(weightMatrix, hasBias) end
 
 	local averageCost = totalCost / #labelVector
 
@@ -498,7 +498,7 @@ function OrdinalRegressionModel:calculateLossFunctionDerivativeVector(lossGradie
 
 end
 
-function OrdinalRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function OrdinalRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 
@@ -526,7 +526,7 @@ function OrdinalRegressionModel:gradientDescent(lossFunctionDerivativeVector, nu
 
 	if (WeightRegularizer) then
 
-		local weightRegularizationDerivatives = WeightRegularizer:calculate(weightMatrix)
+		local weightRegularizationDerivatives = WeightRegularizer:calculate(weightMatrix, hasBias)
 
 		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, weightRegularizationDerivatives)
 
@@ -574,7 +574,7 @@ function OrdinalRegressionModel:gradientDescent(lossFunctionDerivativeVector, nu
 
 end
 
-function OrdinalRegressionModel:update(lossGradientVector, clearAllMatrices)
+function OrdinalRegressionModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -582,7 +582,7 @@ function OrdinalRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (clearAllMatrices) then
 
@@ -632,6 +632,8 @@ function OrdinalRegressionModel:train(featureMatrix, labelVector)
 	
 	local ThresholdOptimizer = self.ThresholdOptimizer
 	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
+	
 	local costArray = {}
 
 	local numberOfIterations = 0
@@ -648,7 +650,7 @@ function OrdinalRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisMatrix, labelVector)
+			return self:calculateCost(hypothesisMatrix, labelVector, hasBias)
 
 		end)
 
@@ -660,7 +662,7 @@ function OrdinalRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		self:update(labelVector, true)
+		self:update(labelVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	

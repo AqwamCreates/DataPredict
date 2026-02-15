@@ -44,11 +44,11 @@ function ElasticNet.new(parameterDictionary)
 	
 	NewElasticNet:setName("ElasticNet")
 	
-	NewElasticNet:setCalculateCostFunction(function(weightMatrix)
+	NewElasticNet:setCalculateCostFunction(function(weightMatrix, hasBias)
 		
 		local lambda = NewElasticNet.lambda
 		
-		weightMatrix = NewElasticNet:adjustWeightMatrix(weightMatrix)
+		weightMatrix = NewElasticNet:adjustWeightMatrix(weightMatrix, hasBias)
 		
 		local SquaredWeightMatrix = AqwamTensorLibrary:power(weightMatrix, 2)
 
@@ -66,9 +66,9 @@ function ElasticNet.new(parameterDictionary)
 		
 	end)
 	
-	NewElasticNet:setCalculateFunction(function(weightMatrix)
+	NewElasticNet:setCalculateFunction(function(weightMatrix, hasBias)
 		
-		weightMatrix = NewElasticNet:adjustWeightMatrix(weightMatrix)
+		weightMatrix = NewElasticNet:adjustWeightMatrix(weightMatrix, hasBias)
 		
 		local lambda = NewElasticNet.lambda
 		

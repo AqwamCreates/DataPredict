@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
-local ZTableFunction = require("Core_ZTableFunction")
+local ZTableFunction = require("Parent.Core_ZTableFunction")
 
 local NeuralNetworkModel = {}
 
@@ -936,7 +936,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 		
 		local weightNumber = layerNumber - 1
 		
-		local hasBiasNeuronOnCurrentLayer = hasBiasNeuronArray[layerNumber - 1]
+		local hasBiasNeuron = hasBiasNeuronArray[layerNumber - 1]
 
 		local learningRate = learningRateArray[layerNumber]
 
@@ -954,7 +954,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		if (Regularizer ~= 0) then
 
-			local regularizationDerivativeMatrix = Regularizer:calculate(weightMatrix, hasBiasNeuronOnCurrentLayer)
+			local regularizationDerivativeMatrix = Regularizer:calculate(weightMatrix, hasBiasNeuron)
 
 			costFunctionDerivativeMatrix = AqwamTensorLibrary:add(costFunctionDerivativeMatrix, regularizationDerivativeMatrix)
 
@@ -1024,15 +1024,19 @@ function NeuralNetworkModel:calculateCost(hypothesisMatrix, logisticMatrix)
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
+	local hasBiasNeuron
+	
 	local Regularizer
 	
 	for layerNumber, weightMatrix in ipairs(ModelParameters) do
+		
+		hasBiasNeuron = hasBiasNeuronArray[layerNumber]
 
 		Regularizer = RegularizerArray[layerNumber + 1]
 
 		if (Regularizer ~= 0) then 
 			
-			totalCost = totalCost + Regularizer:calculateCost(weightMatrix, hasBiasNeuronArray[layerNumber]) 
+			totalCost = totalCost + Regularizer:calculateCost(weightMatrix, hasBiasNeuron) 
 			
 		end
 		

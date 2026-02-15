@@ -82,7 +82,7 @@ local function approximateGammaFunction(x)
 	
 end
 
-function NegativeBinomialRegressionModel:calculateCost(hypothesisVector, labelVector)
+function NegativeBinomialRegressionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 
@@ -164,7 +164,7 @@ function NegativeBinomialRegressionModel:calculateCost(hypothesisVector, labelVe
 	
 	if (Regularizer) then
 		
-		totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters)
+		totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias)
 		
 	end
 
@@ -201,7 +201,7 @@ function NegativeBinomialRegressionModel:calculateLossFunctionDerivativeVector(l
 
 end
 
-function NegativeBinomialRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function NegativeBinomialRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -215,7 +215,7 @@ function NegativeBinomialRegressionModel:gradientDescent(lossFunctionDerivativeV
 
 	if (Regularizer) then
 
-		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
 
 		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, regularizationDerivatives)
 
@@ -237,7 +237,7 @@ function NegativeBinomialRegressionModel:gradientDescent(lossFunctionDerivativeV
 
 end
 
-function NegativeBinomialRegressionModel:update(lossGradientVector, clearAllMatrices)
+function NegativeBinomialRegressionModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -245,7 +245,7 @@ function NegativeBinomialRegressionModel:update(lossGradientVector, clearAllMatr
 
 	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (clearAllMatrices) then 
 
@@ -316,6 +316,8 @@ function NegativeBinomialRegressionModel:train(featureMatrix, labelVector)
 	local dispersion = self.dispersion
 
 	local Optimizer = self.Optimizer
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
 	local costArray = {}
 
@@ -333,7 +335,7 @@ function NegativeBinomialRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector)
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
 
 		end)
 
@@ -353,7 +355,7 @@ function NegativeBinomialRegressionModel:train(featureMatrix, labelVector)
 		
 		local lossGradientVector = AqwamTensorLibrary:divide(lossGradientVectorPart1, lossGradientVectorPart3)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

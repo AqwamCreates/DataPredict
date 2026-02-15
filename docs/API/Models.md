@@ -216,13 +216,14 @@
 
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
-| Model                                                                                      | Alternate Names | Properties | Use Cases                                    |
-|--------------------------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------|
-| [FactorizationMachine](Models/FactorizationMachine.md)                                     | FM              | 🟢 🟡 🛡️  | Cold-Start User-Item Recommendation          |
-| [FactorizedPairwiseInteraction](Models/FactorizedPairwiseInteraction.md)                   | None            | 🟢 🟡 🛡️  | Cold-Start User-Item Recommendation          |
-| [SimonFunkMatrixFactorization](Models/SimonFunkMatrixFactorization.md)                     | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
-| [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md) | Funk MF         | 🟢 🟡 🛡️  | Early Netflix-Style User-Item Recommendation |
-| [TwoTower](Models/TwoTower.md)                                                             | None            | 🟢 🟡     | YouTube-Style User-Item Recommendation        |
+| Model                                                                                                                | Alternate Names | Properties   | Use Cases                                    |
+|----------------------------------------------------------------------------------------------------------------------|-----------------|---------------| ---------------------------------------------|
+| [FactorizationMachine](Models/FactorizationMachine.md)                                                               | FM              | 🟢 🟡 🛡️    | Cold-Start User-Item Recommendation          |
+| [FactorizationMachineCovariancePreconditionedVariant](Models/FactorizationMachineCovariancePreconditionedVariant.md) | FM              | ⚡ 🟢 🟡 🛡️ | Faster Cold-Start User-Item Recommendation    |
+| [FactorizedPairwiseInteraction](Models/FactorizedPairwiseInteraction.md)                                             | None            | 🟢 🟡 🛡️     | Cold-Start User-Item Recommendation          |
+| [SimonFunkMatrixFactorization](Models/SimonFunkMatrixFactorization.md)                                               | Funk MF         | 🟢 🟡         | Early Netflix-Style User-Item Recommendation |
+| [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md)                           | Funk MF         | 🟢 🟡 🛡️     | Early Netflix-Style User-Item Recommendation |
+| [TwoTower](Models/TwoTower.md)                                                                                       | None            | 🟢 🟡        | YouTube-Style User-Item Recommendation        |
 
 ## Generative
 

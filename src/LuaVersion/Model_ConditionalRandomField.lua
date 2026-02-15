@@ -44,7 +44,7 @@ local defaultAddBias = true
 
 local defaultAddStabilization = true
 
-function ConditionalRandomFieldModel:calculateCost(predictedCurrentStateMatrix, currentStateMatrix)
+function ConditionalRandomFieldModel:calculateCost(predictedCurrentStateMatrix, currentStateMatrix, hasBias)
 	
 	local logPredictedCurrentStateMatrix = AqwamTensorLibrary:applyFunction(math.log, predictedCurrentStateMatrix)
 	
@@ -54,7 +54,7 @@ function ConditionalRandomFieldModel:calculateCost(predictedCurrentStateMatrix, 
 	
 	local Regularizer = self.Regularizer
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
 
 	local averageCost = totalCost / #currentStateMatrix
 
@@ -106,7 +106,7 @@ function ConditionalRandomFieldModel:calculateLossFunctionDerivativeMatrix(lossG
 
 end
 
-function ConditionalRandomFieldModel:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
+function ConditionalRandomFieldModel:gradientDescent(lossFunctionDerivativeMatrix, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeMatrix) == "number") then lossFunctionDerivativeMatrix = {{lossFunctionDerivativeMatrix}} end
 	
@@ -120,7 +120,7 @@ function ConditionalRandomFieldModel:gradientDescent(lossFunctionDerivativeMatri
 	
 	if (Regularizer) then
 
-		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
 
 		lossFunctionDerivativeMatrix = AqwamTensorLibrary:add(lossFunctionDerivativeMatrix, regularizationDerivatives)
 
@@ -142,7 +142,7 @@ function ConditionalRandomFieldModel:gradientDescent(lossFunctionDerivativeMatri
 
 end
 
-function ConditionalRandomFieldModel:update(lossGradientMatrix, clearFeatureMatrix)
+function ConditionalRandomFieldModel:update(lossGradientMatrix, hasBias, clearFeatureMatrix)
 
 	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
@@ -150,7 +150,7 @@ function ConditionalRandomFieldModel:update(lossGradientMatrix, clearFeatureMatr
 
 	local lossFunctionDerivativeMatrix = self:calculateLossFunctionDerivativeMatrix(lossGradientMatrix)
 
-	self:gradientDescent(lossFunctionDerivativeMatrix, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeMatrix, numberOfData, hasBias)
 	
 	if (clearFeatureMatrix) then self.featureMatrix = nil end
 
@@ -244,6 +244,8 @@ function ConditionalRandomFieldModel:train(previousStateMatrix, currentStateMatr
 	
 	local Optimizer = self.Optimizer
 	
+	local hasBias = self:checkIfFeatureMatrixHasBias(previousStateMatrix)
+	
 	local costArray = {}
 
 	local numberOfIterations = 0
@@ -260,7 +262,7 @@ function ConditionalRandomFieldModel:train(previousStateMatrix, currentStateMatr
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(predictedCurrentStateMatrix, currentStateMatrix)
+			return self:calculateCost(predictedCurrentStateMatrix, currentStateMatrix, hasBias)
 
 		end)
 
@@ -274,7 +276,7 @@ function ConditionalRandomFieldModel:train(previousStateMatrix, currentStateMatr
 
 		local lossGradientMatrix = AqwamTensorLibrary:subtract(predictedCurrentStateMatrix, currentStateMatrix)
 
-		self:update(lossGradientMatrix, true)
+		self:update(lossGradientMatrix, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 	

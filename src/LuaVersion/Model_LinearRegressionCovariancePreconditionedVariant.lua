@@ -38,7 +38,7 @@ setmetatable(LinearRegressionCovariancePreconditionedVariantModel, GradientMetho
 
 local defaultMaximumNumberOfIterations = 500
 
-local defaultLearningRate = 0.3
+local defaultLearningRate = 1
 
 local defaultCostFunction = "MeanSquaredError"
 

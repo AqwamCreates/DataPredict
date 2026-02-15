@@ -148,7 +148,7 @@ local lossFunctionGradientList = {
 
 }
 
-function FactorizationMachineModel:calculateCost(hypothesisVector, labelVector)
+function FactorizationMachineModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -166,9 +166,9 @@ function FactorizationMachineModel:calculateCost(hypothesisVector, labelVector)
 	
 	local LatentWeightRegularizer = self.LatentWeightRegularizer
 
-	if (WeightRegularizer) then totalCost = totalCost + WeightRegularizer:calculateCost(weightVector) end
+	if (WeightRegularizer) then totalCost = totalCost + WeightRegularizer:calculateCost(weightVector, hasBias) end
 	
-	if (LatentWeightRegularizer) then totalCost = totalCost + LatentWeightRegularizer:calculateCost(latentWeightVectorMatrix) end
+	if (LatentWeightRegularizer) then totalCost = totalCost + LatentWeightRegularizer:calculateCost(latentWeightVectorMatrix, hasBias) end
 
 	local averageCost = totalCost / #labelVector
 
@@ -316,7 +316,7 @@ function FactorizationMachineModel:calculateLossFunctionDerivativeVector(lossGra
 
 end
 
-function FactorizationMachineModel:gradientDescent(lossFunctionDerivativeVectorArray, numberOfData)
+function FactorizationMachineModel:gradientDescent(lossFunctionDerivativeVectorArray, numberOfData, hasBias)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -342,7 +342,7 @@ function FactorizationMachineModel:gradientDescent(lossFunctionDerivativeVectorA
 
 	if (WeightRegularizer) then
 
-		local weightRegularizationDerivatives = WeightRegularizer:calculate(weightVector)
+		local weightRegularizationDerivatives = WeightRegularizer:calculate(weightVector, hasBias)
 
 		weightLossFunctionDerivativeVector = AqwamTensorLibrary:add(weightLossFunctionDerivativeVector, weightRegularizationDerivatives)
 
@@ -350,7 +350,7 @@ function FactorizationMachineModel:gradientDescent(lossFunctionDerivativeVectorA
 	
 	if (LatentWeightRegularizer) then
 
-		local latentWeightRegularizationDerivatives = LatentWeightRegularizer:calculate(latentWeightVectorMatrix)
+		local latentWeightRegularizationDerivatives = LatentWeightRegularizer:calculate(latentWeightVectorMatrix, hasBias)
 
 		latentWeightLossFunctionDerivativeMatrix = AqwamTensorLibrary:add(latentWeightLossFunctionDerivativeMatrix, latentWeightRegularizationDerivatives)
 
@@ -388,7 +388,7 @@ function FactorizationMachineModel:gradientDescent(lossFunctionDerivativeVectorA
 
 end
 
-function FactorizationMachineModel:update(lossGradientVector, clearAllMatrices)
+function FactorizationMachineModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -396,7 +396,7 @@ function FactorizationMachineModel:update(lossGradientVector, clearAllMatrices)
 
 	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (clearAllMatrices) then 
 
@@ -507,6 +507,8 @@ function FactorizationMachineModel:train(featureMatrix, labelVector)
 	local WeightOptimizer = self.WeightOptimizer
 	
 	local LatentWeightOptimizer = self.LatentWeightOptimizer
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
 	local costArray = {}
 
@@ -524,7 +526,7 @@ function FactorizationMachineModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector)
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
 
 		end)
 
@@ -538,7 +540,7 @@ function FactorizationMachineModel:train(featureMatrix, labelVector)
 
 		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, labelVector)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

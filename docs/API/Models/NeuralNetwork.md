@@ -41,28 +41,6 @@ NeuralNetwork.new(maximumNumberOfIterations: integer, costFunction: string): Mod
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-NeuralNetwork:setParameters(maximumNumberOfIterations: integer, costFunction: string)
-```
-
-#### Parameters:
-
-* maximumNumberOfIterations: How many times should the model needed to be trained.
-
-* costFunction: The function to calculate the cost of each training. Available options are:
-
-	* MeanSquaredError (Default)
-
-	* MeanAbsoluteError
-
-	* BinaryCrossEntropy
-
-	* CategoricalCrossEntropy
-
 ### addLayer()
 
 Add a layer to the neural network.

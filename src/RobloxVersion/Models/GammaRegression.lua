@@ -82,7 +82,7 @@ local function approximateGammaFunction(x)
 	
 end
 
-function GammaRegressionModel:calculateCost(hypothesisVector, labelVector)
+function GammaRegressionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -128,7 +128,7 @@ function GammaRegressionModel:calculateCost(hypothesisVector, labelVector)
 	
 	local Regularizer = self.Regularizer
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
 
 	local averageCost = totalCost / numberOfData
 
@@ -164,7 +164,7 @@ function GammaRegressionModel:calculateLossFunctionDerivativeVector(lossGradient
 
 end
 
-function GammaRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function GammaRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -178,7 +178,7 @@ function GammaRegressionModel:gradientDescent(lossFunctionDerivativeVector, numb
 
 	if (Regularizer) then
 
-		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
 
 		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, regularizationDerivatives)
 
@@ -200,7 +200,7 @@ function GammaRegressionModel:gradientDescent(lossFunctionDerivativeVector, numb
 
 end
 
-function GammaRegressionModel:update(lossGradientVector, clearAllMatrices)
+function GammaRegressionModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -208,7 +208,7 @@ function GammaRegressionModel:update(lossGradientVector, clearAllMatrices)
 
 	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (clearAllMatrices) then 
 
@@ -279,6 +279,8 @@ function GammaRegressionModel:train(featureMatrix, labelVector)
 	local shape = self.shape
 
 	local Optimizer = self.Optimizer
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
 	local costArray = {}
 
@@ -296,7 +298,7 @@ function GammaRegressionModel:train(featureMatrix, labelVector)
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector)
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
 
 		end)
 
@@ -314,7 +316,7 @@ function GammaRegressionModel:train(featureMatrix, labelVector)
 		
 		lossGradientVector = AqwamTensorLibrary:multiply(lossGradientVector, shape)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 

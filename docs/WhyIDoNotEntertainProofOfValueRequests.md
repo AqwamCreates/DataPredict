@@ -14,7 +14,7 @@ Now, everyone knows that more experience and the rare nature of intersection mea
 
 However, with DataPredict, I have removed a lot of unnecessary costs for you as I already absorbed the cost since I am quite passionate about ML, DL and RL in general.
 
-The passion of mines doesn't pay the bills though, so I should be charging on how much people rely on it. The only charity I would be doing would be toward non-profit health organizations.
+The passion of mines doesn't pay the bills though, so I should be charging on how much people rely on it. The only charity I would be doing would be toward non-profit human health organizations.
 
 The DataPredict ecosystem took me a total of 3 years as a solo developer. I went nearly full-time with this and it also includes me working on it during weekends.
 

@@ -80,17 +80,11 @@ function LinearRegressionModel:calculateCost(hypothesisVector, labelVector, hasB
 
 end
 
-function LinearRegressionModel:calculateHypothesisVector(featureMatrix, saveMatrices)
+function LinearRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
-	if (saveMatrices) then 
-		
-		self.featureMatrix = featureMatrix
-		
-		self.hypothesisVector = hypothesisVector
-		
-	end
+	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
 
 	return hypothesisVector
 
@@ -157,8 +151,6 @@ function LinearRegressionModel:update(lossGradientVector, hasBias, clearAllMatri
 	if (clearAllMatrices) then 
 
 		self.featureMatrix = nil
-		
-		self.hypothesisVector = nil
 
 		self.lossFunctionDerivativeVector = nil
 

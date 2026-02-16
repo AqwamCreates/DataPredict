@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
+local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 local Solvers = script.Parent.Parent.Solvers
 

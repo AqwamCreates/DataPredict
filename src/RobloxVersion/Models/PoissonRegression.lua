@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
+local Solvers = script.Parent.Parent.Solvers
+
 local PoissonRegressionModel = {}
 
 PoissonRegressionModel.__index = PoissonRegressionModel
@@ -41,6 +43,8 @@ local defaultMaximumNumberOfIterations = 500
 local defaultLearningRate = 0.3
 
 local defaultEpsilon = 1e-14
+
+local defaultSolver = "GaussNewton"
 
 function PoissonRegressionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
@@ -66,13 +70,19 @@ function PoissonRegressionModel:calculateCost(hypothesisVector, labelVector, has
 
 end
 
-function PoissonRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function PoissonRegressionModel:calculateHypothesisVector(featureMatrix, saveMatrices)
 	
 	local exponentTermVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
 	local hypothesisVector = AqwamTensorLibrary:applyFunction(math.exp, exponentTermVector)
 
-	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
+	if (saveMatrices) then 
+		
+		self.featureMatrix = featureMatrix
+		
+		self.hypothesisVector = hypothesisVector
+		
+	end
 
 	return hypothesisVector
 
@@ -82,11 +92,7 @@ function PoissonRegressionModel:calculateLossFunctionDerivativeVector(lossGradie
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local featureMatrix = self.featureMatrix
-
-	if (not featureMatrix) then error("Feature matrix not found.") end
-
-	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.hypothesisVector, self.hypothesisVector, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -142,7 +148,9 @@ function PoissonRegressionModel:update(lossGradientVector, hasBias, clearAllMatr
 
 	if (clearAllMatrices) then 
 
-		self.featureMatrix = nil 
+		self.featureMatrix = nil
+		
+		self.hypothesisVector = nil
 
 		self.lossFunctionDerivativeVector = nil
 
@@ -169,6 +177,8 @@ function PoissonRegressionModel.new(parameterDictionary)
 	NewPoissonRegressionModel.Optimizer = parameterDictionary.Optimizer
 
 	NewPoissonRegressionModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewPoissonRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = false})
 
 	return NewPoissonRegressionModel
 
@@ -251,6 +261,8 @@ function PoissonRegressionModel:train(featureMatrix, labelVector)
 	end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+	
+	self.Solver:clearCache()
 
 	return costArray
 

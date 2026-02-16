@@ -32,6 +32,8 @@ local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 local ZTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
 
+local Solvers = script.Parent.Parent.Solvers
+
 local BinaryRegressionModel = {}
 
 BinaryRegressionModel.__index = BinaryRegressionModel
@@ -45,6 +47,8 @@ local defaultLearningRate = 0.1
 local defaultBinaryFunction = "Logistic"
 
 local defaultCostFunction = "BinaryCrossEntropy"
+
+local defaultSolver = "GaussNewton"
 
 local function calculateProbabilityDensityFunctionValue(z)
 
@@ -211,24 +215,12 @@ end
 function BinaryRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
-
-	local featureMatrix = self.featureMatrix
-	
-	local zVector = self.zVector
 	
 	local hypothesisVector = self.hypothesisVector
-
-	if (not featureMatrix) then error("Feature matrix not found.") end
 	
-	if (not zVector) then error("Z vector not found.") end
+	local binaryFunctionDerivativeVector = AqwamTensorLibrary:applyFunction(binaryFunctionGradientList[self.binaryFunction], hypothesisVector, self.zVector)
 	
-	if (not hypothesisVector) then error("Hypothesis vector not found.") end
-	
-	local binaryFunctionDerivativeVector = AqwamTensorLibrary:applyFunction(binaryFunctionGradientList[self.binaryFunction], hypothesisVector, zVector)
-	
-	binaryFunctionDerivativeVector = AqwamTensorLibrary:multiply(binaryFunctionDerivativeVector, lossGradientVector)
-	
-	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), binaryFunctionDerivativeVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, hypothesisVector, binaryFunctionDerivativeVector, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.Gradients = lossFunctionDerivativeVector end
 
@@ -315,6 +307,8 @@ function BinaryRegressionModel.new(parameterDictionary)
 	NewBinaryRegressionModel.Optimizer = parameterDictionary.Optimizer
 
 	NewBinaryRegressionModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewBinaryRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = false})
 
 	return NewBinaryRegressionModel
 
@@ -403,6 +397,8 @@ function BinaryRegressionModel:train(featureMatrix, labelVector)
 	end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+	
+	self.Solver:clearCache()
 
 	return costArray
 

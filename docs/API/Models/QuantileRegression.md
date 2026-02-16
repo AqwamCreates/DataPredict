@@ -56,6 +56,18 @@ QuantileRegression:setRegularizer(Regularizer: RegularizerObject)
 
 * setRegularizer: The regularizer to be used.
 
+### setSolver()
+
+Set a solver for the model by inputting the optimizer object.
+
+```
+QuantileRegression:setSolver(Solver: SolverObject)
+```
+
+#### Parameters:
+
+* Solver: The solver to be used.
+
 ### train()
 
 Train the model.

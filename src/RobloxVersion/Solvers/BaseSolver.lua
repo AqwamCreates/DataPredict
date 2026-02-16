@@ -26,8 +26,6 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
-
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 local BaseSolver = {}

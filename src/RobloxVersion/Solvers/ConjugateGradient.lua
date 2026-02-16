@@ -62,7 +62,9 @@ function ConjugateGradientSolver.new(parameterDictionary)
 
 		end
 		
-		local weightChangeMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeLossMatrix)
+		local unaryFirstDerivativeLossMatrix = AqwamTensorLibrary:unaryMinus(firstDerivativeLossMatrix)
+		
+		local weightChangeMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, unaryFirstDerivativeLossMatrix)
 		
 		-- Using weightMatrix here as the initial guess for online learning.
 		

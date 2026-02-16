@@ -1,5 +1,9 @@
 # DataPredict™ Beta Version
 
+## Version 2.40
+
+[2.40.0](Beta/2-40-0.md) - 16/2/2026
+
 ## Version 2.39
 
 [2.39.0](Beta/2-39-0.md) - 15/2/2026

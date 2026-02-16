@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
+local Solvers = script.Parent.Parent.Solvers
+
 local NegativeBinomialRegressionModel = {}
 
 NegativeBinomialRegressionModel.__index = NegativeBinomialRegressionModel
@@ -43,6 +45,8 @@ local defaultLearningRate = 0.5
 local defaultDispersion = 0.5 -- alpha
 
 local defaultEpsilon = 1e-14
+
+local defaultSolver = "GaussNewton"
 
 -- Approximate gamma function (Stirling's approximation).
 
@@ -173,13 +177,19 @@ function NegativeBinomialRegressionModel:calculateCost(hypothesisVector, labelVe
 	return averageCost
 end
 
-function NegativeBinomialRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function NegativeBinomialRegressionModel:calculateHypothesisVector(featureMatrix, saveMatrices)
 	
 	local exponentTermVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
 	local hypothesisVector = AqwamTensorLibrary:applyFunction(math.exp, exponentTermVector)
 
-	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
+	if (saveMatrices) then 
+
+		self.featureMatrix = featureMatrix
+
+		self.hypothesisVector = hypothesisVector
+
+	end
 
 	return hypothesisVector
 
@@ -189,11 +199,7 @@ function NegativeBinomialRegressionModel:calculateLossFunctionDerivativeVector(l
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local featureMatrix = self.featureMatrix
-
-	if (not featureMatrix) then error("Feature matrix not found.") end
-
-	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -278,6 +284,8 @@ function NegativeBinomialRegressionModel.new(parameterDictionary)
 	NewNegativeBinomialRegressionModel.Optimizer = parameterDictionary.Optimizer
 
 	NewNegativeBinomialRegressionModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewNegativeBinomialRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewNegativeBinomialRegressionModel
 
@@ -292,6 +300,12 @@ end
 function NegativeBinomialRegressionModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
+
+end
+
+function NegativeBinomialRegressionModel:setSolver(Solver)
+
+	self.Solver = Solver
 
 end
 
@@ -368,6 +382,8 @@ function NegativeBinomialRegressionModel:train(featureMatrix, labelVector)
 	end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+	
+	if (self.autoResetSolvers) then self.Solver:reset() end
 
 	return costArray
 

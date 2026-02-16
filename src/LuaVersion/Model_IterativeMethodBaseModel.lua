@@ -26,13 +26,15 @@
 
 --]]
 
-local BaseModel = require("Core_BaseModel")
+local BaseModel = require("Model_BaseModel")
 
 local IterativeBaseModel = {}
 
 IterativeBaseModel.__index = IterativeBaseModel
 
 setmetatable(IterativeBaseModel, BaseModel)
+
+local defaultAutoResetSolvers = true
 
 function IterativeBaseModel.new(parameterDictionary)
 	
@@ -69,6 +71,8 @@ function IterativeBaseModel.new(parameterDictionary)
 	NewBaseModel.currentNumberOfIterationsToCheckIfConverged = NewBaseModel:getValueOrDefaultValue(parameterDictionary.currentNumberOfIterationsToCheckIfConverged, 1)
 	
 	NewBaseModel.numberOfIterationsToCheckIfConverged = NewBaseModel:getValueOrDefaultValue(parameterDictionary.numberOfIterationsToCheckIfConverged, math.huge)
+	
+	NewBaseModel.autoResetSolvers = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetSolvers, defaultAutoResetSolvers)
 
 	return NewBaseModel
 	

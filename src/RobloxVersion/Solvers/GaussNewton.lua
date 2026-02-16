@@ -40,8 +40,6 @@ function GaussNewtonSolver.new(parameterDictionary)
 	
 	local NewGaussNewtonSolver = BaseSolver.new(parameterDictionary)
 	
-	parameterDictionary = parameterDictionary or {}
-	
 	setmetatable(NewGaussNewtonSolver, GaussNewtonSolver)
 	
 	NewGaussNewtonSolver:setName("GaussNewton")

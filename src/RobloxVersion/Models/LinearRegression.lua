@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
+local Solvers = script.Parent.Parent.Solvers
+
 local LinearRegressionModel = {}
 
 LinearRegressionModel.__index = LinearRegressionModel
@@ -41,6 +43,8 @@ local defaultMaximumNumberOfIterations = 500
 local defaultLearningRate = 0.3
 
 local defaultCostFunction = "MeanSquaredError"
+
+local defaultSolver = "GaussNewton"
 
 local lossFunctionList = {
 
@@ -76,11 +80,17 @@ function LinearRegressionModel:calculateCost(hypothesisVector, labelVector, hasB
 
 end
 
-function LinearRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function LinearRegressionModel:calculateHypothesisVector(featureMatrix, saveMatrices)
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
-	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
+	if (saveMatrices) then 
+		
+		self.featureMatrix = featureMatrix
+		
+		self.hypothesisVector = hypothesisVector
+		
+	end
 
 	return hypothesisVector
 
@@ -90,11 +100,7 @@ function LinearRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local featureMatrix = self.featureMatrix
-
-	if (not featureMatrix) then error("Feature matrix not found.") end
-
-	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.hypothesisVector, self.featureMatrix, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -177,6 +183,8 @@ function LinearRegressionModel.new(parameterDictionary)
 	NewLinearRegressionModel.Optimizer = parameterDictionary.Optimizer
 
 	NewLinearRegressionModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewLinearRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewLinearRegressionModel
 
@@ -191,6 +199,12 @@ end
 function LinearRegressionModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
+
+end
+
+function LinearRegressionModel:setSolver(Solver)
+
+	self.Solver = Solver
 
 end
 
@@ -221,6 +235,8 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local Optimizer = self.Optimizer
+	
+	local Solver = self.Solver
 	
 	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
@@ -267,6 +283,8 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 	end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+	
+	Solver:clearCache()
 
 	return costArray
 

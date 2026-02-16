@@ -38,6 +38,8 @@ local ValueSchedulers = script.ValueSchedulers
 
 local GradientClippers = script.GradientClippers
 
+local Solvers = script.Solvers
+
 local ExperienceReplays = script.ExperienceReplays
 
 local QuickSetups = script.QuickSetups
@@ -52,9 +54,11 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 20 Models
+	-- Regression - 21 Models
 
 	LinearRegression = require(Models.LinearRegression),
+	
+	LinearRegressionCovariancePreconditionedVariant = require(Models.LinearRegressionCovariancePreconditionedVariant),
 	
 	QuantileRegression = require(Models.QuantileRegression),
 	
@@ -94,9 +98,11 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	IterativeReweightedLeastSquaresRegression = require(Models.IterativeReweightedLeastSquaresRegression),
 	
-	-- Classification - 14 Models
+	-- Classification - 15 Models
 	
 	BinaryRegression = require(Models.BinaryRegression),
+	
+	BinaryRegressionGaussNewtonVariant = require(Models.BinaryRegressionGaussNewtonVariant),
 	
 	PassiveAggressiveClassifier = require(Models.PassiveAggressiveClassifier),
 	
@@ -107,8 +113,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	SupportVectorMachineGradientVariant = require(Models.SupportVectorMachineGradientVariant),
 	
 	SupportVectorMachineCovariancePreconditionedVariant = require(Models.SupportVectorMachineCovariancePreconditionedVariant),
-	
-	SupportVectorMachineIterativeReweightedLeastSquaresVariant = require(Models.SupportVectorMachineIterativeReweightedLeastSquaresVariant),
 	
 	NearestCentroid = require(Models.NearestCentroid),
 	
@@ -366,6 +370,14 @@ AqwamMachineDeepAndReinforcementLearningLibrary.GradientClippers = {
 
 	ClipNormalization = require(GradientClippers.ClipNormalization),
 	
+}
+
+AqwamMachineDeepAndReinforcementLearningLibrary.Solvers = {
+
+	Gradient = require(Solvers.Gradient),
+
+	GaussNewton = require(Solvers.GaussNewton),
+
 }
 
 AqwamMachineDeepAndReinforcementLearningLibrary.ExperienceReplays = {

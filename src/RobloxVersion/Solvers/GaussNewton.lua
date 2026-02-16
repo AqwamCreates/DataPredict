@@ -58,9 +58,13 @@ function GaussNewtonSolver.new(parameterDictionary)
 
 			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
 
-			pMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, matrix)
+			pMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
 
 			pMatrix = AqwamTensorLibrary:inverse(pMatrix)
+			
+			-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
+			
+			if (not pMatrix) then return AqwamTensorLibrary:createTensor({#weightMatrix, #weightMatrix[1]}, 0) end
 
 			pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix)
 			

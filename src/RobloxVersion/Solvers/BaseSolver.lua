@@ -50,7 +50,7 @@ function BaseSolver.new(parameterDictionary)
 	
 	NewBaseSolver.calculateFunction = parameterDictionary.calculateFunction
 	
-	NewBaseSolver.cache = parameterDictionary.cache
+	NewBaseSolver.featureMatrix = parameterDictionary.featureMatrix
 	
 	return NewBaseSolver
 	

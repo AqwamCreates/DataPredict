@@ -70,19 +70,13 @@ function PoissonRegressionModel:calculateCost(hypothesisVector, labelVector, has
 
 end
 
-function PoissonRegressionModel:calculateHypothesisVector(featureMatrix, saveMatrices)
+function PoissonRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 	
 	local exponentTermVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
 	local hypothesisVector = AqwamTensorLibrary:applyFunction(math.exp, exponentTermVector)
 
-	if (saveMatrices) then 
-		
-		self.featureMatrix = featureMatrix
-		
-		self.hypothesisVector = hypothesisVector
-		
-	end
+	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
 
 	return hypothesisVector
 
@@ -92,7 +86,7 @@ function PoissonRegressionModel:calculateLossFunctionDerivativeVector(lossGradie
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.hypothesisVector, self.hypothesisVector, lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -149,8 +143,6 @@ function PoissonRegressionModel:update(lossGradientVector, hasBias, clearAllMatr
 	if (clearAllMatrices) then 
 
 		self.featureMatrix = nil
-		
-		self.hypothesisVector = nil
 
 		self.lossFunctionDerivativeVector = nil
 
@@ -178,7 +170,7 @@ function PoissonRegressionModel.new(parameterDictionary)
 
 	NewPoissonRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewPoissonRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = false})
+	NewPoissonRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewPoissonRegressionModel
 
@@ -268,7 +260,7 @@ function PoissonRegressionModel:train(featureMatrix, labelVector)
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
 	
-	self.Solver:clearCache()
+	if (self.autoResetSolvers) then self.Solver:reset() end
 
 	return costArray
 

@@ -1,7 +1,5 @@
 # [API Reference](../API.md) - Solvers
 
-> M: Number Of Data N: Number Of Features O: Number Of Outputs
-
 | Solver                                                    | Convergence Speed | Computational Efficiency (Non-Cached) | Computational Efficiency (Cached)* |
 |-----------------------------------------------------------|-------------------|---------------------------------------|------------------------------------|
 | [Gradient](Solvers/Gradient.md)                           | Low               | High                                  | Very High                          |

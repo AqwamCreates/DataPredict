@@ -369,6 +369,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.GradientClippers = {
 AqwamMachineDeepAndReinforcementLearningLibrary.Solvers = {
 
 	Gradient = require(Solvers.Gradient),
+	
+	ConjugateGradient = require(Solvers.ConjugateGradient),
 
 	GaussNewton = require(Solvers.GaussNewton),
 

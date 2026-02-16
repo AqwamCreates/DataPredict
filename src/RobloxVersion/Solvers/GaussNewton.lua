@@ -64,7 +64,7 @@ function GaussNewtonSolver.new(parameterDictionary)
 			
 			-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
 			
-			if (not pMatrix) then return AqwamTensorLibrary:createTensor({#weightMatrix, #weightMatrix[1]}, 0) end
+			if (not pMatrix) then return AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(weightMatrix), 0) end
 
 			pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix)
 			

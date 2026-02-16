@@ -292,8 +292,6 @@ function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
 
 	NewSupportVectorMachineGradientVariantModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewSupportVectorMachineGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
-	
 	NewSupportVectorMachineGradientVariantModel.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
 	
 	NewSupportVectorMachineGradientVariantModel.kernelParameters = {
@@ -307,6 +305,8 @@ function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
 		r = parameterDictionary.r or defaultR
 
 	}
+	
+	NewSupportVectorMachineGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewSupportVectorMachineGradientVariantModel
 

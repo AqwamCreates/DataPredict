@@ -82,7 +82,7 @@ function BaseSolver:getCache(cache)
 
 end
 
-function BaseSolver:clearCache()
+function BaseSolver:reset()
 
 	self.cache = nil
 

@@ -54,7 +54,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 19 Models
+	-- Regression - 18 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -91,8 +91,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	RecursiveLeastSquaresRegression = require(Models.RecursiveLeastSquaresRegression),
 	
 	WeightedLeastSquaresRegression = require(Models.WeightedLeastSquaresRegression),
-	
-	IterativeReweightedLeastSquaresRegression = require(Models.IterativeReweightedLeastSquaresRegression),
 	
 	-- Classification - 14 Models
 	
@@ -373,6 +371,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Solvers = {
 	ConjugateGradient = require(Solvers.ConjugateGradient),
 
 	GaussNewton = require(Solvers.GaussNewton),
+	
+	IterativelyReweighted = require(Solvers.IterativelyReweighted),
 
 }
 

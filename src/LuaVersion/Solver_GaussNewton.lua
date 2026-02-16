@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(AqwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseSolver = require("Solver_BaseSolver")
+local BaseSolver = require("Model_BaseSolver")
 
 local GaussNewtonSolver = {}
 
@@ -61,6 +61,10 @@ function GaussNewtonSolver.new(parameterDictionary)
 			pMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
 
 			pMatrix = AqwamTensorLibrary:inverse(pMatrix)
+			
+			-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
+			
+			if (not pMatrix) then return AqwamTensorLibrary:createTensor({#weightMatrix, #weightMatrix[1]}, 0) end
 
 			pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix)
 			

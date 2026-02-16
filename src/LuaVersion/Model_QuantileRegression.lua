@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
+local Solvers = script.Parent.Parent.Solvers
+
 local QuantileRegressionModel = {}
 
 QuantileRegressionModel.__index = QuantileRegressionModel
@@ -41,6 +43,14 @@ local defaultMaximumNumberOfIterations = 500
 local defaultLearningRate = 0.3
 
 local defaultQuantile = 0.5
+
+local defaultSolver = "GaussNewton"
+
+local function lossFunctionGradientToApply(lossValue, tau)
+	
+	return (lossValue < 0) and (tau - 1) or tau
+	
+end
 
 local function quantileLoss(hypothesisValue, labelValue, tau)
 	
@@ -85,14 +95,10 @@ end
 function QuantileRegressionModel:calculateLossFunctionDerivativeMatrix(lossGradientMatrix)
 
 	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
-
-	local featureMatrix = self.featureMatrix
-
-	if (not featureMatrix) then error("Feature matrix not found.") end
 	
-	local gradientWeightMatrix = AqwamTensorLibrary:applyFunction(function(lossValue, tau) return (lossValue < 0) and (tau - 1) or tau end, lossGradientMatrix, {self.QuantilesList})
+	local gradientWeightMatrix = AqwamTensorLibrary:applyFunction(lossFunctionGradientToApply, lossGradientMatrix, {self.QuantilesList})
 
-	local lossFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), gradientWeightMatrix)
+	local lossFunctionDerivativeMatrix = self.Solver:calculate(self.ModelParameters, self.featureMatrix, gradientWeightMatrix)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeMatrix = lossFunctionDerivativeMatrix end
 
@@ -179,6 +185,8 @@ function QuantileRegressionModel.new(parameterDictionary)
 	NewQuantileRegressionModel.Optimizer = parameterDictionary.Optimizer
 
 	NewQuantileRegressionModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewQuantileRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewQuantileRegressionModel
 
@@ -193,6 +201,12 @@ end
 function QuantileRegressionModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
+
+end
+
+function QuantileRegressionModel:setSolver(Solver)
+
+	self.Solver = Solver
 
 end
 
@@ -261,6 +275,8 @@ function QuantileRegressionModel:train(featureMatrix, labelVector)
 	end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+	
+	if (self.autoResetSolvers) then self.Solver:reset() end
 
 	return costArray
 

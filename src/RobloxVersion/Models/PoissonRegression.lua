@@ -196,6 +196,12 @@ function PoissonRegressionModel:setRegularizer(Regularizer)
 
 end
 
+function PoissonRegressionModel:setSolver(Solver)
+
+	self.Solver = Solver
+
+end
+
 function PoissonRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end

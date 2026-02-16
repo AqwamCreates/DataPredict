@@ -156,7 +156,9 @@ function LinearRegressionModel:update(lossGradientVector, hasBias, clearAllMatri
 
 	if (clearAllMatrices) then 
 
-		self.featureMatrix = nil 
+		self.featureMatrix = nil
+		
+		self.hypothesisVector = nil
 
 		self.lossFunctionDerivativeVector = nil
 

@@ -30,42 +30,52 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseSolver = require(script.Parent.BaseSolver)
 
-local GradientSolver = {}
+local GaussNewtonSolver = {}
 
-GradientSolver.__index = GradientSolver
+GaussNewtonSolver.__index = GaussNewtonSolver
 
-setmetatable(GradientSolver, BaseSolver)
+setmetatable(GaussNewtonSolver, BaseSolver)
 
-function GradientSolver.new(parameterDictionary)
+function GaussNewtonSolver.new(parameterDictionary)
 	
-	local NewGradientSolver = BaseSolver.new(parameterDictionary)
+	local NewGaussNewtonSolver = BaseSolver.new(parameterDictionary)
 	
-	setmetatable(NewGradientSolver, GradientSolver)
+	setmetatable(NewGaussNewtonSolver, GaussNewtonSolver)
 	
-	NewGradientSolver:setName("Gradient")
+	NewGaussNewtonSolver:setName("GaussNewton")
 	
-	NewGradientSolver:setCalculateFunction(function(weightMatrix, matrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewGaussNewtonSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinear = NewGradientSolver.isLinear
+		local isLinear = NewGaussNewtonSolver.isLinear
+		
+		local pMatrix = (isLinear and NewGaussNewtonSolver.cache)
 
-		local transposedFirstDerivativeMatrix = (isLinear and NewGradientSolver.cache)
-		
-		if (not transposedFirstDerivativeMatrix) then
+		if (not pMatrix) then
+
+			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+
+			pMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
+
+			pMatrix = AqwamTensorLibrary:inverse(pMatrix)
 			
-			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+			-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
 			
-			if (isLinear) then NewGradientSolver.cache = transposedFirstDerivativeMatrix end
+			if (not pMatrix) then return AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(weightMatrix), 0) end
+
+			pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix)
 			
+			if (isLinear) then NewGaussNewtonSolver.cache = pMatrix end
+
 		end
-		
-		return AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeLossMatrix)
+
+		return AqwamTensorLibrary:dotProduct(pMatrix, firstDerivativeLossMatrix)
 		
 	end)
 	
-	return NewGradientSolver
+	return NewGaussNewtonSolver
 	
 end
 
-return GradientSolver
+return GaussNewtonSolver

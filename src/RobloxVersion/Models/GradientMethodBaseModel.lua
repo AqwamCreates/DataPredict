@@ -36,8 +36,6 @@ setmetatable(GradientMethodBaseModel, IterativeMethodBaseModel)
 
 local defaultAutoResetOptimizers = true
 
-local defaultAutoResetSolvers = true
-
 local defaultAreGradientsSaved = false
 
 function GradientMethodBaseModel.new(parameterDictionary)
@@ -53,8 +51,6 @@ function GradientMethodBaseModel.new(parameterDictionary)
 	NewGradientMethodBaseModel:setClassName("GradientMethodModel")
 	
 	NewGradientMethodBaseModel.autoResetOptimizers = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetOptimizers, defaultAutoResetOptimizers)
-	
-	NewGradientMethodBaseModel.autoResetSolvers = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetSolvers, defaultAutoResetSolvers)
 	
 	NewGradientMethodBaseModel.areGradientsSaved = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.areGradientsSaved, false)
 	

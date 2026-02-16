@@ -65,6 +65,8 @@ function LevenbergMarquardtSolver.new(parameterDictionary)
 			local pMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(pMatrix)
 			
 			local diagonalMatrix = AqwamTensorLibrary:createIdentityTensor(pMatrixDimensionSizeArray, NewLevenbergMarquardtSolver.lambda)
+			
+			pMatrix = AqwamTensorLibrary:add(pMatrix, diagonalMatrix)
 
 			pMatrix = AqwamTensorLibrary:inverse(pMatrix)
 			

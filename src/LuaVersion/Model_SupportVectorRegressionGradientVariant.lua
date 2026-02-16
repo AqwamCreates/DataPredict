@@ -74,17 +74,11 @@ function SupportVectorRegressionGradientVariantModel:calculateCost(hypothesisVec
 
 end
 
-function SupportVectorRegressionGradientVariantModel:calculateHypothesisVector(featureMatrix, saveMatrices)
+function SupportVectorRegressionGradientVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
-	if (saveMatrices) then 
-		
-		self.featureMatrix = featureMatrix 
-		
-		self.hypothesisVector = hypothesisVector
-		
-	end
+	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
 
 	return hypothesisVector
 
@@ -94,7 +88,7 @@ function SupportVectorRegressionGradientVariantModel:calculateLossFunctionDeriva
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.hypothesisVector, self.featureMatrix, lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -151,8 +145,6 @@ function SupportVectorRegressionGradientVariantModel:update(lossGradientVector, 
 	if (clearAllMatrices) then 
 
 		self.featureMatrix = nil
-		
-		self.hypothesisVector = nil 
 
 		self.lossFunctionDerivativeVector = nil
 

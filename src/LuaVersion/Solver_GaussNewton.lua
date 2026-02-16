@@ -44,7 +44,7 @@ function GaussNewtonSolver.new(parameterDictionary)
 	
 	NewGaussNewtonSolver:setName("GaussNewton")
 	
-	NewGaussNewtonSolver:setCalculateFunction(function(weightMatrix, matrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewGaussNewtonSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		

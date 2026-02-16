@@ -64,9 +64,9 @@ function BaseSolver:setCalculateFunction(calculateFunction)
 	
 end
 
-function BaseSolver:calculate(weightMatrix, matrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+function BaseSolver:calculate(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 	
-	return self.calculateFunction(weightMatrix, matrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	return self.calculateFunction(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 	
 end
 

@@ -150,7 +150,9 @@ function SupportVectorRegressionGradientVariantModel:update(lossGradientVector, 
 
 	if (clearAllMatrices) then 
 
-		self.featureMatrix = nil 
+		self.featureMatrix = nil
+		
+		self.hypothesisVector = nil 
 
 		self.lossFunctionDerivativeVector = nil
 

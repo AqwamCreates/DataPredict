@@ -34,6 +34,12 @@ GradientMethodBaseModel.__index = GradientMethodBaseModel
 
 setmetatable(GradientMethodBaseModel, IterativeMethodBaseModel)
 
+local defaultAutoResetOptimizers = true
+
+local defaultAutoResetSolvers = true
+
+local defaultAreGradientsSaved = false
+
 function GradientMethodBaseModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -46,11 +52,13 @@ function GradientMethodBaseModel.new(parameterDictionary)
 
 	NewGradientMethodBaseModel:setClassName("GradientMethodModel")
 	
-	NewGradientMethodBaseModel.autoResetOptimizers = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetOptimizers, true)
+	NewGradientMethodBaseModel.autoResetOptimizers = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetOptimizers, defaultAutoResetOptimizers)
+	
+	NewGradientMethodBaseModel.autoResetSolvers = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetSolvers, defaultAutoResetSolvers)
 	
 	NewGradientMethodBaseModel.areGradientsSaved = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.areGradientsSaved, false)
 	
-	NewGradientMethodBaseModel.Gradients = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.Gradients, nil)
+	NewGradientMethodBaseModel.Gradients = NewGradientMethodBaseModel:getValueOrDefaultValue(parameterDictionary.Gradients, defaultAreGradientsSaved)
 	
 	return NewGradientMethodBaseModel
 	
@@ -59,6 +67,12 @@ end
 function GradientMethodBaseModel:setAutoResetOptimizers(option)
 
 	self.autoResetOptimizers = self:getValueOrDefaultValue(option, self.autoResetOptimizers)
+
+end
+
+function GradientMethodBaseModel:setAutoResetSolvers(option)
+
+	self.autoResetSolvers = self:getValueOrDefaultValue(option, self.autoResetSolvers)
 
 end
 

@@ -216,11 +216,9 @@ function BinaryRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 	
-	local hypothesisVector = self.hypothesisVector
+	local binaryFunctionDerivativeVector = AqwamTensorLibrary:applyFunction(binaryFunctionGradientList[self.binaryFunction], self.hypothesisVector, self.zVector)
 	
-	local binaryFunctionDerivativeVector = AqwamTensorLibrary:applyFunction(binaryFunctionGradientList[self.binaryFunction], hypothesisVector, self.zVector)
-	
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, hypothesisVector, binaryFunctionDerivativeVector, lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, binaryFunctionDerivativeVector, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.Gradients = lossFunctionDerivativeVector end
 

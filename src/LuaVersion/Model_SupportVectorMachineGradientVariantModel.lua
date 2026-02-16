@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
+local Solvers = script.Parent.Parent.Solvers
+
 local SupportVectorMachineGradientVariantModel = {}
 
 SupportVectorMachineGradientVariantModel.__index = SupportVectorMachineGradientVariantModel
@@ -41,6 +43,8 @@ local defaultMaximumNumberOfIterations = 500
 local defaultLearningRate = 0.3
 
 local defaultCValue = 1
+
+local defaultSolver = "GaussNewton"
 
 local function hingeFunction(value)
 	
@@ -60,7 +64,7 @@ local function seperatorFunction(x)
 
 end
 
-function SupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector, labelVector)
+function SupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -76,7 +80,7 @@ function SupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector
 	
 	local Regularizer = self.Regularizer
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
 
 	local averageCost = (self.cValue * totalCost) / #labelVector
 
@@ -88,7 +92,13 @@ function SupportVectorMachineGradientVariantModel:calculateHypothesisVector(feat
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
-	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
+	if (saveFeatureMatrix) then 
+		
+		self.featureMatrix = featureMatrix
+		
+		self.hypothesisVector = hypothesisVector
+		
+	end
 
 	return hypothesisVector
 
@@ -98,11 +108,7 @@ function SupportVectorMachineGradientVariantModel:calculateLossFunctionDerivativ
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local featureMatrix = self.featureMatrix
-
-	if (not featureMatrix) then error("Feature matrix not found.") end
-
-	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.hypothesisVector, self.featureMatrix, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -110,7 +116,7 @@ function SupportVectorMachineGradientVariantModel:calculateLossFunctionDerivativ
 
 end
 
-function SupportVectorMachineGradientVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+function SupportVectorMachineGradientVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -124,7 +130,7 @@ function SupportVectorMachineGradientVariantModel:gradientDescent(lossFunctionDe
 
 	if (Regularizer) then
 
-		local regularizationDerivatives = Regularizer:calculate(ModelParameters)
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
 
 		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, regularizationDerivatives)
 
@@ -146,7 +152,7 @@ function SupportVectorMachineGradientVariantModel:gradientDescent(lossFunctionDe
 
 end
 
-function SupportVectorMachineGradientVariantModel:update(lossGradientVector, clearAllMatrices)
+function SupportVectorMachineGradientVariantModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -154,11 +160,13 @@ function SupportVectorMachineGradientVariantModel:update(lossGradientVector, cle
 
 	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData)
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (clearAllMatrices) then 
 
 		self.featureMatrix = nil 
+		
+		self.hypothesisVector = nil
 
 		self.lossFunctionDerivativeVector = nil
 
@@ -185,6 +193,8 @@ function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
 	NewSupportVectorMachineGradientVariantModel.Optimizer = parameterDictionary.Optimizer
 
 	NewSupportVectorMachineGradientVariantModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewSupportVectorMachineGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewSupportVectorMachineGradientVariantModel
 
@@ -223,6 +233,8 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 	local cValue = self.cValue
 
 	local Optimizer = self.Optimizer
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
 	local costArray = {}
 
@@ -240,7 +252,7 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector)
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
 
 		end)
 
@@ -258,7 +270,7 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 		
 		local lossGradientVector = AqwamTensorLibrary:multiply(-cValue, labelVector, misclassifiedMaskVector)
 
-		self:update(lossGradientVector, true)
+		self:update(lossGradientVector, hasBias, true)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
@@ -271,6 +283,8 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 	end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+	
+	self.Solver:clearCache()
 
 	return costArray
 

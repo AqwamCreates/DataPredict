@@ -54,7 +54,7 @@ QuantileRegression:setRegularizer(Regularizer: RegularizerObject)
 
 #### Parameters:
 
-* setRegularizer: The regularizer to be used.
+* Regularizer: The regularizer to be used.
 
 ### setSolver()
 

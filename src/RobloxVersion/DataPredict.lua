@@ -54,7 +54,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 18 Models
+	-- Regression - 16 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -79,10 +79,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	OrdinaryLeastSquaresRegression = require(Models.OrdinaryLeastSquaresRegression),
 
 	RidgeRegression = require(Models.RidgeRegression),
-	
-	GaussNewtonRegression = require(Models.GaussNewtonRegression),
-	
-	LevenbergMarquardtRegression = require(Models.LevenbergMarquardtRegression),
 
 	BayesianLinearRegression = require(Models.BayesianLinearRegression),
 

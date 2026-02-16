@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
+local Solvers = script.Parent.Parent.Solvers
+
 local SupportVectorMachineGradientVariantModel = {}
 
 SupportVectorMachineGradientVariantModel.__index = SupportVectorMachineGradientVariantModel
@@ -41,6 +43,8 @@ local defaultMaximumNumberOfIterations = 500
 local defaultLearningRate = 0.3
 
 local defaultCValue = 1
+
+local defaultSolver = "GaussNewton"
 
 local function hingeFunction(value)
 	
@@ -88,7 +92,13 @@ function SupportVectorMachineGradientVariantModel:calculateHypothesisVector(feat
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
-	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
+	if (saveFeatureMatrix) then 
+		
+		self.featureMatrix = featureMatrix
+		
+		self.hypothesisVector = hypothesisVector
+		
+	end
 
 	return hypothesisVector
 
@@ -98,11 +108,7 @@ function SupportVectorMachineGradientVariantModel:calculateLossFunctionDerivativ
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local featureMatrix = self.featureMatrix
-
-	if (not featureMatrix) then error("Feature matrix not found.") end
-
-	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.hypothesisVector, self.featureMatrix, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -159,6 +165,8 @@ function SupportVectorMachineGradientVariantModel:update(lossGradientVector, has
 	if (clearAllMatrices) then 
 
 		self.featureMatrix = nil 
+		
+		self.hypothesisVector = nil
 
 		self.lossFunctionDerivativeVector = nil
 
@@ -185,6 +193,8 @@ function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
 	NewSupportVectorMachineGradientVariantModel.Optimizer = parameterDictionary.Optimizer
 
 	NewSupportVectorMachineGradientVariantModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewSupportVectorMachineGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewSupportVectorMachineGradientVariantModel
 
@@ -273,6 +283,8 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 	end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+	
+	self.Solver:clearCache()
 
 	return costArray
 

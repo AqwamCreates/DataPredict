@@ -284,7 +284,7 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
 	
-	self.Solver:clearCache()
+	if (self.autoResetSolvers) then self.Solver:reset() end
 
 	return costArray
 

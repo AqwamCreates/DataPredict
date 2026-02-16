@@ -308,7 +308,7 @@ function BinaryRegressionModel.new(parameterDictionary)
 
 	NewBinaryRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewBinaryRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = false})
+	NewBinaryRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewBinaryRegressionModel
 

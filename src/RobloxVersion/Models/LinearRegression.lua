@@ -236,8 +236,6 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 	local Optimizer = self.Optimizer
 	
-	local Solver = self.Solver
-	
 	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
 	local costArray = {}
@@ -284,7 +282,7 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
 	
-	Solver:clearCache()
+	self.Solver:clearCache()
 
 	return costArray
 

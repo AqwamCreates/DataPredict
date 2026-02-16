@@ -46,7 +46,19 @@ function GradientSolver.new(parameterDictionary)
 	
 	NewGradientSolver:setCalculateFunction(function(matrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
-		return AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(firstDerivativeMatrix), firstDerivativeLossMatrix)
+		local isLinear = NewGradientSolver.isLinear
+
+		local transposedFirstDerivativeMatrix = (isLinear and NewGradientSolver.cache)
+		
+		if (not transposedFirstDerivativeMatrix) then
+			
+			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+			
+			if (isLinear) then NewGradientSolver.cache = transposedFirstDerivativeMatrix end
+			
+		end
+		
+		return AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeLossMatrix)
 		
 	end)
 	

@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
+local Solvers = script.Parent.Parent.Solvers
+
 local GammaRegressionModel = {}
 
 GammaRegressionModel.__index = GammaRegressionModel
@@ -43,6 +45,8 @@ local defaultLearningRate = 0.3
 local defaultShape = 1 -- alpha
 
 local defaultEpsilon = 1e-14
+
+local defaultSolver = "GaussNewton"
 
 -- Approximate gamma function (Stirling's approximation).
 
@@ -136,13 +140,19 @@ function GammaRegressionModel:calculateCost(hypothesisVector, labelVector, hasBi
 
 end
 
-function GammaRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function GammaRegressionModel:calculateHypothesisVector(featureMatrix, saveMatrices)
 	
 	local exponentTermVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
 	local hypothesisVector = AqwamTensorLibrary:applyFunction(math.exp, exponentTermVector)
 
-	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
+	if (saveMatrices) then 
+
+		self.featureMatrix = featureMatrix
+
+		self.hypothesisVector = hypothesisVector
+
+	end
 
 	return hypothesisVector
 
@@ -152,11 +162,7 @@ function GammaRegressionModel:calculateLossFunctionDerivativeVector(lossGradient
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local featureMatrix = self.featureMatrix
-
-	if (not featureMatrix) then error("Feature matrix not found.") end
-
-	local lossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -241,6 +247,8 @@ function GammaRegressionModel.new(parameterDictionary)
 	NewGammaRegressionModel.Optimizer = parameterDictionary.Optimizer
 
 	NewGammaRegressionModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewGammaRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewGammaRegressionModel
 
@@ -255,6 +263,12 @@ end
 function GammaRegressionModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
+
+end
+
+function GammaRegressionModel:setSolver(Solver)
+
+	self.Solver = Solver
 
 end
 
@@ -329,6 +343,8 @@ function GammaRegressionModel:train(featureMatrix, labelVector)
 	end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+	
+	if (self.autoResetSolvers) then self.Solver:reset() end
 
 	return costArray
 

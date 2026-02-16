@@ -46,6 +46,8 @@ function ConjugateGradientSolver.new(parameterDictionary)
 	
 	NewConjugateGradientSolver:setCalculateFunction(function(weightMatrix, matrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
+		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
+		
 		local isLinear = NewConjugateGradientSolver.isLinear
 		
 		local aMatrix = (isLinear and NewConjugateGradientSolver.cache)

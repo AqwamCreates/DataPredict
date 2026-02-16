@@ -56,7 +56,19 @@ SupportVectorRegressionGradientVariant:setRegularizer(Regularizer: RegularizerOb
 
 #### Parameters:
 
-* setRegularizer: The regularizer to be used.
+* Regularizer: The regularizer to be used.
+
+### setSolver()
+
+Set a solver for the model by inputting the optimizer object.
+
+```
+SupportVectorRegressionGradientVariant:setSolver(Solver: SolverObject)
+```
+
+#### Parameters:
+
+* Solver: The solver to be used.
 
 ### train()
 

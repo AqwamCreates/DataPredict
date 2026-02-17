@@ -322,7 +322,7 @@ function SupportVectorMachineModel.new(parameterDictionary)
 	
 	}
 	
-	NewSupportVectorMachine.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewSupportVectorMachine.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewSupportVectorMachine
 end

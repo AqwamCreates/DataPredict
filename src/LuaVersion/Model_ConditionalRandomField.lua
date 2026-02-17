@@ -196,6 +196,12 @@ function ConditionalRandomFieldModel:setRegularizer(Regularizer)
 
 end
 
+function ConditionalRandomFieldModel:setSolver(Solver)
+
+	self.Solver = Solver
+
+end
+
 function ConditionalRandomFieldModel:train(previousStateMatrix, currentStateMatrix)
 	
 	local numberOfData = #previousStateMatrix

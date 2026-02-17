@@ -48,9 +48,9 @@ function ConjugateGradientSolver.new(parameterDictionary)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinear = NewConjugateGradientSolver.isLinear
+		local isLinearInput = (not NewConjugateGradientSolver.isNonLinearInput)
 		
-		local aMatrix = (isLinear and NewConjugateGradientSolver.cache)
+		local aMatrix = (isLinearInput and NewConjugateGradientSolver.cache)
 		
 		local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
 		
@@ -58,7 +58,7 @@ function ConjugateGradientSolver.new(parameterDictionary)
 
 			aMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
 
-			if (isLinear) then NewConjugateGradientSolver.cache = aMatrix end
+			if (isLinearInput) then NewConjugateGradientSolver.cache = aMatrix end
 
 		end
 		

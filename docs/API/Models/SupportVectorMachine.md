@@ -42,32 +42,6 @@ SupportVectorMachine.new(maximumNumberOfIterations: integer, cValue: number, ker
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-SupportVectorMachine:setParameters(maximumNumberOfIterations: integer, cValue: number, kernelFunction: string, kernelParameters: table)
-```
-
-#### Parameters:
-
-* maximumNumberOfIterations: How many times should the model needed to be trained.
-
-* cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
-
-* kernelFunction: The kernel function to be used to train the model. Available options are:
-  
-  *  Linear
-
-  *  Polynomial
-
-  *  RadialBasisFunction
-
-  *  Sigmoid
-
-  *  Cosine
-
 ### setCValue()
 
 Set how hard the margin should be.
@@ -79,6 +53,18 @@ SupportVectorMachine:setCValue(cValue: number)
 #### Parameters:
 
 * cValue: The value of c to be used.
+
+### setSolver()
+
+Set a solver for the model by inputting the optimizer object.
+
+```
+SupportVectorMachine:setSolver(Solver: SolverObject)
+```
+
+#### Parameters:
+
+* Solver: The solver to be used.
 
 ### train()
 

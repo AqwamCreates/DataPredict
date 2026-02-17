@@ -28,210 +28,102 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+local BaseSolver = require("Solver_BaseSolver")
 
-local ZTableFunction = require("Core_ZTableFunction")
+local IterativelyReweightedSolver = {}
 
-local IterativeReweightedLeastSquaresRegressionModel = {}
+IterativelyReweightedSolver.__index = IterativelyReweightedSolver
 
-IterativeReweightedLeastSquaresRegressionModel.__index = IterativeReweightedLeastSquaresRegressionModel
+setmetatable(IterativelyReweightedSolver, BaseSolver)
 
-setmetatable(IterativeReweightedLeastSquaresRegressionModel, IterativeMethodBaseModel)
-
-local defaultMaximumNumberOfIterations = 500
-
-local defaultLinkFunction = "Linear"
-
-local defaultLearningRate = 1
-
-local defaultPValue = 2
-
-local defaultModelParametersInitializationMode = "Zero"
-
-local cutOffFunction = function (value) return (((value < 0.5) and 0) or 1) end
-
-local function calculateProbabilityDensityFunctionValue(z)
-
-	return (math.exp(-0.5 * math.pow(z, 2)) / math.sqrt(2 * math.pi))
-
-end
-
-local linkFunctionList = {
-
-	["Logistic"] = function (z) return (1/(1 + math.exp(-z))) end,
-
-	["Logit"] = function (z) return (1/(1 + math.exp(-z))) end,
-
-	["Probit"] = function(z) return ZTableFunction:getStandardNormalCumulativeDistributionFunctionValue(math.clamp(z, -3.9, 3.9)) end,
-
-	["LogLog"] = function(z) return math.exp(-math.exp(z)) end,
-
-	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end,
-
-}
-
-function IterativeReweightedLeastSquaresRegressionModel.new(parameterDictionary)
+function IterativelyReweightedSolver.new(parameterDictionary)
 	
-	parameterDictionary = parameterDictionary or {}
+	local NewIterativelyReweightedSolver = BaseSolver.new(parameterDictionary)
 	
-	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
+	setmetatable(NewIterativelyReweightedSolver, IterativelyReweightedSolver)
 	
-	parameterDictionary.modelParametersInitializationMode = parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
-
-	local NewIterativeReweightedLeastSquaresRegressionModel = IterativeMethodBaseModel.new(parameterDictionary)
-
-	setmetatable(NewIterativeReweightedLeastSquaresRegressionModel, IterativeReweightedLeastSquaresRegressionModel)
+	NewIterativelyReweightedSolver:setName("IterativelyReweighted")
 	
-	NewIterativeReweightedLeastSquaresRegressionModel:setName("IterativeReweightedLeastSquaresRegression")
-	
-	NewIterativeReweightedLeastSquaresRegressionModel.linkFunction = parameterDictionary.linkFunction or defaultLinkFunction
-	
-	NewIterativeReweightedLeastSquaresRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
-
-	NewIterativeReweightedLeastSquaresRegressionModel.pValue = parameterDictionary.pValue or defaultPValue
-
-	return NewIterativeReweightedLeastSquaresRegressionModel
-
-end
-
-function IterativeReweightedLeastSquaresRegressionModel:train(featureMatrix, labelVector)
-	
-	local numberOfdata = #featureMatrix
-
-	if (numberOfdata ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
-	
-	local numberOfFeatures = #featureMatrix[1]
-	
-	local betaVector = self.ModelParameters
-
-	if (betaVector) then
-
-		if (numberOfFeatures ~= #betaVector) then error("The number of features are not the same as the model parameters.") end
-
-	else
-
-		betaVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
-
-	end
-	
-	local linkFunction = self.linkFunction
-	
-	local linkFunctionToApply = linkFunctionList[linkFunction]
-	
-	if (not linkFunctionToApply) and (linkFunction ~= "Linear") then error("Invalid link function.") end
-	
-	local learningRate = self.learningRate
-	
-	local pValue = self.pValue
-	
-	local weightFunctionToApply = function(labelValue, hypothesisValue) return math.pow(math.abs(labelValue - hypothesisValue), (pValue - 2)) end
-	
-	local costFunctionToApply = function(labelValue, hypothesisValue) return math.pow(math.abs(labelValue - hypothesisValue), pValue) end
-	
-	local maximumNumberOfIterations = self.maximumNumberOfIterations
-	
-	local costArray = {}
-
-	local numberOfIterations = 0
-	
-	local tansposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
-	
-	local diagonalMatrix = AqwamTensorLibrary:createTensor({numberOfdata, numberOfdata})
-	
-	local responseVector
-
-	local errorVector
-	
-	local targetBetaVector
-	
-	local betaChangeVector
-	
-	local costVector
-	
-	local cost
-
-	repeat
-
-		numberOfIterations = numberOfIterations + 1
-
-		self:iterationWait()
+	NewIterativelyReweightedSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
-		responseVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
+		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		if (linkFunctionToApply) then responseVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, responseVector) end
+		local isLinearInput = (not NewIterativelyReweightedSolver.isNonLinearInput)
 		
-		errorVector = AqwamTensorLibrary:applyFunction(weightFunctionToApply, labelVector, responseVector)
+		local transposedFirstDerivativeMatrix = (isLinearInput and NewIterativelyReweightedSolver.cache)
+		
+		local numberOfdata = AqwamTensorLibrary:getDimensionSizeArray(firstDerivativeLossMatrix)[1]
+		
+		local diagonalMatrix = AqwamTensorLibrary:createTensor({numberOfdata, numberOfdata})
 
-		for dataIndex, unwrappedErrorVector in ipairs(errorVector) do diagonalMatrix[dataIndex][dataIndex] = unwrappedErrorVector[1] end
-		
-		targetBetaVector = AqwamTensorLibrary:dotProduct(tansposedFeatureMatrix, diagonalMatrix, featureMatrix)
-		
-		targetBetaVector = AqwamTensorLibrary:inverse(targetBetaVector)
-		
-		targetBetaVector = AqwamTensorLibrary:dotProduct(targetBetaVector, tansposedFeatureMatrix, diagonalMatrix, labelVector)
-		
-		betaChangeVector = AqwamTensorLibrary:subtract(targetBetaVector, betaVector)
-		
-		betaChangeVector = AqwamTensorLibrary:multiply(learningRate, betaChangeVector)
-		
-		betaVector = AqwamTensorLibrary:add(betaVector, betaChangeVector)
-		
-		costVector = AqwamTensorLibrary:applyFunction(costFunctionToApply, labelVector, responseVector)
+		if (not transposedFirstDerivativeMatrix) then
 
-		cost = self:calculateCostWhenRequired(numberOfIterations, function()
-
-			return AqwamTensorLibrary:sum(costVector)
-
-		end)
-
-		if (cost) then 
-
-			table.insert(costArray, cost)
-
-			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+			
+			if (isLinearInput) then NewIterativelyReweightedSolver.cache = transposedFirstDerivativeMatrix end
 
 		end
+		
+		local weightMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(weightMatrix) 
+		
+		local firstDerivativeLossMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(firstDerivativeLossMatrix)
+		
+		local numberOfData = firstDerivativeLossMatrixDimensionSizeArray[1]
+		
+		local numberOfFeatures = weightMatrixDimensionSizeArray[1]
+		
+		local numberOfOutputs = weightMatrixDimensionSizeArray[2]
+		
+		local weightVectorDimensionSizeArray = {numberOfFeatures, 1}
+		
+		local firstDerivativeLossVector
+		
+		local pMatrix
+		
+		local weightChangeVector
+		
+		local weightChangeMatrix
+		
+		for outputIndex = 1, numberOfOutputs, 1 do
+			
+			firstDerivativeLossVector = AqwamTensorLibrary:extract(firstDerivativeLossMatrix, {1, outputIndex}, {numberOfData, outputIndex})
+			
+			for dataIndex, unwrappedErrorVector in ipairs(firstDerivativeLossVector) do diagonalMatrix[dataIndex][dataIndex] = unwrappedErrorVector[1] end
+			
+			pMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, diagonalMatrix, firstDerivativeMatrix)
+			
+			pMatrix = AqwamTensorLibrary:inverse(pMatrix)
+			
+			-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
+			
+			if (pMatrix) then
+				
+				weightChangeVector = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix, diagonalMatrix, firstDerivativeLossVector)
+				
+			else
+				
+				weightChangeVector = AqwamTensorLibrary:createTensor(weightVectorDimensionSizeArray, 0)
+				
+			end
+			
+			if (weightChangeMatrix) then
+				
+				weightChangeMatrix = AqwamTensorLibrary:concatenate(weightChangeMatrix, weightChangeVector, 2)
+				
+			else
+				
+				weightChangeMatrix = weightChangeVector
+				
+			end
+			
+		end
 
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+		return weightChangeMatrix
+		
+	end)
 	
-	self.ModelParameters = betaVector
-
-	if (self.isOutputPrinted) then
-
-		if (cost == math.huge) then warn("The model diverged.") end
-
-		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
-
-	end
-
-	return costArray
-
+	return NewIterativelyReweightedSolver
+	
 end
 
-function IterativeReweightedLeastSquaresRegressionModel:predict(featureMatrix, returnOriginalOutput)
-	
-	local linkFunctionToApply = linkFunctionList[self.linkFunction]
-	
-	local betaVector = self.ModelParameters
-	
-	if (not betaVector) then
-		
-		local numberOfFeatures = #featureMatrix[1]
-		
-		betaVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
-		
-		self.ModelParameters = betaVector
-		
-	end
-
-	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
-	
-	if (linkFunctionToApply) then predictedVector = AqwamTensorLibrary:applyFunction(linkFunctionToApply, predictedVector) end
-	
-	if (linkFunctionToApply) and (not returnOriginalOutput) then return AqwamTensorLibrary:applyFunction(cutOffFunction, predictedVector) end
-
-	return predictedVector
-
-end
-
-return IterativeReweightedLeastSquaresRegressionModel
+return IterativelyReweightedSolver

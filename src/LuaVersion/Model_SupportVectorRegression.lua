@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(s"AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
@@ -332,7 +332,7 @@ function SupportVectorRegressionModel.new(parameterDictionary)
 
 	}
 	
-	NewSupportVectorRegression.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewSupportVectorRegression.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewSupportVectorRegression
 end
@@ -340,6 +340,12 @@ end
 function SupportVectorRegressionModel:setCValue(cValue)
 
 	self.cValue = cValue or self.cValue
+
+end
+
+function SupportVectorRegressionModel:setSolver(Solver)
+
+	self.Solver = Solver
 
 end
 

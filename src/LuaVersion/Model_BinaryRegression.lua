@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GradientMethodBaseModel = require("Model_GradientMethodBaseModel:)
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 local ZTableFunction = require("Core_ZTableFunction")
 
@@ -308,7 +308,7 @@ function BinaryRegressionModel.new(parameterDictionary)
 
 	NewBinaryRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewBinaryRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewBinaryRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewBinaryRegressionModel
 

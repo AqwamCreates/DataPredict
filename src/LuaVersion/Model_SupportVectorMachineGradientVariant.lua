@@ -206,6 +206,12 @@ function SupportVectorMachineGradientVariantModel:setRegularizer(Regularizer)
 
 end
 
+function SupportVectorMachineGradientVariantModel:setSolver(Solver)
+
+	self.Solver = Solver
+
+end
+
 function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end

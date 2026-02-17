@@ -30,43 +30,33 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseSolver = require(script.Parent.BaseSolver)
 
-local LevenbergMarquardtSolver = {}
+local GaussNewtonSolver = {}
 
-LevenbergMarquardtSolver.__index = LevenbergMarquardtSolver
+GaussNewtonSolver.__index = GaussNewtonSolver
 
-setmetatable(LevenbergMarquardtSolver, BaseSolver)
+setmetatable(GaussNewtonSolver, BaseSolver)
 
-local defaultLambda = 1
-
-function LevenbergMarquardtSolver.new(parameterDictionary)
+function GaussNewtonSolver.new(parameterDictionary)
 	
-	local NewLevenbergMarquardtSolver = BaseSolver.new(parameterDictionary)
+	local NewGaussNewtonSolver = BaseSolver.new(parameterDictionary)
 	
-	setmetatable(NewLevenbergMarquardtSolver, LevenbergMarquardtSolver)
+	setmetatable(NewGaussNewtonSolver, GaussNewtonSolver)
 	
-	NewLevenbergMarquardtSolver:setName("LevenbergMarquardt")
+	NewGaussNewtonSolver:setName("GaussNewton")
 	
-	NewLevenbergMarquardtSolver.lambda = parameterDictionary.lambda or defaultLambda
-	
-	NewLevenbergMarquardtSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewGaussNewtonSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinear = NewLevenbergMarquardtSolver.isLinear
+		local isLinearInput = (not NewGaussNewtonSolver.isNonLinearInput)
 		
-		local pMatrix = (isLinear and NewLevenbergMarquardtSolver.cache)
+		local pMatrix = (isLinearInput and NewGaussNewtonSolver.cache)
 
 		if (not pMatrix) then
 
 			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
 
 			pMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
-			
-			local pMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(pMatrix)
-			
-			local diagonalMatrix = AqwamTensorLibrary:createIdentityTensor(pMatrixDimensionSizeArray, NewLevenbergMarquardtSolver.lambda)
-			
-			pMatrix = AqwamTensorLibrary:add(pMatrix, diagonalMatrix)
 
 			pMatrix = AqwamTensorLibrary:inverse(pMatrix)
 			
@@ -76,7 +66,7 @@ function LevenbergMarquardtSolver.new(parameterDictionary)
 
 			pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix)
 			
-			if (isLinear) then NewLevenbergMarquardtSolver.cache = pMatrix end
+			if (isLinearInput) then NewGaussNewtonSolver.cache = pMatrix end
 
 		end
 
@@ -84,8 +74,8 @@ function LevenbergMarquardtSolver.new(parameterDictionary)
 		
 	end)
 	
-	return NewLevenbergMarquardtSolver
+	return NewGaussNewtonSolver
 	
 end
 
-return LevenbergMarquardtSolver
+return GaussNewtonSolver

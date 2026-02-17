@@ -186,7 +186,7 @@ function QuantileRegressionModel.new(parameterDictionary)
 
 	NewQuantileRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewQuantileRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewQuantileRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewQuantileRegressionModel
 

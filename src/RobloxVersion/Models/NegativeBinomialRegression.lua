@@ -285,7 +285,7 @@ function NegativeBinomialRegressionModel.new(parameterDictionary)
 
 	NewNegativeBinomialRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewNegativeBinomialRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewNegativeBinomialRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewNegativeBinomialRegressionModel
 

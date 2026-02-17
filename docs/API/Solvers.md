@@ -8,4 +8,4 @@
 | [LevenbergMarquardt](Solvers/LevenbergMarquardt)          | Medium-High       | Medium                                | Very High                          |
 | [IterativelyReweighted](Solvers/IterativelyReweighted.md) | Medium            | Medium                                | Medium                             |
 
-\* Computational efficiency due to cache is only applicable to linear models like LinearRegression, SupportVectorRegression and SupportVectorMachine.
+\* Computational efficiency due to cache is only applicable to models that has linear expression. In other words, anything that depends on nested of functions as its input (and not on linear transformation itself) will not be cached like neural networks.

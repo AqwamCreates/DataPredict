@@ -50,11 +50,11 @@ local defaultActivationFunction = "LeakyReLU"
 
 local defaultDropoutRate = 0
 
+local defaultSolver = "Gradient"
+
 local epsilon = 1e-14
 
 local epsilonComplement = 1 - epsilon
-
-local defaultSolver = "Gradient"
 
 local function calculateProbabilityDensityFunctionValue(z)
 

@@ -232,7 +232,7 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	
 	local predictedCurrentStateMatrix = AqwamTensorLibrary:dotProduct(previousStateMatrix, matrixToDotProduct)
 	
-	local lossMatrix = AqwamTensorLibrary:subtract(lossFunctionToApply, predictedCurrentStateMatrix)
+	local lossMatrix = AqwamTensorLibrary:subtract(lossFunctionToApply, predictedCurrentStateMatrix, currentStateMatrix)
 
 	local cost = AqwamTensorLibrary:sum(lossMatrix)
 

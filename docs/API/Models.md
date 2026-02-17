@@ -4,7 +4,7 @@
 
 * If you wonder what are the most high-value use cases that helps with revenue and retention generation this DataPredict™, you can view them [here](../HighValueProjectTutorials.md)!
 
-* To see which algorithms that you can swap model parameters with other types of algorithms, you can view them [here](ModelParametersCompatibility.md)!
+* To see which models that you can swap model parameters with other types of models, you can view them [here](ModelParametersCompatibility.md)!
 
 | Model Type                                                        | Purpose                                         | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
@@ -26,7 +26,7 @@
 | Icon | Name                        | Description                                            |
 |------|-----------------------------|--------------------------------------------------------|
 | ❗   | Implementation Issue       | The model may have some implementation problems.        |
-| 🔰   | Beginner Algorithm         | Commonly taught to beginners.                           |
+| 🔰   | Beginner Model             | Commonly taught to beginners.                           |
 | 💾   | Data Efficient             | Require few data to train the model.                    |
 | ⚡   | Computationally Efficient  | Require few computational resources to train the model. |
 | 🛡️   | Noise Resistant            | Can handle randomness / unclean data.                   |
@@ -43,17 +43,17 @@
 
   * Includes convolutional, pooling, embedding, dropout and activation layers.
 
-  * Contains most of the deep reinforcement learning and generative algorithms listed here.
+  * Contains most of the deep reinforcement learning and generative models listed here.
 
 * Currently, DataPredict™ has ~93% (99 out of 106) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
 
-* No dimensionality reduction algorithms due to not being suitable for game-related use cases. They tend to be computationally expensive and are only useful when a full dataset is collected. This can be offset by choosing proper features and remove the unnecessary ones.
+* No dimensionality reduction models due to not being suitable for game-related use cases. They tend to be computationally expensive and are only useful when a full dataset is collected. This can be offset by choosing proper features and remove the unnecessary ones.
 
 * No tree models (like decision trees) for now due to these models requiring the full dataset and tend to be computationally expensive. In addition, most of these tree models do not have online learning capabilities.
 
 ## Regression
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                            | Alternate Names                            | Properties        | Use Cases                                                                                                |
 |--------------------------------------------------------------------------------------------------|--------------------------------------------|-------------------|----------------------------------------------------------------------------------------------------------|
@@ -78,7 +78,7 @@
 
 ## Classification
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                | Alternate Names                | Properties       | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|------------------|----------------------------------------------------------------------------------------------------------------|
@@ -100,7 +100,7 @@
 
 ## Clustering
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                                                  | Alternate Names | Properties | Use Cases                                                            |
 |------------------------------------------------------------------------------------------------------------------------|-----------------|------------|----------------------------------------------------------------------|
@@ -117,7 +117,7 @@
 
 ## Deep Reinforcement Learning
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                                          | Alternate Names               | Properties  | Use Cases                                                                 |
 |----------------------------------------------------------------------------------------------------------------|-------------------------------|-------------|---------------------------------------------------------------------------|
@@ -150,7 +150,7 @@
 
 ## Tabular Reinforcement Learning
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                                                | Alternate Names           | Properties  | Use Cases                           |
 |----------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|-------------------------------------|
@@ -174,7 +174,7 @@
 
 ## Sequence Modelling
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                         | Alternate Names | Properties | Use Cases                                 |
 |---------------------------------------------------------------|-----------------|------------|-------------------------------------------|
@@ -186,7 +186,7 @@
 
 ## Filtering
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                            | Alternate Names | Properties | Use Cases                       |
 |--------------------------------------------------------------------------------------------------|-----------------|------------|---------------------------------|
@@ -197,7 +197,7 @@
 
 ## Outlier Detection
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                | Alternate Names | Properties | Use Cases                                                           |
 |--------------------------------------------------------------------------------------|-----------------|------------| --------------------------------------------------------------------|
@@ -208,7 +208,7 @@
 
 ## Recommendation
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                      | Alternate Names | Properties | Use Cases                                    |
 |--------------------------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------|
@@ -220,7 +220,7 @@
 
 ## Generative
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                                              | Alternate Names | Properties | Use Cases                                 |
 |--------------------------------------------------------------------------------------------------------------------|-----------------|------------| ------------------------------------------|
@@ -231,7 +231,7 @@
 
 ## Feature-Class Containers
 
-> ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                    | Alternate Names | Properties | Use Cases      |
 |--------------------------|-----------------|------------| ---------------|

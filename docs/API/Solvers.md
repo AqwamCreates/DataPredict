@@ -8,4 +8,4 @@
 | [LevenbergMarquardt](Solvers/LevenbergMarquardt)          | Medium-High       | Medium                                | Very High                          | Small-Medium Datasets + Poorly-Defined Problems                      |
 | [IterativelyReweighted](Solvers/IterativelyReweighted.md) | Medium            | Medium                                | Medium                             | Individual Datapoints Have Different Contribution To Feature Weights |
 
-\* Computational efficiency due to cache is only applicable to models that has linear expression. In other words, anything that depends on nested of functions as its input (regardless if a non-linear function is applied to the input) will not be cached like neural networks.
+\* Computational efficiency due to cache is only applicable to models that has a pure linear expression as inputs. In other words, anything that depends on nested of functions as its input (regardless if a non-linear function is applied to the input) will not be cached like neural networks.

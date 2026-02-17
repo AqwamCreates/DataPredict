@@ -332,7 +332,7 @@ function SupportVectorRegressionModel.new(parameterDictionary)
 
 	}
 	
-	NewSupportVectorRegression.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewSupportVectorRegression.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewSupportVectorRegression
 end

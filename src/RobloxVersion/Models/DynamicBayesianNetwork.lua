@@ -40,13 +40,17 @@ local defaultMode = "Hybrid"
 
 local defaultIsHidden = false
 
-local defaultLossFunction = "L2"
+local defaultLossFunction = "CategoricalCrossEntropy"
 
 local lossFunctionList = {
 	
-	["L1"] = math.abs,
+	["CategoricalCrossEntropy"] = function(h, labelValue) return -(y * math.log(h)) end,
 	
-	["L2"] = function(value) return math.pow(value, 2) end,
+	["BinaryCrossEntropy"] = function (h, y) return -((y * math.log(h)) + ((1 - y) * math.log(1 - h))) end,
+	
+	["MeanSquaredError"] = function(h, y) return math.pow((h - y), 2) end,
+	
+	["MeanAbsoluteError"] = function(h, y) return math.abs(h - y) end,
 	
 }
 
@@ -228,9 +232,7 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	
 	local predictedCurrentStateMatrix = AqwamTensorLibrary:dotProduct(previousStateMatrix, matrixToDotProduct)
 	
-	local lossMatrix = AqwamTensorLibrary:subtract(targetStateMatrix, predictedCurrentStateMatrix)
-	
-	lossMatrix = AqwamTensorLibrary:applyFunction(lossFunctionToApply, lossMatrix)
+	local lossMatrix = AqwamTensorLibrary:subtract(lossFunctionToApply, predictedCurrentStateMatrix)
 
 	local cost = AqwamTensorLibrary:sum(lossMatrix)
 

@@ -4,6 +4,8 @@
 
 * Used tables of tables and external functions for efficient tensor calculations instead of space-intensive object-oriented formats.
 
+* Some models can use solvers and these solvers tend to cache the result of repetitive matrix calculations. This allows the solvers to "shortcut" certain matrix calculations by retrieving the precomputed matrix from the cache.
+
 ## Mathematical Optimizations
 
 * Used sufficient statistics for statistical models to avoid computationally expensive batch training.

@@ -371,6 +371,10 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Solvers = {
 	LevenbergMarquardt = require(Solvers.LevenbergMarquardt),
 	
 	IterativelyReweighted = require(Solvers.IterativelyReweighted),
+	
+	GreedyCoordinate = require(Solvers.GreedyCoordinate),
+	
+	RandomCoordinate = require(Solvers.RandomCoordinate),
 
 }
 

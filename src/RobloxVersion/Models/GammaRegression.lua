@@ -248,7 +248,7 @@ function GammaRegressionModel.new(parameterDictionary)
 
 	NewGammaRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewGammaRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewGammaRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewGammaRegressionModel
 

@@ -32,6 +32,8 @@ local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 local ZTableFunction = require("Core_ZTableFunction")
 
+local Solvers = script.Parent.Parent.Solvers
+
 local NeuralNetworkModel = {}
 
 NeuralNetworkModel.__index = NeuralNetworkModel
@@ -51,6 +53,8 @@ local defaultDropoutRate = 0
 local epsilon = 1e-14
 
 local epsilonComplement = 1 - epsilon
+
+local defaultSolver = "Gradient"
 
 local function calculateProbabilityDensityFunctionValue(z)
 
@@ -880,6 +884,8 @@ function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 
 	local hasBiasNeuronArray = self.hasBiasNeuronArray
 	
+	local SolverArray = self.SolverArray
+	
 	local numberOfLayersMinusOne = numberOfLayers - 1
 	
 	local derivativeMatrix = deriveLayer(forwardPropagateArray[numberOfLayers], zMatrixArray[numberOfLayers], hasBiasNeuronArray[numberOfLayers], activationFunctionArray[numberOfLayers])
@@ -888,23 +894,33 @@ function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 	
 	local activationLayerMatrix = AqwamTensorLibrary:transpose(forwardPropagateArray[numberOfLayersMinusOne])
 	
-	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = AqwamTensorLibrary:dotProduct(activationLayerMatrix, layerCostMatrix)
+	local weightMatrix = ModelParameters[numberOfLayersMinusOne]
+	
+	local Solver = SolverArray[numberOfLayers]
+	
+	local layerMatrix = forwardPropagateArray[numberOfLayersMinusOne]
+	
+	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = Solver:calculate(weightMatrix, layerMatrix, layerCostMatrix) 
 
 	for layerNumber = numberOfLayersMinusOne, 2, -1 do
 		
 		local weightNumber = layerNumber - 1
+		
+		layerMatrix = forwardPropagateArray[weightNumber]
+		
+		Solver = SolverArray[layerNumber]
+		
+		weightMatrix = ModelParameters[layerNumber]
+		
+		local transposedWeightMatrix = AqwamTensorLibrary:transpose(weightMatrix)
 
-		local layerMatrix = AqwamTensorLibrary:transpose(ModelParameters[layerNumber])
+		local partialErrorMatrix = AqwamTensorLibrary:dotProduct(layerCostMatrix, weightMatrix)
 
-		local partialErrorMatrix = AqwamTensorLibrary:dotProduct(layerCostMatrix, layerMatrix)
-
-		derivativeMatrix = deriveLayer(forwardPropagateArray[layerNumber], zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber], activationFunctionArray[layerNumber])
+		derivativeMatrix = deriveLayer(layerMatrix, zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber], activationFunctionArray[layerNumber])
 
 		layerCostMatrix = AqwamTensorLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 		
-		activationLayerMatrix = AqwamTensorLibrary:transpose(forwardPropagateArray[weightNumber])
-		
-		costFunctionDerivativeMatrixArray[weightNumber] = AqwamTensorLibrary:dotProduct(activationLayerMatrix, layerCostMatrix)
+		costFunctionDerivativeMatrixArray[weightNumber] = Solver:calculate(weightMatrix, layerMatrix, layerCostMatrix) 
 
 		self:sequenceWait()
 
@@ -1173,6 +1189,8 @@ function NeuralNetworkModel.new(parameterDictionary)
 	NewNeuralNetworkModel.activationFunctionArray = parameterDictionary.activationFunctionArray or {}
 
 	NewNeuralNetworkModel.dropoutRateArray = parameterDictionary.dropoutRateArray or {}
+	
+	NewNeuralNetworkModel.SolverArray = parameterDictionary.SolverArray or {}
 
 	return NewNeuralNetworkModel
 
@@ -1249,8 +1267,12 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 	local RegularizerArray = {}
 
 	local dropoutRateArray = {}
+	
+	local SolverArray = {}
 
 	local numberOfLayers = #numberOfNeuronsArray
+	
+	local AbstractSolver = require(Solvers[defaultSolver])
 
 	for layer = 1, numberOfLayers, 1 do
 		
@@ -1265,6 +1287,8 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		RegularizerArray[layer] = RegularizerArray[layer] or 0
 		
 		dropoutRateArray[layer] = dropoutRate
+		
+		SolverArray[layer] = ((layer >= 2) and AbstractSolver.new())
 
 	end
 	
@@ -1286,7 +1310,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 end
 
-function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularizer, dropoutRate)
+function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularizer, dropoutRate, Solver)
 
 	local numberOfNeuronsArray = self.numberOfNeuronsArray
 
@@ -1315,6 +1339,8 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	activationFunction = activationFunction or defaultActivationFunction
 
 	dropoutRate = dropoutRate or defaultDropoutRate
+	
+	Solver = Solver or (not isFirstLayer and require(Solvers[defaultSolver]).new())
 
 	table.insert(numberOfNeuronsArray, numberOfNeurons)
 
@@ -1329,10 +1355,12 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	table.insert(self.RegularizerArray, Regularizer or 0)
 
 	table.insert(self.dropoutRateArray, dropoutRate)
+	
+	table.insert(self.SolverArray, Solver)
 
 end
 
-function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularizer, dropoutRate)
+function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularizer, dropoutRate, Solver)
 
 	if (layerNumber <= 0) then 
 
@@ -1363,6 +1391,8 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 	Optimizer = self:getValueOrDefaultValue(Optimizer, self.OptimizerArray[layerNumber])
 
 	Optimizer = Optimizer or 0
+	
+	Solver = self:getValueOrDefaultValue(Solver, self.SolverArray[layerNumber])
 
 	self.hasBiasNeuronArray[layerNumber] = hasBiasNeuron
 
@@ -1375,6 +1405,8 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 	self.RegularizerArray[layerNumber] = Regularizer
 
 	self.dropoutRateArray[layerNumber] = dropoutRate or self.dropoutRateArray[layerNumber]
+	
+	self.SolverArray[layerNumber] = Solver
 
 end
 
@@ -1433,6 +1465,10 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 		layerPropertyValueTypeCheckingFunctionList["DropoutRate"](value)
 
 		self.dropoutRateArray[layerNumber] = value or self.dropoutRateArray[layerNumber]
+		
+	elseif (property == "Solver") then
+
+		self.SolverArray[layerNumber] = self:getValueOrDefaultValue(value, self.SolverArray[layerNumber])
 
 	else
 
@@ -1497,6 +1533,10 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 	elseif (property == "DropoutRate") then
 
 		return self.dropoutRateArray[layerNumber]
+		
+	elseif (property == "Solver") then
+		
+		return self.SolverArray[layerNumber]
 
 	else
 
@@ -1536,7 +1576,7 @@ function NeuralNetworkModel:getLayer(layerNumber)
 
 	end
 
-	return self.numberOfNeuronsArray[layerNumber], (self.hasBiasNeuronArray[layerNumber] == 1), self.activationFunctionArray[layerNumber], self.learningRateArray[layerNumber], Optimizer, Regularizer, self.dropoutRateArray[layerNumber]
+	return self.numberOfNeuronsArray[layerNumber], (self.hasBiasNeuronArray[layerNumber] == 1), self.activationFunctionArray[layerNumber], self.learningRateArray[layerNumber], Optimizer, Regularizer, self.dropoutRateArray[layerNumber], self.SolverArray[layerNumber]
 
 end
 
@@ -1854,6 +1894,16 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 		end
 
 	end
+	
+	if (self.autoResetSolvers) then
+
+		for i, Solver in ipairs(self.SolverArray) do 
+			
+			if (Solver) then Solver:reset() end
+			
+		end
+
+	end
 
 	return costArray
 
@@ -1864,6 +1914,16 @@ function NeuralNetworkModel:reset()
 	for i, Optimizer in ipairs(self.OptimizerArray) do
 
 		if (Optimizer ~= 0) then Optimizer:reset() end
+
+	end
+	
+	if (self.autoResetSolvers) then
+
+		for i, Solver in ipairs(self.SolverArray) do 
+
+			if (Solver) then Solver:reset() end
+
+		end
 
 	end
 
@@ -1895,6 +1955,10 @@ end
 
 function NeuralNetworkModel:showDetails()
 	
+	local costFunction = self.costFunction
+	
+	local ClassesList = self.ClassesList
+	
 	local numberOfNeuronsArray = self.numberOfNeuronsArray
 	
 	local hasBiasNeuronArray = self.hasBiasNeuronArray
@@ -1909,7 +1973,7 @@ function NeuralNetworkModel:showDetails()
 	
 	local dropoutRateArray = self.dropoutRateArray
 	
-	local ClassesList = self.ClassesList
+	local SolverArray = self.SolverArray
 	
 	-- Calculate the maximum length for each column
 	
@@ -1928,22 +1992,36 @@ function NeuralNetworkModel:showDetails()
 	local maximumRegularizerLength = string.len("Regularizer")
 	
 	local maximumDropoutRateLength = string.len("Dropout Rate")
+	
+	local maximumSolverLength = string.len("Solver")
 
 	local hasBias
+	
+	local Optimizer
+	
+	local Regularizer
+	
+	local Solver
 
 	local optimizerName = "None"
 
 	local regularizerName = "None"
+	
+	local solverName = "None"
 
 	for i = 1, #numberOfNeuronsArray, 1 do
 
-		local Optimizer = OptimizerArray[i]
+		Optimizer = OptimizerArray[i]
 
-		local Regularizer = RegularizerArray[i]
+		Regularizer = RegularizerArray[i]
+		
+		Solver = SolverArray[i]
 
 		if (type(Optimizer) == "table") then optimizerName = Optimizer:getName() end
 
 		if (type(Regularizer) == "table") then regularizerName = Regularizer:getName() end
+		
+		if (type(Solver) == "table") then solverName = Solver:getName() end
 
 		maxLayerLength = math.max(maxLayerLength, string.len(tostring(i)))
 
@@ -1962,6 +2040,8 @@ function NeuralNetworkModel:showDetails()
 		maximumRegularizerLength = math.max(maximumRegularizerLength, string.len(regularizerName))
 
 		maximumDropoutRateLength = math.max(maximumDropoutRateLength, string.len(tostring(dropoutRateArray[i])))
+		
+		maximumSolverLength = math.max(maximumSolverLength, string.len(solverName))
 
 	end
 
@@ -1971,14 +2051,15 @@ function NeuralNetworkModel:showDetails()
 
 	stringToPrint ..= "Layer Details: \n\n"
 
-	stringToPrint ..= "|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
-		string.rep("-", maxNeuronsLength) .. "-|-" ..
-		string.rep("-", maximumBiasLength) .. "-|-" ..
-		string.rep("-", maximumActivationLength) .. "-|-" ..
-		string.rep("-", maximumLearningRateLength) .. "-|-" ..
-		string.rep("-", maximumOptimizerLength) .. "-|-" ..
-		string.rep("-", maximumRegularizerLength) .. "-|-" .. 
-		string.rep("-", maximumDropoutRateLength) .. "-|" .. 
+	stringToPrint ..= "+-" .. string.rep("-", maxLayerLength) .. "-+-" ..
+		string.rep("-", maxNeuronsLength) .. "-+-" ..
+		string.rep("-", maximumBiasLength) .. "-+-" ..
+		string.rep("-", maximumActivationLength) .. "-+-" ..
+		string.rep("-", maximumLearningRateLength) .. "-+-" ..
+		string.rep("-", maximumOptimizerLength) .. "-+-" ..
+		string.rep("-", maximumRegularizerLength) .. "-+-" .. 
+		string.rep("-", maximumDropoutRateLength) .. "-+-" ..
+		string.rep("-", maximumSolverLength) .. "-+" .. 
 		"\n"
 
 	stringToPrint ..= "| " .. string.format("%-" .. maxLayerLength .. "s", "Layer") .. " | " ..
@@ -1988,32 +2069,70 @@ function NeuralNetworkModel:showDetails()
 		string.format("%-" .. maximumLearningRateLength .. "s", "Learning Rate") .. " | " ..
 		string.format("%-" .. maximumOptimizerLength .. "s", "Optimizer") .. " | " ..
 		string.format("%-" .. maximumRegularizerLength .. "s", "Regularizer") .. " | " .. 
-		string.format("%-" .. maximumDropoutRateLength .. "s", "Dropout Rate") .. " |" .. 
+		string.format("%-" .. maximumDropoutRateLength .. "s", "Dropout Rate") .. " | " .. 
+		string.format("%-" .. maximumSolverLength .. "s", "Solver") .. " |" .. 
 		"\n"
 
 
-	stringToPrint ..= "|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
-		string.rep("-", maxNeuronsLength) .. "-|-" ..
-		string.rep("-", maximumBiasLength) .. "-|-" ..
-		string.rep("-", maximumActivationLength) .. "-|-" ..
-		string.rep("-", maximumLearningRateLength) .. "-|-" ..
-		string.rep("-", maximumOptimizerLength) .. "-|-" ..
-		string.rep("-", maximumRegularizerLength) .. "-|-" .. 
-		string.rep("-", maximumDropoutRateLength) .. "-|" .. 
+	stringToPrint ..= "+-" .. string.rep("-", maxLayerLength) .. "-+-" ..
+		string.rep("-", maxNeuronsLength) .. "-+-" ..
+		string.rep("-", maximumBiasLength) .. "-+-" ..
+		string.rep("-", maximumActivationLength) .. "-+-" ..
+		string.rep("-", maximumLearningRateLength) .. "-+-" ..
+		string.rep("-", maximumOptimizerLength) .. "-+-" ..
+		string.rep("-", maximumRegularizerLength) .. "-+-" .. 
+		string.rep("-", maximumDropoutRateLength) .. "-+-" .. 
+		string.rep("-", maximumSolverLength) .. "-+" .. 
 		"\n"
 
 	-- Print the layer details
 	for i = 1, #numberOfNeuronsArray, 1 do
+		
+		hasBias = (hasBiasNeuronArray[i] == 1)
 
-		local optimizerName = "None"
+		optimizerName = "None"
 
-		local regularizerName = "None"
+		regularizerName = "None"
+		
+		Optimizer = OptimizerArray[i]
+
+		Regularizer = RegularizerArray[i]
+
+		Solver = SolverArray[i]
+
+		if (type(Optimizer) == "table") then 
+
+			optimizerName = Optimizer:getName() 
+
+		else
+
+			optimizerName = "None"
+
+		end
+
+		if (type(Regularizer) == "table") then 
+
+			regularizerName = Regularizer:getName() 
+
+		else
+
+			regularizerName = "None"
+
+		end
+
+		if (type(Solver) == "table") then 
+
+			solverName = Solver:getName() 
+
+		else
+
+			solverName = "None"
+
+		end
 
 		local layerText = "| " .. string.format("%-" .. maxLayerLength .. "s", i) .. " "
 
 		local numberOfNeuronsText = "| " .. string.format("%-" .. maxNeuronsLength .. "s", numberOfNeuronsArray[i]) .. " "
-
-		hasBias = (hasBiasNeuronArray[i] == 1)
 
 		local biasText = "| " .. string.format("%-" .. maximumBiasLength .. "s", tostring(hasBias)) .. " "
 
@@ -2021,52 +2140,31 @@ function NeuralNetworkModel:showDetails()
 
 		local learningRateText = "| " .. string.format("%-" .. maximumLearningRateLength .. "s", learningRateArray[i]) .. " "
 
-		local Optimizer = OptimizerArray[i]
-
-		local Regularizer = RegularizerArray[i]
-
-		if (type(Optimizer) == "table") then 
-			
-			optimizerName = Optimizer:getName() 
-			
-		else
-			
-			optimizerName = "None"
-			
-		end
-
-		if (type(Regularizer) == "table") then 
-			
-			regularizerName = Regularizer:getName() 
-			
-		else
-			
-			regularizerName = "None"
-			
-		end
-
 		local optimizerText = "| " .. string.format("%-" .. maximumOptimizerLength .. "s", optimizerName) .. " "
 
 		local regularizerText = "| " .. string.format("%-" .. maximumRegularizerLength .. "s",  regularizerName) .. " "
 
-		local dropoutRateText = "| " .. string.format("%-" .. maximumDropoutRateLength .. "s", dropoutRateArray[i]) .. " |"
+		local dropoutRateText = "| " .. string.format("%-" .. maximumDropoutRateLength .. "s", dropoutRateArray[i]) .. " "
+		
+		local solverText = "| " .. string.format("%-" .. maximumSolverLength .. "s", solverName) .. " |"
 
-		local stringPart = layerText .. numberOfNeuronsText .. biasText .. activationFunctionText .. learningRateText .. optimizerText .. regularizerText .. dropoutRateText .. "\n"
+		local stringPart = layerText .. numberOfNeuronsText .. biasText .. activationFunctionText .. learningRateText .. optimizerText .. regularizerText .. dropoutRateText .. solverText .. "\n"
 
 		stringToPrint ..= stringPart
 
 	end
 
-	stringToPrint ..= "|-" .. string.rep("-", maxLayerLength) .. "-|-" ..
-		string.rep("-", maxNeuronsLength) .. "-|-" ..
-		string.rep("-", maximumBiasLength) .. "-|-" ..
-		string.rep("-", maximumActivationLength) .. "-|-" ..
-		string.rep("-", maximumLearningRateLength) .. "-|-" ..
-		string.rep("-", maximumOptimizerLength) .. "-|-" ..
-		string.rep("-", maximumRegularizerLength) .. "-|-"..
-		string.rep("-", maximumDropoutRateLength) .. "-|"
+	stringToPrint ..= "+-" .. string.rep("-", maxLayerLength) .. "-+-" ..
+		string.rep("-", maxNeuronsLength) .. "-+-" ..
+		string.rep("-", maximumBiasLength) .. "-+-" ..
+		string.rep("-", maximumActivationLength) .. "-+-" ..
+		string.rep("-", maximumLearningRateLength) .. "-+-" ..
+		string.rep("-", maximumOptimizerLength) .. "-+-" ..
+		string.rep("-", maximumRegularizerLength) .. "-+-"..
+		string.rep("-", maximumDropoutRateLength) .. "-+-" ..
+		string.rep("-", maximumSolverLength) .. "-+"
 	
-	stringToPrint = stringToPrint .. "\n\nCost Function: " .. self.costFunction .. "\n\n"
+	stringToPrint = stringToPrint .. "\n\nCost Function: " .. costFunction .. "\n\n"
 	
 	if (ClassesList) then
 		

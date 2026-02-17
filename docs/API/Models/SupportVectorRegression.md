@@ -46,34 +46,6 @@ SupportVectorRegression.new(maximumNumberOfIterations: integer, cValue: number, 
 
 ## Functions
 
-### setParameters()
-
-Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
-
-```
-SupportVectorRegression:setParameters(maximumNumberOfIterations: integer, cValue: number, epsilon: number, kernelFunction: string, kernelParameters: table)
-```
-
-#### Parameters:
-
-* maximumNumberOfIterations: How many times should the model needed to be trained.
-
-* cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
-
-* epsilon: How far the datapoint should be so that it does not contribute to the error calculation. Higher the value, the further the datapoint can be so that it does not contribute to the error calculations.
-
-* kernelFunction: The kernel function to be used to train the model. Available options are:
-  
-  *  Linear
-
-  *  Polynomial
-
-  *  RadialBasisFunction
-
-  *  Sigmoid
-
-  *  Cosine
-
 * kernelParameters: A table containg the required parameters 
 
 ### setCValue()
@@ -87,6 +59,18 @@ SupportVectorRegression:setCValue(cValue: number)
 #### Parameters:
 
 * cValue: The value of c to be used.
+
+### setSolver()
+
+Set a solver for the model by inputting the optimizer object.
+
+```
+SupportVectorRegression:setSolver(Solver: SolverObject)
+```
+
+#### Parameters:
+
+* Solver: The solver to be used.
 
 ### train()
 

@@ -170,7 +170,7 @@ function PoissonRegressionModel.new(parameterDictionary)
 
 	NewPoissonRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewPoissonRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewPoissonRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewPoissonRegressionModel
 

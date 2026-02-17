@@ -1,8 +1,8 @@
 # [API Reference](../API.md) - Solvers
 
-| Solver                                                    | Convergence Speed | Computational Efficiency (Non-Cached) | Computational Efficiency (Cached)* | Use Cases                                                            |
+| Solver                                                    | Convergence Speed | Computational Efficiency (Non-Cached) | Computational Efficiency (Cached)* | Best For                                                             |
 |-----------------------------------------------------------|-------------------|---------------------------------------|------------------------------------|----------------------------------------------------------------------|
-| [Gradient](Solvers/Gradient.md)                           | Low               | High                                  | Very High                          | General Applications                                                 |
+| [Gradient](Solvers/Gradient.md)                           | Low               | High                                  | Very High                          | General-Purpose                                                      |
 | [ConjugateGradient](Solvers/ConjugateGradient.md)         | Medium            | Medium                                | Medium-High                        | Large Datasets + Most Values Are Zero (a.k.a. Sparse Data)           |
 | [GaussNewton](Solvers/GaussNewton.md)                     | Medium-High       | Medium                                | Very High                          | Small-Medium Datasets + Well-Defined Problems                        |
 | [LevenbergMarquardt](Solvers/LevenbergMarquardt)          | Medium-High       | Medium                                | Very High                          | Small-Medium Datasets + Poorly-Defined Problems                      |

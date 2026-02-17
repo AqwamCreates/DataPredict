@@ -48,9 +48,9 @@ function GaussNewtonSolver.new(parameterDictionary)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinear = NewGaussNewtonSolver.isLinear
+		local isLinearInput = (not NewGaussNewtonSolver.isNonLinearInput)
 		
-		local pMatrix = (isLinear and NewGaussNewtonSolver.cache)
+		local pMatrix = (isLinearInput and NewGaussNewtonSolver.cache)
 
 		if (not pMatrix) then
 
@@ -66,7 +66,7 @@ function GaussNewtonSolver.new(parameterDictionary)
 
 			pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix)
 			
-			if (isLinear) then NewGaussNewtonSolver.cache = pMatrix end
+			if (isLinearInput) then NewGaussNewtonSolver.cache = pMatrix end
 
 		end
 
@@ -78,4 +78,5 @@ function GaussNewtonSolver.new(parameterDictionary)
 	
 end
 
+return GaussNewtonSolver
 return GaussNewtonSolver

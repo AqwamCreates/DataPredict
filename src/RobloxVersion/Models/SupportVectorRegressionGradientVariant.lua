@@ -176,7 +176,7 @@ function SupportVectorRegressionGradientVariantModel.new(parameterDictionary)
 
 	NewSupportVectorRegressionGradientVariantModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewSupportVectorRegressionGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewSupportVectorRegressionGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewSupportVectorRegressionGradientVariantModel
 

@@ -52,9 +52,9 @@ function LevenbergMarquardtSolver.new(parameterDictionary)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinear = NewLevenbergMarquardtSolver.isLinear
+		local isLinearInput = (not NewLevenbergMarquardtSolver.isNonLinearInput)
 		
-		local pMatrix = (isLinear and NewLevenbergMarquardtSolver.cache)
+		local pMatrix = (isLinearInput and NewLevenbergMarquardtSolver.cache)
 
 		if (not pMatrix) then
 
@@ -76,7 +76,7 @@ function LevenbergMarquardtSolver.new(parameterDictionary)
 
 			pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix)
 			
-			if (isLinear) then NewLevenbergMarquardtSolver.cache = pMatrix end
+			if (isLinearInput) then NewLevenbergMarquardtSolver.cache = pMatrix end
 
 		end
 

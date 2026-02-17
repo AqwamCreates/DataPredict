@@ -326,7 +326,7 @@ function OneClassOneClassSupportVectorMachineModel.new(parameterDictionary)
 	
 	}
 	
-	NewOneClassSupportVectorMachine.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewOneClassSupportVectorMachine.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewOneClassSupportVectorMachine
 end

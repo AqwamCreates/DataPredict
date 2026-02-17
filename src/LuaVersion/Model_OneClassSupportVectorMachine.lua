@@ -32,11 +32,13 @@ local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
 
-local OneClassSupportVectorMachineModel = {}
+local Solvers = script.Parent.Parent.Solvers
 
-OneClassSupportVectorMachineModel.__index = OneClassSupportVectorMachineModel
+local OneClassOneClassSupportVectorMachineModel = {}
 
-setmetatable(OneClassSupportVectorMachineModel, IterativeMethodBaseModel)
+OneClassOneClassSupportVectorMachineModel.__index = OneClassOneClassSupportVectorMachineModel
+
+setmetatable(OneClassOneClassSupportVectorMachineModel, IterativeMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -53,6 +55,8 @@ local defaultDegree = 3
 local defaultSigma = 1
 
 local defaultR = 0
+
+local defaultSolver = "GaussNewton"
 
 local seperatorFunction = function (x) 
 
@@ -280,41 +284,37 @@ local function calculateCost(modelParameters, mappedFeatureMatrix, kernelMatrix,
 
 end
 
-local function calculateModelParameters(modelParameters, mappedFeatureMatrix, labelVector, cValue)
+function OneClassOneClassSupportVectorMachineModel:update(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 
-	local predictionVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, modelParameters) -- m x 1
-	
-	local errorVector = AqwamTensorLibrary:subtract(predictionVector, labelVector) -- m x 1
-	
-	local transposedMappedFeatureMatrix = AqwamTensorLibrary:transpose(mappedFeatureMatrix)
-	
-	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedMappedFeatureMatrix, errorVector) -- n x m, m x 1
-	
-	local NewModelParameters = AqwamTensorLibrary:multiply(-cValue, dotProductErrorVector)
+	local hypothesisVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 
-	return NewModelParameters
+	local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
+
+	errorVector = AqwamTensorLibrary:multiply(-cValue, errorVector)
+
+	return self.Solver:calculate(ModelParameters, mappedFeatureMatrix, errorVector)
 
 end
 
-function OneClassSupportVectorMachineModel.new(parameterDictionary)
+function OneClassOneClassSupportVectorMachineModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewSupportVectorMachine = IterativeMethodBaseModel.new(parameterDictionary)
+	local NewOneClassSupportVectorMachine = IterativeMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewSupportVectorMachine, OneClassSupportVectorMachineModel)
+	setmetatable(NewOneClassSupportVectorMachine, OneClassOneClassSupportVectorMachineModel)
 	
-	NewSupportVectorMachine:setName("SupportVectorMachine")
+	NewOneClassSupportVectorMachine:setName("OneClassSupportVectorMachine")
 	
-	NewSupportVectorMachine.cValue = parameterDictionary.cValue or defaultCvalue
+	NewOneClassSupportVectorMachine.cValue = parameterDictionary.cValue or defaultCvalue
 	
-	NewSupportVectorMachine.beta = parameterDictionary.beta or defaultBeta
+	NewOneClassSupportVectorMachine.beta = parameterDictionary.beta or defaultBeta
 
-	NewSupportVectorMachine.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
+	NewOneClassSupportVectorMachine.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
 
-	NewSupportVectorMachine.kernelParameters = {
+	NewOneClassSupportVectorMachine.kernelParameters = {
 		
 		degree = parameterDictionary.degree or defaultDegree,
 		
@@ -325,17 +325,19 @@ function OneClassSupportVectorMachineModel.new(parameterDictionary)
 		r = parameterDictionary.r or defaultR
 	
 	}
+	
+	NewOneClassSupportVectorMachine.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
-	return NewSupportVectorMachine
+	return NewOneClassSupportVectorMachine
 end
 
-function OneClassSupportVectorMachineModel:setCValue(cValue)
+function OneClassOneClassSupportVectorMachineModel:setCValue(cValue)
 
 	self.cValue = cValue or self.cValue
 
 end
 
-function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
+function OneClassOneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 	
 	local numberOfData = #featureMatrix
 	
@@ -427,7 +429,7 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 		
 		weightedMappedFeatureMatrix = AqwamTensorLibrary:multiply(mappedFeatureMatrix, etaMatrix)
 
-		ModelParameters = calculateModelParameters(ModelParameters, weightedMappedFeatureMatrix, labelVector, cValue)
+		ModelParameters = self:update(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 		
 		predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 		
@@ -468,12 +470,14 @@ function OneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 	end
 	
 	self.ModelParameters = ModelParameters
+	
+	if (self.autoResetSolvers) then self.Solver:reset() end
 
 	return costArray
 
 end
 
-function OneClassSupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
+function OneClassOneClassSupportVectorMachineModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
 
@@ -497,4 +501,4 @@ function OneClassSupportVectorMachineModel:predict(featureMatrix, returnOriginal
 
 end
 
-return OneClassSupportVectorMachineModel
+return OneClassOneClassSupportVectorMachineModel

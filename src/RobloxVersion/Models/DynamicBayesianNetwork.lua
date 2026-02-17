@@ -42,6 +42,14 @@ local defaultIsHidden = false
 
 local defaultLossFunction = "L2"
 
+local lossFunctionList = {
+	
+	["L1"] = math.abs,
+	
+	["L2"] = function(value) return math.pow(value, 2) end,
+	
+}
+
 function DynamicBayesianNetworkModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
@@ -87,6 +95,10 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	local isHidden = self.isHidden
 	
 	local lossFunction = self.lossFunction
+	
+	local lossFunctionToApply = lossFunctionList[lossFunction]
+	
+	if (not lossFunctionToApply) then error("Invalid loss function.") end
 
 	local ModelParameters = self.ModelParameters or {}
 
@@ -217,20 +229,8 @@ function DynamicBayesianNetworkModel:train(previousStateMatrix, currentStateMatr
 	local predictedCurrentStateMatrix = AqwamTensorLibrary:dotProduct(previousStateMatrix, matrixToDotProduct)
 	
 	local lossMatrix = AqwamTensorLibrary:subtract(targetStateMatrix, predictedCurrentStateMatrix)
-
-	if (lossFunction == "L1") then
-
-		lossMatrix = AqwamTensorLibrary:applyFunction(math.abs, lossMatrix)
-
-	elseif (lossFunction == "L2") then
-
-		lossMatrix = AqwamTensorLibrary:power(lossMatrix, 2)
-
-	else
-
-		error("Invalid loss function.")
-
-	end
+	
+	lossMatrix = AqwamTensorLibrary:applyFunction(lossFunctionToApply, lossMatrix)
 
 	local cost = AqwamTensorLibrary:sum(lossMatrix)
 

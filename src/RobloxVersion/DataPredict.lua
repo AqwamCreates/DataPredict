@@ -372,9 +372,9 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Solvers = {
 	
 	IterativelyReweighted = require(Solvers.IterativelyReweighted),
 	
-	RandomCoordinate = require(Solvers.RandomCoordinate),
-	
 	GreedyCoordinate = require(Solvers.GreedyCoordinate),
+	
+	RandomCoordinate = require(Solvers.RandomCoordinate),
 
 }
 

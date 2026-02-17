@@ -188,7 +188,7 @@ function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
 
 	NewSupportVectorMachineGradientVariantModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewSupportVectorMachineGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewSupportVectorMachineGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewSupportVectorMachineGradientVariantModel
 

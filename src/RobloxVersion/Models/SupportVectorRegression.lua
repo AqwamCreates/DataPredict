@@ -343,6 +343,12 @@ function SupportVectorRegressionModel:setCValue(cValue)
 
 end
 
+function SupportVectorRegressionModel:setSolver(Solver)
+
+	self.Solver = Solver
+
+end
+
 function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector do not contain the same number of rows.") end

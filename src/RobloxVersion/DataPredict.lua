@@ -368,6 +368,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Solvers = {
 
 	GaussNewton = require(Solvers.GaussNewton),
 	
+	LevenbergMarquardt = require(Solvers.LevenbergMarquardt),
+	
 	IterativelyReweighted = require(Solvers.IterativelyReweighted),
 
 }

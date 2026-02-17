@@ -48,15 +48,15 @@ function GradientSolver.new(parameterDictionary)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinear = NewGradientSolver.isLinear
+		local isLinearInput = (not NewGradientSolver.isNonLinearInput)
 
-		local transposedFirstDerivativeMatrix = (isLinear and NewGradientSolver.cache)
+		local transposedFirstDerivativeMatrix = (isLinearInput and NewGradientSolver.cache)
 		
 		if (not transposedFirstDerivativeMatrix) then
 			
 			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
 			
-			if (isLinear) then NewGradientSolver.cache = transposedFirstDerivativeMatrix end
+			if (isLinearInput) then NewGradientSolver.cache = transposedFirstDerivativeMatrix end
 			
 		end
 		

@@ -32,6 +32,8 @@ local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
+local Solvers = script.Parent.Parent.Solvers
+
 local SupportVectorMachineModel = {}
 
 SupportVectorMachineModel.__index = SupportVectorMachineModel
@@ -51,6 +53,8 @@ local defaultDegree = 3
 local defaultSigma = 1
 
 local defaultR = 0
+
+local defaultSolver = "GaussNewton"
 
 local seperatorFunction = function (x) 
 
@@ -278,17 +282,15 @@ local function calculateCost(modelParameters, mappedFeatureMatrix, kernelMatrix,
 
 end
 
-local function calculateModelParameters(modelParameters, mappedFeatureMatrix, transposedMappedFeatureMatrix, labelVector, cValue)
+function SupportVectorMachineModel:update(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 
-	local predictionVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, modelParameters) -- m x 1
-	
-	local errorVector = AqwamTensorLibrary:subtract(predictionVector, labelVector) -- m x 1
-	
-	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedMappedFeatureMatrix, errorVector) -- n x m, m x 1
-	
-	local NewModelParameters = AqwamTensorLibrary:multiply(-cValue, dotProductErrorVector)
+	local hypothesisVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 
-	return NewModelParameters
+	local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
+
+	errorVector = AqwamTensorLibrary:multiply(-cValue, errorVector)
+
+	return self.Solver:calculate(ModelParameters, mappedFeatureMatrix, errorVector)
 
 end
 
@@ -319,6 +321,8 @@ function SupportVectorMachineModel.new(parameterDictionary)
 		r = parameterDictionary.r or defaultR
 	
 	}
+	
+	NewSupportVectorMachine.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewSupportVectorMachine
 end
@@ -358,8 +362,6 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
 	
 	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
-	
-	local transposedMappedFeatureMatrix = AqwamTensorLibrary:transpose(mappedFeatureMatrix)
 
 	local numberOfIterations = 0
 	
@@ -387,7 +389,7 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 			
 		end
 
-		ModelParameters = calculateModelParameters(ModelParameters, mappedFeatureMatrix, transposedMappedFeatureMatrix, labelVector, cValue)
+		ModelParameters = self:update(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
@@ -400,6 +402,8 @@ function SupportVectorMachineModel:train(featureMatrix, labelVector)
 	end
 	
 	self.ModelParameters = ModelParameters
+	
+	if (self.autoResetSolvers) then self.Solver:reset() end
 
 	return costArray
 

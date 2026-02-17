@@ -26,3 +26,11 @@
 | 🎯   | Exact Solution              | Finds exact optimum (for linear problems).                         |
 | 📈   | Scales Well                 | Handles large datasets.                                            |
 | ⚠️   | Double Regularization Issue | Contains a regularization term and may conflict with regularizers. |
+
+### Potential Solver Additions
+
+* Secant method
+
+* Brent's method
+
+* Bisection method (Low priority; slow convergence and slow to compute.) 

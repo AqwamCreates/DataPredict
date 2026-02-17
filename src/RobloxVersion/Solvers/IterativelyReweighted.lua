@@ -52,7 +52,7 @@ function IterativelyReweightedSolver.new(parameterDictionary)
 		
 		local transposedFirstDerivativeMatrix = (isLinear and NewIterativelyReweightedSolver.cache)
 		
-		local numberOfdata = AqwamTensorLibrary:getDimensionSize(firstDerivativeLossMatrix)[1]
+		local numberOfdata = AqwamTensorLibrary:getDimensionSizeArray(firstDerivativeLossMatrix)[1]
 		
 		local diagonalMatrix = AqwamTensorLibrary:createTensor({numberOfdata, numberOfdata})
 
@@ -98,7 +98,7 @@ function IterativelyReweightedSolver.new(parameterDictionary)
 			
 			if (pMatrix) then
 				
-				weightChangeVector = AqwamTensorLibrary:dotProduct(pMatrix, diagonalMatrix, firstDerivativeLossVector)
+				weightChangeVector = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix, diagonalMatrix, firstDerivativeLossVector)
 				
 			else
 				

@@ -52,6 +52,8 @@ function BaseSolver.new(parameterDictionary)
 	
 	NewBaseSolver.calculateFunction = parameterDictionary.calculateFunction
 	
+	NewBaseSolver.resetFunction = parameterDictionary.resetFunction
+	
 	NewBaseSolver.cache = parameterDictionary.cache
 	
 	return NewBaseSolver
@@ -64,9 +66,9 @@ function BaseSolver:setCalculateFunction(calculateFunction)
 	
 end
 
-function BaseSolver:calculate(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+function BaseSolver:setResetFunction(resetFunction)
 	
-	return self.calculateFunction(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	self.resetFunction = resetFunction
 	
 end
 
@@ -82,9 +84,17 @@ function BaseSolver:getCache(cache)
 
 end
 
+function BaseSolver:calculate(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+
+	return self.calculateFunction(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+
+end
+
 function BaseSolver:reset()
 
-	self.cache = nil
+	local resetFunction = self.resetFunction
+
+	if (resetFunction) then return resetFunction() end
 
 end
 

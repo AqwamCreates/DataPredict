@@ -1288,7 +1288,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		
 		dropoutRateArray[layer] = dropoutRate
 		
-		SolverArray[layer] = ((layer >= 2) and AbstractSolver.new())
+		SolverArray[layer] = ((layer >= 2) and AbstractSolver.new({isNonLinearInput = (layer >= 3)}))
 
 	end
 	
@@ -1313,8 +1313,10 @@ end
 function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationFunction, learningRate, Optimizer, Regularizer, dropoutRate, Solver)
 
 	local numberOfNeuronsArray = self.numberOfNeuronsArray
+	
+	local numberOfLayers = #numberOfNeuronsArray
 
-	local isFirstLayer = (#numberOfNeuronsArray == 0)
+	local isFirstLayer = (numberOfLayers == 0)
 
 	if (isFirstLayer) and (not activationFunction) then activationFunction = "None" end
 
@@ -1340,7 +1342,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	dropoutRate = dropoutRate or defaultDropoutRate
 	
-	Solver = Solver or (not isFirstLayer and require(Solvers[defaultSolver]).new())
+	Solver = Solver or (not isFirstLayer and require(Solvers[defaultSolver]).new({isNonLinearInput = (numberOfLayers >= 3)}))
 
 	table.insert(numberOfNeuronsArray, numberOfNeurons)
 

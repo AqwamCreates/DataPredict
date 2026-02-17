@@ -23,6 +23,6 @@
 | 🔰   | Beginner Solver             | Commonly taught to beginners.                                      |
 | 🔢   | Data Constraint             | The number of data cannot be less than the number of features.     |
 | 🛡️	   | Noise Resistant            |	Can handle randomness / unclean data.                               |
-| 🎯   | Exact Solution              | Finds exact optimum (for linear problems)                          |
+| 🎯   | Exact Solution              | Finds exact optimum (for linear problems).                         |
 | 📈   | Scales Well                 | Handles large datasets.                                            |
 | ⚠️   | Double Regularization Issue | Contains a regularization term and may conflict with regularizers. |

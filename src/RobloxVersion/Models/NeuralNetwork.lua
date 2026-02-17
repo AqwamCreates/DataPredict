@@ -1288,7 +1288,15 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		
 		dropoutRateArray[layer] = dropoutRate
 		
-		-- Do not set isNonLinearInput to false for the second layer due to common usage of this library for deep reinforcement learning.
+		--[[
+		
+			Do not set isNonLinearInput to false for the second layer due to common usage of this library for deep reinforcement learning.
+		
+			This is because deep reinforcement learning often uses storchastic or mini-batch training.
+		
+			Therefore, it is not appropriate to cache the feature matrix given that Solver:reset() function is only called in the NeuralNetwork:train() function.
+		
+		--]]
 		
 		SolverArray[layer] = ((layer >= 2) and AbstractSolver.new({isNonLinearInput = true}))
 
@@ -1344,7 +1352,15 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	dropoutRate = dropoutRate or defaultDropoutRate
 	
-	-- Do not set isNonLinearInput to false for the second layer due to deep reinforcement learning usage.
+	--[[
+		
+		Do not set isNonLinearInput to false for the second layer due to common usage of this library for deep reinforcement learning.
+	
+		This is because deep reinforcement learning often uses storchastic or mini-batch training.
+		
+		Therefore, it is not appropriate to cache the feature matrix given that Solver:reset() function is only called in the NeuralNetwork:train() function.
+		
+	--]]
 	
 	Solver = Solver or (not isFirstLayer and require(Solvers[defaultSolver]).new({isNonLinearInput = true}))
 

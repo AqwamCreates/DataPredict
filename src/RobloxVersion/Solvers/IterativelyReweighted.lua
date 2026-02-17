@@ -48,9 +48,9 @@ function IterativelyReweightedSolver.new(parameterDictionary)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinear = NewIterativelyReweightedSolver.isLinear
+		local isLinearInput = (not NewIterativelyReweightedSolver.isNonLinearInput)
 		
-		local transposedFirstDerivativeMatrix = (isLinear and NewIterativelyReweightedSolver.cache)
+		local transposedFirstDerivativeMatrix = (isLinearInput and NewIterativelyReweightedSolver.cache)
 		
 		local numberOfdata = AqwamTensorLibrary:getDimensionSizeArray(firstDerivativeLossMatrix)[1]
 		
@@ -60,7 +60,7 @@ function IterativelyReweightedSolver.new(parameterDictionary)
 
 			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
 			
-			if (isLinear) then NewIterativelyReweightedSolver.cache = transposedFirstDerivativeMatrix end
+			if (isLinearInput) then NewIterativelyReweightedSolver.cache = transposedFirstDerivativeMatrix end
 
 		end
 		

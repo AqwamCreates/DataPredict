@@ -178,7 +178,7 @@ function LinearRegressionModel.new(parameterDictionary)
 
 	NewLinearRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewLinearRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+	NewLinearRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewLinearRegressionModel
 

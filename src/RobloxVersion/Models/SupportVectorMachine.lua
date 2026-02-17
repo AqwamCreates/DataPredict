@@ -333,6 +333,12 @@ function SupportVectorMachineModel:setCValue(cValue)
 
 end
 
+function SupportVectorMachineModel:setSolver(Solver)
+
+	self.Solver = Solver
+
+end
+
 function SupportVectorMachineModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector do not contain the same number of rows.") end

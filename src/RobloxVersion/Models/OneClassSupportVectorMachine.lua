@@ -337,6 +337,12 @@ function OneClassOneClassSupportVectorMachineModel:setCValue(cValue)
 
 end
 
+function OneClassOneClassSupportVectorMachineModel:setSolver(Solver)
+
+	self.Solver = Solver
+
+end
+
 function OneClassOneClassSupportVectorMachineModel:train(featureMatrix, labelVector)
 	
 	local numberOfData = #featureMatrix

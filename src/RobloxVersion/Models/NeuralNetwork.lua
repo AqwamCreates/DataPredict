@@ -892,21 +892,15 @@ function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 
 	local layerCostMatrix = AqwamTensorLibrary:multiply(lossGradientMatrix, derivativeMatrix)
 	
-	local activationLayerMatrix = AqwamTensorLibrary:transpose(forwardPropagateArray[numberOfLayersMinusOne])
-	
 	local weightMatrix = ModelParameters[numberOfLayersMinusOne]
 	
 	local Solver = SolverArray[numberOfLayers]
 	
-	activationLayerMatrix = forwardPropagateArray[numberOfLayersMinusOne]
-	
-	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = Solver:calculate(weightMatrix, activationLayerMatrix, layerCostMatrix) 
+	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = Solver:calculate(weightMatrix, forwardPropagateArray[numberOfLayersMinusOne], layerCostMatrix) 
 
 	for layerNumber = numberOfLayersMinusOne, 2, -1 do
 		
 		local weightNumber = layerNumber - 1
-		
-		activationLayerMatrix = forwardPropagateArray[layerNumber]
 		
 		Solver = SolverArray[layerNumber]
 		

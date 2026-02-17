@@ -30,42 +30,62 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseSolver = require(script.Parent.BaseSolver)
 
-local GradientSolver = {}
+local LevenbergMarquardtSolver = {}
 
-GradientSolver.__index = GradientSolver
+LevenbergMarquardtSolver.__index = LevenbergMarquardtSolver
 
-setmetatable(GradientSolver, BaseSolver)
+setmetatable(LevenbergMarquardtSolver, BaseSolver)
 
-function GradientSolver.new(parameterDictionary)
+local defaultLambda = 1
+
+function LevenbergMarquardtSolver.new(parameterDictionary)
 	
-	local NewGradientSolver = BaseSolver.new(parameterDictionary)
+	local NewLevenbergMarquardtSolver = BaseSolver.new(parameterDictionary)
 	
-	setmetatable(NewGradientSolver, GradientSolver)
+	setmetatable(NewLevenbergMarquardtSolver, LevenbergMarquardtSolver)
 	
-	NewGradientSolver:setName("Gradient")
+	NewLevenbergMarquardtSolver:setName("LevenbergMarquardt")
 	
-	NewGradientSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewLevenbergMarquardtSolver.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewLevenbergMarquardtSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinear = NewGradientSolver.isLinear
+		local isLinearInput = (not NewLevenbergMarquardtSolver.isNonLinearInput)
+		
+		local pMatrix = (isLinearInput and NewLevenbergMarquardtSolver.cache)
 
-		local transposedFirstDerivativeMatrix = (isLinear and NewGradientSolver.cache)
-		
-		if (not transposedFirstDerivativeMatrix) then
+		if (not pMatrix) then
+
+			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+
+			pMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
 			
-			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+			local pMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(pMatrix)
 			
-			if (isLinear) then NewGradientSolver.cache = transposedFirstDerivativeMatrix end
+			local diagonalMatrix = AqwamTensorLibrary:createIdentityTensor(pMatrixDimensionSizeArray, NewLevenbergMarquardtSolver.lambda)
 			
+			pMatrix = AqwamTensorLibrary:add(pMatrix, diagonalMatrix)
+
+			pMatrix = AqwamTensorLibrary:inverse(pMatrix)
+			
+			-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
+			
+			if (not pMatrix) then return AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(weightMatrix), 0) end
+
+			pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix)
+			
+			if (isLinearInput) then NewLevenbergMarquardtSolver.cache = pMatrix end
+
 		end
-		
-		return AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeLossMatrix)
+
+		return AqwamTensorLibrary:dotProduct(pMatrix, firstDerivativeLossMatrix)
 		
 	end)
 	
-	return NewGradientSolver
+	return NewLevenbergMarquardtSolver
 	
 end
 
-return GradientSolver
+return LevenbergMarquardtSolver

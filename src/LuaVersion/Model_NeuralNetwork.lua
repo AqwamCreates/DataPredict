@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GradientMethodBaseModel = require("GradientMethodBaseModel")
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 local ZTableFunction = require("Core_ZTableFunction")
 
@@ -1288,7 +1288,9 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		
 		dropoutRateArray[layer] = dropoutRate
 		
-		SolverArray[layer] = ((layer >= 2) and AbstractSolver.new({isNonLinearInput = (layer >= 3)}))
+		-- Do not set isNonLinearInput to false for the second layer due to common usage of this library for deep reinforcement learning.
+		
+		SolverArray[layer] = ((layer >= 2) and AbstractSolver.new({isNonLinearInput = true}))
 
 	end
 	
@@ -1342,7 +1344,9 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	dropoutRate = dropoutRate or defaultDropoutRate
 	
-	Solver = Solver or (not isFirstLayer and require(Solvers[defaultSolver]).new({isNonLinearInput = (numberOfLayers >= 3)}))
+	-- Do not set isNonLinearInput to false for the second layer due to deep reinforcement learning usage.
+	
+	Solver = Solver or (not isFirstLayer and require(Solvers[defaultSolver]).new({isNonLinearInput = true}))
 
 	table.insert(numberOfNeuronsArray, numberOfNeurons)
 

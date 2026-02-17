@@ -30,6 +30,8 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
+local Solvers = script.Parent.Parent.Solvers
+
 local ConditionalRandomFieldModel = {}
 
 ConditionalRandomFieldModel.__index = ConditionalRandomFieldModel
@@ -43,6 +45,8 @@ local defaultLearningRate = 0.1
 local defaultAddBias = true
 
 local defaultAddStabilization = true
+
+local defaultSolver = "GaussNewton"
 
 function ConditionalRandomFieldModel:calculateCost(predictedCurrentStateMatrix, currentStateMatrix, hasBias)
 	
@@ -94,11 +98,7 @@ function ConditionalRandomFieldModel:calculateLossFunctionDerivativeMatrix(lossG
 
 	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
-	local stateMatrix = self.stateMatrix
-
-	if (not stateMatrix) then error("State matrix not found.") end
-
-	local lossFunctionDerivativeMatrix = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(stateMatrix), lossGradientMatrix)
+	local lossFunctionDerivativeMatrix = self.Solver:calculate(self.ModelParameters, self.stateMatrix, lossGradientMatrix)
 
 	if (self.areGradientsSaved) then self.Gradients = lossFunctionDerivativeMatrix end
 
@@ -177,6 +177,8 @@ function ConditionalRandomFieldModel.new(parameterDictionary)
 	NewConditionalRandomFieldModel.Optimizer = parameterDictionary.Optimizer
 
 	NewConditionalRandomFieldModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewConditionalRandomFieldModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
 	return NewConditionalRandomFieldModel
 
@@ -289,6 +291,8 @@ function ConditionalRandomFieldModel:train(previousStateMatrix, currentStateMatr
 	end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+	
+	if (self.autoResetSolvers) then self.Solver:reset() end
 
 	return costArray
 

@@ -32,6 +32,8 @@ local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
 
 local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
+local Solvers = script.Parent.Parent.Solvers
+
 local SupportVectorRegressionModel = {}
 
 SupportVectorRegressionModel.__index = SupportVectorRegressionModel
@@ -53,6 +55,8 @@ local defaultDegree = 3
 local defaultSigma = 1
 
 local defaultR = 0
+
+local defaultSolver = "GaussNewton"
 
 local seperatorFunction = function (x) 
 
@@ -286,23 +290,15 @@ local function calculateCost(modelParameters, mappedFeatureMatrix, kernelMatrix,
 
 end
 
-local function calculateModelParameters(modelParameters, mappedFeatureMatrix, transposedMappedFeatureMatrix, labelVector, cValue, epsilon)
+function SupportVectorRegressionModel:update(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 
-	local predictionVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, modelParameters) -- m x 1
+	local hypothesisVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 
-	local errorVector = AqwamTensorLibrary:subtract(predictionVector, labelVector) -- m x 1
-	
-	local positiveSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, errorValue - epsilon) end, errorVector)
+	local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
-	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, -errorValue - epsilon) end, errorVector)
-	
-	local slackVariableVector = AqwamTensorLibrary:add(positiveSlackVariableVector, negativeSlackVariableVector)
+	errorVector = AqwamTensorLibrary:multiply(-cValue, errorVector)
 
-	local dotProductErrorVector = AqwamTensorLibrary:dotProduct(transposedMappedFeatureMatrix, slackVariableVector) -- n x m, m x 1
-
-	local NewModelParameters = AqwamTensorLibrary:multiply(-cValue, dotProductErrorVector)
-
-	return NewModelParameters
+	return self.Solver:calculate(ModelParameters, mappedFeatureMatrix, errorVector)
 
 end
 
@@ -335,6 +331,8 @@ function SupportVectorRegressionModel.new(parameterDictionary)
 		r = parameterDictionary.r or defaultR
 
 	}
+	
+	NewSupportVectorRegression.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewSupportVectorRegression
 end
@@ -372,14 +370,10 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 	local kernelFunction = self.kernelFunction
 	
 	local kernelParameters = self.kernelParameters
-	
-	local ModelParameters = self.ModelParameters
 
 	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
 
 	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
-	
-	local transposedMappedFeatureMatrix = AqwamTensorLibrary:transpose(mappedFeatureMatrix)
 
 	local costArray = {}
 
@@ -407,7 +401,7 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		ModelParameters = calculateModelParameters(ModelParameters, mappedFeatureMatrix, transposedMappedFeatureMatrix, labelVector, cValue, epsilon)
+		ModelParameters = self:update(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 
 	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
 
@@ -420,6 +414,8 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 	end
 	
 	self.ModelParameters = ModelParameters
+	
+	if (self.autoResetSolvers) then self.Solver:reset() end
 
 	return costArray
 

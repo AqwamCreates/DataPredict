@@ -892,21 +892,15 @@ function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 
 	local layerCostMatrix = AqwamTensorLibrary:multiply(lossGradientMatrix, derivativeMatrix)
 	
-	local activationLayerMatrix = AqwamTensorLibrary:transpose(forwardPropagateArray[numberOfLayersMinusOne])
-	
 	local weightMatrix = ModelParameters[numberOfLayersMinusOne]
 	
 	local Solver = SolverArray[numberOfLayers]
 	
-	local layerMatrix = forwardPropagateArray[numberOfLayersMinusOne]
-	
-	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = Solver:calculate(weightMatrix, layerMatrix, layerCostMatrix) 
+	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = Solver:calculate(weightMatrix, forwardPropagateArray[numberOfLayersMinusOne], layerCostMatrix) 
 
 	for layerNumber = numberOfLayersMinusOne, 2, -1 do
 		
 		local weightNumber = layerNumber - 1
-		
-		layerMatrix = forwardPropagateArray[weightNumber]
 		
 		Solver = SolverArray[layerNumber]
 		
@@ -914,13 +908,13 @@ function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 		
 		local transposedWeightMatrix = AqwamTensorLibrary:transpose(weightMatrix)
 
-		local partialErrorMatrix = AqwamTensorLibrary:dotProduct(layerCostMatrix, weightMatrix)
+		local partialErrorMatrix = AqwamTensorLibrary:dotProduct(layerCostMatrix, transposedWeightMatrix)
 
-		derivativeMatrix = deriveLayer(layerMatrix, zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber], activationFunctionArray[layerNumber])
+		derivativeMatrix = deriveLayer(forwardPropagateArray[layerNumber], zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber], activationFunctionArray[layerNumber])
 
 		layerCostMatrix = AqwamTensorLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 		
-		costFunctionDerivativeMatrixArray[weightNumber] = Solver:calculate(weightMatrix, layerMatrix, layerCostMatrix) 
+		costFunctionDerivativeMatrixArray[weightNumber] = Solver:calculate(weightMatrix, forwardPropagateArray[weightNumber], layerCostMatrix) 
 
 		self:sequenceWait()
 

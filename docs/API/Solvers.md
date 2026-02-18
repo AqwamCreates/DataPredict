@@ -39,7 +39,7 @@
 | [Gradient](Solvers/Gradient.md)                           | O(mn)                                  | O(n^2m)                                     |
 | [ConjugateGradient](Solvers/ConjugateGradient.md)         | O(n^2m + mn)                           | Huge                                        |
 | [GaussNewton](Solvers/GaussNewton.md)                     | O(n^3 + 2(n^2m) + mn)                  | O(n^2m)                                     |
-| [LevenbergMarquardt](Solvers/LevenbergMarquardt)          | O(n^3 + 2(n^2m) + 2mn)                 | O(n^2m)                                     |
+| [LevenbergMarquardt](Solvers/LevenbergMarquardt)          | O(n^3 + 2(n^2m) + 2(mn))               | O(n^2m)                                     |
 | [IterativelyReweighted](Solvers/IterativelyReweighted.md) | O(mn)                                  | O(n^2m)                                     |
 | [GreedyCoordinate](Solvers/GreedyCoordinate.md)           | O(mn)                                  | O(n^2m)                                     |
 | [RandomCoordinate](Solvers/RandomCoordinate.md)           | O(mn)                                  | O(n^2)                                      |

@@ -29,7 +29,6 @@
 | 📈   | Scales Well                 | Handles large datasets.                                            |
 | ⚠️   | Double Regularization Issue | Contains a regularization term and may conflict with regularizers. |
 
-
 ## Number Of Cache Operations
 
 > m: Number Of Data n: Number Of Features
@@ -43,6 +42,14 @@
 | [IterativelyReweighted](Solvers/IterativelyReweighted.md) | O(mn)                                  | O(n^2m)                                     |
 | [GreedyCoordinate](Solvers/GreedyCoordinate.md)           | O(mn)                                  | O(n^2m)                                     |
 | [RandomCoordinate](Solvers/RandomCoordinate.md)           | O(mn)                                  | O(n^2)                                      |
+
+## Convergence Speed And Convergence Cost Save Analysis
+
+| Number Of Iterations | Gradient Cost Save | GaussNewton Cost Save       | Gradient Converged? | GaussNewton Converged? | Gradient' Gain Balance |
+|----------------------|--------------------|-----------------------------|---------------------|------------------------|------------------------|
+| 1                    | None               | None                        | No                  | No                     | +O(n^3 + 2(n^2m))      |
+| 20                   | 19 x O(mn)         | 19 x O(n^3 + 2(n^2m) + mn)  | No                  | Yes                    | 19 * -O(mn)            |
+| 100                  | 100 x O(mn)        | 100 x O(n^3 + 2(n^2m) + mn) | No                  | Yes                    | 100 * -O(mn)           |
 
 ### Potential Solver Additions
 

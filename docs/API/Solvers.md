@@ -1,16 +1,16 @@
 # [API Reference](../API.md) - Solvers
 
-> m: Number Of Data n: Number Of Features
+## General Information
 
-| Solver                                                    | Convergence Speed | Computational Efficiency (Non-Cached) | Computational Efficiency (Cached)* | Number Of Operations Reduced On Cached | Optimizer Compatibility | Properties | Best For                                                            |
-|-----------------------------------------------------------|-------------------|---------------------------------------|------------------------------------|----------------------------------------|-------------------------|------------|---------------------------------------------------------------------|
-| [Gradient](Solvers/Gradient.md)                           | Low               | High                                  | Very High                          | O(mn)                                  | Very High               | 🔰 📈     | General-Purpose                                                      |
-| [ConjugateGradient](Solvers/ConjugateGradient.md)         | Medium            | Medium                                | Medium-High                        | O(n^2m + mn)                           | High                    | 🛡️ 📈     | Large Datasets + Most Values Are Zero (a.k.a. Sparse Data)           |
-| [GaussNewton](Solvers/GaussNewton.md)                     | Medium-High       | Medium                                | Very High                          | O(n^3 + n^2m + mn)                     | Medium                  | 🔢 🎯     | Small-Medium Datasets + Well-Defined Problems                        |
-| [LevenbergMarquardt](Solvers/LevenbergMarquardt)          | Medium-High       | Medium                                | Very High                          | O(n^3 + n^2m + 2mn)                    | Medium                  | 🔢 ⚠️     | Small-Medium Datasets + Poorly-Defined Problems                      |
-| [IterativelyReweighted](Solvers/IterativelyReweighted.md) | Medium            | Medium                                | Medium                             | O(mn)                                  | Medium                  | 🔢 🛡️	    | Individual Datapoints Have Different Contribution To Feature Weights |
-| [GreedyCoordinate](Solvers/GreedyCoordinate.md)           | Low               | High                                  | Very High                          | O(mn)                                  | Very Low                | 🛡️ 📈     | Large Datasets + Most Values Are Zero (a.k.a. Sparse Data)           |
-| [RandomCoordinate](Solvers/RandomCoordinate.md)           | Low               | Very High                             | Very High                          | O(mn)                                  | Very Low                | 🛡️ 📈     | Extremely Large Datasets                                             |
+| Solver                                                    | Convergence Speed | Computational Efficiency (Non-Cached) | Computational Efficiency (Cached)* | Optimizer Compatibility | Properties | Best For                                                            |
+|-----------------------------------------------------------|-------------------|---------------------------------------|------------------------------------|-------------------------|------------|---------------------------------------------------------------------|
+| [Gradient](Solvers/Gradient.md)                           | Low               | High                                  | Very High                          | Very High               | 🔰 📈     | General-Purpose                                                      |
+| [ConjugateGradient](Solvers/ConjugateGradient.md)         | Medium            | Medium                                | Medium-High                        | High                    | 🛡️ 📈     | Large Datasets + Most Values Are Zero (a.k.a. Sparse Data)           |
+| [GaussNewton](Solvers/GaussNewton.md)                     | Medium-High       | Medium                                | Very High                          | Medium                  | 🔢 🎯     | Small-Medium Datasets + Well-Defined Problems                        |
+| [LevenbergMarquardt](Solvers/LevenbergMarquardt)          | Medium-High       | Medium                                | Very High                          | Medium                  | 🔢 ⚠️     | Small-Medium Datasets + Poorly-Defined Problems                      |
+| [IterativelyReweighted](Solvers/IterativelyReweighted.md) | Medium            | Medium                                | Medium                             | Medium                  | 🔢 🛡️	    | Individual Datapoints Have Different Contribution To Feature Weights |
+| [GreedyCoordinate](Solvers/GreedyCoordinate.md)           | Low               | High                                  | Very High                          | Very Low                | 🛡️ 📈     | Large Datasets + Most Values Are Zero (a.k.a. Sparse Data)           |
+| [RandomCoordinate](Solvers/RandomCoordinate.md)           | Low               | Very High                             | Very High                          | Very Low                | 🛡️ 📈     | Extremely Large Datasets                                             |
 
 \* Computational efficiency due to cache is only applicable to models that has a constant linear expression as inputs:
 
@@ -28,6 +28,21 @@
 | 🎯   | Exact Solution              | Finds exact optimum (for linear problems).                         |
 | 📈   | Scales Well                 | Handles large datasets.                                            |
 | ⚠️   | Double Regularization Issue | Contains a regularization term and may conflict with regularizers. |
+
+
+## Number Of Cache Operations
+
+> m: Number Of Data n: Number Of Features i: Number Of Iterations
+
+| Solver                                                    | Number Of Operations Reduced On Cached | Remaining Number Of Operations On Non-Cache |
+|-----------------------------------------------------------|----------------------------------------|---------------------------------------------|
+| [Gradient](Solvers/Gradient.md)                           | O(mn)                                  | O(n^2m)                                     |
+| [ConjugateGradient](Solvers/ConjugateGradient.md)         | O(n^2m + mn)                           | Huge                                        |
+| [GaussNewton](Solvers/GaussNewton.md)                     | O(n^3 + n^2m + mn)                     | O(n^2m)                                     |
+| [LevenbergMarquardt](Solvers/LevenbergMarquardt)          | O(n^3 + n^2m + 2mn)                    | O(n^2m)                                     |
+| [IterativelyReweighted](Solvers/IterativelyReweighted.md) | O(mn)                                  | O(n^2m)                                     |
+| [GreedyCoordinate](Solvers/GreedyCoordinate.md)           | O(mn)                                  | O(n^2m)                                     |
+| [RandomCoordinate](Solvers/RandomCoordinate.md)           | O(mn)                                  | O(n^2)                                      |
 
 ### Potential Solver Additions
 

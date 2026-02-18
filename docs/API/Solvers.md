@@ -48,8 +48,9 @@
 | Number Of Iterations | Gradient Cost                  | GaussNewton Cost            | Gradient Converged? | GaussNewton Converged? | Accumulated Gradient' Gain Balance                        |
 |----------------------|--------------------------------|-----------------------------|---------------------|------------------------|-----------------------------------------------------------|
 | 1                    | O(n^2m + mn)                   | O(n^3 + 2(n^2m) + 2(mn))    | No                  | No                     | +O(n^3 + 2(n^2m) + mn)                                    |
-| 20                   | O(mn)                          | O(mn)                       | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 19 * -O(mn)  (Convergence Waste) |
-| 100                  | O(mn)                          | O(mn                        | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 100 * -O(mn) (Convergence Waste) |
+| 20                   | O(mn)                          | O(mn)                       | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 19 * -O(mn) (Convergence Waste)  |
+| 100                  | O(mn)                          | O(mn                        | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 99 * -O(mn) (Convergence Waste)  |
+| 1000                 | O(mn)                          | O(mn                        | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 999 * -O(mn) (Convergence Waste) |
 
 ### Potential Solver Additions
 

@@ -43,13 +43,13 @@
 | [GreedyCoordinate](Solvers/GreedyCoordinate.md)           | O(mn)                                  | O(n^2m)                                     |
 | [RandomCoordinate](Solvers/RandomCoordinate.md)           | O(mn)                                  | O(n^2)                                      |
 
-## Convergence Speed And Convergence Cost Save Analysis
+## Convergence Speed And Convergence Cost Save Analysis (When Cached)
 
-| Number Of Iterations | Gradient Cost Save | GaussNewton Cost Save       | Gradient Converged? | GaussNewton Converged? | Gradient' Gain Balance |
-|----------------------|--------------------|-----------------------------|---------------------|------------------------|------------------------|
-| 1                    | None               | None                        | No                  | No                     | +O(n^3 + 2(n^2m))      |
-| 20                   | 19 x O(mn)         | 19 x O(n^3 + 2(n^2m) + mn)  | No                  | Yes                    | 19 * -O(mn)            |
-| 100                  | 100 x O(mn)        | 100 x O(n^3 + 2(n^2m) + mn) | No                  | Yes                    | 100 * -O(mn)           |
+| Number Of Iterations | Gradient Cost                  | GaussNewton Cost            | Gradient Converged? | GaussNewton Converged? | Accumulated Gradient' Gain Balance                        |
+|----------------------|--------------------------------|-----------------------------|---------------------|------------------------|-----------------------------------------------------------|
+| 1                    | O(n^2m + mn)                   | O(n^3 + 2(n^2m) + 2(mn))    | No                  | No                     | +O(n^3 + 2(n^2m) + mn)                                    |
+| 20                   | O(mn)                          | O(mn)                       | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 19 * -O(mn)  (Convergence Waste) |
+| 100                  | O(mn)                          | O(mn                        | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 100 * -O(mn) (Convergence Waste) |
 
 ### Potential Solver Additions
 

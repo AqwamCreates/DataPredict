@@ -18,7 +18,7 @@
 
 ## Terms And Conditions Information
 
-* By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
+* By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesCommercialLicensingAgreements.md).
 
   * Small developers and non-B2B organizations earning ≤3K USD within 365 days (not per 365 days) can use DataPredict™ for free!
 

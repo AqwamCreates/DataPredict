@@ -110,7 +110,7 @@ local function rearrangeMatrixToDominantDiagonalMatrix(matrix)
 
 	end
 
-	return dominantDiagonalMatrix
+	return dominantDiagonalMatrix, diagonaMatrixIndexArray
 
 end
 
@@ -140,6 +140,8 @@ function GaussSeidelSolver.new(parameterDictionary)
 		
 		local uMatrix = cache[4]
 		
+		local diagonaMatrixIndexArray = cache[5]
+		
 		local weightMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(weightMatrix)
 
 		local numberOfFeatures = weightMatrixDimensionSizeArray[1]
@@ -156,9 +158,15 @@ function GaussSeidelSolver.new(parameterDictionary)
 
 			aMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
 			
-			aMatrix = rearrangeMatrixToDominantDiagonalMatrix(aMatrix)
+			aMatrix, diagonaMatrixIndexArray = rearrangeMatrixToDominantDiagonalMatrix(aMatrix)
 			
-			if (isLinearInput) then cache[2] = aMatrix end
+			if (isLinearInput) then 
+				
+				cache[2] = aMatrix 
+				
+				cache[5] = diagonaMatrixIndexArray
+				
+			end
 
 		end
 		
@@ -233,6 +241,12 @@ function GaussSeidelSolver.new(parameterDictionary)
 		local newWeightMatrix = AqwamTensorLibrary:subtract(bMatrix, uMatrix)
 
 		newWeightMatrix = AqwamTensorLibrary:dotProduct(inverseLMatrix, newWeightMatrix)
+		
+		if (diagonaMatrixIndexArray) then
+
+			newWeightMatrix = AqwamTensorLibrary:permute(newWeightMatrix, diagonaMatrixIndexArray)
+
+		end
 		
 		NewGaussSeidelSolver.cache = cache
 		

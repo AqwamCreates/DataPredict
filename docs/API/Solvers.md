@@ -12,7 +12,7 @@
 | [GreedyCoordinate](Solvers/GreedyCoordinate.md)           | Low               | High                                  | Very High                          | Very Low                | 🛡️ 📈     | Large Datasets + Most Values Are Zero (a.k.a. Sparse Data)           |
 | [RandomCoordinate](Solvers/RandomCoordinate.md)           | Low               | Very High                             | Very High                          | Very Low                | 🛡️ 📈     | Extremely Large Datasets                                             |
 | [GaussSeidel](Solvers/GaussSeidel.md)                     | Low               | Medium                                | Medium-High                        | Very Low                | 🔢 💥     | Huge Diagonal Feature Values Compared To Off-Diagonal                |
-| [Jacobi](Solvers/Jacobi.md)                               | Low               | Low                                   | Medium                             | Very Low                | 🔢 💥     | Huge Diagonal Feature Values Compared To Off-Diagonal                |
+| [Jacobi](Solvers/Jacobi.md)                               | Low               | Medium-Low                            | Medium                             | Very Low                | 🔢 💥     | Huge Diagonal Feature Values Compared To Off-Diagonal                |
 
 \* Computational efficiency due to cache is only applicable to models that has a constant linear expression as inputs:
 

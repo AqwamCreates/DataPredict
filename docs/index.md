@@ -12,13 +12,13 @@
 
 * [How Does DataPredict Reduce Costs For In-Game Machine Learning?](CostReductionInformation.md)
 
-* [Commercial Use Licensing](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md)
+* [Commercial Use Licensing](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesCommercialLicensingAgreements.md)
 
 * [Production Deployment And Consulting](ProductionDeploymentAndConsulting.md)
 
 ## Terms And Conditions Information
 
-* By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesCommercialLicensingAgreements.md).
+* By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 
   * Small developers and non-B2B organizations earning ≤3K USD within 365 days (not per 365 days) can use DataPredict™ for free!
 

@@ -365,6 +365,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Solvers = {
 	Gradient = require(Solvers.Gradient),
 	
 	ConjugateGradient = require(Solvers.ConjugateGradient),
+	
+	NonLinearConjugateGradient = require(Solvers.NonLinearConjugateGradient),
 
 	GaussNewton = require(Solvers.GaussNewton),
 	
@@ -375,6 +377,10 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Solvers = {
 	GreedyCoordinate = require(Solvers.GreedyCoordinate),
 	
 	RandomCoordinate = require(Solvers.RandomCoordinate),
+	
+	GaussSeidel = require(Solvers.GaussSeidel),
+	
+	Jacobi = require(Solvers.Jacobi),
 
 }
 

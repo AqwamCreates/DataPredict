@@ -48,7 +48,7 @@
 
 ## Convergence Speed And Convergence Cost Save Analysis (When Cached)
 
-| Number Of Iterations | Gradient Cost                  | GaussNewton Cost            | Gradient Converged? | GaussNewton Converged? | Accumulated Gradient' Gain Balance                        |
+| Number Of Iterations | Gradient Cost                  | GaussNewton Cost            | Gradient Converged? | GaussNewton Converged? | Accumulated Gradient's Gain Balance                       |
 |----------------------|--------------------------------|-----------------------------|---------------------|------------------------|-----------------------------------------------------------|
 | 1                    | O(n^2m + mn)                   | O(n^3 + 2(n^2m) + 2(mn))    | No                  | No                     | +O(n^3 + 2(n^2m) + mn)                                    |
 | 20                   | O(mn)                          | O(mn)                       | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 19 * -O(mn) (Convergence Waste)  |

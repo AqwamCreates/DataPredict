@@ -82,11 +82,11 @@ function ConjugateGradientSolver.new(parameterDictionary)
 		
 		local transposedResidualMatrix
 		
-		local alphaNumeratorValue
+		local alphaNumeratorMatrix
 		
-		local alphaDenominatorValue
+		local alphaDenominatorMatrix
 		
-		local alphaValue
+		local alphaMatrix
 		
 		local transposedPMatrix
 		
@@ -96,11 +96,11 @@ function ConjugateGradientSolver.new(parameterDictionary)
 		
 		local transposedNewResidualMatrix
 		
-		local betaNumeratorValue
+		local betaNumeratorMatrix
 		
-		local betaDenominatorValue
+		local betaDenominatorMatrix
 		
-		local betaValue
+		local betaMatrix
 		
 		local pChangeMatrix
 		
@@ -116,31 +116,31 @@ function ConjugateGradientSolver.new(parameterDictionary)
 			
 			transposedPMatrix = AqwamTensorLibrary:transpose(pMatrix)
 			
-			alphaNumeratorValue = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)[1][1]
+			alphaNumeratorMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)
 			
-			alphaDenominatorValue = AqwamTensorLibrary:dotProduct(transposedPMatrix, aMatrix, pMatrix)[1][1]
+			alphaDenominatorMatrix = AqwamTensorLibrary:dotProduct(transposedPMatrix, aMatrix, pMatrix)
 			
-			alphaValue = alphaNumeratorValue / alphaDenominatorValue
+			alphaMatrix =  AqwamTensorLibrary:divide(alphaNumeratorMatrix, alphaDenominatorMatrix)
 			
-			weightChangeMatrix = AqwamTensorLibrary:multiply(alphaValue, pMatrix)
+			weightChangeMatrix = AqwamTensorLibrary:multiply(alphaMatrix, pMatrix)
 			
 			weightMatrix = AqwamTensorLibrary:add(weightMatrix, weightChangeMatrix)
 			
-			residualChangeMatrix = AqwamTensorLibrary:multiply(alphaValue, pMatrix)
+			residualChangeMatrix = AqwamTensorLibrary:multiply(alphaMatrix, pMatrix)
 			
 			newResidualMatrix = AqwamTensorLibrary:subtract(residualMatrix, residualChangeMatrix)
 			
 			transposedNewResidualMatrix = AqwamTensorLibrary:transpose(newResidualMatrix)
 			
-			betaNumeratorValue = AqwamTensorLibrary:dotProduct(transposedNewResidualMatrix, newResidualMatrix)[1][1]
+			betaNumeratorMatrix = AqwamTensorLibrary:dotProduct(transposedNewResidualMatrix, newResidualMatrix)
 			
-			betaDenominatorValue = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)[1][1]
+			betaDenominatorMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)[1][1]
 			
-			betaValue = betaNumeratorValue / betaDenominatorValue
+			betaMatrix = AqwamTensorLibrary:divide(betaNumeratorMatrix, betaDenominatorMatrix)
 			
 			pChangeMatrix = AqwamTensorLibrary:dotProduct(aMatrix, pMatrix)
 			
-			pChangeMatrix = AqwamTensorLibrary:multiply(pChangeMatrix, betaValue)
+			pChangeMatrix = AqwamTensorLibrary:multiply(pChangeMatrix, betaMatrix)
 			
 			pMatrix = AqwamTensorLibrary:add(newResidualMatrix, pChangeMatrix)
 			

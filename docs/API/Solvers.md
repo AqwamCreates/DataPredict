@@ -2,8 +2,8 @@
 
 ## General Information
 
-| Solver                                                    | Convergence Speed | Computational Efficiency (Non-Cached) | Computational Efficiency (Cached)* | Optimizer Compatibility | Properties | Best For                                                            |
-|-----------------------------------------------------------|-------------------|---------------------------------------|------------------------------------|-------------------------|------------|---------------------------------------------------------------------|
+| Solver                                                    | Convergence Speed | Computational Efficiency (Non-Cached) | Computational Efficiency (Cached)* | Optimizer Compatibility | Properties | Best For                                                             |
+|-----------------------------------------------------------|-------------------|---------------------------------------|------------------------------------|-------------------------|------------|----------------------------------------------------------------------|
 | [Gradient](Solvers/Gradient.md)                           | Low               | High                                  | Very High                          | Very High               | 🔰 📈     | General-Purpose                                                      |
 | [ConjugateGradient](Solvers/ConjugateGradient.md)         | Medium            | Medium                                | Medium-High                        | High                    | 🛡️ 📈     | Large Datasets + Most Values Are Zero (a.k.a. Sparse Data)           |
 | [GaussNewton](Solvers/GaussNewton.md)                     | Medium-High       | Medium                                | Very High                          | Medium                  | 🔢 🎯     | Small-Medium Datasets + Well-Defined Problems                        |
@@ -11,6 +11,7 @@
 | [IterativelyReweighted](Solvers/IterativelyReweighted.md) | Medium            | Medium                                | Medium                             | Medium                  | 🔢 🛡️	    | Individual Datapoints Have Different Contribution To Feature Weights |
 | [GreedyCoordinate](Solvers/GreedyCoordinate.md)           | Low               | High                                  | Very High                          | Very Low                | 🛡️ 📈     | Large Datasets + Most Values Are Zero (a.k.a. Sparse Data)           |
 | [RandomCoordinate](Solvers/RandomCoordinate.md)           | Low               | Very High                             | Very High                          | Very Low                | 🛡️ 📈     | Extremely Large Datasets                                             |
+| [Jacobi](Solvers/Jacobi.md)                               | Low               | Low                                   | Medium                             | Very Low                | 🔢 🛡️     | Huge Diagonal Feature Values Compared To Off-Diagonal                |
 
 \* Computational efficiency due to cache is only applicable to models that has a constant linear expression as inputs:
 

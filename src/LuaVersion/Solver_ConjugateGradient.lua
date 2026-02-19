@@ -134,7 +134,7 @@ function ConjugateGradientSolver.new(parameterDictionary)
 			
 			betaNumeratorMatrix = AqwamTensorLibrary:dotProduct(transposedNewResidualMatrix, newResidualMatrix)
 			
-			betaDenominatorMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)[1][1]
+			betaDenominatorMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)
 			
 			betaMatrix = AqwamTensorLibrary:divide(betaNumeratorMatrix, betaDenominatorMatrix)
 			

@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibraryLink")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local BaseSolver = require("Solver_BaseSolver")
 
@@ -116,7 +116,21 @@ local function rearrangeMatrixToDominantDiagonalMatrix(matrix)
 		
 	end
 	
-	return dominantDiagonalMatrix
+	return dominantDiagonalMatrix, diagonaMatrixIndexArray
+	
+end
+
+local function permuteMatrix(matrix, indexArray)
+	
+	local resultMatrix = {}
+	
+	for i, value in ipairs(indexArray) do
+		
+		resultMatrix[i] = matrix[value]
+		
+	end
+	
+	return resultMatrix
 	
 end
 
@@ -146,6 +160,8 @@ function JacobiSolver.new(parameterDictionary)
 		
 		local lAndUMatrix = cache[4]
 		
+		local diagonaMatrixIndexArray = cache[5]
+		
 		local weightMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(weightMatrix)
 
 		local numberOfFeatures = weightMatrixDimensionSizeArray[1]
@@ -162,9 +178,15 @@ function JacobiSolver.new(parameterDictionary)
 
 			aMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
 			
-			aMatrix = rearrangeMatrixToDominantDiagonalMatrix(aMatrix)
+			aMatrix, diagonaMatrixIndexArray = rearrangeMatrixToDominantDiagonalMatrix(aMatrix)
 			
-			if (isLinearInput) then cache[2] = aMatrix end
+			if (isLinearInput) then 
+				
+				cache[2] = aMatrix
+				
+				cache[5] = diagonaMatrixIndexArray
+				
+			end
 
 		end
 		
@@ -244,6 +266,12 @@ function JacobiSolver.new(parameterDictionary)
 		local newWeightMatrix = AqwamTensorLibrary:subtract(bMatrix, lAndUMatrix)
 
 		newWeightMatrix = AqwamTensorLibrary:dotProduct(inverseDiagonalMatrix, newWeightMatrix)
+		
+		if (diagonaMatrixIndexArray) then
+			
+			newWeightMatrix = AqwamTensorLibrary:permute(newWeightMatrix, diagonaMatrixIndexArray)
+			
+		end
 		
 		NewJacobiSolver.cache = cache
 		

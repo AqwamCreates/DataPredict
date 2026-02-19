@@ -116,7 +116,21 @@ local function rearrangeMatrixToDominantDiagonalMatrix(matrix)
 		
 	end
 	
-	return dominantDiagonalMatrix
+	return dominantDiagonalMatrix, diagonaMatrixIndexArray
+	
+end
+
+local function permuteMatrix(matrix, indexArray)
+	
+	local resultMatrix = {}
+	
+	for i, value in ipairs(indexArray) do
+		
+		resultMatrix[i] = matrix[value]
+		
+	end
+	
+	return resultMatrix
 	
 end
 
@@ -146,6 +160,8 @@ function JacobiSolver.new(parameterDictionary)
 		
 		local lAndUMatrix = cache[4]
 		
+		local diagonaMatrixIndexArray = cache[5]
+		
 		local weightMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(weightMatrix)
 
 		local numberOfFeatures = weightMatrixDimensionSizeArray[1]
@@ -162,9 +178,15 @@ function JacobiSolver.new(parameterDictionary)
 
 			aMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
 			
-			aMatrix = rearrangeMatrixToDominantDiagonalMatrix(aMatrix)
+			aMatrix, diagonaMatrixIndexArray = rearrangeMatrixToDominantDiagonalMatrix(aMatrix)
 			
-			if (isLinearInput) then cache[2] = aMatrix end
+			if (isLinearInput) then 
+				
+				cache[2] = aMatrix
+				
+				cache[5] = diagonaMatrixIndexArray
+				
+			end
 
 		end
 		
@@ -245,102 +267,11 @@ function JacobiSolver.new(parameterDictionary)
 
 		newWeightMatrix = AqwamTensorLibrary:dotProduct(inverseDiagonalMatrix, newWeightMatrix)
 		
-		NewJacobiSolver.cache = cache
-		
-		return AqwamTensorLibrary:subtract(newWeightMatrix, weightMatrix)
-		
-	end)
-	
-	return NewJacobiSolver
-	
-end
-
-return JacobiSolver		if (not aMatrix) then
-
-			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
-
-			aMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
+		if (diagonaMatrixIndexArray) then
 			
-			if (isLinearInput) then cache[2] = aMatrix end
-
-		end
-		
-		if (inverseDiagonalMatrix) then
-			
-			if (not isLinearInput) then 
-				
-				diagonalMatrix = AqwamTensorLibrary:multiply(diagonalMatrix, aMatrix)
-
-				inverseDiagonalMatrix = AqwamTensorLibrary:applyFunction(safeguardedInversionFunction, diagonalMatrix)
-				
-			end
-		
-		else
-			
-			diagonalMatrix = AqwamTensorLibrary:createIdentityTensor(weightMatrixDimensionSizeArray)
-			
-			if (isLinearInput) then
-
-				diagonalMatrix = AqwamTensorLibrary:multiply(diagonalMatrix, aMatrix)
-				
-				inverseDiagonalMatrix = AqwamTensorLibrary:applyFunction(safeguardedInversionFunction, diagonalMatrix)
-
-				cache[3] = diagonalMatrix
-
-			else
-
-				cache[3] = diagonalMatrix
-
-				diagonalMatrix = AqwamTensorLibrary:multiply(diagonalMatrix, aMatrix)
-				
-				inverseDiagonalMatrix = AqwamTensorLibrary:applyFunction(safeguardedInversionFunction, diagonalMatrix)
-
-			end
+			newWeightMatrix = AqwamTensorLibrary:permute(newWeightMatrix, diagonaMatrixIndexArray)
 			
 		end
-		
-		if (lAndUMatrix) then
-			
-			if (not isLinearInput) then
-				
-				lAndUMatrix = AqwamTensorLibrary:multiply(lAndUMatrix, aMatrix)
-				
-				lAndUMatrix = AqwamTensorLibrary:dotProduct(lAndUMatrix, weightMatrix)
-				
-			end
-			
-		else
-			
-			local upperTriangularTensor = AqwamTensorLibrary:createUpperTriangularTensor(weightMatrixDimensionSizeArray, 0, 1)
-
-			local lowerTriangularTensor = AqwamTensorLibrary:createLowerTriangularTensor(weightMatrixDimensionSizeArray, 0, 1)
-			
-			lAndUMatrix = AqwamTensorLibrary:add(upperTriangularTensor, lowerTriangularTensor)
-			
-			if (isLinearInput) then
-				
-				lAndUMatrix = AqwamTensorLibrary:multiply(lAndUMatrix, aMatrix)
-				
-				lAndUMatrix = AqwamTensorLibrary:dotProduct(lAndUMatrix, weightMatrix)
-				
-				cache[4] = lAndUMatrix
-				
-				
-			else
-				
-				cache[4] = lAndUMatrix
-				
-				lAndUMatrix = AqwamTensorLibrary:multiply(lAndUMatrix, aMatrix)
-				
-				lAndUMatrix = AqwamTensorLibrary:dotProduct(lAndUMatrix, weightMatrix)
-				
-			end
-			
-		end
-		
-		local newWeightMatrix = AqwamTensorLibrary:subtract(bMatrix, lAndUMatrix)
-
-		newWeightMatrix = AqwamTensorLibrary:dotProduct(inverseDiagonalMatrix, newWeightMatrix)
 		
 		NewJacobiSolver.cache = cache
 		

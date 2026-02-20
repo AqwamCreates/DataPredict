@@ -72,7 +72,7 @@
 | [BayesianLinearRegression](Models/BayesianLinearRegression.md)*                                  | BLR                                        | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [BayesianQuantileLinearRegression](Models/BayesianQuantileLinearRegression.md)*                  | None                                       | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Case Estimation        |
 | [RecursiveLeastSquaresRegression](Models/RecursiveLeastSquaresRegression.md)*                    | RLS                                        | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
-| [PartialLeastSquaresRegression](Models/PartialLeastSquaresRegression.md)*                        | PLS                                        | 💾 ⚡ 🟡 ⚠️     | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Latent Factors         |
+| [PartialLeastSquaresRegression](Models/PartialLeastSquaresRegression.md)*                        | PLS                                        | 💾 ⚡ 🟡        | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Latent Factors         |
 | [WeightedLeastSquaresRegression](Models/WeightedLeastSquaresRegression.md)*                      | WLS                                        | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 
 \* The models assume that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.

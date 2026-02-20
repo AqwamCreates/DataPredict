@@ -86,6 +86,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	RecursiveLeastSquaresRegression = require(Models.RecursiveLeastSquaresRegression),
 	
+	PartialLeastSquaresRegression = require(Models.PartialLeastSquaresRegression),
+	
 	WeightedLeastSquaresRegression = require(Models.WeightedLeastSquaresRegression),
 	
 	-- Classification - 14 Models

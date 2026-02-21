@@ -367,8 +367,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Solvers = {
 	Gradient = require(Solvers.Gradient),
 	
 	ConjugateGradient = require(Solvers.ConjugateGradient),
-	
-	NonLinearConjugateGradient = require(Solvers.NonLinearConjugateGradient),
 
 	GaussNewton = require(Solvers.GaussNewton),
 	

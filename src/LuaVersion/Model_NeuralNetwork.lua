@@ -135,10 +135,10 @@ local elementWiseActivationFunctionList = {
 	["Gaussian"] = function (z) return math.exp(-math.pow(z, 2)) end,
 
 	["SiLU"] = function (z) return z / (1 + math.exp(-z)) end,
+	
+	["Swish"] = function (z) return (z / (1 + math.exp(-z))) end,
 
 	["Mish"] = function (z) return z * math.tanh(math.log(1 + math.exp(z))) end,
-
-	["BinaryStep"] = function (z) return ((z > 0) and 1) or 0 end,
 	
 	["HardSigmoid"] = function (z)
 
@@ -147,16 +147,14 @@ local elementWiseActivationFunctionList = {
 		if (x < 0) then return 0 elseif (x > 1) then return 1 else return x end
 
 	end,
+	
+	["BipolarSigmoid"] = function (z) return (2 / (1 + math.exp(-z)) - 1) end,
 
 	["SoftSign"] = function (z) return (z / (1 + math.abs(z))) end,
 	
 	["SoftPlus"] = function (z) return (1 + math.exp(z)) end,
 
 	["ArcTangent"] = function (z) return (2 / math.pi) * math.atan(z) end,
-
-	["Swish"] = function (z) return (z / (1 + math.exp(-z))) end,
-
-	["BipolarSigmoid"] = function (z) return (2 / (1 + math.exp(-z)) - 1) end,
 	
 	["LogitLink"] = function (z) 
 
@@ -186,13 +184,27 @@ local elementWiseActivationFunctionList = {
 	
 	["InverseLink"] = function (z) return (1 / z) end,
 	
+	["InverseInverseLink"] = function (z) return z end,
+	
 	["SquareRootLink"] = function (z) return math.sqrt(z) end,
 	
+	["SquareRootInverseLink"] = function (z) return (1 / math.sqrt(z)) end,
+	
 	["SquareInverseLink"] = function (z) return (1 / math.pow(z, 2)) end,
+	
+	["SquareInverseInverseLink"] = function (z) return math.pow(z, 2) end,
 	
 }
 
 local activationFunctionList = {
+	
+	["BinaryStep"] = function (zMatrix)
+		
+		local aMatrix = AqwamTensorLibrary:applyFunction(function (z) return (((z <= 0) and 0) or 1) end, zMatrix)
+		
+		return aMatrix
+		
+	end,
 
 	["Softmax"] = function (zMatrix)
 
@@ -309,17 +321,7 @@ local elementWiseActivationFunctionDerivativeList = {
 		return (sigmoidValue * (1 + (z * (1 - sigmoidValue))))
 		
 	end,
-
-	["Mish"] = function (a, z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end,
 	
-	["HardSigmoid"] = function (a, z) return ((a <= 0 or a >= 1) and 0) or 0.5 end,
-
-	["SoftSign"] = function (a, z) return (1 / ((1 + math.abs(z))^2)) end,
-	
-	["SoftPlus"] = function (a, z) return 1 / (1 + math.exp(-1 * z)) end,
-
-	["ArcTangent"] = function (a, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
-
 	["Swish"] = function (a, z)
 
 		local sigmoidValue = 1 / (1 + math.exp(-z))
@@ -328,6 +330,10 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	end,
 
+	["Mish"] = function (a, z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end,
+	
+	["HardSigmoid"] = function (a, z) return (((a <= 0 or a >= 1) and 0) or 0.5) end,
+	
 	["BipolarSigmoid"] = function (a, z) 
 
 		local sigmoidValue = 1 / (1 + math.exp(-z))
@@ -335,6 +341,12 @@ local elementWiseActivationFunctionDerivativeList = {
 		return (2 * sigmoidValue * (1 - sigmoidValue))
 
 	end,
+
+	["SoftSign"] = function (a, z) return (1 / ((1 + math.abs(z))^2)) end,
+	
+	["SoftPlus"] = function (a, z) return 1 / (1 + math.exp(-1 * z)) end,
+
+	["ArcTangent"] = function (a, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
 	
 	["LogitLink"] = function (a, z) 
 		
@@ -374,11 +386,17 @@ local elementWiseActivationFunctionDerivativeList = {
 
 	["LogInverseLink"] = function (a, z) return a end, -- Note: Derivative of exponent(z) is exponent(z), where a = exponent(z). Therefore, we're taking a shortcut to reduce computational resources.
 	
-	["InverseLink"] = function (z) return (-1 / math.pow(z, 2)) end,
+	["InverseLink"] = function (a, z) return (-1 / math.pow(z, 2)) end,
 	
-	["SquareRootLink"] = function (z) return (1 / (2 * math.sqrt(z))) end,
+	["InverseInverseLink"] = function (a, z) return 1 end,
 	
-	["SquareRootInverseLink"] = function (z) return (-2 / math.pow(z, 3)) end,
+	["SquareRootLink"] = function (a, z) return (0.5 / (1.5 * math.sqrt(z))) end,
+	
+	["SquareRootInverseLink"] = function (a, z) return (-0.5 / math.pow(z, 1.5)) end,
+
+	["SquareInverseLink"] = function (a, z) return (-2 / math.pow(z, 3)) end,
+
+	["SquareInverseInverseLink"] = function (a, z) return (2 * z) end,
 
 }
 
@@ -470,9 +488,9 @@ local activationFunctionDerivativeList = {
 
 local minimumOutputValueList = {
 
-	["0"] = {"Sigmoid", "BinaryStep", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "ProbitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "LogInverseLink", "InverseLink", "SquareInverseLink"}, -- 0.5 threshold for [0, 1] functions.
+	["0"] = {"Sigmoid", "HardSigmoid", "BinaryStep", "SoftPlus", "ArcTangent", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "ProbitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "LogInverseLink", "InverseInverseLink", "SquareRootInverseLink", "SquareInverseInverseLink"}, -- 0, -- 0.5 threshold for [0, 1] functions.
 
-	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "Mish", "Maxout", "None", "LogitLink", "ProbitLink", "LogLogLink", "ComplementaryLogLogLink", "LogLink", "SquareRootLink"}, -- 0 threshold for [-1, 1] functions.
+	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "BipolarSigmoid", "SoftSign", "Swish", "Mish", "Maxout", "None", "LogitLink", "ProbitLink", "LogLogLink", "ComplementaryLogLogLink", "LogLink", "InverseLink", "SquareRootLink", "SquareInverseLink"}, -- 0 threshold for [-1, 1] functions.
 
 }
 

@@ -54,11 +54,3 @@
 | 20                   | O(mn)                          | O(mn)                       | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 19 * -O(mn) (Convergence Waste)  |
 | 100                  | O(mn)                          | O(mn                        | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 99 * -O(mn) (Convergence Waste)  |
 | 1000                 | O(mn)                          | O(mn                        | No                  | Yes                    | +O(n^3 + 2(n^2m) + mn) - 999 * -O(mn) (Convergence Waste) |
-
-### Potential Solver Additions
-
-* Secant method
-
-* Brent's method
-
-* Bisection method (Low priority; slow convergence and slow to compute.) 

@@ -350,7 +350,7 @@ function SimonFunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 
 		self:update(lossGradientMatrix, true)
 
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 
 	if (self.isOutputPrinted) then
 
@@ -359,6 +359,8 @@ function SimonFunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 	
 	if (self.autoResetOptimizers) then
 		

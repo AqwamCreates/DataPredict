@@ -146,6 +146,12 @@ function IterativeBaseModel:checkIfTargetCostReached(cost)
 	
 end
 
+function IterativeBaseModel:checkIfCostIsNan(cost)
+	
+	return (cost ~= cost)
+	
+end
+
 function IterativeBaseModel:calculateCostWhenRequired(currentNumberOfIteration, costFunction)
 	
 	if ((currentNumberOfIteration % self.numberOfIterationsPerCostCalculation) == 0) then 

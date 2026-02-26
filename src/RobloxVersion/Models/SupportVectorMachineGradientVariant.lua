@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
+	Aqwam's Regression, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -34,11 +34,11 @@ local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFu
 
 local Solvers = script.Parent.Parent.Solvers
 
-local SupportVectorMachineGradientVariantModel = {}
+local SupportVectorRegressionGradientVariantModel = {}
 
-SupportVectorMachineGradientVariantModel.__index = SupportVectorMachineGradientVariantModel
+SupportVectorRegressionGradientVariantModel.__index = SupportVectorRegressionGradientVariantModel
 
-setmetatable(SupportVectorMachineGradientVariantModel, GradientMethodBaseModel)
+setmetatable(SupportVectorRegressionGradientVariantModel, GradientMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -46,39 +46,25 @@ local defaultLearningRate = 0.3
 
 local defaultCValue = 1
 
+local defaultEpsilon = 1
+
 local defaultSolver = "GaussNewton"
 
-local function hingeFunction(value)
-	
-	return math.max(0, value)
-	
-end
-
-local function misclassificationMaskFunction(value)
-	
-	return (value < 1) and 1 or 0
-	
-end
-
-local function seperatorFunction(x) 
-
-	return ((x > 0) and 1) or ((x < 0) and -1) or 0
-
-end
-
-function SupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector, labelVector, hasBias)
+function SupportVectorRegressionGradientVariantModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
-	local oneVector = AqwamTensorLibrary:createTensor({#labelVector, 1}, 1)
+	local epsilon = self.epsilon
 	
-	local marginVector = AqwamTensorLibrary:multiply(labelVector, hypothesisVector)
+	local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 	
-	local hingeVector = AqwamTensorLibrary:subtract(oneVector, marginVector)
-	
-	local costVector = AqwamTensorLibrary:applyFunction(hingeFunction, hingeVector)
+	local positiveSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, errorValue - epsilon) end, errorVector)
 
-	local totalCost = AqwamTensorLibrary:sum(costVector)
+	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, -errorValue - epsilon) end, errorVector)
+
+	local slackVariableVector = AqwamTensorLibrary:add(positiveSlackVariableVector, negativeSlackVariableVector)
+
+	local totalCost = AqwamTensorLibrary:sum(slackVariableVector)
 	
 	local Regularizer = self.Regularizer
 
@@ -90,7 +76,7 @@ function SupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector
 
 end
 
-function SupportVectorMachineGradientVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function SupportVectorRegressionGradientVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
@@ -100,7 +86,7 @@ function SupportVectorMachineGradientVariantModel:calculateHypothesisVector(feat
 
 end
 
-function SupportVectorMachineGradientVariantModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+function SupportVectorRegressionGradientVariantModel:calculateLossFunctionDerivativeVector(lossGradientVector)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -112,7 +98,7 @@ function SupportVectorMachineGradientVariantModel:calculateLossFunctionDerivativ
 
 end
 
-function SupportVectorMachineGradientVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
+function SupportVectorRegressionGradientVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -148,7 +134,7 @@ function SupportVectorMachineGradientVariantModel:gradientDescent(lossFunctionDe
 
 end
 
-function SupportVectorMachineGradientVariantModel:update(lossGradientVector, hasBias, clearAllMatrices)
+function SupportVectorRegressionGradientVariantModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -160,7 +146,7 @@ function SupportVectorMachineGradientVariantModel:update(lossGradientVector, has
 
 	if (clearAllMatrices) then 
 
-		self.featureMatrix = nil 
+		self.featureMatrix = nil
 
 		self.lossFunctionDerivativeVector = nil
 
@@ -168,51 +154,53 @@ function SupportVectorMachineGradientVariantModel:update(lossGradientVector, has
 
 end
 
-function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
+function SupportVectorRegressionGradientVariantModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewSupportVectorMachineGradientVariantModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewSupportVectorRegressionGradientVariantModel = GradientMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewSupportVectorMachineGradientVariantModel, SupportVectorMachineGradientVariantModel)
+	setmetatable(NewSupportVectorRegressionGradientVariantModel, SupportVectorRegressionGradientVariantModel)
 	
-	NewSupportVectorMachineGradientVariantModel:setName("SupportVectorMachineGradientVariant")
+	NewSupportVectorRegressionGradientVariantModel:setName("SupportVectorRegressionGradientVariant")
 
-	NewSupportVectorMachineGradientVariantModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewSupportVectorRegressionGradientVariantModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
-	NewSupportVectorMachineGradientVariantModel.cValue = parameterDictionary.cValue or defaultCValue
-
-	NewSupportVectorMachineGradientVariantModel.Optimizer = parameterDictionary.Optimizer
-
-	NewSupportVectorMachineGradientVariantModel.Regularizer = parameterDictionary.Regularizer
+	NewSupportVectorRegressionGradientVariantModel.cValue = parameterDictionary.cValue or defaultCValue
 	
-	NewSupportVectorMachineGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+	NewSupportVectorRegressionGradientVariantModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
-	return NewSupportVectorMachineGradientVariantModel
+	NewSupportVectorRegressionGradientVariantModel.Optimizer = parameterDictionary.Optimizer
+
+	NewSupportVectorRegressionGradientVariantModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewSupportVectorRegressionGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+
+	return NewSupportVectorRegressionGradientVariantModel
 
 end
 
-function SupportVectorMachineGradientVariantModel:setOptimizer(Optimizer)
+function SupportVectorRegressionGradientVariantModel:setOptimizer(Optimizer)
 
 	self.Optimizer = Optimizer
 
 end
 
-function SupportVectorMachineGradientVariantModel:setRegularizer(Regularizer)
+function SupportVectorRegressionGradientVariantModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
 
 end
 
-function SupportVectorMachineGradientVariantModel:setSolver(Solver)
+function SupportVectorRegressionGradientVariantModel:setSolver(Solver)
 
 	self.Solver = Solver
 
 end
 
-function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVector)
+function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
@@ -231,11 +219,15 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local cValue = self.cValue
+	
+	local epsilon = self.epsilon
 
 	local Optimizer = self.Optimizer
-
+	
+	local functionToApply = function(errorValue) return ((errorValue > epsilon) and (errorValue - epsilon)) or ((errorValue < -epsilon) and (errorValue + epsilon)) or 0 end
+	
 	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
-
+	
 	local costArray = {}
 
 	local numberOfIterations = 0
@@ -263,16 +255,16 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 
 		end
+		
+		local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
-		local marginVector = AqwamTensorLibrary:multiply(labelVector, hypothesisVector)
+		local lossGradientVector = AqwamTensorLibrary:applyFunction(functionToApply, errorVector)
 		
-		local misclassifiedMaskVector = AqwamTensorLibrary:applyFunction(misclassificationMaskFunction, marginVector)
-		
-		local lossGradientVector = AqwamTensorLibrary:multiply(-cValue, labelVector, misclassifiedMaskVector)
+		lossGradientVector = AqwamTensorLibrary:multiply(cValue, lossGradientVector)
 
 		self:update(lossGradientVector, hasBias, true)
 
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 
 	if (self.isOutputPrinted) then
 
@@ -281,6 +273,8 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
 	
@@ -290,7 +284,7 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 
 end
 
-function SupportVectorMachineGradientVariantModel:predict(featureMatrix, returnOriginalOutput)
+function SupportVectorRegressionGradientVariantModel:predict(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -303,11 +297,9 @@ function SupportVectorMachineGradientVariantModel:predict(featureMatrix, returnO
 	end
 
 	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
-	
-	if (returnOriginalOutput) then return predictedVector end
 
-	return AqwamTensorLibrary:applyFunction(seperatorFunction, predictedVector)
+	return predictedVector
 
 end
 
-return SupportVectorMachineGradientVariantModel
+return SupportVectorRegressionGradientVariantModel

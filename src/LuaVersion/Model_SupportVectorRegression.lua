@@ -26,11 +26,11 @@
 
 --]]
 
-local AqwamTensorLibrary = require(s"AqwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary")
+local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary')
 
 local Solvers = script.Parent.Parent.Solvers
 
@@ -409,7 +409,7 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 		ModelParameters = self:update(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 
 	if (self.isOutputPrinted) then
 
@@ -419,9 +419,11 @@ function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
 	end
 	
-	self.ModelParameters = ModelParameters
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 	
 	if (self.autoResetSolvers) then self.Solver:reset() end
+	
+	self.ModelParameters = ModelParameters
 
 	return costArray
 

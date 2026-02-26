@@ -146,7 +146,7 @@ function IterativeBaseModel:checkIfTargetCostReached(cost)
 	
 end
 
-function IterativeBaseModel:checkIfCostIsNan(cost)
+function IterativeBaseModel:checkIfNan(cost)
 	
 	return (cost ~= cost)
 	

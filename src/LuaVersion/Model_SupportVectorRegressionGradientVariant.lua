@@ -264,7 +264,7 @@ function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelV
 
 		self:update(lossGradientVector, hasBias, true)
 
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 
 	if (self.isOutputPrinted) then
 

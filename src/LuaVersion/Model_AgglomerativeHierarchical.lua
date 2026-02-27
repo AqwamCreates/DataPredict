@@ -448,7 +448,7 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 			
 		end
 
-	until (numberOfCentroids == numberOfClusters) or (numberOfCentroids == 1) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfCentroids == numberOfClusters) or (numberOfCentroids == 1) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 	
 	if (self.isOutputPrinted) then
 
@@ -457,6 +457,8 @@ function AgglomerativeHierarchicalModel:train(featureMatrix)
 		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 
 	self.ModelParameters = centroidMatrix
 

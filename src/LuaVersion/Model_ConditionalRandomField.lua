@@ -274,7 +274,7 @@ function ConditionalRandomFieldModel:train(previousStateMatrix, currentStateMatr
 
 		end)
 
-		if (cost) then 
+		if (cost) then
 
 			table.insert(costArray, cost)
 

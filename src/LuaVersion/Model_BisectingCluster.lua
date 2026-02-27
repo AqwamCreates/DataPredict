@@ -364,7 +364,7 @@ function BisectingClusterModel:train(featureMatrix)
 
 		end
 		
-	until (#clusterInformationDictionaryArray == numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (#clusterInformationDictionaryArray == numberOfClusters) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 	
 	if (self.isOutputPrinted) then
 
@@ -373,6 +373,8 @@ function BisectingClusterModel:train(featureMatrix)
 		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 	
 	local centroidMatrix = {}
 	

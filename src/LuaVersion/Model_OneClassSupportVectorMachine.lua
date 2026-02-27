@@ -465,7 +465,7 @@ function OneClassOneClassSupportVectorMachineModel:train(featureMatrix, labelVec
 			
 		end
 
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 	
 	if (self.isOutputPrinted) then
 
@@ -475,9 +475,11 @@ function OneClassOneClassSupportVectorMachineModel:train(featureMatrix, labelVec
 
 	end
 	
-	self.ModelParameters = ModelParameters
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 	
 	if (self.autoResetSolvers) then self.Solver:reset() end
+	
+	self.ModelParameters = ModelParameters
 
 	return costArray
 

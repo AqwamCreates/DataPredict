@@ -234,11 +234,13 @@ function DensityBasedSpatialClusteringOfApplicationsWithNoiseModel:train(feature
 
 			self:printNumberOfIterationsAndCost(currentCorePointNumber, cost)
 
-			if self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
-
 		end
 		
+		if self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost) then break end
+		
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 	
 	if (self.isOutputPrinted) then
 

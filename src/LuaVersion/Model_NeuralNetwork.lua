@@ -1862,6 +1862,8 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 	local numberOfNeuronsAtFinalLayer = numberOfNeuronsArray[numberOfLayers] + hasBiasNeuronArray[numberOfLayers]
 	
 	local functionToApply = lossFunctionGradientList[self.costFunction]
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local numberOfIterations = 0
 
@@ -1915,9 +1917,17 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		self:update(lossGradientMatrix, true)
 
-	until (numberOfIterations == self.maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 
-	if (cost == math.huge) then warn("The model diverged. Please repeat the experiment again or change the argument values.") end
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 
 	if (self.autoResetOptimizers) then
 

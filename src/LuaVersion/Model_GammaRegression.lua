@@ -332,7 +332,7 @@ function GammaRegressionModel:train(featureMatrix, labelVector)
 
 		self:update(lossGradientVector, hasBias, true)
 
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 
 	if (self.isOutputPrinted) then
 
@@ -341,6 +341,8 @@ function GammaRegressionModel:train(featureMatrix, labelVector)
 		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
 	

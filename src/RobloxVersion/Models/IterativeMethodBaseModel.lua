@@ -34,6 +34,8 @@ IterativeBaseModel.__index = IterativeBaseModel
 
 setmetatable(IterativeBaseModel, BaseModel)
 
+local defaultAutoResetConvergenceCheck = true
+
 local defaultAutoResetSolvers = true
 
 function IterativeBaseModel.new(parameterDictionary)
@@ -71,6 +73,8 @@ function IterativeBaseModel.new(parameterDictionary)
 	NewBaseModel.currentNumberOfIterationsToCheckIfConverged = NewBaseModel:getValueOrDefaultValue(parameterDictionary.currentNumberOfIterationsToCheckIfConverged, 1)
 	
 	NewBaseModel.numberOfIterationsToCheckIfConverged = NewBaseModel:getValueOrDefaultValue(parameterDictionary.numberOfIterationsToCheckIfConverged, math.huge)
+	
+	NewBaseModel.autoResetConvergenceCheck = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetConvergenceCheck, defaultAutoResetSolvers)
 	
 	NewBaseModel.autoResetSolvers = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetSolvers, defaultAutoResetSolvers)
 
@@ -143,6 +147,12 @@ function IterativeBaseModel:checkIfTargetCostReached(cost)
 	if (not cost) then return false end
 	
 	return (cost >= self.targetCostLowerBound) and (cost <= self.targetCostUpperBound)
+	
+end
+
+function IterativeBaseModel:checkIfNan(cost)
+	
+	return (cost ~= cost)
 	
 end
 

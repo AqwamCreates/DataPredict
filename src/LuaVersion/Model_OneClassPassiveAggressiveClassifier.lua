@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-OneClassPassiveAggressiveClassifierModel = {}
+local OneClassPassiveAggressiveClassifierModel = {}
 
 OneClassPassiveAggressiveClassifierModel.__index = OneClassPassiveAggressiveClassifierModel
 
@@ -222,7 +222,7 @@ function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVect
 
 		end
 		
-	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 	
 	if (self.isOutputPrinted) then
 
@@ -231,6 +231,8 @@ function OneClassPassiveAggressiveClassifierModel:train(featureMatrix, labelVect
 		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 
 	self.ModelParameters = ModelParameters
 

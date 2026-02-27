@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local MatrixFactorizationBaseModel = require(script.Parent.MatrixFactorizationBaseModel)
+local MatrixFactorizationBaseModel = require("Model_MatrixFactorizationBaseModel")
 
 local SimonFunkMatrixFactorizationWithBiasesModel = {}
 

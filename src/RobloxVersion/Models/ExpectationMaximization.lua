@@ -608,7 +608,7 @@ function ExpectationMaximizationModel:train(featureMatrix)
 
 		end
 
-	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 	
 	if (self.isOutputPrinted) then
 
@@ -617,6 +617,8 @@ function ExpectationMaximizationModel:train(featureMatrix)
 		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 	
 	-- Storing the final subSumWeightMatrix and subSumWeightXMatrix to "freeze" them for future model training.
 	

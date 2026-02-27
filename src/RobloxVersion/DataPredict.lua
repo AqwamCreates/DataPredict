@@ -90,11 +90,9 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	WeightedLeastSquaresRegression = require(Models.WeightedLeastSquaresRegression),
 	
-	-- Classification - 14 Models
+	-- Classification - 13 Models
 	
 	BinaryRegression = require(Models.BinaryRegression),
-	
-	BinaryRegressionGaussNewtonVariant = require(Models.BinaryRegressionGaussNewtonVariant),
 	
 	PassiveAggressiveClassifier = require(Models.PassiveAggressiveClassifier),
 	

@@ -350,7 +350,7 @@ function SimonFunkMatrixFactorizationModel:train(userItemDictionaryDictionary)
 
 		self:update(lossGradientMatrix, true)
 
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 
 	if (self.isOutputPrinted) then
 

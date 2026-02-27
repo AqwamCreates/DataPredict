@@ -361,9 +361,9 @@ function OrderingPointsToIdentifyClusteringStructureModel:train(featureMatrix)
 
 			self:printNumberOfIterationsAndCost(pPointNumber, cost)
 
-			if self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) then break end
-
 		end
+		
+		if self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost) then break end
 		
 	end
 	
@@ -374,6 +374,8 @@ function OrderingPointsToIdentifyClusteringStructureModel:train(featureMatrix)
 		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 	
 	local clusterArrayArray = createClusterArrayArray(orderedPointArray, reachabilityDistanceArray, epsilonPrime)
 	

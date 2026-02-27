@@ -436,7 +436,7 @@ function FuzzyCMeansModel:train(featureMatrix)
 
 		end
 		
-	until (numberOfIterations == maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost)
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 	
 	if (self.isOutputPrinted) then
 
@@ -445,6 +445,8 @@ function FuzzyCMeansModel:train(featureMatrix)
 		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 	
 	self.ModelParameters = centroidMatrix
 	

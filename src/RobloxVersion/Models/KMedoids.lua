@@ -287,6 +287,8 @@ function KMedoidsModel:train(featureMatrix)
 	local costArray = {}
 
 	local numberOfIterations = 0
+	
+	local stopIterating = false
 
 	local previousCost = calculateCost(distanceMatrix)
 	
@@ -341,16 +343,18 @@ function KMedoidsModel:train(featureMatrix)
 				table.insert(costArray, currentCost)
 
 				self:printNumberOfIterationsAndCost(numberOfIterations, currentCost)
+				
+				stopIterating = (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) or self:checkIfNan(currentCost)
 
-				if (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
+				if (stopIterating) then break end
 				
 			end
 
-			if (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost) then break end
+			if (stopIterating) then break end
 			
 		end
 		
-	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(currentCost) or self:checkIfConverged(currentCost)
+	until (stopIterating)
 	
 	if (self.isOutputPrinted) then
 
@@ -359,6 +363,8 @@ function KMedoidsModel:train(featureMatrix)
 		if (currentCost ~= currentCost) then warn("The model produced nan (not a number) values.") end
 
 	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 	
 	self.ModelParameters = medoidMatrix
 	

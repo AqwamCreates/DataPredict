@@ -74,7 +74,7 @@ function IterativeBaseModel.new(parameterDictionary)
 	
 	NewBaseModel.numberOfIterationsToCheckIfConverged = NewBaseModel:getValueOrDefaultValue(parameterDictionary.numberOfIterationsToCheckIfConverged, math.huge)
 	
-	NewBaseModel.autoResetConvergenceCheck = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetConvergenceCheck, defaultAutoResetSolvers)
+	NewBaseModel.autoResetConvergenceCheck = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetConvergenceCheck, defaultAutoResetConvergenceCheck)
 	
 	NewBaseModel.autoResetSolvers = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetSolvers, defaultAutoResetSolvers)
 

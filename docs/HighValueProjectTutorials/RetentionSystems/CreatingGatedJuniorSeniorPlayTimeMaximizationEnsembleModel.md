@@ -96,7 +96,7 @@ table.insert(JuniorClassesList, "ConsultSenior")
 
 ```lua
 
-local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
+local TimeToLeavePredictionModel = DataPredict.Models.GammaRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
 
 local ProbabilityToLeavePredictionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01, binaryFunction = "ComplementaryLogLog"})
 

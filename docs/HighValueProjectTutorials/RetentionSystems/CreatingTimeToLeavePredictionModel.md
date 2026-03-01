@@ -16,9 +16,9 @@ Before we train our model, we will first need to construct a regression model as
 
 local DataPredict = require(DataPredict)
 
--- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+-- For incremental learning purposes, set the maximumNumberOfIterations to 1 to avoid fully train on the current data. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
 
-local LeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local LeavePredictionModel = DataPredict.Models.GammaRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
 
 ```
 

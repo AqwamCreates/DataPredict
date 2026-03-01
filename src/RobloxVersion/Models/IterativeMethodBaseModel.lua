@@ -188,7 +188,7 @@ end
 
 function IterativeBaseModel:baseModelWait(waitDuration)
 	
-	if (type(waitDuration) == "nil") or (waitDuration == false) then return nil end
+	if (not waitDuration) then return end
 	
 	if (type(waitDuration) == "number") then
 		

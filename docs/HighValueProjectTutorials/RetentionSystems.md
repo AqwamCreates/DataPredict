@@ -35,8 +35,6 @@
 
 * [Creating Deep Play Time Maximization Model](RetentionSystems/CreatingDeepPlayTimeMaximizationModel.md)
 
-  * The model chooses actions or events that maximizes play time.
-
   * Have higher play time potential due to its ability to exploit and explore than the other four models, but tend to be risky to use.
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™, especially if custom events are associated with the model's output.

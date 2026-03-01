@@ -74,7 +74,7 @@ function IterativeBaseModel.new(parameterDictionary)
 	
 	NewBaseModel.numberOfIterationsToCheckIfConverged = NewBaseModel:getValueOrDefaultValue(parameterDictionary.numberOfIterationsToCheckIfConverged, math.huge)
 	
-	NewBaseModel.autoResetConvergenceCheck = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetConvergenceCheck, defaultAutoResetSolvers)
+	NewBaseModel.autoResetConvergenceCheck = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetConvergenceCheck, defaultAutoResetConvergenceCheck)
 	
 	NewBaseModel.autoResetSolvers = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetSolvers, defaultAutoResetSolvers)
 
@@ -188,7 +188,7 @@ end
 
 function IterativeBaseModel:baseModelWait(waitDuration)
 	
-	if (type(waitDuration) == "nil") or (waitDuration == false) then return nil end
+	if (not waitDuration) then return end
 	
 	if (type(waitDuration) == "number") then
 		

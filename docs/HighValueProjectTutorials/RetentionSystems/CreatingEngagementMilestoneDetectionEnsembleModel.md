@@ -52,9 +52,9 @@ end
 
 ```lua
 
-local TimeToLeavePredictionModel = DataPredict.Models.LinearRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
+local TimeToLeavePredictionModel = DataPredict.Models.GammaRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
 
-local ProbabilityToLeavePredictionModel = DataPredict.Models.LogisticRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01})
+local ProbabilityToLeavePredictionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 100, learningRate = 0.01, binaryFunction = "ComplementaryLogLog"})
 
 local LeftToEarlyPredictionModel = DataPredict.Models.SupportVectorMachine.new({maximumNumberOfIterations = 100, beta = 1, kernelFunction = "RadialBasisFunction"})
 

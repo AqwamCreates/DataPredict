@@ -11,3 +11,5 @@ The three blocks in the icons represents these meanings, which also show's the D
  Blue colour is chosen as it represents knowledge. This represents the data.
 
 White octagon makes us focus on the blue blocks. This represent the focus on the components of this library.
+
+The blue square with rounded corners behind the white octagon makes it look like you're peeking into a hole.

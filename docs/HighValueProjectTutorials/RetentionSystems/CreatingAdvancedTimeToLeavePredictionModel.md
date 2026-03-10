@@ -47,7 +47,7 @@ local playerDataVector = {
         1, -- We're just adding 1 here to add "bias".
         numberOfCurrencyAmount,
         numberOfItemsAmount,
-        math.log(timePlayedInCurrentSession), -- Compared to our simpler models, we're adding natural logariithm transformation here for better view of how this feature interacts with others.
+        math.log(timePlayedInCurrentSession), -- Compared to our simpler models, we're adding natural logarithm transformation here for better view of how this feature interacts with others.
         math.log(timePlayedInAllSessions),
         healthAmount
     }

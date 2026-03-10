@@ -26,7 +26,7 @@ local DataPredict = require(DataPredict)
 
 --]]
 
-local LeavePredictionModel = DataPredict.Models.GammaRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3, latentFeatureCount = 0.3})
+local LeavePredictionModel = DataPredict.Models.FactorizationMachine.new({maximumNumberOfIterations = 1, learningRate = 0.3, latentFeatureCount = 0.3})
 
 ```
 

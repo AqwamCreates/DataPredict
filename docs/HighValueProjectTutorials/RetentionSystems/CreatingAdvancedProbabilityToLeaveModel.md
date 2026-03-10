@@ -19,7 +19,15 @@ Before we train our model, we will first need to choose a model as shown below.
 
 local DataPredict = require(DataPredict)
 
--- For single data point purposes, set the maximumNumberOfIterations to 1 to avoid overfitting. Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+--[[
+
+  For incremental learning purposes, set the maximumNumberOfIterations to 1 to avoid fully train on the current data.
+
+  Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.
+
+  Also please to make sure to set latentFactorCount to be less than the number of features to avoid overfitting.
+
+--]]
 
 local LeavePredictionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3, binaryFunction = "ComplementaryLogLog"})
 

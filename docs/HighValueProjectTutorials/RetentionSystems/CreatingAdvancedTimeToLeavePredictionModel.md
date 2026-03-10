@@ -120,13 +120,13 @@ local timeToLeave = os.time() - recordedTime
 
 local logTimeToLeave = math.log(timeToLeave) 
 
-local wrappedTimeToLeave = {
+local wrappedLogTimeToLeave = {
 
     {logTimeToLeave}
 
 } -- Need to wrap this as our models can only accept matrices.
 
-local costArray = LeavePredictionModel:train(playerDataVector, wrappedTimeToLeave)
+local costArray = LeavePredictionModel:train(playerDataVector, wrappedLogTimeToLeave)
 
 ```
 

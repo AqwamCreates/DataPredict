@@ -37,15 +37,15 @@ Below, we will show you how to create this:
 
 ```lua
 
--- We're just adding 1 here to add "bias".
+```lua
 
 local playerDataVector = {
     {
-        1,
+        1, -- We're just adding 1 here to add "bias".
         numberOfCurrencyAmount,
         numberOfItemsAmount,
-        timePlayedInCurrentSession,
-        timePlayedInAllSessions,
+        math.log(timePlayedInCurrentSession), -- Compared to our simpler models, we're adding natural logariithm transformation here for better view of how this feature interacts with others.
+        math.log(timePlayedInAllSessions),
         healthAmount
     }
 }
@@ -71,8 +71,8 @@ local function snapshotData()
     1,
     numberOfCurrencyAmount,
     numberOfItemsAmount,
-    timePlayedInCurrentSession,
-    timePlayedInAllSessions,
+    math.log(timePlayedInCurrentSession),
+     math.log(timePlayedInAllSessions),
     healthAmount
 
   }

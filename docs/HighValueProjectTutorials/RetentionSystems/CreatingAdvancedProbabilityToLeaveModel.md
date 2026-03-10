@@ -20,7 +20,7 @@ local DataPredict = require(DataPredict)
 
 --]]
 
-local LeavePredictionModel = DataPredict.Models.BinaryRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3, latentFactorCount = 3, binaryFunction = "ComplementaryLogLog"})
+local LeavePredictionModel = DataPredict.Models.FactorizationMachine.new({maximumNumberOfIterations = 1, learningRate = 0.3, latentFactorCount = 3, binaryFunction = "ComplementaryLogLog"})
 
 ```
 

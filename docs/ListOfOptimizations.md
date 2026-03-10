@@ -4,7 +4,7 @@
 
 * Used tables of tables and external functions for efficient tensor calculations instead of space-intensive object-oriented formats.
 
-* Some models can use solvers and these solvers tend to cache the result of repetitive matrix calculations. This allows the solvers to "shortcut" certain matrix calculations by retrieving the precomputed matrix from the cache.
+* Some models can use solvers and these solvers tend to cache the result of repetitive matrix calculations. This allows the solvers to "shortcut" certain matrix calculations by retrieving the precomputed matrix from the cache. The caching generally happens for every train() function call.
 
 ## Mathematical Optimizations
 

@@ -54,8 +54,6 @@
  
       * “Directly use DataPredict as-is, supported by original research.”
 
-   * You may negotiate for bundled discount, where for five games, I will charge you fixed 1% each. For 10 games, I will charge you for fixed 0.5% each.    
-
 * [White-Label License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement%20-%20White%20Label.docx)
 
     * Includes DataPredict™, DataPredict™ Neural and DataPredict™ Axon.

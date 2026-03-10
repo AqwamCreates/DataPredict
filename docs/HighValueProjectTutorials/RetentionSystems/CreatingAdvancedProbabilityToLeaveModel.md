@@ -217,7 +217,7 @@ In other to produce predictions from our model, we must perform this operation:
 
 ```lua
 
-local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, math.log(timePlayedInCurrentSession), math.log(timePlayedInAllSessions), healthAmount}}
 
 local predictedLabelVector = LeavePredictionModel:predict(currentPlayerDataVector)
 

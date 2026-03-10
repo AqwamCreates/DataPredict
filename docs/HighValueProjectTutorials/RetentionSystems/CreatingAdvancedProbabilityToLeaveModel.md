@@ -4,15 +4,6 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 ## Setting Up
 
-Before we train our model, we will first need to choose a model as shown below.
-
-| Model                           | Advantages                                                                                      | Disadvantages                                                                       |
-|---------------------------------|-------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
-| Binary Regression               | Fast and simple.                                                                                | Requires a lot of data.                                                             |
-| Factorization Machine           | Captures interaction between features; good for sparse data.                                    | Uses more computational resources.                                                  |
-| Factorized Pairwise Interaction | Captures interaction between features; good for sparse data; faster than factorization machine. | Ignores linear combination between features and weights.                            |
-| Neural Network                  | Captures complex patterns.                                                                      | Requires a lot of data; uses more computational resources as more layers are added. |
-
   * If you’re modeling the probability that a player leaves over time, Complementary Log–Log is often a better choice as a binary function output because it naturally models time-to-event processes where the probability of leaving increases asymmetrically as time passes.
 
 ```lua

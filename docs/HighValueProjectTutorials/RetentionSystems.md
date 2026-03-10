@@ -101,7 +101,7 @@
 
 ## Pre-Mortem Detection Models
 
-* [Creating Churn Detection Model](RetentionSystems/CreatingChurnDetectionModel.md)
+* [Creating Churn Area Detection Model](RetentionSystems/CreatingChurnAreaDetectionModel.md)
 
   * Similar to probability-to-leave model, but instead of calculating the probability of leaving, it would identify a player's gameplay red zones before the player leaves.
 

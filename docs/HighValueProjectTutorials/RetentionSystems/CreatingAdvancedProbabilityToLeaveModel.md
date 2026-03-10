@@ -72,7 +72,7 @@ local function snapshotData()
     numberOfCurrencyAmount,
     numberOfItemsAmount,
     math.log(timePlayedInCurrentSession),
-     math.log(timePlayedInAllSessions),
+    math.log(timePlayedInAllSessions),
     healthAmount
 
   }

@@ -34,6 +34,8 @@
 
     * For organizations that creates more than 3K USD of gross revenue within 365 days (not per 365 days) or business-to-business, you agree that you will allow me to release your assets interacting with these libraries under the Apache 2.0 license.
 
+    * Any organizations that recently transitioned out to 3K USD or business-to-business, you have a grace period of 30 days to continue complying with the original license, get a commercial license or remove DataPredict entirely.
+
    * Requires disclosure of DataPredict™ to the public.
 
    * Includes access to future updates and fixes.

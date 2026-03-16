@@ -32,11 +32,11 @@ local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
 local Solvers = script.Parent.Parent.Solvers
 
-local SupportVectorMachineGradientVariantModel = {}
+local RankingSupportVectorMachineGradientVariantModel = {}
 
-SupportVectorMachineGradientVariantModel.__index = SupportVectorMachineGradientVariantModel
+RankingSupportVectorMachineGradientVariantModel.__index = RankingSupportVectorMachineGradientVariantModel
 
-setmetatable(SupportVectorMachineGradientVariantModel, GradientMethodBaseModel)
+setmetatable(RankingSupportVectorMachineGradientVariantModel, GradientMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -64,7 +64,51 @@ local function seperatorFunction(x)
 
 end
 
-function SupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector, labelVector, hasBias)
+local function convertDatasetToPairedComparisonDataset(featureMatrix, labelVector)
+
+	local pairedComparisonFeatureMatrix = {}
+	
+	local currentComparisonCount = 0
+	
+	local primaryFeatureVector
+	
+	local primaryLabelValue
+	
+	local secondaryFeatureVector
+	
+	for i, unwrappedPrimaryFeatureVector in ipairs(featureMatrix) do
+	
+		primaryFeatureVector = {unwrappedPrimaryFeatureVector}
+		
+		primaryLabelValue = labelVector[i][1]
+	
+		for j, unwrappedSecondaryFeatureVector in ipairs(featureMatrix) do
+		
+			if (i ~= j) then
+			
+				if (primaryLabelValue > labelVector[j][1]) then
+				
+					currentComparisonCount = currentComparisonCount + 1
+					
+					secondaryFeatureVector = {unwrappedSecondaryFeatureVector}
+					
+					pairedComparisonFeatureMatrix[currentComparisonCount] = AqwamTensorLibrary:subtract(primaryFeatureVector, secondaryFeatureVector)[1]
+				
+				end
+			
+			end
+		
+		end
+	
+	end
+	
+	local pairedComparisonLabelVector = AqwamTensorLibrary:createTensor({#pairedComparisonFeatureMatrix, 1}, 1)
+
+	return pairedComparisonFeatureMatrix, pairedComparisonLabelVector
+
+end
+
+function RankingSupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -88,7 +132,7 @@ function SupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector
 
 end
 
-function SupportVectorMachineGradientVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+function RankingSupportVectorMachineGradientVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 
 	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
@@ -98,7 +142,7 @@ function SupportVectorMachineGradientVariantModel:calculateHypothesisVector(feat
 
 end
 
-function SupportVectorMachineGradientVariantModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+function RankingSupportVectorMachineGradientVariantModel:calculateLossFunctionDerivativeVector(lossGradientVector)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -110,7 +154,7 @@ function SupportVectorMachineGradientVariantModel:calculateLossFunctionDerivativ
 
 end
 
-function SupportVectorMachineGradientVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
+function RankingSupportVectorMachineGradientVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
 	
@@ -146,7 +190,7 @@ function SupportVectorMachineGradientVariantModel:gradientDescent(lossFunctionDe
 
 end
 
-function SupportVectorMachineGradientVariantModel:update(lossGradientVector, hasBias, clearAllMatrices)
+function RankingSupportVectorMachineGradientVariantModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -166,7 +210,7 @@ function SupportVectorMachineGradientVariantModel:update(lossGradientVector, has
 
 end
 
-function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
+function RankingSupportVectorMachineGradientVariantModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
@@ -174,7 +218,7 @@ function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
 
 	local NewSupportVectorMachineGradientVariantModel = GradientMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewSupportVectorMachineGradientVariantModel, SupportVectorMachineGradientVariantModel)
+	setmetatable(NewSupportVectorMachineGradientVariantModel, RankingSupportVectorMachineGradientVariantModel)
 	
 	NewSupportVectorMachineGradientVariantModel:setName("SupportVectorMachineGradientVariant")
 
@@ -192,25 +236,25 @@ function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
 
 end
 
-function SupportVectorMachineGradientVariantModel:setOptimizer(Optimizer)
+function RankingSupportVectorMachineGradientVariantModel:setOptimizer(Optimizer)
 
 	self.Optimizer = Optimizer
 
 end
 
-function SupportVectorMachineGradientVariantModel:setRegularizer(Regularizer)
+function RankingSupportVectorMachineGradientVariantModel:setRegularizer(Regularizer)
 
 	self.Regularizer = Regularizer
 
 end
 
-function SupportVectorMachineGradientVariantModel:setSolver(Solver)
+function RankingSupportVectorMachineGradientVariantModel:setSolver(Solver)
 
 	self.Solver = Solver
 
 end
 
-function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVector)
+function RankingSupportVectorMachineGradientVariantModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
@@ -239,6 +283,8 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 	local numberOfIterations = 0
 	
 	local cost
+	
+	featureMatrix, labelVector = convertDatasetToPairedComparisonDataset(featureMatrix, labelVector)
 
 	repeat
 
@@ -290,7 +336,7 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 
 end
 
-function SupportVectorMachineGradientVariantModel:predict(featureMatrix, returnOriginalOutput)
+function RankingSupportVectorMachineGradientVariantModel:predict(featureMatrix, returnOriginalOutput)
 	
 	local ModelParameters = self.ModelParameters
 	
@@ -310,4 +356,4 @@ function SupportVectorMachineGradientVariantModel:predict(featureMatrix, returnO
 
 end
 
-return SupportVectorMachineGradientVariantModel
+return RankingSupportVectorMachineGradientVariantModel

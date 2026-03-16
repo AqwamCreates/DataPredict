@@ -30,8 +30,6 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
-local distanceFunctionDictionary = require("Core_DistanceFunctionDictionary')
-
 local Solvers = script.Parent.Parent.Solvers
 
 local SupportVectorRegressionModel = {}

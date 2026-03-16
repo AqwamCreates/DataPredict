@@ -17,9 +17,10 @@
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
 | [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
+| [Ranking](#ranking)                                               | Ranking                                         | 2     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 104   |
+| Total                                                             |                                                 | 106   |
 
 ### Legend
 
@@ -45,7 +46,7 @@
 
   * Contains most of the deep reinforcement learning and generative models listed here.
 
-* Currently, DataPredict™ has ~93% (97 out of 104) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~93% (99 out of 106) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
 
 * No dimensionality reduction models due to not being suitable for game-related use cases. They tend to be computationally expensive and are only useful when a full dataset is collected. This can be offset by choosing proper features and remove the unnecessary ones.
 
@@ -218,6 +219,15 @@
 | [SimonFunkMatrixFactorization](Models/SimonFunkMatrixFactorization.md)                     | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
 | [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md) | Funk MF         | 🟢 🟡 🛡️  | Early Netflix-Style User-Item Recommendation |
 | [TwoTower](Models/TwoTower.md)                                                             | None            | 🟢 🟡     | YouTube-Style User-Item Recommendation        |
+
+## Ranking
+
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+
+| Model                                                                                              | Alternate Names | Properties | Use Cases                     |
+|----------------------------------------------------------------------------------------------------|-----------------|------------|-------------------------------|
+| [RankingSupportVectorMachine](Models/RankingSupportVectorMachine.md)                               | Ranking SVM     | 💾 🟡     | Margin-Based Ranking          |
+| [RankingSupportVectorMachineGradientVariant](Models/RankingSupportVectorMachineGradientVariant.md) | Ranking SVM     | 🟢 🟡     | Margin-Based Ranking          |
 
 ## Generative
 

@@ -63,7 +63,7 @@ Number of algorithms per model type:
 | [Ranking](#ranking)                                               | Ranking                                         | 1     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 104   |
+| Total                                                             |                                                 | 105   |
 
 --------------------------------------------------------------------
 

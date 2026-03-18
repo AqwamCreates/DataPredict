@@ -50,7 +50,7 @@ local function tweedieLossFunctionToApply(h, y, power)
 	
 	if (power == 0) then return math.pow((h - y), 2) end -- Linear special case.
 	
-	if (power == 1) then return (2 * (y * math.log (y / h) - y + h)) end -- Poisson special case.
+	if (power == 1) then return (2 * (y * math.log(y / h) - y + h)) end -- Poisson special case.
 	
 	if (power == 2) then -- Gamma special case.
 		

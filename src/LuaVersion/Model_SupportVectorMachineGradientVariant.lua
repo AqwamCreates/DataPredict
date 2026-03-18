@@ -89,12 +89,14 @@ function SupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector
 	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisVector, labelVector)
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
+	
+	totalCost = self.cValue * totalCost
 
 	local Regularizer = self.Regularizer
 
 	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
 
-	local averageCost = (self.cValue * totalCost) / #labelVector
+	local averageCost = totalCost / #labelVector
 
 	return averageCost
 

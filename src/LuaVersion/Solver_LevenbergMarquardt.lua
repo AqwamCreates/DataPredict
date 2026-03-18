@@ -54,33 +54,33 @@ function LevenbergMarquardtSolver.new(parameterDictionary)
 		
 		local isLinearInput = (not NewLevenbergMarquardtSolver.isNonLinearInput)
 		
-		local pMatrix = (isLinearInput and NewLevenbergMarquardtSolver.cache)
+		local pseudoInverseMatrix = (isLinearInput and NewLevenbergMarquardtSolver.cache)
 
-		if (not pMatrix) then
+		if (not pseudoInverseMatrix) then
 
 			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
 
-			pMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
 			
-			local pMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(pMatrix)
+			local pMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(pseudoInverseMatrix)
 			
 			local diagonalMatrix = AqwamTensorLibrary:createIdentityTensor(pMatrixDimensionSizeArray, NewLevenbergMarquardtSolver.lambda)
 			
-			pMatrix = AqwamTensorLibrary:add(pMatrix, diagonalMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:add(pseudoInverseMatrix, diagonalMatrix)
 
-			pMatrix = AqwamTensorLibrary:inverse(pMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:inverse(pseudoInverseMatrix)
 			
 			-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
 			
-			if (not pMatrix) then return AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(weightMatrix), 0) end
+			if (not pseudoInverseMatrix) then return AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(weightMatrix), 0) end
 
-			pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, transposedFirstDerivativeMatrix)
 			
-			if (isLinearInput) then NewLevenbergMarquardtSolver.cache = pMatrix end
+			if (isLinearInput) then NewLevenbergMarquardtSolver.cache = pseudoInverseMatrix end
 
 		end
 
-		return AqwamTensorLibrary:dotProduct(pMatrix, firstDerivativeLossMatrix)
+		return AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, firstDerivativeLossMatrix)
 		
 	end)
 	

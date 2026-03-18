@@ -106,19 +106,11 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 }
 
-local costFunctionList = {
+local lossFunctionList = {
 	
 	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return math.pow((generatedLabelValue - labelValue), 2) end,
 	
 	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.abs(generatedLabelValue - labelValue) end,
-	
-	["BinaryCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end,
-	
-	["CategoricalCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue)) end,
-	
-	["HingeLoss"] = function(generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end,
-	
-	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
 	
 	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log(y / h) - y + h)) end,
 
@@ -129,6 +121,14 @@ local costFunctionList = {
 		return (2 * (y * math.log(ratio) - ratio - 1)) 
 
 	end,
+	
+	["BinaryCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end,
+	
+	["CategoricalCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue)) end,
+	
+	["HingeLoss"] = function(generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end,
+	
+	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
 	
 }
 
@@ -299,6 +299,10 @@ local lossFunctionGradientList = {
 	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return (2 * (generatedLabelValue - labelValue)) end,
 
 	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.sign(generatedLabelValue - labelValue) end,
+	
+	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
+
+	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
 
 	["BinaryCrossEntropy"] = function (generatedLabelValue, labelValue) return ((generatedLabelValue - labelValue) / (generatedLabelValue * (1 - generatedLabelValue))) end,
 
@@ -321,10 +325,6 @@ local lossFunctionGradientList = {
 		return -(2 * y * scale)
 
 	end,
-	
-	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
-
-	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
 	
 }
 
@@ -1076,7 +1076,7 @@ function NeuralNetworkModel:calculateCost(hypothesisMatrix, logisticMatrix)
 
 	local ModelParameters = self.ModelParameters
 	
-	local functionToApply = costFunctionList[self.costFunction]
+	local functionToApply = lossFunctionList[self.costFunction]
 	
 	local costVector = AqwamTensorLibrary:applyFunction(functionToApply, hypothesisMatrix, logisticMatrix)
 

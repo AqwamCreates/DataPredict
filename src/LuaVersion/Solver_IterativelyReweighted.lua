@@ -48,9 +48,9 @@ function IterativelyReweightedSolver.new(parameterDictionary)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinear = NewIterativelyReweightedSolver.isLinear
+		local isLinearInput = (not NewIterativelyReweightedSolver.isNonLinearInput)
 		
-		local transposedFirstDerivativeMatrix = (isLinear and NewIterativelyReweightedSolver.cache)
+		local transposedFirstDerivativeMatrix = (isLinearInput and NewIterativelyReweightedSolver.cache)
 		
 		local numberOfdata = AqwamTensorLibrary:getDimensionSizeArray(firstDerivativeLossMatrix)[1]
 		
@@ -60,7 +60,7 @@ function IterativelyReweightedSolver.new(parameterDictionary)
 
 			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
 			
-			if (isLinear) then NewIterativelyReweightedSolver.cache = transposedFirstDerivativeMatrix end
+			if (isLinearInput) then NewIterativelyReweightedSolver.cache = transposedFirstDerivativeMatrix end
 
 		end
 		
@@ -78,7 +78,7 @@ function IterativelyReweightedSolver.new(parameterDictionary)
 		
 		local firstDerivativeLossVector
 		
-		local pMatrix
+		local pseudoInverseMatrix
 		
 		local weightChangeVector
 		
@@ -90,15 +90,15 @@ function IterativelyReweightedSolver.new(parameterDictionary)
 			
 			for dataIndex, unwrappedErrorVector in ipairs(firstDerivativeLossVector) do diagonalMatrix[dataIndex][dataIndex] = unwrappedErrorVector[1] end
 			
-			pMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, diagonalMatrix, firstDerivativeMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, diagonalMatrix, firstDerivativeMatrix)
 			
-			pMatrix = AqwamTensorLibrary:inverse(pMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:inverse(pseudoInverseMatrix)
 			
 			-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
 			
-			if (pMatrix) then
+			if (pseudoInverseMatrix) then
 				
-				weightChangeVector = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix, diagonalMatrix, firstDerivativeLossVector)
+				weightChangeVector = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, transposedFirstDerivativeMatrix, diagonalMatrix, firstDerivativeLossVector)
 				
 			else
 				

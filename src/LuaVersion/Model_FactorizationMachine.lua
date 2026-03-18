@@ -154,7 +154,9 @@ local lossFunctionGradientList = {
 
 	["SquaredHingeLoss"] = function (h, y)
 
-		local scale = (((h * y) < 1) and 1) or 0
+		local margin = 1 - (h * y)
+		
+		local scale = ((margin > 0) and margin) or 0
 
 		return -(2 * y * scale)
 

@@ -52,15 +52,9 @@ local function huberLossFunctionToApply(h, y, delta)
 	
 	local absoluteErrorValue = math.abs(errorValue)
 
-	if (absoluteErrorValue <= delta) then
+	if (absoluteErrorValue <= delta) then return (math.pow(errorValue, 2) / 2) end
 
-		return (math.pow(errorValue, 2) / 2)
-
-	else
-		
-		return (delta * (absoluteErrorValue - (delta / 2)))
-
-	end
+	return (delta * (absoluteErrorValue - (delta / 2)))
 	
 end
 
@@ -70,15 +64,9 @@ local function huberLossFunctionGradientToApply(h, y, delta)
 
 	local absoluteErrorValue = math.abs(errorValue)
 
-	if (absoluteErrorValue <= delta) then
+	if (absoluteErrorValue <= delta) then return errorValue end
 
-		return errorValue
-
-	else
-
-		return (delta * math.sign(errorValue))
-
-	end
+	return (delta * math.sign(errorValue))
 	
 end
 

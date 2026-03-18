@@ -40,6 +40,8 @@ local defaultLabelOutput = "One"
 
 local defaultSamplingProbability = 1
 
+local defaultUseNegativeValueBinaryLabel = false
+
 local labelOutputFunctionList = {
 	
 	["One"] = function(primaryLabelValue, secondaryLabelValue) return math.sign(primaryLabelValue - secondaryLabelValue) end,
@@ -64,6 +66,8 @@ function PairwiseRankingDatasetCreator.new(parameterDictionary)
 	
 	NewPairwiseRankingDatasetCreator.samplingProbability = parameterDictionary.samplingProbability or defaultSamplingProbability
 	
+	NewPairwiseRankingDatasetCreator.useNegativeValueBinaryLabel = NewPairwiseRankingDatasetCreator:getValueOrDefaultValue(parameterDictionary.useNegativeValueBinaryLabel or defaultUseNegativeValueBinaryLabel)
+	
 	return NewPairwiseRankingDatasetCreator
 	
 end
@@ -75,6 +79,10 @@ function PairwiseRankingDatasetCreator:createDataset(featureMatrix, labelVector)
 	if (not labelOutputFunctionToApply) then error("Invalid label output.") end
 	
 	local samplingProbability = self.samplingProbability
+	
+	local useNegativeValueBinaryLabel = self.useNegativeValueBinaryLabel
+	
+	local useZeroValueBinaryLabel = (not useNegativeValueBinaryLabel)
 	
 	local pairwiseRankingFeatureMatrix = {}
 	
@@ -119,6 +127,12 @@ function PairwiseRankingDatasetCreator:createDataset(featureMatrix, labelVector)
 						pairwiseRankingFeatureMatrix[currentComparisonCount] = AqwamTensorLibrary:subtract(primaryFeatureVector, secondaryFeatureVector)[1]
 
 						pairwiseRankingLabelValue = labelOutputFunctionToApply(primaryLabelValue, secondaryLabelValue)
+						
+						if (useZeroValueBinaryLabel) then
+							
+							if (pairwiseRankingLabelValue < 0) then pairwiseRankingLabelValue = 0 end
+							
+						end
 
 						pairwiseRankingLabelVector[currentComparisonCount] = {pairwiseRankingLabelValue}
 

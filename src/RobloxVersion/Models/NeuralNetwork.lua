@@ -120,7 +120,7 @@ local costFunctionList = {
 	
 	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
 	
-	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log (y / h) - y + h)) end,
+	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log(y / h) - y + h)) end,
 
 	["MeanGammaDeviance"] = function (h, y) 
 

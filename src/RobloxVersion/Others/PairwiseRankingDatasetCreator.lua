@@ -82,6 +82,8 @@ function PairwiseRankingDatasetCreator:createDataset(featureMatrix, labelVector)
 	
 	local useNegativeValueBinaryLabel = self.useNegativeValueBinaryLabel
 	
+	local useZeroValueBinaryLabel = (not useNegativeValueBinaryLabel)
+	
 	local pairwiseRankingFeatureMatrix = {}
 	
 	local pairwiseRankingLabelVector = {}
@@ -126,7 +128,7 @@ function PairwiseRankingDatasetCreator:createDataset(featureMatrix, labelVector)
 
 						pairwiseRankingLabelValue = labelOutputFunctionToApply(primaryLabelValue, secondaryLabelValue)
 						
-						if (not useNegativeValueBinaryLabel) then
+						if (useZeroValueBinaryLabel) then
 							
 							if (pairwiseRankingLabelValue < 0) then pairwiseRankingLabelValue = 0 end
 							

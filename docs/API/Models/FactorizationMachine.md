@@ -33,6 +33,7 @@ FactorizationMachine.new(maximumNumberOfIterations: integer, learningRate: numbe
 | Function            | Output Range | Skewness              | Use Cases                                                                  |
 |---------------------|--------------|-----------------------|----------------------------------------------------------------------------|
 | None (Default)      | (-∞, ∞)      | Symmetric             | Rating Prediction                                                          |
+| Exponent            | (0, ∞)       | Right-Skewed          | Rate-Based And Count-Based Prediction                                      |
 | Logistic            | (0, 1)       | Symmetric             | Player Choice (A/B), Engagement Prediction, Click-Through Rates            |
 | HardSigmoid         | (0, 1)       | Symmetric             | Same As Logistic, But Mobile / Real-Time Prediction                        |
 | Probit              | (0, 1)       | Symmetric             | Skill-Based Success, Ability Checks, Normally Distributed Traits           |
@@ -50,6 +51,7 @@ FactorizationMachine.new(maximumNumberOfIterations: integer, learningRate: numbe
 | MeanSquaredError (Default) | (-∞, ∞)                                                    | [0, ∞)       | Quadratic penalty, sensitive to outliers        | Regression with normally distributed errors, when outliers are minimal |
 | MeanAbsoluteError          | (-∞, ∞)                                                    | [0, ∞)       | Linear penalty, robust to outliers              | Robust regression, when dataset contains outliers, median prediction   |
 | HingeLoss                  | (-∞, ∞)                                                    | (0, ∞)       | Creates max-margin decision boundary            | Maximum margin classification, text categorization                     |
+| SquaredHingeLoss           | (-∞, ∞)                                                    | (0, ∞)       | Creates sensitive max-margin decision boundary  | Sensitive maximum margin classification, text categorization                     |
 | BinaryCrossEntropy         | (0, 1)                                                     | (0, ∞)       | Penalizes confident wrong predictions heavily   | Probabilistic-based classification                                     |
 
 #### Returns:

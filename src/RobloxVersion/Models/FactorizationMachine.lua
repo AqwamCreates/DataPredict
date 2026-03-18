@@ -123,10 +123,10 @@ local binaryFunctionGradientList = {
 }
 
 local lossFunctionList = {
+	
+	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
 
 	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
-
-	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
 	
 	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log(y / h) - y + h)) end,
 
@@ -147,10 +147,10 @@ local lossFunctionList = {
 }
 
 local lossFunctionGradientList = {
+	
+	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 
 	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
-
-	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 	
 	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
 

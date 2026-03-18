@@ -121,6 +121,8 @@ local costFunctionList = {
 }
 
 local elementWiseActivationFunctionList = {
+	
+	["Exponent"] = function (z) return math.exp(z) end,
 
 	["Sigmoid"] = function (z) return 1 / (1 + math.exp(-1 * z)) end,
 
@@ -301,6 +303,8 @@ local lossFunctionGradientList = {
 }
 
 local elementWiseActivationFunctionDerivativeList = {
+	
+	["Exponent"] = function (h, z) return h end,
 
 	["Sigmoid"] = function (a, z) return (a * (1 - a)) end,
 
@@ -488,7 +492,7 @@ local activationFunctionDerivativeList = {
 
 local minimumOutputValueList = {
 
-	["0"] = {"Sigmoid", "HardSigmoid", "BinaryStep", "SoftPlus", "ArcTangent", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "ProbitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "LogInverseLink", "InverseInverseLink", "SquareRootInverseLink", "SquareInverseInverseLink"}, -- 0, -- 0.5 threshold for [0, 1] functions.
+	["0"] = {"Exponent", "Sigmoid", "HardSigmoid", "BinaryStep", "SoftPlus", "ArcTangent", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "ProbitInverseLink", "LogLogInverseLink", "ComplementaryLogLogInverseLink", "LogInverseLink", "InverseInverseLink", "SquareRootInverseLink", "SquareInverseInverseLink"}, -- 0, -- 0.5 threshold for [0, 1] functions.
 
 	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "BipolarSigmoid", "SoftSign", "Swish", "Mish", "Maxout", "None", "LogitLink", "ProbitLink", "LogLogLink", "ComplementaryLogLogLink", "LogLink", "InverseLink", "SquareRootLink", "SquareInverseLink"}, -- 0 threshold for [-1, 1] functions.
 

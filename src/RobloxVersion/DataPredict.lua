@@ -58,6 +58,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 
 	LinearRegression = require(Models.LinearRegression),
 	
+	HuberRegression = require(Models.HuberRegression),
+	
 	QuantileRegression = require(Models.QuantileRegression),
 	
 	PoissonRegression = require(Models.PoissonRegression),

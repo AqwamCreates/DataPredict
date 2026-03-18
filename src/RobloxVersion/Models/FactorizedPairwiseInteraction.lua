@@ -48,10 +48,6 @@ local defaultBinaryFunction = "None"
 
 local defaultCostFunction = "MeanSquaredError"
 
-local epsilon = 1e-14
-
-local epsilonComplement = 1 - epsilon
-
 local function calculateProbabilityDensityFunctionValue(z)
 
 	return (math.exp(-0.5 * math.pow(z, 2)) / math.sqrt(2 * math.pi))
@@ -62,23 +58,19 @@ local binaryFunctionList = {
 
 	["None"] = function (z) return z end,
 
-	["Sigmoid"] = function (z) return 1 / (1 + math.exp(-1 * z)) end,
+	["Exponent"] = function (z) return math.exp(z) end,
+
+	["Logistic"] = function (z) return (1/(1 + math.exp(-z))) end,
+
+	["Logit"] = function (z) return (1/(1 + math.exp(-z))) end,
+
+	["Probit"] = function(z) return ZTableFunction:getStandardNormalCumulativeDistributionFunctionValue(math.clamp(z, -3.9, 3.9)) end,
+
+	["LogLog"] = function(z) return math.exp(-math.exp(z)) end,
+
+	["ComplementaryLogLog"] = function(z) return (1 - math.exp(-math.exp(z))) end,
 
 	["Tanh"] = function (z) return math.tanh(z) end,
-
-	["ReLU"] = function (z) return math.max(0, z) end,
-
-	["LeakyReLU"] = function (z) return math.max((0.01 * z), z) end,
-
-	["ELU"] = function (z) return if (z > 0) then z else (math.exp(z) - 1) end,
-
-	["Gaussian"] = function (z) return math.exp(-math.pow(z, 2)) end,
-
-	["SiLU"] = function (z) return z / (1 + math.exp(-z)) end,
-
-	["Swish"] = function (z) return (z / (1 + math.exp(-z))) end,
-
-	["Mish"] = function (z) return z * math.tanh(math.log(1 + math.exp(z))) end,
 
 	["HardSigmoid"] = function (z)
 
@@ -88,51 +80,11 @@ local binaryFunctionList = {
 
 	end,
 
-	["BipolarSigmoid"] = function (z) return (2 / (1 + math.exp(-z)) - 1) end,
-
 	["SoftSign"] = function (z) return (z / (1 + math.abs(z))) end,
-
-	["SoftPlus"] = function (z) return (1 + math.exp(z)) end,
 
 	["ArcTangent"] = function (z) return (2 / math.pi) * math.atan(z) end,
 
-	["LogitLink"] = function (z) 
-
-		local x = math.clamp(z, epsilon, epsilonComplement)
-
-		return math.log(x / (1 - x))
-
-	end,
-
-	["LogitInverseLink"] = function (z) return (1 / (1 + math.exp(-1 * z))) end,
-
-	["ProbitLink"] = function (z) return ZTableFunction:getStandardNormalInverseCumulativeDistributionFunctionValue(math.clamp(z, 0, 1)) end,
-
-	["ProbitInverseLink"] = function (z) return ZTableFunction:getStandardNormalCumulativeDistributionFunctionValue(math.clamp(z, -3.9, 3.9)) end,
-
-	["LogLogLink"] = function (z) return math.log(-math.log(math.clamp(z, epsilon, 1))) end,
-
-	["LogLogInverseLink"] = function (z) return math.exp(-math.exp(z)) end,
-
-	["ComplementaryLogLogLink"] = function (z) return math.log(-math.log(1 - math.clamp(z, 0, epsilonComplement))) end,
-
-	["ComplementaryLogLogInverseLink"] = function (z) return (1 - math.exp(-math.exp(z))) end,
-
-	["LogLink"] = function (z) return math.log(math.max(z, epsilon)) end,
-
-	["LogInverseLink"] = function (z) return math.exp(z) end,
-
-	["InverseLink"] = function (z) return (1 / z) end,
-
-	["InverseInverseLink"] = function (z) return z end,
-
-	["SquareRootLink"] = function (z) return math.sqrt(z) end,
-
-	["SquareRootInverseLink"] = function (z) return (1 / math.sqrt(z)) end,
-
-	["SquareInverseLink"] = function (z) return (1 / math.pow(z, 2)) end,
-
-	["SquareInverseInverseLink"] = function (z) return math.pow(z, 2) end,
+	["BipolarSigmoid"] = function (z) return (2 / (1 + math.exp(-z)) - 1) end,
 
 }
 
@@ -140,101 +92,33 @@ local binaryFunctionGradientList = {
 
 	["None"] = function (h, z) return 1 end,
 
-	["Sigmoid"] = function (a, z) return (a * (1 - a)) end,
+	["Exponent"] = function (h, z) return h end,
 
-	["Tanh"] = function (a, z) return (1 - math.pow(a, 2)) end,
+	["Logistic"] = function (h, z) return (h * (1 - h)) end,
 
-	["ReLU"] = function (a, z) if (z > 0) then return 1 else return 0 end end,
+	["Logit"] = function (h, z) return (h * (1 - h)) end,
 
-	["LeakyReLU"] = function (a, z) if (z > 0) then return 1 else return 0.01 end end,
+	["Probit"] = function (h, z) return calculateProbabilityDensityFunctionValue(z) end,
 
-	["ELU"] = function (a, z) if (z > 0) then return 1 else return math.exp(z) end end,
+	["LogLog"] = function(h, z) return -math.exp(z) * math.exp(-math.exp(z)) end,
 
-	["Gaussian"] = function (a, z) return -2 * z * math.exp(-math.pow(z, 2)) end,
+	["ComplementaryLogLog"] = function(h, z) return math.exp(z) * math.exp(-math.exp(z)) end,
 
-	["SiLU"] = function (a, z)
+	["Tanh"] = function (h, z) return (1 - math.pow(h, 2)) end,
 
-		local sigmoidValue = 1 / (1 + math.exp(-z))
+	["HardSigmoid"] = function (h, z) return ((h <= 0 or h >= 1) and 0) or 0.5 end,
 
-		return (sigmoidValue * (1 + (z * (1 - sigmoidValue))))
+	["SoftSign"] = function (h, z) return (1 / ((1 + math.abs(z))^2)) end,
 
-	end,
+	["ArcTangent"] = function (h, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
 
-	["Swish"] = function (a, z)
-
-		local sigmoidValue = 1 / (1 + math.exp(-z))
-
-		return (sigmoidValue + (a * (1 - sigmoidValue)))
-
-	end,
-
-	["Mish"] = function (a, z) return math.exp(z) * (math.exp(3 * z) + 4 * math.exp(2 * z) + (6 + 4 * z) * math.exp(z) + 4 * (1 + z)) / math.pow((1 + math.pow((math.exp(z) + 1), 2)), 2) end,
-
-	["HardSigmoid"] = function (a, z) return (((a <= 0 or a >= 1) and 0) or 0.5) end,
-
-	["BipolarSigmoid"] = function (a, z) 
+	["BipolarSigmoid"] = function (h, z) 
 
 		local sigmoidValue = 1 / (1 + math.exp(-z))
 
 		return (2 * sigmoidValue * (1 - sigmoidValue))
 
 	end,
-
-	["SoftSign"] = function (a, z) return (1 / ((1 + math.abs(z))^2)) end,
-
-	["SoftPlus"] = function (a, z) return 1 / (1 + math.exp(-1 * z)) end,
-
-	["ArcTangent"] = function (a, z) return ((2 / math.pi) * (1 / (1 + z^2))) end,
-
-	["LogitLink"] = function (a, z) 
-
-		local x = math.clamp(z, epsilon, epsilonComplement)
-
-		return (1 / (x * (1 - x))) 
-
-	end,
-
-	["LogitInverseLink"] = function (a, z) return (a * (1 - a)) end,
-
-	["ProbitLink"] = function (a, z) return 1 / calculateProbabilityDensityFunctionValue(a) end,
-
-	["ProbitInverseLink"] = function (a, z) return calculateProbabilityDensityFunctionValue(z) end,
-
-	["LogLogLink"] = function (a, z)
-
-		local x = math.clamp(z, epsilon, 1)
-
-		return x / (x * math.log(x)) 
-
-	end,
-
-	["LogLogInverseLink"] = function (a, z) return -math.exp(z) * math.exp(-math.exp(z)) end,
-
-	["ComplementaryLogLogLink"] = function (a, z)
-
-		local x = math.clamp(z, 0, epsilonComplement)
-
-		return 1 / ((1 - x) * math.log(1 - x)) 
-
-	end,
-
-	["ComplementaryLogLogInverseLink"] = function (a, z) return math.exp(z) * math.exp(-math.exp(z)) end,
-
-	["LogLink"] = function (a, z) return 1 / math.max(z, epsilon) end,
-
-	["LogInverseLink"] = function (a, z) return a end, -- Note: Derivative of exponent(z) is exponent(z), where a = exponent(z). Therefore, we're taking a shortcut to reduce computational resources.
-
-	["InverseLink"] = function (a, z) return (-1 / math.pow(z, 2)) end,
-
-	["InverseInverseLink"] = function (a, z) return 1 end,
-
-	["SquareRootLink"] = function (a, z) return (0.5 / (1.5 * math.sqrt(z))) end,
-
-	["SquareRootInverseLink"] = function (a, z) return (-0.5 / math.pow(z, 1.5)) end,
-
-	["SquareInverseLink"] = function (a, z) return (-2 / math.pow(z, 3)) end,
-
-	["SquareInverseInverseLink"] = function (a, z) return (2 * z) end,
 
 }
 
@@ -243,11 +127,11 @@ local lossFunctionList = {
 	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
 
 	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
-	
+
 	["BinaryCrossEntropy"] = function (h, y) return -((y * math.log(h)) + ((1 - y) * math.log(1 - h))) end,
-	
+
 	["HingeLoss"] = function (h, y) return math.max(0, (1 - (h * y))) end,
-	
+
 	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
 
 }
@@ -257,9 +141,9 @@ local lossFunctionGradientList = {
 	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
 
 	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
-	
+
 	["BinaryCrossEntropy"] = function (h, y) return ((h - y) / (h * (1 - h))) end,
-	
+
 	["HingeLoss"] = function (h, y)
 
 		local scale = (((h * y) < 1) and 1) or 0
@@ -267,7 +151,7 @@ local lossFunctionGradientList = {
 		return -(y * scale)
 
 	end,
-	
+
 	["SquaredHingeLoss"] = function (h, y)
 
 		local scale = (((h * y) < 1) and 1) or 0

@@ -120,6 +120,10 @@ local costFunctionList = {
 	
 	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
 	
+	["MeanPoissonDeviance"] = function (h, y) return (2 * (h - (y * math.log(h)))) end,
+
+	["MeanGammaDeviance"] = function (h, y) return (2 * (((y - h) / h) - math.log(y / h))) end,
+	
 }
 
 local elementWiseActivationFunctionList = {
@@ -311,6 +315,10 @@ local lossFunctionGradientList = {
 		return -(2 * y * scale)
 
 	end,
+	
+	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
+
+	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
 	
 }
 

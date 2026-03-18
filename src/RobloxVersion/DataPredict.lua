@@ -68,6 +68,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	GammaRegression = require(Models.GammaRegression),
 	
+	TweedieRegression = require(Models.TweedieRegression),
+	
 	IsotonicRegression = require(Models.IsotonicRegression),
 	
 	PassiveAggressiveRegressor = require(Models.PassiveAggressiveRegressor),

@@ -118,6 +118,8 @@ local costFunctionList = {
 	
 	["HingeLoss"] = function(generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end,
 	
+	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
+	
 }
 
 local elementWiseActivationFunctionList = {
@@ -297,6 +299,16 @@ local lossFunctionGradientList = {
 		local scale = (((generatedLabelValue * labelValue) < 1) and 1) or 0
 
 		return -(labelValue * scale) 
+
+	end,
+	
+	["SquaredHingeLoss"] = function (h, y)
+
+		local margin = 1 - (h * y)
+
+		local scale = ((margin > 0) and margin) or 0
+
+		return -(2 * y * scale)
 
 	end,
 	

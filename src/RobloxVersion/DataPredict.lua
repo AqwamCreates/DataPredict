@@ -269,12 +269,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	SimonFunkMatrixFactorizationWithBiases = require(Models.SimonFunkMatrixFactorizationWithBiases),
 	
 	TwoTower = require(Models.TwoTower),
-
-	-- Ranking - 2 Models
-
-	RankingSupportVectorMachine = require(Models.RankingSupportVectorMachine),
-
-	RankingSupportVectorMachineGradientVariant = require(Models.RankingSupportVectorMachineGradientVariant),
 	
 	-- Generative - 4 Models
 
@@ -459,6 +453,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Others = {
 	OnlineLearning = require(Others.OnlineLearning),
 	
 	DatasetCreator = require(Others.DatasetCreator),
+	
+	PairwiseRankingDatasetCreator = require(Others.PairwiseRankingDatasetCreator),
 	
 	ConfusionMatrixCreator = require(Others.ConfusionMatrixCreator),
 

@@ -46,7 +46,89 @@ local defaultCValue = 1
 
 local defaultEpsilon = 1
 
+local defaultCostFunction = "SquaredEpsilonInsensitiveLoss"
+
 local defaultSolver = "GaussNewton"
+
+local lossFunctionList = {
+
+	["EpsilonInsensitiveLoss"] = function (h, y, epsilon)
+		
+		local errorValue = h - y 
+		
+		local positiveSlackVariableValue = math.max(0, errorValue - epsilon)
+		
+		local negativeSlackVariableValue = math.max(0, -errorValue - epsilon)
+		
+		local slackVariableValue = positiveSlackVariableValue + negativeSlackVariableValue
+		
+		return slackVariableValue 
+		
+	end,
+
+	["SquaredEpsilonInsensitiveLoss"] = function (h, y, epsilon)
+
+		local errorValue = h - y
+
+		local positiveSlackVariableValue = math.max(0, errorValue - epsilon)
+
+		local negativeSlackVariableValue = math.max(0, -errorValue - epsilon)
+		
+		local squaredPositiveSlackVariableValue = math.pow(positiveSlackVariableValue, 2)
+		
+		local squaredNegativeSlackVariableValue = math.pow(negativeSlackVariableValue, 2)
+
+		local sumSquaredSlackVariableValue = squaredPositiveSlackVariableValue + squaredNegativeSlackVariableValue
+
+		return sumSquaredSlackVariableValue 
+
+	end,
+
+}
+
+local lossFunctionGradientList = {
+
+	["EpsilonInsensitiveLoss"] = function (h, y, epsilon)
+		
+		local errorValue = h - y
+		
+		if (errorValue > epsilon) then
+
+			return (errorValue - epsilon)
+
+		elseif (errorValue < -epsilon) then
+
+			return (errorValue + epsilon)
+
+		else
+
+			return 0
+
+		end
+		
+	end,
+
+	["SquaredEpsilonInsensitiveLoss"] = function (h, y, epsilon)
+		
+		local errorValue = h - y
+
+		if (errorValue > epsilon) then
+			
+			return 2 * (errorValue - epsilon)
+			
+		elseif (errorValue < -epsilon) then
+			
+			return 2 * (errorValue + epsilon)
+			
+		else
+			
+			return 0
+			
+		end
+
+	end,
+
+}
 
 function SupportVectorRegressionGradientVariantModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
@@ -54,21 +136,17 @@ function SupportVectorRegressionGradientVariantModel:calculateCost(hypothesisVec
 	
 	local epsilon = self.epsilon
 	
-	local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
+	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisVector, labelVector, {{epsilon}})
+
+	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
-	local positiveSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, errorValue - epsilon) end, errorVector)
-
-	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, -errorValue - epsilon) end, errorVector)
-
-	local slackVariableVector = AqwamTensorLibrary:add(positiveSlackVariableVector, negativeSlackVariableVector)
-
-	local totalCost = AqwamTensorLibrary:sum(slackVariableVector)
+	totalCost = self.cValue * totalCost
 	
 	local Regularizer = self.Regularizer
 
 	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
 
-	local averageCost = (self.cValue * totalCost) / #labelVector
+	local averageCost = totalCost / #labelVector
 
 	return averageCost
 
@@ -169,6 +247,8 @@ function SupportVectorRegressionGradientVariantModel.new(parameterDictionary)
 	NewSupportVectorRegressionGradientVariantModel.cValue = parameterDictionary.cValue or defaultCValue
 	
 	NewSupportVectorRegressionGradientVariantModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
+	NewSupportVectorRegressionGradientVariantModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
 
 	NewSupportVectorRegressionGradientVariantModel.Optimizer = parameterDictionary.Optimizer
 
@@ -199,8 +279,10 @@ function SupportVectorRegressionGradientVariantModel:setSolver(Solver)
 end
 
 function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelVector)
+	
+	local numberOfData = #featureMatrix
 
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
 	local ModelParameters = self.ModelParameters
 
@@ -214,6 +296,10 @@ function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelV
 
 	end
 	
+	local lossFunctionGradientFunctionToApply = lossFunctionGradientList[self.costFunction]
+
+	if (not lossFunctionGradientFunctionToApply) then error("Invalid cost function.") end
+	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local cValue = self.cValue
@@ -222,9 +308,9 @@ function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelV
 
 	local Optimizer = self.Optimizer
 	
-	local functionToApply = function(errorValue) return ((errorValue > epsilon) and (errorValue - epsilon)) or ((errorValue < -epsilon) and (errorValue + epsilon)) or 0 end
-	
 	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
+	
+	local epsilonVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, epsilon)
 	
 	local costArray = {}
 
@@ -253,10 +339,8 @@ function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelV
 			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 
 		end
-		
-		local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
-		local lossGradientVector = AqwamTensorLibrary:applyFunction(functionToApply, errorVector)
+		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, labelVector, epsilonVector)
 		
 		lossGradientVector = AqwamTensorLibrary:multiply(cValue, lossGradientVector)
 

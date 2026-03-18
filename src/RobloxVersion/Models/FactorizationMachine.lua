@@ -127,6 +127,16 @@ local lossFunctionList = {
 	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
 
 	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
+	
+	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log(y / h) - y + h)) end,
+
+	["MeanGammaDeviance"] = function (h, y) 
+
+		local ratio = y / h
+
+		return (2 * (y * math.log(ratio) - ratio - 1)) 
+
+	end,
 
 	["BinaryCrossEntropy"] = function (h, y) return -((y * math.log(h)) + ((1 - y) * math.log(1 - h))) end,
 
@@ -134,15 +144,7 @@ local lossFunctionList = {
 
 	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
 
-	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log(y / h) - y + h)) end,
 
-	["MeanGammaDeviance"] = function (h, y) 
-		
-		local ratio = y / h
-		
-		return (2 * (y * math.log(ratio) - ratio - 1)) 
-		
-	end,
 
 }
 
@@ -151,6 +153,10 @@ local lossFunctionGradientList = {
 	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
 
 	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
+	
+	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
+
+	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
 
 	["BinaryCrossEntropy"] = function (h, y) return ((h - y) / (h * (1 - h))) end,
 
@@ -171,10 +177,6 @@ local lossFunctionGradientList = {
 		return -(2 * y * scale)
 
 	end,
-
-	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
-
-	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
 
 }
 

@@ -126,9 +126,7 @@ function GaussSeidelSolver.new(parameterDictionary)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isNonLinearInput = NewGaussSeidelSolver.isNonLinearInput
-		
-		local isLinearInput = (not isNonLinearInput)
+		local isLinearInput = (not NewGaussSeidelSolver.isNonLinearInput)
 		
 		local cache = NewGaussSeidelSolver.cache or {}
 		

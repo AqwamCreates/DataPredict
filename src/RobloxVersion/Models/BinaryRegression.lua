@@ -122,6 +122,8 @@ local lossFunctionList = {
 	
 	["HingeLoss"] = function (h, y) return math.max(0, (1 - (h * y))) end,
 	
+	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
+	
 	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
 	
 	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
@@ -137,6 +139,16 @@ local lossFunctionGradientList = {
 		local scale = (((h * y) < 1) and 1) or 0
 
 		return -(y * scale)
+
+	end,
+	
+	["SquaredHingeLoss"] = function (h, y)
+
+		local margin = 1 - (h * y)
+
+		local scale = ((margin > 0) and margin) or 0
+
+		return -(2 * y * scale)
 
 	end,
 	

@@ -57,7 +57,9 @@ NeuralNetwork:addLayer(numberOfNeurons: integer, hasBiasNeuron: boolean, activat
 * hasBiasNeuron: Set whether or not the bias neuron will be added to next layer.
 
 * activationFunction: The activation function to be used for the next layer. Available options are:
-  
+
+  * Exponent
+
   * Sigmoid
 
   * Tanh

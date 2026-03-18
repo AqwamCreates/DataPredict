@@ -108,6 +108,8 @@ NeuralNetwork:setLayer(layerNumber: integer, hasBiasNeuron: boolean, activationF
 
 * activationFunction: The activation function to be used for the current layer. Available options are:
 
+  * Exponent
+
   * Sigmoid
 
   * Tanh
@@ -153,6 +155,8 @@ NeuralNetwork:createLayers(numberOfNeuronsArray: integer[], activationFunction: 
 * numberOfNeuronsArray: The array containing all the number of neurons for each layer (without bias neuron). The index determines the layer, while the value determines the number of neurons. Bias neurons will be added automatically after setting the number of neurons in each layer except for the output layer. For example, {3,7,6} means 3 neurons at layer 1, 7 neurons at layer 2, and 6 neurons at layer 3 wthout the bias neurons.
 
 * activationFunction: The activation function to be used for all layers. Available options are:
+
+  * Exponent
 
   * Sigmoid
 

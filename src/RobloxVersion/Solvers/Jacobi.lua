@@ -146,9 +146,7 @@ function JacobiSolver.new(parameterDictionary)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isNonLinearInput = NewJacobiSolver.isNonLinearInput
-		
-		local isLinearInput = (not isNonLinearInput)
+		local isLinearInput = (not NewJacobiSolver.isNonLinearInput)
 		
 		local cache = NewJacobiSolver.cache or {}
 		

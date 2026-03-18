@@ -44,7 +44,39 @@ local defaultLearningRate = 0.3
 
 local defaultCValue = 1
 
+local defaultCostFunction = "SquaredHingeLoss"
+
 local defaultSolver = "GaussNewton"
+
+local lossFunctionList = {
+
+	["HingeLoss"] = function (h, y) return math.max(0, (1 - (h * y))) end,
+
+	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
+
+}
+
+local lossFunctionGradientList = {
+
+	["HingeLoss"] = function (h, y)
+
+		local scale = (((h * y) < 1) and 1) or 0
+
+		return -(y * scale)
+
+	end,
+
+	["SquaredHingeLoss"] = function (h, y)
+
+		local margin = 1 - (h * y)
+
+		local scale = ((margin > 0) and margin) or 0
+
+		return -(2 * y * scale)
+
+	end,
+
+}
 
 local function hingeFunction(value)
 	
@@ -66,18 +98,10 @@ end
 
 function SupportVectorMachineGradientVariantModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
-	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
-	
-	local oneVector = AqwamTensorLibrary:createTensor({#labelVector, 1}, 1)
-	
-	local marginVector = AqwamTensorLibrary:multiply(labelVector, hypothesisVector)
-	
-	local hingeVector = AqwamTensorLibrary:subtract(oneVector, marginVector)
-	
-	local costVector = AqwamTensorLibrary:applyFunction(hingeFunction, hingeVector)
+	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisVector, labelVector)
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
-	
+
 	local Regularizer = self.Regularizer
 
 	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
@@ -181,6 +205,8 @@ function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
 	NewSupportVectorMachineGradientVariantModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
 	NewSupportVectorMachineGradientVariantModel.cValue = parameterDictionary.cValue or defaultCValue
+	
+	NewSupportVectorMachineGradientVariantModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
 
 	NewSupportVectorMachineGradientVariantModel.Optimizer = parameterDictionary.Optimizer
 
@@ -226,6 +252,10 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 
 	end
 	
+	local lossFunctionGradientFunctionToApply = lossFunctionGradientList[self.costFunction]
+
+	if (not lossFunctionGradientFunctionToApply) then error("Invalid cost function.") end
+	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local cValue = self.cValue
@@ -262,11 +292,9 @@ function SupportVectorMachineGradientVariantModel:train(featureMatrix, labelVect
 
 		end
 
-		local marginVector = AqwamTensorLibrary:multiply(labelVector, hypothesisVector)
+		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, labelVector)
 		
-		local misclassifiedMaskVector = AqwamTensorLibrary:applyFunction(misclassificationMaskFunction, marginVector)
-		
-		local lossGradientVector = AqwamTensorLibrary:multiply(-cValue, labelVector, misclassifiedMaskVector)
+		lossGradientVector = AqwamTensorLibrary:multiply(cValue, lossGradientVector)
 
 		self:update(lossGradientVector, hasBias, true)
 

@@ -126,7 +126,7 @@ local lossFunctionList = {
 	
 	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
 
-	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
+	["MeanSquaredError"] = function (h, y) return math.pow((h - y), 2) end,
 	
 	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log(y / h) - y + h)) end,
 

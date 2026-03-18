@@ -50,27 +50,27 @@ function GaussNewtonSolver.new(parameterDictionary)
 		
 		local isLinearInput = (not NewGaussNewtonSolver.isNonLinearInput)
 		
-		local pMatrix = (isLinearInput and NewGaussNewtonSolver.cache)
+		local pseudoInverseMatrix = (isLinearInput and NewGaussNewtonSolver.cache)
 
-		if (not pMatrix) then
+		if (not pseudoInverseMatrix) then
 
 			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
 
-			pMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
 
-			pMatrix = AqwamTensorLibrary:inverse(pMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:inverse(pseudoInverseMatrix)
 			
 			-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
 			
-			if (not pMatrix) then return AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(weightMatrix), 0) end
+			if (not pseudoInverseMatrix) then return AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(weightMatrix), 0) end
 
-			pMatrix = AqwamTensorLibrary:dotProduct(pMatrix, transposedFirstDerivativeMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, transposedFirstDerivativeMatrix)
 			
-			if (isLinearInput) then NewGaussNewtonSolver.cache = pMatrix end
+			if (isLinearInput) then NewGaussNewtonSolver.cache = pseudoInverseMatrix end
 
 		end
 
-		return AqwamTensorLibrary:dotProduct(pMatrix, firstDerivativeLossMatrix)
+		return AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, firstDerivativeLossMatrix)
 		
 	end)
 	
@@ -78,5 +78,4 @@ function GaussNewtonSolver.new(parameterDictionary)
 	
 end
 
-return GaussNewtonSolver
 return GaussNewtonSolver

@@ -78,18 +78,6 @@ local lossFunctionGradientList = {
 
 }
 
-local function hingeFunction(value)
-	
-	return math.max(0, value)
-	
-end
-
-local function misclassificationMaskFunction(value)
-	
-	return (value < 1) and 1 or 0
-	
-end
-
 local function seperatorFunction(x) 
 
 	return ((x > 0) and 1) or ((x < 0) and -1) or 0

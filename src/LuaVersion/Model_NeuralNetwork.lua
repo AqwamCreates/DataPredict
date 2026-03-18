@@ -122,13 +122,13 @@ local lossFunctionList = {
 
 	end,
 	
+	["HingeLoss"] = function(generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end,
+
+	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
+	
 	["BinaryCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end,
 	
 	["CategoricalCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue)) end,
-	
-	["HingeLoss"] = function(generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end,
-	
-	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
 	
 }
 
@@ -303,10 +303,6 @@ local lossFunctionGradientList = {
 	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
 
 	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
-
-	["BinaryCrossEntropy"] = function (generatedLabelValue, labelValue) return ((generatedLabelValue - labelValue) / (generatedLabelValue * (1 - generatedLabelValue))) end,
-
-	["CategoricalCrossEntropy"] = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end,
 	
 	["HingeLoss"] = function (generatedLabelValue, labelValue)
 
@@ -315,7 +311,7 @@ local lossFunctionGradientList = {
 		return -(labelValue * scale) 
 
 	end,
-	
+
 	["SquaredHingeLoss"] = function (h, y)
 
 		local margin = 1 - (h * y)
@@ -325,6 +321,10 @@ local lossFunctionGradientList = {
 		return -(2 * y * scale)
 
 	end,
+
+	["BinaryCrossEntropy"] = function (generatedLabelValue, labelValue) return ((generatedLabelValue - labelValue) / (generatedLabelValue * (1 - generatedLabelValue))) end,
+
+	["CategoricalCrossEntropy"] = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end,
 	
 }
 

@@ -48,17 +48,23 @@ local defaultSolver = "GaussNewton"
 
 local function tweedieLossFunctionToApply(h, y, power)
 	
-	if (power == 0) then return math.pow((h - y), 2) end
+	if (power == 0) then return math.pow((h - y), 2) end -- Linear special case.
 	
 	if (power == 1) then return (2 * (h - (y * math.log(h)))) end -- Poisson special case.
 	
 	if (power == 2) then return (2 * (((y - h) / h) - math.log(y / h))) end -- Gamma special case.
 	
-	local tweedieLossValuePart1 = (y * math.pow(h, (1 - power))) / (1 - power)
-		
-	local tweedieLossValuePart2 = math.pow(h, (2 - power)) / (2 - power)
+	local oneMinusPower = 1 - power
 	
-	local tweedieLossValue = 2 * (tweedieLossValuePart1 - tweedieLossValuePart2)
+	local twoMinusPower = 2 - power
+	
+	local tweedieLossValuePart1 = math.pow(y, twoMinusPower) / (oneMinusPower * twoMinusPower)
+	
+	local tweedieLossValuePart2 = (y * math.pow(h, oneMinusPower)) / oneMinusPower
+		
+	local tweedieLossValuePart3 = math.pow(h, twoMinusPower) / twoMinusPower
+	
+	local tweedieLossValue = 2 * (tweedieLossValuePart1 - tweedieLossValuePart2 + tweedieLossValuePart3)
 	
 	return tweedieLossValue
 	
@@ -66,11 +72,11 @@ end
 
 local function tweedieLossFunctionGradientToApply(h, y, power)
 	
-	if (power == 0) then return (2 * (h - y)) end
+	if (power == 0) then return (2 * (h - y)) end -- Linear special case.
 	
-	if (power == 1) then return (2 * (1 - (y / h))) end
+	if (power == 1) then return (2 * (1 - (y / h))) end -- Poisson special case.
 	
-	if (power == 2) then return (2 * ((h - y) / math.pow(h, 2))) end
+	if (power == 2) then return (2 * ((h - y) / math.pow(h, 2))) end -- Gamma special case.
 	
 	local tweedieLossGradientValuePart1 = math.pow(h, (1 - power))
 	

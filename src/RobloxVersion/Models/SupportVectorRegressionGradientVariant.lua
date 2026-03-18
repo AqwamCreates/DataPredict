@@ -30,8 +30,6 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
 
-local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
-
 local Solvers = script.Parent.Parent.Solvers
 
 local SupportVectorRegressionGradientVariantModel = {}

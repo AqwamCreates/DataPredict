@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorRegressionGradientVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number, epsilon: number): ModelObject
+SupportVectorRegressionGradientVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number, epsilon: number, costFunction: string): ModelObject
 ```
 
 #### Parameters:
@@ -27,6 +27,12 @@ SupportVectorRegressionGradientVariant.new(maximumNumberOfIterations: integer, l
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
 
 * epsilon: How far the datapoint should be so that it does not contribute to the error calculation. Higher the value, the further the datapoint can be so that it does not contribute to the error calculations.
+
+* costFunction: The cost function to be used by the model. Available options are:
+
+  * EpsilonInsensitiveLoss
+ 
+  * SquaredEpsilonInsensitiveLoss (Default)
 
 #### Returns:
 

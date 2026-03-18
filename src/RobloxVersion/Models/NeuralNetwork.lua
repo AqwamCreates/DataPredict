@@ -106,7 +106,7 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 }
 
-local costFunctionList = {
+local lossFunctionList = {
 	
 	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return math.pow((generatedLabelValue - labelValue), 2) end,
 	
@@ -1076,7 +1076,7 @@ function NeuralNetworkModel:calculateCost(hypothesisMatrix, logisticMatrix)
 
 	local ModelParameters = self.ModelParameters
 	
-	local functionToApply = costFunctionList[self.costFunction]
+	local functionToApply = lossFunctionList[self.costFunction]
 	
 	local costVector = AqwamTensorLibrary:applyFunction(functionToApply, hypothesisMatrix, logisticMatrix)
 

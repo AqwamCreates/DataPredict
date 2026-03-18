@@ -108,9 +108,9 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 local lossFunctionList = {
 	
-	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return math.pow((generatedLabelValue - labelValue), 2) end,
-	
 	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.abs(generatedLabelValue - labelValue) end,
+	
+	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return math.pow((generatedLabelValue - labelValue), 2) end,
 	
 	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log(y / h) - y + h)) end,
 
@@ -295,10 +295,10 @@ local activationFunctionList = {
 }
 
 local lossFunctionGradientList = {
-	
-	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return (2 * (generatedLabelValue - labelValue)) end,
 
 	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.sign(generatedLabelValue - labelValue) end,
+	
+	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return (2 * (generatedLabelValue - labelValue)) end,
 	
 	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
 

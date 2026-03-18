@@ -54,9 +54,11 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 17 Models
+	-- Regression - 18 Models
 
 	LinearRegression = require(Models.LinearRegression),
+	
+	HuberRegression = require(Models.HuberRegression),
 	
 	QuantileRegression = require(Models.QuantileRegression),
 	

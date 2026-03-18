@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Regression, Deep And Reinforcement Learning Library (DataPredict)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -28,204 +28,359 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
+local IterativeMethodBaseModel = require(script.Parent.IterativeMethodBaseModel)
+
+local distanceFunctionDictionary = require(script.Parent.Parent.Cores.DistanceFunctionDictionary)
 
 local Solvers = script.Parent.Parent.Solvers
 
-local SupportVectorRegressionGradientVariantModel = {}
+local SupportVectorRegressionModel = {}
 
-SupportVectorRegressionGradientVariantModel.__index = SupportVectorRegressionGradientVariantModel
+SupportVectorRegressionModel.__index = SupportVectorRegressionModel
 
-setmetatable(SupportVectorRegressionGradientVariantModel, GradientMethodBaseModel)
+setmetatable(SupportVectorRegressionModel, IterativeMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
-local defaultLearningRate = 0.3
-
-local defaultCValue = 1
+local defaultCvalue = 1
 
 local defaultEpsilon = 1
 
+local defaultKernelFunction = "Linear"
+
+local defaultGamma = 1
+
+local defaultDegree = 3
+
+local defaultSigma = 1
+
+local defaultR = 0
+
 local defaultSolver = "GaussNewton"
 
-function SupportVectorRegressionGradientVariantModel:calculateCost(hypothesisVector, labelVector, hasBias)
+local seperatorFunction = function (x) 
 
-	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
-	
-	local epsilon = self.epsilon
-	
-	local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
+	return ((x > 0) and 1) or ((x < 0) and -1) or 0
+
+end
+
+local function createDistanceMatrix(distanceFunction, matrix1, matrix2)
+
+	local numberOfData1 = #matrix1
+
+	local numberOfData2 = #matrix2
+
+	local distanceMatrix = AqwamTensorLibrary:createTensor({numberOfData1, numberOfData2})
+
+	local distanceFunctionToApply = distanceFunctionDictionary[distanceFunction]
+
+	for i = 1, numberOfData1, 1 do
+
+		for j = 1, numberOfData2, 1 do
+
+			distanceMatrix[i][j] = distanceFunctionToApply({matrix1[i]}, {matrix2[j]})
+
+		end
+
+	end
+
+	return distanceMatrix
+
+end
+
+local mappingList = {
+
+	["Linear"] = function(featureMatrix)
+
+		return featureMatrix
+
+	end,
+
+	["Polynomial"] = function(featureMatrix, kernelParameters)
+
+		local degree = kernelParameters.degree
+
+		local gamma = kernelParameters.gamma
+
+		local r = kernelParameters.r
+
+		local scaledFeatureMatrix = AqwamTensorLibrary:multiply(featureMatrix, gamma)
+
+		local addedFeatureMatrix = AqwamTensorLibrary:add(scaledFeatureMatrix, r)
+
+		return AqwamTensorLibrary:power(addedFeatureMatrix, degree)
+
+	end,
+
+	["RadialBasisFunction"] = function(featureMatrix, kernelParameters)
+
+		local sigma = kernelParameters.sigma
+
+		local squaredFeatureMatrix = AqwamTensorLibrary:power(featureMatrix, 2)
+
+		local squaredSigmaVector = AqwamTensorLibrary:power(sigma, 2)
+
+		local multipliedSquaredSigmaVector = AqwamTensorLibrary:multiply(-2, squaredSigmaVector)
+
+		local zMatrix = AqwamTensorLibrary:divide(squaredFeatureMatrix, multipliedSquaredSigmaVector)
+
+		return AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
+
+	end,
+
+	["Sigmoid"] = function(featureMatrix, kernelParameters)
+
+		local gamma = kernelParameters.gamma
+
+		local r = kernelParameters.r
+
+		local kernelMappingMatrixPart1 = AqwamTensorLibrary:multiply(gamma, featureMatrix)
+
+		local kernelMappingMatrixPart2 = AqwamTensorLibrary:add(kernelMappingMatrixPart1, r)
+
+		local kernelMappingMatrix = AqwamTensorLibrary:applyFunction(math.tanh, kernelMappingMatrixPart2)
+
+		return kernelMappingMatrix
+
+	end,
+
+	["Cosine"] = function(featureMatrix, kernelParameters)
+
+		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
+
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, zeroMatrix)
+
+		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
+
+		return kernelMappingMatrix
+
+	end,
+
+}
+
+local kernelFunctionList = {
+
+	["Linear"] = function(featureMatrix)
+
+		local kernelMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
+
+		return kernelMatrix
+
+	end,
+
+	["Polynomial"] = function(featureMatrix, kernelParameters)
+
+		local degree = kernelParameters.degree
+
+		local gamma = kernelParameters.gamma
+
+		local r = kernelParameters.r
+
+		local dotProductedFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
+
+		local scaledDotProductedFeatureMatrix = AqwamTensorLibrary:multiply(dotProductedFeatureMatrix, gamma)
+
+		local addedFeatureMatrix = AqwamTensorLibrary:add(scaledDotProductedFeatureMatrix, r)
+
+		local kernelMatrix = AqwamTensorLibrary:power(addedFeatureMatrix, degree)
+
+		return kernelMatrix
+
+	end,
+
+	["RadialBasisFunction"] = function(featureMatrix, kernelParameters)
+
+		local sigma = kernelParameters.sigma
+
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, featureMatrix)
+
+		local squaredDistanceMatrix = AqwamTensorLibrary:power(distanceMatrix, 2)
+
+		local sigmaSquaredVector = AqwamTensorLibrary:power(sigma, 2)
+
+		local multipliedSigmaSquaredVector = AqwamTensorLibrary:multiply(-2, sigmaSquaredVector)
+
+		local zMatrix = AqwamTensorLibrary:divide(squaredDistanceMatrix, multipliedSigmaSquaredVector)
+
+		local kernelMatrix = AqwamTensorLibrary:applyFunction(math.exp, zMatrix)
+
+		return kernelMatrix
+
+	end,
+
+	["Sigmoid"] = function(featureMatrix, kernelParameters)
+
+		local gamma = kernelParameters.gamma
+
+		local r = kernelParameters.r
+
+		local dotProductedFeatureMatrix = AqwamTensorLibrary:dotProduct(featureMatrix, AqwamTensorLibrary:transpose(featureMatrix))
+
+		local kernelMatrixPart1 = AqwamTensorLibrary:multiply(gamma, dotProductedFeatureMatrix)
+
+		local kernelMatrixPart2 = AqwamTensorLibrary:add(kernelMatrixPart1, r)
+
+		local kernelMatrix = AqwamTensorLibrary:applyFunction(math.tanh, kernelMatrixPart2)
+
+		return kernelMatrix
+
+	end,
+
+	["Cosine"] = function(featureMatrix, kernelParameters)
+
+		local zeroMatrix = AqwamTensorLibrary:createTensor({1, #featureMatrix[1]}, 0)
+
+		local distanceMatrix = createDistanceMatrix("Euclidean", featureMatrix, zeroMatrix)
+
+		local kernelMappingMatrix = AqwamTensorLibrary:divide(featureMatrix, distanceMatrix)
+
+		local kernelMatrix = AqwamTensorLibrary:dotProduct(kernelMappingMatrix, AqwamTensorLibrary:transpose(kernelMappingMatrix))
+
+		return kernelMatrix
+
+	end,
+
+}
+
+local function calculateCost(modelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, cValue, epsilon)
+
+	-- The dotProduct() only takes two arguments here to reduce computational time
+
+	local predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, modelParameters)
+
+	local errorVector = AqwamTensorLibrary:subtract(predictedVector, labelVector)
 	
 	local positiveSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, errorValue - epsilon) end, errorVector)
 
 	local negativeSlackVariableVector = AqwamTensorLibrary:applyFunction(function(errorValue) return math.max(0, -errorValue - epsilon) end, errorVector)
 
-	local slackVariableVector = AqwamTensorLibrary:add(positiveSlackVariableVector, negativeSlackVariableVector)
+	local costVector = AqwamTensorLibrary:add(positiveSlackVariableVector, negativeSlackVariableVector)
 
-	local totalCost = AqwamTensorLibrary:sum(slackVariableVector)
-	
-	local Regularizer = self.Regularizer
+	costVector = AqwamTensorLibrary:multiply(-cValue, costVector)
 
-	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
+	local transposedCostVector = AqwamTensorLibrary:transpose(costVector)
 
-	local averageCost = (self.cValue * totalCost) / #labelVector
+	local transposedLabelVector = AqwamTensorLibrary:transpose(labelVector)
 
-	return averageCost
+	local costPart1 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)
 
-end
+	costPart1 = AqwamTensorLibrary:dotProduct(costPart1, kernelMatrix)
 
-function SupportVectorRegressionGradientVariantModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+	costPart1 = AqwamTensorLibrary:dotProduct(costPart1, costVector)[1][1]
 
-	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
+	costPart1 = costPart1 / 2
 
-	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
+	local costPart2 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)
 
-	return hypothesisVector
+	costPart2 = AqwamTensorLibrary:dotProduct(costPart2, labelVector)[1][1]
 
-end
+	local costPart3 = AqwamTensorLibrary:dotProduct(transposedLabelVector, labelVector)[1][1]
 
-function SupportVectorRegressionGradientVariantModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+	costPart3 = costPart3 / 2
 
-	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
+	local costPart4 = AqwamTensorLibrary:dotProduct(transposedCostVector, kernelMatrix)
 
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
+	costPart4 = AqwamTensorLibrary:dotProduct(costPart4, costVector)[1][1]
 
-	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
+	costPart4 = costPart4 / (2 * cValue)
 
-	return lossFunctionDerivativeVector
+	local cost = costPart1 - costPart2 + costPart3 + costPart4
 
-end
-
-function SupportVectorRegressionGradientVariantModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
-
-	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
-	
-	local ModelParameters = self.ModelParameters
-	
-	local Regularizer = self.Regularizer
-	
-	local Optimizer = self.Optimizer
-	
-	local learningRate = self.learningRate
-
-	if (Regularizer) then
-
-		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
-
-		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, regularizationDerivatives)
-
-	end
-
-	lossFunctionDerivativeVector = AqwamTensorLibrary:divide(lossFunctionDerivativeVector, numberOfData)
-
-	if (Optimizer) then 
-
-		lossFunctionDerivativeVector = Optimizer:calculate(learningRate, lossFunctionDerivativeVector, ModelParameters) 
-
-	else
-
-		lossFunctionDerivativeVector = AqwamTensorLibrary:multiply(learningRate, lossFunctionDerivativeVector)
-
-	end
-
-	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, lossFunctionDerivativeVector)
+	return cost
 
 end
 
-function SupportVectorRegressionGradientVariantModel:update(lossGradientVector, hasBias, clearAllMatrices)
+function SupportVectorRegressionModel:update(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 
-	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
+	local hypothesisVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 
-	local numberOfData = #lossGradientVector
+	local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
-	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
+	errorVector = AqwamTensorLibrary:multiply(-cValue, errorVector)
 
-	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
-
-	if (clearAllMatrices) then 
-
-		self.featureMatrix = nil
-
-		self.lossFunctionDerivativeVector = nil
-
-	end
+	return self.Solver:calculate(ModelParameters, mappedFeatureMatrix, errorVector)
 
 end
 
-function SupportVectorRegressionGradientVariantModel.new(parameterDictionary)
-	
+function SupportVectorRegressionModel.new(parameterDictionary)
+
 	parameterDictionary = parameterDictionary or {}
-	
+
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewSupportVectorRegressionGradientVariantModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewSupportVectorRegression = IterativeMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewSupportVectorRegressionGradientVariantModel, SupportVectorRegressionGradientVariantModel)
+	setmetatable(NewSupportVectorRegression, SupportVectorRegressionModel)
+
+	NewSupportVectorRegression:setName("SupportVectorRegression")
+
+	NewSupportVectorRegression.cValue = parameterDictionary.cValue or defaultCvalue
 	
-	NewSupportVectorRegressionGradientVariantModel:setName("SupportVectorRegressionGradientVariant")
+	NewSupportVectorRegression.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
-	NewSupportVectorRegressionGradientVariantModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	NewSupportVectorRegression.kernelFunction = parameterDictionary.kernelFunction or defaultKernelFunction
+
+	NewSupportVectorRegression.kernelParameters = {
+
+		degree = parameterDictionary.degree or defaultDegree,
+
+		gamma = parameterDictionary.gamma or defaultGamma,
+
+		sigma = parameterDictionary.sigma or defaultSigma,
+
+		r = parameterDictionary.r or defaultR
+
+	}
 	
-	NewSupportVectorRegressionGradientVariantModel.cValue = parameterDictionary.cValue or defaultCValue
-	
-	NewSupportVectorRegressionGradientVariantModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewSupportVectorRegression.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
 
-	NewSupportVectorRegressionGradientVariantModel.Optimizer = parameterDictionary.Optimizer
+	return NewSupportVectorRegression
+end
 
-	NewSupportVectorRegressionGradientVariantModel.Regularizer = parameterDictionary.Regularizer
-	
-	NewSupportVectorRegressionGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+function SupportVectorRegressionModel:setCValue(cValue)
 
-	return NewSupportVectorRegressionGradientVariantModel
+	self.cValue = cValue or self.cValue
 
 end
 
-function SupportVectorRegressionGradientVariantModel:setOptimizer(Optimizer)
-
-	self.Optimizer = Optimizer
-
-end
-
-function SupportVectorRegressionGradientVariantModel:setRegularizer(Regularizer)
-
-	self.Regularizer = Regularizer
-
-end
-
-function SupportVectorRegressionGradientVariantModel:setSolver(Solver)
+function SupportVectorRegressionModel:setSolver(Solver)
 
 	self.Solver = Solver
 
 end
 
-function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelVector)
+function SupportVectorRegressionModel:train(featureMatrix, labelVector)
 
-	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
-	
+	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector do not contain the same number of rows.") end
+
+	local numberOfFeatures = #featureMatrix[1]
+
 	local ModelParameters = self.ModelParameters
 
 	if (ModelParameters) then
 
-		if (#featureMatrix[1] ~= #ModelParameters) then error("The number of features are not the same as the model parameters.") end
+		if (numberOfFeatures ~= #ModelParameters) then error("The number of features is not the same as the model parameters.") end
 
 	else
 
-		self.ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		ModelParameters = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 
 	end
-	
+
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 	
 	local cValue = self.cValue
 	
 	local epsilon = self.epsilon
+	
+	local kernelFunction = self.kernelFunction
+	
+	local kernelParameters = self.kernelParameters
 
-	local Optimizer = self.Optimizer
-	
-	local functionToApply = function(errorValue) return ((errorValue > epsilon) and (errorValue - epsilon)) or ((errorValue < -epsilon) and (errorValue + epsilon)) or 0 end
-	
-	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
-	
+	local mappedFeatureMatrix = mappingList[kernelFunction](featureMatrix, kernelParameters)
+
+	local kernelMatrix = kernelFunctionList[kernelFunction](featureMatrix, kernelParameters)
+
 	local costArray = {}
 
 	local numberOfIterations = 0
@@ -238,29 +393,21 @@ function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelV
 
 		self:iterationWait()
 
-		local hypothesisVector = self:calculateHypothesisVector(featureMatrix, true)
-
 		cost = self:calculateCostWhenRequired(numberOfIterations, function()
 
-			return self:calculateCost(hypothesisVector, labelVector, hasBias)
+			return calculateCost(ModelParameters, mappedFeatureMatrix, kernelMatrix, labelVector, cValue, epsilon)
 
 		end)
 
-		if (cost) then 
+		if cost then
 
 			table.insert(costArray, cost)
 
 			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
 
 		end
-		
-		local errorVector = AqwamTensorLibrary:subtract(hypothesisVector, labelVector)
 
-		local lossGradientVector = AqwamTensorLibrary:applyFunction(functionToApply, errorVector)
-		
-		lossGradientVector = AqwamTensorLibrary:multiply(cValue, lossGradientVector)
-
-		self:update(lossGradientVector, hasBias, true)
+		ModelParameters = self:update(ModelParameters, mappedFeatureMatrix, labelVector, cValue)
 
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 
@@ -273,31 +420,33 @@ function SupportVectorRegressionGradientVariantModel:train(featureMatrix, labelV
 	end
 	
 	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
-
-	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
 	
 	if (self.autoResetSolvers) then self.Solver:reset() end
+	
+	self.ModelParameters = ModelParameters
 
 	return costArray
 
 end
 
-function SupportVectorRegressionGradientVariantModel:predict(featureMatrix)
+function SupportVectorRegressionModel:predict(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters
-	
+
 	if (not ModelParameters) then
-		
+
 		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
-		
+
 		self.ModelParameters = ModelParameters
-		
+
 	end
 
-	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
+	local mappedFeatureMatrix = mappingList[self.kernelFunction](featureMatrix, self.kernelParameters)
+
+	local predictedVector = AqwamTensorLibrary:dotProduct(mappedFeatureMatrix, ModelParameters)
 
 	return predictedVector
 
 end
 
-return SupportVectorRegressionGradientVariantModel
+return SupportVectorRegressionModel

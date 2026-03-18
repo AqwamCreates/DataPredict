@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-SupportVectorMachineGradientVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number): ModelObject
+SupportVectorMachineGradientVariant.new(maximumNumberOfIterations: integer, learningRate: number, cValue: number, costFunction: string): ModelObject
 ```
 
 #### Parameters:
@@ -25,6 +25,12 @@ SupportVectorMachineGradientVariant.new(maximumNumberOfIterations: integer, lear
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
 * cValue: How strict should the model can classify the data correctly. Higher the cValue, the closer the data points to the decision boundary.
+
+* costFunction: The cost function to be used by the model. Available options are:
+
+  * HingeLoss
+ 
+  * SquaredHingeLoss (Default)
 
 #### Returns:
 

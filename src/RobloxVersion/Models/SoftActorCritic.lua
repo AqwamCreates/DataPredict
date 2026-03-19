@@ -145,8 +145,6 @@ function SoftActorCriticModel.new(parameterDictionary)
 	NewSoftActorCritic:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
 		local ActorModel = NewSoftActorCritic.ActorModel
-		
-		local CriticModel = NewSoftActorCritic.CriticModel
 
 		local previousActionVector = ActorModel:forwardPropagate(previousFeatureVector, true)
 		
@@ -159,30 +157,22 @@ function SoftActorCriticModel.new(parameterDictionary)
 		local ClassesList = ActorModel:getClassesList()
 		
 		local previousClassIndex = table.find(ClassesList, previousAction)
-		
-		local currentClassIndex = table.find(ClassesList, currentAction)
 
 		local previousActionProbabilityGradientVector = {}
-		
-		local currentActionProbabilityGradientVector = {}
 
 		for i, _ in ipairs(ClassesList) do
 
 			previousActionProbabilityGradientVector[i] = (((i == previousClassIndex) and 1) or 0) - previousActionProbabilityVector[1][i]
-			
-			currentActionProbabilityGradientVector[i] = (((i == currentClassIndex) and 1) or 0) - currentActionProbabilityVector[1][i]
 
 		end
 		
 		previousActionProbabilityGradientVector = {previousActionProbabilityGradientVector}
-		
-		currentActionProbabilityGradientVector = {currentActionProbabilityGradientVector}
 
 		local previousLogActionProbabilityVector = AqwamTensorLibrary:logarithm(previousActionProbabilityVector)
 		
 		local currentLogActionProbabilityVector = AqwamTensorLibrary:logarithm(currentActionProbabilityVector)
 		
-		return NewSoftActorCritic:update(previousFeatureVector, previousActionProbabilityVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, previousAction, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentActionProbabilityGradientVector, currentAction, terminalStateValue)
+		return NewSoftActorCritic:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentAction, terminalStateValue)
 		
 	end)
 	
@@ -203,10 +193,8 @@ function SoftActorCriticModel.new(parameterDictionary)
 		local currentLogActionProbabilityVector = calculateDiagonalGaussianProbability(currentActionMeanVector, previousActionStandardDeviationVector, currentActionNoiseVector)
 		
 		local previousActionProbabilityGradientVector = calculateDiagonalGaussianProbabilityGradient(previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
-
-		local currentActionProbabilityGradientVector = calculateDiagonalGaussianProbabilityGradient(currentActionMeanVector, previousActionStandardDeviationVector, currentActionNoiseVector)
 		
-		return NewSoftActorCritic:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, nil, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentActionProbabilityGradientVector, nil, terminalStateValue)
+		return NewSoftActorCritic:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, nil, terminalStateValue)
 		
 	end)
 	
@@ -218,7 +206,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 	
 end
 
-function SoftActorCriticModel:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, previousAction, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentActionProbabilityGradientVector, currentAction, terminalStateValue)
+function SoftActorCriticModel:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentAction, terminalStateValue)
 	
 	local CriticModelParametersArray = self.CriticModelParametersArray
 	
@@ -232,23 +220,7 @@ function SoftActorCriticModel:update(previousFeatureVector, previousActionVector
 	
 	local PreviousCriticModelParametersArray = {}
 	
-	local previousActionProbabilityValue
-	
 	local currentLogActionProbabilityValue
-	
-	if (previousAction) then
-
-		local ClassesList = ActorModel:getClassesList()
-
-		local actionIndex = table.find(ClassesList, previousAction)
-
-		previousActionProbabilityValue = previousLogActionProbabilityVector[1][actionIndex]
-
-	else
-
-		previousActionProbabilityValue = AqwamTensorLibrary:sum(previousLogActionProbabilityVector)
-
-	end
 	
 	if (currentAction) then
 		
@@ -330,7 +302,7 @@ function SoftActorCriticModel:update(previousFeatureVector, previousActionVector
 	
 end
 
-function SoftActorCriticModel:setCrtiticModelParameters1(CriticModelParameters1, doNotDeepCopy)
+function SoftActorCriticModel:setCriticModelParameters1(CriticModelParameters1, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 

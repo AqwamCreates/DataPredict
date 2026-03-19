@@ -159,30 +159,22 @@ function SoftActorCriticModel.new(parameterDictionary)
 		local ClassesList = ActorModel:getClassesList()
 		
 		local previousClassIndex = table.find(ClassesList, previousAction)
-		
-		local currentClassIndex = table.find(ClassesList, currentAction)
 
 		local previousActionProbabilityGradientVector = {}
-		
-		local currentActionProbabilityGradientVector = {}
 
 		for i, _ in ipairs(ClassesList) do
 
 			previousActionProbabilityGradientVector[i] = (((i == previousClassIndex) and 1) or 0) - previousActionProbabilityVector[1][i]
-			
-			currentActionProbabilityGradientVector[i] = (((i == currentClassIndex) and 1) or 0) - currentActionProbabilityVector[1][i]
 
 		end
 		
 		previousActionProbabilityGradientVector = {previousActionProbabilityGradientVector}
-		
-		currentActionProbabilityGradientVector = {currentActionProbabilityGradientVector}
 
 		local previousLogActionProbabilityVector = AqwamTensorLibrary:logarithm(previousActionProbabilityVector)
 		
 		local currentLogActionProbabilityVector = AqwamTensorLibrary:logarithm(currentActionProbabilityVector)
 		
-		return NewSoftActorCritic:update(previousFeatureVector, previousActionProbabilityVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, previousAction, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentActionProbabilityGradientVector, currentAction, terminalStateValue)
+		return NewSoftActorCritic:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, previousAction, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentAction, terminalStateValue)
 		
 	end)
 	
@@ -196,8 +188,6 @@ function SoftActorCriticModel.new(parameterDictionary)
 		
 		local previousActionVector = calculateActionVector(previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
 		
-		local currentActionVector = calculateActionVector(currentActionMeanVector, previousActionStandardDeviationVector, currentActionNoiseVector)
-		
 		local previousLogActionProbabilityVector = calculateDiagonalGaussianProbability(previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
 		
 		local currentLogActionProbabilityVector = calculateDiagonalGaussianProbability(currentActionMeanVector, previousActionStandardDeviationVector, currentActionNoiseVector)
@@ -206,7 +196,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 
 		local currentActionProbabilityGradientVector = calculateDiagonalGaussianProbabilityGradient(currentActionMeanVector, previousActionStandardDeviationVector, currentActionNoiseVector)
 		
-		return NewSoftActorCritic:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, nil, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentActionProbabilityGradientVector, nil, terminalStateValue)
+		return NewSoftActorCritic:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, nil, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, nil, terminalStateValue)
 		
 	end)
 	
@@ -218,7 +208,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 	
 end
 
-function SoftActorCriticModel:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, previousAction, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentActionProbabilityGradientVector, currentAction, terminalStateValue)
+function SoftActorCriticModel:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, previousAction, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentAction, terminalStateValue)
 	
 	local CriticModelParametersArray = self.CriticModelParametersArray
 	

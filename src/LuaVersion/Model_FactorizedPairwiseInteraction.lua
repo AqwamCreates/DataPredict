@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
-local ZTableFunction = require(script.Parent.Parent.Cores.ZTableFunction)
+local ZTableFunction = require("Core_ZTableFunction")
 
 local FactorizedPairwiseInteractionModel = {}
 
@@ -134,7 +134,7 @@ local lossFunctionList = {
 
 		local ratio = y / h
 
-		return (2 * (y * math.log(ratio) - ratio - 1)) 
+		return (2 * ((y * math.log(ratio)) + ratio - 1))
 
 	end,
 	

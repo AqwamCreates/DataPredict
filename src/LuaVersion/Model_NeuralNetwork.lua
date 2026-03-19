@@ -106,66 +106,6 @@ local layerPropertyValueTypeCheckingFunctionList = {
 
 }
 
-local lossFunctionList = {
-	
-	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.abs(generatedLabelValue - labelValue) end,
-	
-	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return math.pow((generatedLabelValue - labelValue), 2) end,
-	
-	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log(y / h) - y + h)) end,
-
-	["MeanGammaDeviance"] = function (h, y) 
-
-		local ratio = y / h
-
-		return (2 * (math.log(ratio) + ratio - 1))
-
-	end,
-	
-	["HingeLoss"] = function(generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end,
-
-	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
-	
-	["BinaryCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end,
-	
-	["CategoricalCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue)) end,
-	
-}
-
-local lossFunctionGradientList = {
-
-	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.sign(generatedLabelValue - labelValue) end,
-
-	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return (2 * (generatedLabelValue - labelValue)) end,
-
-	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
-
-	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
-
-	["HingeLoss"] = function (generatedLabelValue, labelValue)
-
-		local scale = (((generatedLabelValue * labelValue) < 1) and 1) or 0
-
-		return -(labelValue * scale) 
-
-	end,
-
-	["SquaredHingeLoss"] = function (h, y)
-
-		local margin = 1 - (h * y)
-
-		local scale = ((margin > 0) and margin) or 0
-
-		return -(2 * y * scale)
-
-	end,
-
-	["BinaryCrossEntropy"] = function (generatedLabelValue, labelValue) return ((generatedLabelValue - labelValue) / (generatedLabelValue * (1 - generatedLabelValue))) end,
-
-	["CategoricalCrossEntropy"] = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end,
-
-}
-
 local elementWiseActivationFunctionList = {
 	
 	["Exponent"] = function (z) return math.exp(z) end,
@@ -513,6 +453,66 @@ local activationFunctionDerivativeList = {
 	end,
 
 	["None"] = function (unwrappedAVector, unwrappedZVector) return table.create(#unwrappedZVector, 0) end,
+
+}
+
+local lossFunctionList = {
+
+	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.abs(generatedLabelValue - labelValue) end,
+
+	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return math.pow((generatedLabelValue - labelValue), 2) end,
+
+	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log(y / h) - y + h)) end,
+
+	["MeanGammaDeviance"] = function (h, y) 
+
+		local ratio = y / h
+
+		return (2 * (math.log(ratio) + ratio - 1))
+
+	end,
+
+	["HingeLoss"] = function(generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end,
+
+	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
+
+	["BinaryCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end,
+
+	["CategoricalCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue)) end,
+
+}
+
+local lossFunctionGradientList = {
+
+	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.sign(generatedLabelValue - labelValue) end,
+
+	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return (2 * (generatedLabelValue - labelValue)) end,
+
+	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
+
+	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
+
+	["HingeLoss"] = function (generatedLabelValue, labelValue)
+
+		local scale = (((generatedLabelValue * labelValue) < 1) and 1) or 0
+
+		return -(labelValue * scale) 
+
+	end,
+
+	["SquaredHingeLoss"] = function (h, y)
+
+		local margin = 1 - (h * y)
+
+		local scale = ((margin > 0) and margin) or 0
+
+		return -(2 * y * scale)
+
+	end,
+
+	["BinaryCrossEntropy"] = function (generatedLabelValue, labelValue) return ((generatedLabelValue - labelValue) / (generatedLabelValue * (1 - generatedLabelValue))) end,
+
+	["CategoricalCrossEntropy"] = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end,
 
 }
 

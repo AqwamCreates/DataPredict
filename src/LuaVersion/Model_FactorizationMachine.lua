@@ -32,11 +32,11 @@ local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 local ZTableFunction = require("Core_ZTableFunction")
 
-local FactorizationMachineModel = {}
+local FactorizedPairwiseInteractionModel = {}
 
-FactorizationMachineModel.__index = FactorizationMachineModel
+FactorizedPairwiseInteractionModel.__index = FactorizedPairwiseInteractionModel
 
-setmetatable(FactorizationMachineModel, GradientMethodBaseModel)
+setmetatable(FactorizedPairwiseInteractionModel, GradientMethodBaseModel)
 
 local defaultMaximumNumberOfIterations = 500
 
@@ -55,9 +55,9 @@ local function calculateProbabilityDensityFunctionValue(z)
 end
 
 local binaryFunctionList = {
-	
+
 	["None"] = function (z) return z end,
-	
+
 	["Exponent"] = function (z) return math.exp(z) end,
 
 	["Logistic"] = function (z) return (1/(1 + math.exp(-z))) end,
@@ -89,9 +89,9 @@ local binaryFunctionList = {
 }
 
 local binaryFunctionGradientList = {
-	
+
 	["None"] = function (h, z) return 1 end,
-	
+
 	["Exponent"] = function (h, z) return h end,
 
 	["Logistic"] = function (h, z) return (h * (1 - h)) end,
@@ -127,14 +127,14 @@ local lossFunctionList = {
 	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
 
 	["MeanSquaredError"] = function (h, y) return math.pow((h - y), 2) end,
-	
+
 	["MeanPoissonDeviance"] = function (h, y) return (2 * (y * math.log(y / h) - y + h)) end,
 
 	["MeanGammaDeviance"] = function (h, y) 
 
 		local ratio = y / h
 
-		return (2 * (y * math.log(ratio) - ratio - 1)) 
+		return (2 * ((y * math.log(ratio)) + ratio - 1))
 
 	end,
 	
@@ -147,11 +147,11 @@ local lossFunctionList = {
 }
 
 local lossFunctionGradientList = {
-	
-	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 
-	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
+	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
 	
+	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
+
 	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
 
 	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
@@ -178,7 +178,7 @@ local lossFunctionGradientList = {
 
 }
 
-function FactorizationMachineModel:calculateCost(hypothesisVector, labelVector, hasBias)
+function FactorizedPairwiseInteractionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 	
@@ -192,13 +192,9 @@ function FactorizationMachineModel:calculateCost(hypothesisVector, labelVector, 
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
-	local WeightRegularizer = self.WeightRegularizer
+	local Regularizer = self.Regularizer
 	
-	local LatentWeightRegularizer = self.LatentWeightRegularizer
-
-	if (WeightRegularizer) then totalCost = totalCost + WeightRegularizer:calculateCost(weightVector, hasBias) end
-	
-	if (LatentWeightRegularizer) then totalCost = totalCost + LatentWeightRegularizer:calculateCost(latentWeightVectorMatrix, hasBias) end
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(latentWeightVectorMatrix, hasBias) end
 
 	local averageCost = totalCost / #labelVector
 
@@ -206,17 +202,11 @@ function FactorizationMachineModel:calculateCost(hypothesisVector, labelVector, 
 
 end
 
-function FactorizationMachineModel:calculateHypothesisVector(featureMatrix, saveAllMatrices)
-	
-	local ModelParameters = self.ModelParameters or {}
+function FactorizedPairwiseInteractionModel:calculateHypothesisVector(featureMatrix, saveAllMatrices)
 	
 	local numberOfFeatures = #featureMatrix[1]
 	
-	local weightVector = ModelParameters[1] or self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
-	
-	local latentWeightVectorMatrix = ModelParameters[2] or self:initializeMatrixBasedOnMode({numberOfFeatures, self.latentFactorCount})
-
-	local linearVector = AqwamTensorLibrary:dotProduct(featureMatrix, weightVector)
+	local latentWeightVectorMatrix = self.ModelParameters or self:initializeMatrixBasedOnMode({numberOfFeatures, self.latentFactorCount})
 	
 	local latentVector = AqwamTensorLibrary:dotProduct(featureMatrix, latentWeightVectorMatrix)
 	
@@ -232,13 +222,11 @@ function FactorizationMachineModel:calculateHypothesisVector(featureMatrix, save
 	
 	local interactionVector = AqwamTensorLibrary:sum(interactionMatrix, 2)
 	
-	interactionVector = AqwamTensorLibrary:divide(interactionVector, 2)
-	
-	local zVector = AqwamTensorLibrary:add(linearVector, interactionVector)
+	local zVector = AqwamTensorLibrary:divide(interactionVector, 2)
 	
 	local hypothesisVector = AqwamTensorLibrary:applyFunction(binaryFunctionList[self.binaryFunction], zVector)
 	
-	self.ModelParameters = {weightVector, latentWeightVectorMatrix}
+	self.ModelParameters = latentWeightVectorMatrix
 	
 	if (saveAllMatrices) then 
 		
@@ -256,7 +244,7 @@ function FactorizationMachineModel:calculateHypothesisVector(featureMatrix, save
 
 end
 
-function FactorizationMachineModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+function FactorizedPairwiseInteractionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -276,15 +264,11 @@ function FactorizationMachineModel:calculateLossFunctionDerivativeVector(lossGra
 	
 	if (not hypothesisVector) then error("Hypothesis vector not found.") end
 	
-	local ModelParameters = self.ModelParameters or {}
-	
-	local latentWeightMatrix = ModelParameters[2]
+	local latentWeightMatrix = self.ModelParameters or {}
 	
 	local binaryGradientVector = AqwamTensorLibrary:applyFunction(binaryFunctionGradientList[self.binaryFunction], hypothesisVector, zVector)
 	
 	lossGradientVector = AqwamTensorLibrary:multiply(lossGradientVector, binaryGradientVector)
-
-	local weightLossFunctionDerivativeVector = AqwamTensorLibrary:dotProduct(AqwamTensorLibrary:transpose(featureMatrix), lossGradientVector)
 	
 	local latentWeightLossFunctionDerivativeMatrix = AqwamTensorLibrary:createTensor({#featureMatrix[1], self.latentFactorCount}, 0)
 	
@@ -337,88 +321,50 @@ function FactorizationMachineModel:calculateLossFunctionDerivativeVector(lossGra
 		end
 
 	end 
-	
-	local lossFunctionDerivativeVectorArray = {weightLossFunctionDerivativeVector, latentWeightLossFunctionDerivativeMatrix}
 
-	if (self.areGradientsSaved) then self.lossFunctionDerivativeVectorArray = lossFunctionDerivativeVectorArray end
+	if (self.areGradientsSaved) then self.latentWeightLossFunctionDerivativeMatrix = latentWeightLossFunctionDerivativeMatrix end
 
-	return lossFunctionDerivativeVectorArray
+	return latentWeightLossFunctionDerivativeMatrix
 
 end
 
-function FactorizationMachineModel:gradientDescent(lossFunctionDerivativeVectorArray, numberOfData, hasBias)
+function FactorizedPairwiseInteractionModel:gradientDescent(latentWeightLossFunctionDerivativeMatrix, numberOfData, hasBias)
 	
-	local ModelParameters = self.ModelParameters
+	local latentWeightVectorMatrix = self.ModelParameters
 	
-	local weightVector = ModelParameters[1]
+	local Regularizer = self.Regularizer
+	
+	local Optimizer = self.Optimizer
+	
+	local learningRate = self.learningRate
+	
+	if (Regularizer) then
 
-	local latentWeightVectorMatrix = ModelParameters[2]
-	
-	local weightLossFunctionDerivativeVector = lossFunctionDerivativeVectorArray[1]
-	
-	local latentWeightLossFunctionDerivativeMatrix = lossFunctionDerivativeVectorArray[2]
-	
-	local WeightRegularizer = self.WeightRegularizer
-	
-	local LatentWeightRegularizer = self.LatentWeightRegularizer
-	
-	local WeightOptimizer = self.WeightOptimizer
-	
-	local LatentWeightOptimizer = self.LatentWeightOptimizer
-	
-	local weightLearningRate = self.weightLearningRate
-	
-	local latentWeightLearningRate = self.latentWeightLearningRate
-
-	if (WeightRegularizer) then
-
-		local weightRegularizationDerivatives = WeightRegularizer:calculate(weightVector, hasBias)
-
-		weightLossFunctionDerivativeVector = AqwamTensorLibrary:add(weightLossFunctionDerivativeVector, weightRegularizationDerivatives)
-
-	end
-	
-	if (LatentWeightRegularizer) then
-
-		local latentWeightRegularizationDerivatives = LatentWeightRegularizer:calculate(latentWeightVectorMatrix, hasBias)
+		local latentWeightRegularizationDerivatives = Regularizer:calculate(latentWeightVectorMatrix, hasBias)
 
 		latentWeightLossFunctionDerivativeMatrix = AqwamTensorLibrary:add(latentWeightLossFunctionDerivativeMatrix, latentWeightRegularizationDerivatives)
 
 	end
-
-	weightLossFunctionDerivativeVector = AqwamTensorLibrary:divide(weightLossFunctionDerivativeVector, numberOfData)
 	
 	latentWeightLossFunctionDerivativeMatrix = AqwamTensorLibrary:divide(latentWeightLossFunctionDerivativeMatrix, numberOfData)
+	
+	if (Optimizer) then 
 
-	if (WeightOptimizer) then 
-
-		weightLossFunctionDerivativeVector = WeightOptimizer:calculate(weightLearningRate, weightLossFunctionDerivativeVector, weightVector) 
+		latentWeightLossFunctionDerivativeMatrix = Optimizer:calculate(learningRate, latentWeightLossFunctionDerivativeMatrix, latentWeightVectorMatrix) 
 
 	else
 
-		weightLossFunctionDerivativeVector = AqwamTensorLibrary:multiply(weightLearningRate, weightLossFunctionDerivativeVector)
+		latentWeightLossFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(learningRate, latentWeightLossFunctionDerivativeMatrix)
 
 	end
-	
-	if (LatentWeightOptimizer) then 
-
-		latentWeightLossFunctionDerivativeMatrix = LatentWeightOptimizer:calculate(latentWeightLearningRate, latentWeightLossFunctionDerivativeMatrix, latentWeightVectorMatrix) 
-
-	else
-
-		latentWeightLossFunctionDerivativeMatrix = AqwamTensorLibrary:multiply(latentWeightLearningRate, latentWeightLossFunctionDerivativeMatrix)
-
-	end
-	
-	weightVector = AqwamTensorLibrary:subtract(weightVector, weightLossFunctionDerivativeVector)
 	
 	latentWeightVectorMatrix = AqwamTensorLibrary:subtract(latentWeightVectorMatrix, latentWeightLossFunctionDerivativeMatrix)
 
-	self.ModelParameters = {weightVector, latentWeightVectorMatrix}
+	self.ModelParameters = latentWeightVectorMatrix
 
 end
 
-function FactorizationMachineModel:update(lossGradientVector, hasBias, clearAllMatrices)
+function FactorizedPairwiseInteractionModel:update(lossGradientVector, hasBias, clearAllMatrices)
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
@@ -438,89 +384,59 @@ function FactorizationMachineModel:update(lossGradientVector, hasBias, clearAllM
 		
 		self.hypothesisVector = nil
 
-		self.lossFunctionDerivativeVectorArray = nil
+		self.latentWeightLossFunctionDerivativeMatrix = nil
 
 	end
 
 end
 
-function FactorizationMachineModel.new(parameterDictionary)
+function FactorizedPairwiseInteractionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
-	local NewFactorizationMachineModel = GradientMethodBaseModel.new(parameterDictionary)
+	local NewFactorizedPairwiseInteractionModel = GradientMethodBaseModel.new(parameterDictionary)
 
-	setmetatable(NewFactorizationMachineModel, FactorizationMachineModel)
+	setmetatable(NewFactorizedPairwiseInteractionModel, FactorizedPairwiseInteractionModel)
 	
-	NewFactorizationMachineModel:setName("FactorizationMachine")
+	NewFactorizedPairwiseInteractionModel:setName("FactorizedPairwiseInteraction")
+
+	NewFactorizedPairwiseInteractionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 	
-	local learningRate = parameterDictionary.learningRate or defaultLearningRate
-
-	NewFactorizationMachineModel.weightLearningRate = parameterDictionary.weightLearningRate or learningRate
+	NewFactorizedPairwiseInteractionModel.latentFactorCount = parameterDictionary.latentFactorCount or defaultLatentFactorCount
 	
-	NewFactorizationMachineModel.latentWeightLearningRate = parameterDictionary.latentWeightLearningRate or learningRate
+	NewFactorizedPairwiseInteractionModel.binaryFunction = parameterDictionary.binaryFunction or defaultBinaryFunction
+
+	NewFactorizedPairwiseInteractionModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
 	
-	NewFactorizationMachineModel.latentFactorCount = parameterDictionary.latentFactorCount or defaultLatentFactorCount
-	
-	NewFactorizationMachineModel.binaryFunction = parameterDictionary.binaryFunction or defaultBinaryFunction
+	NewFactorizedPairwiseInteractionModel.Optimizer = parameterDictionary.Optimizer
 
-	NewFactorizationMachineModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
+	NewFactorizedPairwiseInteractionModel.Regularizer = parameterDictionary.Regularizer
 
-	NewFactorizationMachineModel.WeightOptimizer = parameterDictionary.WeightOptimizer
-	
-	NewFactorizationMachineModel.LatentWeightOptimizer = parameterDictionary.LatentWeightOptimizer
-
-	NewFactorizationMachineModel.WeightRegularizer = parameterDictionary.WeightRegularizer
-
-	NewFactorizationMachineModel.LatentWeightRegularizer = parameterDictionary.LatentWeightRegularizer
-
-	return NewFactorizationMachineModel
+	return NewFactorizedPairwiseInteractionModel
 
 end
 
-function FactorizationMachineModel:setWeightOptimizer(WeightOptimizer)
+function FactorizedPairwiseInteractionModel:setOptimizer(Optimizer)
 
-	self.WeightOptimizer = WeightOptimizer
-
-end
-
-function FactorizationMachineModel:setLatentWeightOptimizer(LatentWeightOptimizer)
-
-	self.LatentWeightOptimizer = LatentWeightOptimizer
+	self.Optimizer = Optimizer
 
 end
 
-function FactorizationMachineModel:setWeightRegularizer(WeightRegularizer)
+function FactorizedPairwiseInteractionModel:setRegularizer(Regularizer)
 
-	self.WeightRegularizer = WeightRegularizer
-
-end
-
-function FactorizationMachineModel:setLatentWeightRegularizer(LatentWeightRegularizer)
-
-	self.LatentWeightRegularizer = LatentWeightRegularizer
+	self.Regularizer = Regularizer
 
 end
 
-function FactorizationMachineModel:train(featureMatrix, labelVector)
+function FactorizedPairwiseInteractionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
-	local ModelParameters = self.ModelParameters or {}
-	
-	local weightVector = ModelParameters[1]
-	
-	local latentWeightVectorMatrix = ModelParameters[2]
+	local latentWeightVectorMatrix = self.ModelParameters
 	
 	local numberOfFeatures = #featureMatrix[1]
-	
-	if (weightVector) then
-		
-		if (numberOfFeatures ~= #weightVector) then error("The number of features are not the same as the number of weight features.") end
-		
-	end
 	
 	if (latentWeightVectorMatrix) then
 
@@ -533,10 +449,8 @@ function FactorizationMachineModel:train(featureMatrix, labelVector)
 	if (not lossFunctionGradientFunctionToApply) then error("Invalid cost function.") end
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
-
-	local WeightOptimizer = self.WeightOptimizer
 	
-	local LatentWeightOptimizer = self.LatentWeightOptimizer
+	local Optimizer = self.Optimizer
 	
 	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
 
@@ -584,22 +498,16 @@ function FactorizationMachineModel:train(featureMatrix, labelVector)
 	
 	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 	
-	if (self.autoResetWeightOptimizers) then
-		
-		if (WeightOptimizer) then WeightOptimizer:reset() end
-		
-		if (LatentWeightOptimizer) then LatentWeightOptimizer:reset() end
-		
-	end
+	if (self.autoResetWeightOptimizers) and (Optimizer) then Optimizer:reset() end
 
 	return costArray
 
 end
 
-function FactorizationMachineModel:predict(featureMatrix)
+function FactorizedPairwiseInteractionModel:predict(featureMatrix)
 
 	return self:calculateHypothesisVector(featureMatrix, false)
 
 end
 
-return FactorizationMachineModel
+return FactorizedPairwiseInteractionModel

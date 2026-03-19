@@ -132,6 +132,40 @@ local lossFunctionList = {
 	
 }
 
+local lossFunctionGradientList = {
+
+	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.sign(generatedLabelValue - labelValue) end,
+
+	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return (2 * (generatedLabelValue - labelValue)) end,
+
+	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
+
+	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
+
+	["HingeLoss"] = function (generatedLabelValue, labelValue)
+
+		local scale = (((generatedLabelValue * labelValue) < 1) and 1) or 0
+
+		return -(labelValue * scale) 
+
+	end,
+
+	["SquaredHingeLoss"] = function (h, y)
+
+		local margin = 1 - (h * y)
+
+		local scale = ((margin > 0) and margin) or 0
+
+		return -(2 * y * scale)
+
+	end,
+
+	["BinaryCrossEntropy"] = function (generatedLabelValue, labelValue) return ((generatedLabelValue - labelValue) / (generatedLabelValue * (1 - generatedLabelValue))) end,
+
+	["CategoricalCrossEntropy"] = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end,
+
+}
+
 local elementWiseActivationFunctionList = {
 	
 	["Exponent"] = function (z) return math.exp(z) end,
@@ -292,40 +326,6 @@ local activationFunctionList = {
 
 	["None"] = function (zMatrix) return zMatrix end,
 
-}
-
-local lossFunctionGradientList = {
-
-	["MeanAbsoluteError"] = function(generatedLabelValue, labelValue) return math.sign(generatedLabelValue - labelValue) end,
-	
-	["MeanSquaredError"] = function(generatedLabelValue, labelValue) return (2 * (generatedLabelValue - labelValue)) end,
-	
-	["MeanPoissonDeviance"] = function (h, y) return (2 * (1 - (y / h))) end,
-
-	["MeanGammaDeviance"] = function (h, y) return (2 * ((h - y) / math.pow(h, 2))) end,
-	
-	["HingeLoss"] = function (generatedLabelValue, labelValue)
-
-		local scale = (((generatedLabelValue * labelValue) < 1) and 1) or 0
-
-		return -(labelValue * scale) 
-
-	end,
-
-	["SquaredHingeLoss"] = function (h, y)
-
-		local margin = 1 - (h * y)
-
-		local scale = ((margin > 0) and margin) or 0
-
-		return -(2 * y * scale)
-
-	end,
-
-	["BinaryCrossEntropy"] = function (generatedLabelValue, labelValue) return ((generatedLabelValue - labelValue) / (generatedLabelValue * (1 - generatedLabelValue))) end,
-
-	["CategoricalCrossEntropy"] = function (generatedLabelValue, labelValue) return -(labelValue / generatedLabelValue) end,
-	
 }
 
 local elementWiseActivationFunctionDerivativeList = {

@@ -70,7 +70,7 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 	
 	NewDeepDeterministicPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 		
-		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionNoiseVector[1]}) end
+		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanVector[1]}) end
 		
 		local ActorModel = NewDeepDeterministicPolicyGradientModel.ActorModel
 		
@@ -88,25 +88,17 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 	
 		local yValue = rewardValue + (NewDeepDeterministicPolicyGradientModel.discountFactor * (1 - terminalStateValue) * targetQValue)
 		
-		local previousActionVector = AqwamTensorLibrary:multiply(previousActionStandardDeviationVector, previousActionNoiseVector)
+		local newPreviousActionMeanVector = ActorModel:forwardPropagate(previousFeatureVector, true)
 		
-		previousActionVector = AqwamTensorLibrary:add(previousActionVector, previousActionMeanVector)
-		
-		local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionVector, 2)
+		local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, newPreviousActionMeanVector, 2)
 		
 		local currentQValue = CriticModel:forwardPropagate(previousCriticActionInputVector, true)[1][1]
 
-		local negatedtemporalDifferenceError = (currentQValue - yValue)
+		local criticError  = (currentQValue - yValue)
 		
-		local temporalDifferenceError = -negatedtemporalDifferenceError
+		local temporalDifferenceError = -criticError
 		
-		ActorModel:forwardPropagate(previousFeatureVector, true)
-
-		ActorModel:update(negatedtemporalDifferenceError, true)
-		
-		local previousCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionMeanVector, 2)
-		
-		CriticModel:forwardPropagate(previousCriticActionMeanInputVector, true)
+		ActorModel:update(-currentQValue, true)
 		
 		CriticModel:update(temporalDifferenceError, true)
 		

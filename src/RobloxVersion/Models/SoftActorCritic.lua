@@ -74,6 +74,16 @@ local function calculateCategoricalProbability(valueTensor)
 
 end
 
+local function calculateActionVector(meanVector, standardDeviationVector, noiseVector)
+	
+	local actionVectoPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, noiseVector)
+	
+	local actionVector = AqwamTensorLibrary:add(meanVector, actionVectoPart1)
+	
+	return actionVector
+	
+end
+
 local function calculateDiagonalGaussianProbability(meanVector, standardDeviationVector, noiseVector)
 
 	local valueVectorPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, noiseVector)
@@ -97,6 +107,22 @@ local function calculateDiagonalGaussianProbability(meanVector, standardDeviatio
 	logValueVector = AqwamTensorLibrary:multiply(-0.5, logValueVector)
 
 	return logValueVector
+
+end
+
+local function calculateDiagonalGaussianProbabilityGradient(meanVector, standardDeviationVector, noiseVector)
+
+	local actionVectorPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, noiseVector)
+
+	local actionVector = AqwamTensorLibrary:add(meanVector, actionVectorPart1)
+
+	local actionProbabilityGradientVectorPart1 = AqwamTensorLibrary:subtract(actionVector, meanVector)
+
+	local actionProbabilityGradientVectorPart2 = AqwamTensorLibrary:power(standardDeviationVector, 2)
+
+	local actionProbabilityGradientVector = AqwamTensorLibrary:divide(actionProbabilityGradientVectorPart1, actionProbabilityGradientVectorPart2)
+
+	return actionProbabilityGradientVector
 
 end
 
@@ -129,12 +155,34 @@ function SoftActorCriticModel.new(parameterDictionary)
 		local previousActionProbabilityVector = calculateCategoricalProbability(previousActionVector)
 		
 		local currentActionProbabilityVector = calculateCategoricalProbability(currentActionVector)
+		
+		local ClassesList = ActorModel:getClassesList()
+		
+		local previousClassIndex = table.find(ClassesList, previousAction)
+		
+		local currentClassIndex = table.find(ClassesList, currentAction)
+
+		local previousActionProbabilityGradientVector = {}
+		
+		local currentActionProbabilityGradientVector = {}
+
+		for i, _ in ipairs(ClassesList) do
+
+			previousActionProbabilityGradientVector[i] = (((i == previousClassIndex) and 1) or 0) - previousActionProbabilityVector[1][i]
+			
+			currentActionProbabilityGradientVector[i] = (((i == currentClassIndex) and 1) or 0) - currentActionProbabilityVector[1][i]
+
+		end
+		
+		previousActionProbabilityGradientVector = {previousActionProbabilityGradientVector}
+		
+		currentActionProbabilityGradientVector = {currentActionProbabilityGradientVector}
 
 		local previousLogActionProbabilityVector = AqwamTensorLibrary:logarithm(previousActionProbabilityVector)
 		
 		local currentLogActionProbabilityVector = AqwamTensorLibrary:logarithm(currentActionProbabilityVector)
 		
-		return NewSoftActorCritic:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+		return NewSoftActorCritic:update(previousFeatureVector, previousActionProbabilityVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, previousAction, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentActionProbabilityGradientVector, currentAction, terminalStateValue)
 		
 	end)
 	
@@ -146,11 +194,19 @@ function SoftActorCriticModel.new(parameterDictionary)
 		
 		local currentActionNoiseVector = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 		
-		local previousLogActionProbabilityVector = calculateDiagonalGaussianProbability(previousActionMeanVector, previousActionStandardDeviationVector, previousActionStandardDeviationVector)
+		local previousActionVector = calculateActionVector(previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
+		
+		local currentActionVector = calculateActionVector(currentActionMeanVector, previousActionStandardDeviationVector, currentActionNoiseVector)
+		
+		local previousLogActionProbabilityVector = calculateDiagonalGaussianProbability(previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
 		
 		local currentLogActionProbabilityVector = calculateDiagonalGaussianProbability(currentActionMeanVector, previousActionStandardDeviationVector, currentActionNoiseVector)
 		
-		return NewSoftActorCritic:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, nil, rewardValue, currentFeatureVector, terminalStateValue)
+		local previousActionProbabilityGradientVector = calculateDiagonalGaussianProbabilityGradient(previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
+
+		local currentActionProbabilityGradientVector = calculateDiagonalGaussianProbabilityGradient(currentActionMeanVector, previousActionStandardDeviationVector, currentActionNoiseVector)
+		
+		return NewSoftActorCritic:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, nil, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentActionProbabilityGradientVector, nil, terminalStateValue)
 		
 	end)
 	
@@ -162,7 +218,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 	
 end
 
-function SoftActorCriticModel:update(previousFeatureVector, previousLogActionProbabilityVector, currentLogActionProbabilityVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue)
+function SoftActorCriticModel:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, previousAction, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentActionProbabilityGradientVector, currentAction, terminalStateValue)
 	
 	local CriticModelParametersArray = self.CriticModelParametersArray
 	
@@ -176,29 +232,47 @@ function SoftActorCriticModel:update(previousFeatureVector, previousLogActionPro
 	
 	local PreviousCriticModelParametersArray = {}
 	
-	local previousLogActionProbabilityValue
+	local previousActionProbabilityValue
+	
+	local currentLogActionProbabilityValue
 	
 	if (previousAction) then
+
+		local ClassesList = ActorModel:getClassesList()
+
+		local actionIndex = table.find(ClassesList, previousAction)
+
+		previousActionProbabilityValue = previousLogActionProbabilityVector[1][actionIndex]
+
+	else
+
+		previousActionProbabilityValue = AqwamTensorLibrary:sum(previousLogActionProbabilityVector)
+
+	end
+	
+	if (currentAction) then
 		
 		local ClassesList = ActorModel:getClassesList()
 		
-		local actionIndex = table.find(ClassesList, previousAction)
+		local actionIndex = table.find(ClassesList, currentAction)
 		
-		previousLogActionProbabilityValue = previousLogActionProbabilityVector[1][actionIndex]
+		currentLogActionProbabilityValue = currentLogActionProbabilityVector[1][actionIndex]
 		
 	else
 		
-		previousLogActionProbabilityValue = AqwamTensorLibrary:sum(previousLogActionProbabilityVector)
+		currentLogActionProbabilityValue = AqwamTensorLibrary:sum(currentLogActionProbabilityVector)
 		
 	end
 
 	local currentCriticValueArray = {}
+	
+	local concatenatedCurrentFeatureAndActionVector = AqwamTensorLibrary:concatenate(currentFeatureVector, currentActionVector, 2)
 
 	for i = 1, 2, 1 do 
 
 		CriticModel:setModelParameters(CriticModelParametersArray[i])
 
-		currentCriticValueArray[i] = CriticModel:forwardPropagate(currentFeatureVector)[1][1] 
+		currentCriticValueArray[i] = CriticModel:forwardPropagate(concatenatedCurrentFeatureAndActionVector)[1][1] 
 		
 		local CriticModelParameters = CriticModel:getModelParameters(true)
 		
@@ -208,11 +282,13 @@ function SoftActorCriticModel:update(previousFeatureVector, previousLogActionPro
 
 	local minimumCurrentCriticValue = math.min(table.unpack(currentCriticValueArray))
 	
-	local yValuePart1 = (1 - terminalStateValue) * (minimumCurrentCriticValue - (alpha * previousLogActionProbabilityValue))
+	local yValuePart1 = (1 - terminalStateValue) * (minimumCurrentCriticValue - (alpha * currentLogActionProbabilityValue))
 
 	local yValue = rewardValue + (self.discountFactor * yValuePart1)
 
 	local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor({1, 2}, 0)
+	
+	local concatenatedPreviousFeatureAndActionVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionVector, 2)
 	
 	local previousCriticValueArray = {}
 
@@ -220,13 +296,13 @@ function SoftActorCriticModel:update(previousFeatureVector, previousLogActionPro
 
 		CriticModel:setModelParameters(PreviousCriticModelParametersArray[i], true)
 
-		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector, true)[1][1] 
+		local previousCriticValue = CriticModel:forwardPropagate(concatenatedPreviousFeatureAndActionVector, true)[1][1] 
 
 		local criticLoss = previousCriticValue - yValue
-
-		temporalDifferenceErrorVector[1][i] = -criticLoss -- We perform gradient descent here, so the critic loss is negated so that it can be used as temporal difference value.
 		
 		previousCriticValueArray[i] = previousCriticValue
+
+		temporalDifferenceErrorVector[1][i] = -criticLoss -- We perform gradient descent here, so the critic loss is negated so that it can be used as temporal difference value.
 
 		CriticModel:update(criticLoss, true)
 		
@@ -236,11 +312,13 @@ function SoftActorCriticModel:update(previousFeatureVector, previousLogActionPro
 
 	end
 	
-	local minimumCurrentCriticValue = math.min(table.unpack(previousCriticValueArray))
+	local minimumPreviousCriticValue = math.min(table.unpack(previousCriticValueArray))
 
-	local actorLossVector = AqwamTensorLibrary:multiply(alpha, previousLogActionProbabilityVector)
+	local actorLossVectorPart1 = AqwamTensorLibrary:multiply(alpha, previousLogActionProbabilityVector)
 
-	actorLossVector = AqwamTensorLibrary:subtract(minimumCurrentCriticValue, actorLossVector)
+	local actorLossVectorPart2 = AqwamTensorLibrary:subtract(minimumPreviousCriticValue, actorLossVectorPart1)
+	
+	local actorLossVector = AqwamTensorLibrary:multiply(actorLossVectorPart2, previousActionProbabilityGradientVector)
 	
 	actorLossVector = AqwamTensorLibrary:unaryMinus(actorLossVector)
 

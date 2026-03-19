@@ -134,7 +134,7 @@ local lossFunctionList = {
 
 		local ratio = y / h
 
-		return (2 * (y * math.log(ratio) - ratio - 1)) 
+		return (2 * ((y * math.log(ratio)) + ratio - 1))
 
 	end,
 	

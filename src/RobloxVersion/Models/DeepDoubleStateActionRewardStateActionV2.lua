@@ -69,6 +69,8 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	NewDeepDoubleStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 
 	NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewDeepDoubleStateActionRewardStateActionModel.TargetModelParameters = parameterDictionary.TargetModelParameters
 
 	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
@@ -77,6 +79,8 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 		local discountFactor = NewDeepDoubleStateActionRewardStateActionModel.discountFactor
 
 		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
+		
+		local TargetModelParameters = NewDeepDoubleStateActionRewardStateActionModel.TargetModelParameters
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
@@ -88,7 +92,11 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 			
 		end
 		
+		if (not TargetModelParameters) then TargetModelParameters = PrimaryModelParameters end
+		
 		local currentQVector = Model:forwardPropagate(currentFeatureVector)
+		
+		Model:getModelParameters(TargetModelParameters, true)
 
 		local previousQVector = Model:forwardPropagate(previousFeatureVector)
 
@@ -119,16 +127,14 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 		end
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-
+		
+		Model:setModelParameters(PrimaryModelParameters, true)
+		
 		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
-		
-		local TargetModelParameters = Model:getModelParameters(true)
 
-		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
-
-		Model:setModelParameters(TargetModelParameters, true)
+		NewDeepDoubleStateActionRewardStateActionModel.TargetModelParameters = rateAverageModelParameters(NewDeepDoubleStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
 		
 		return temporalDifferenceErrorVector
 
@@ -151,6 +157,34 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	end)
 
 	return NewDeepDoubleStateActionRewardStateActionModel
+
+end
+
+function DeepDoubleStateActionRewardStateActionModel:setTargetModelParameters(TargetModelParameters, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.TargetModelParameters = TargetModelParameters
+
+	else
+
+		self.TargetModelParameters = self:deepCopyTable(TargetModelParameters)
+
+	end
+
+end
+
+function DeepDoubleStateActionRewardStateActionModel:getTargetModelParameters(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetModelParameters
+
+	else
+
+		return self:deepCopyTable(self.TargetModelParameters)
+
+	end
 
 end
 

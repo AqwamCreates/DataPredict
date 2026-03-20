@@ -88,13 +88,11 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 	
 		local yValue = rewardValue + (NewDeepDeterministicPolicyGradientModel.discountFactor * (1 - terminalStateValue) * targetQValue)
 		
-		local newPreviousActionMeanVector = ActorModel:forwardPropagate(previousFeatureVector, true)
-		
-		local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, newPreviousActionMeanVector, 2)
+		local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionMeanVector, 2)
 		
 		local currentQValue = CriticModel:forwardPropagate(previousCriticActionInputVector, true)[1][1]
 
-		local criticError  = (currentQValue - yValue)
+		local criticError  = 2 * (currentQValue - yValue)
 		
 		local temporalDifferenceError = -criticError
 		

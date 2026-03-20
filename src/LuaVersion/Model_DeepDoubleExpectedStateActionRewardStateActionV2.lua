@@ -26,7 +26,7 @@
 
 --]]
 
-local AqwamTensorLibrary = require("Model_AqwamTensorLibrary")
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
@@ -110,7 +110,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local previousVector = Model:forwardPropagate(previousFeatureVector)
 		
-		Model:getModelParameters(TargetModelParameters, true)
+		Model:setModelParameters(TargetModelParameters, true)
 
 		local targetVector = Model:forwardPropagate(currentFeatureVector)
 		

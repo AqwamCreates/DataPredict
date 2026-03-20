@@ -172,7 +172,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			local previousCriticValue = CriticModel:forwardPropagate(previousCriticActionMeanInputVector, true)[1][1] 
 
-			local criticLoss = previousCriticValue - yValue
+			local criticLoss = 2 * (previousCriticValue - yValue)
 
 			temporalDifferenceErrorVector[1][i] = -criticLoss -- We perform gradient descent here, so the critic loss is negated so that it can be used as temporal difference value.
 
@@ -186,15 +186,9 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 		
 		if ((currentNumberOfUpdate % NewTwinDelayedDeepDeterministicPolicyGradient.policyDelayAmount) == 0) then
 			
-			local previousActionVector = AqwamTensorLibrary:multiply(previousActionStandardDeviationVector, previousActionNoiseVector)
-
-			previousActionVector = AqwamTensorLibrary:add(previousActionVector, previousActionMeanVector)
-
-			local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionVector, 2)
-			
 			CriticModel:setModelParameters(CriticModelParametersArray[1], true)
 
-			local currentQValue = CriticModel:forwardPropagate(previousCriticActionInputVector, true)[1][1]
+			local currentQValue = CriticModel:forwardPropagate(previousCriticActionMeanInputVector, true)[1][1]
 
 			ActorModel:forwardPropagate(previousFeatureVector, true)
 

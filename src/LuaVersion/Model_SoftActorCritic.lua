@@ -264,13 +264,13 @@ function SoftActorCriticModel:update(previousFeatureVector, previousActionVector
 	
 	local previousCriticValueArray = {}
 
-	for i = 1, 2, 1 do 
+	for i = 1, 2, 1 do
 
 		CriticModel:setModelParameters(PreviousCriticModelParametersArray[i], true)
 
 		local previousCriticValue = CriticModel:forwardPropagate(concatenatedPreviousFeatureAndActionVector, true)[1][1] 
 
-		local criticLoss = previousCriticValue - yValue
+		local criticLoss = 2 * (previousCriticValue - yValue)
 		
 		previousCriticValueArray[i] = previousCriticValue
 

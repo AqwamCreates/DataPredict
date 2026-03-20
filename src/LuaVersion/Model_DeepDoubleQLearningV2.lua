@@ -69,6 +69,8 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	NewDeepDoubleQLearningModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 
 	NewDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewDeepDoubleQLearningModel.TargetModelParameters = parameterDictionary.TargetModelParameters
 
 	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
@@ -77,6 +79,8 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 		local discountFactor = NewDeepDoubleQLearningModel.discountFactor
 		
 		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
+		
+		local TargetModelParameters = NewDeepDoubleQLearningModel.TargetModelParameters
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
@@ -87,10 +91,14 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 			PrimaryModelParameters = Model:getModelParameters(true)
 			
 		end
+		
+		if (not TargetModelParameters) then TargetModelParameters = PrimaryModelParameters end
 
 		local _, maxQValue = Model:predict(currentFeatureVector)
 
 		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+		
+		Model:getModelParameters(TargetModelParameters, true)
 
 		local previousVector = Model:forwardPropagate(previousFeatureVector)
 		
@@ -119,16 +127,14 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 		end
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-
+		
+		Model:setModelParameters(PrimaryModelParameters, true)
+		
 		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
 
-		local TargetModelParameters = Model:getModelParameters(true)
-
-		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleQLearningModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
-
-		Model:setModelParameters(TargetModelParameters, true)
+		NewDeepDoubleQLearningModel.TargetModelParameters = rateAverageModelParameters(NewDeepDoubleQLearningModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
 		
 		return temporalDifferenceErrorVector
 
@@ -151,6 +157,34 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	end)
 	
 	return NewDeepDoubleQLearningModel
+
+end
+
+function DeepDoubleQLearningModel:setTargetModelParameters(TargetModelParameters, doNotDeepCopy)
+	
+	if (doNotDeepCopy) then
+
+		self.TargetModelParameters = TargetModelParameters
+
+	else
+
+		self.TargetModelParameters = self:deepCopyTable(TargetModelParameters)
+
+	end
+	
+end
+
+function DeepDoubleQLearningModel:getTargetModelParameters(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetModelParameters
+
+	else
+
+		return self:deepCopyTable(self.TargetModelParameters)
+
+	end
 
 end
 

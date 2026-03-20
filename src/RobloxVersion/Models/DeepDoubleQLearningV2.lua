@@ -82,6 +82,8 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 		
 		local TargetModelParameters = NewDeepDoubleQLearningModel.TargetModelParameters
 		
+		local ClassesList = Model:getClassesList()
+		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
 		if (not PrimaryModelParameters) then 
@@ -93,20 +95,22 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 		end
 		
 		if (not TargetModelParameters) then TargetModelParameters = PrimaryModelParameters end
-
-		local _, maxQValue = Model:predict(currentFeatureVector)
-
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 		
-		Model:getModelParameters(TargetModelParameters, true)
-
-		local previousVector = Model:forwardPropagate(previousFeatureVector)
+		local primaryPreviousQVector = Model:forwardPropagate(previousFeatureVector)
 		
-		local ClassesList = Model:getClassesList()
+		local primaryCurrentAction = Model:predict(currentFeatureVector)
+		
+		local primaryCurrentActionIndex = table.find(ClassesList, primaryCurrentAction[1][1])
+		
+		Model:setModelParameters(TargetModelParameters, true)
+		
+		local targetCurrentQVector = Model:forwardPropagate(currentFeatureVector)
 
-		local actionIndex = table.find(ClassesList, previousAction)
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * targetCurrentQVector[1][primaryCurrentActionIndex])
 
-		local lastValue = previousVector[1][actionIndex]
+		local primaryPreviousActionIndex = table.find(ClassesList, previousAction)
+
+		local lastValue = primaryPreviousQVector[1][primaryPreviousActionIndex]
 
 		local temporalDifferenceError = targetValue - lastValue
 		
@@ -116,11 +120,11 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-		temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
+		temporalDifferenceErrorVector[1][primaryPreviousActionIndex] = temporalDifferenceError
 		
 		if (EligibilityTrace) then
 
-			EligibilityTrace:increment(1, actionIndex, discountFactor, outputDimensionSizeArray)
+			EligibilityTrace:increment(1, primaryPreviousActionIndex, discountFactor, outputDimensionSizeArray)
 
 			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 

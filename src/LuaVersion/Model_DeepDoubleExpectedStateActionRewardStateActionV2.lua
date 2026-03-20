@@ -108,15 +108,15 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local actionIndex = table.find(ClassesList, previousAction)
 
-		local previousVector = Model:forwardPropagate(previousFeatureVector)
+		local primaryPreviousQVector = Model:forwardPropagate(previousFeatureVector)
 		
 		Model:setModelParameters(TargetModelParameters, true)
-
-		local targetVector = Model:forwardPropagate(currentFeatureVector)
 		
-		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+		local targetCurrentQVector = Model:forwardPropagate(currentFeatureVector)
 		
-		local unwrappedTargetVector = targetVector[1]
+		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetCurrentQVector)
+		
+		local unwrappedTargetVector = targetCurrentQVector[1]
 
 		for i = 1, numberOfClasses, 1 do
 
@@ -144,7 +144,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
-		local lastValue = previousVector[1][actionIndex]
+		local lastValue = primaryPreviousQVector[1][actionIndex]
 
 		local temporalDifferenceError = targetValue - lastValue
 		

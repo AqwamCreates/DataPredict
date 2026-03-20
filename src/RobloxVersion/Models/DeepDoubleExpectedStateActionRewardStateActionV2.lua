@@ -69,6 +69,8 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.TargetModelParameters = parameterDictionary.TargetModelParameters
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
@@ -82,6 +84,8 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		
 		local EligibilityTrace = NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 		
+		local TargetModelParameters = NewDeepDoubleExpectedStateActionRewardStateActionModel.TargetModelParameters
+		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
 		if (not PrimaryModelParameters) then 
@@ -91,6 +95,8 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 			PrimaryModelParameters = Model:getModelParameters(true)
 			
 		end
+		
+		if (not TargetModelParameters) then TargetModelParameters = PrimaryModelParameters end
 
 		local expectedQValue = 0
 
@@ -103,6 +109,8 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		local actionIndex = table.find(ClassesList, previousAction)
 
 		local previousVector = Model:forwardPropagate(previousFeatureVector)
+		
+		Model:getModelParameters(TargetModelParameters, true)
 
 		local targetVector = Model:forwardPropagate(currentFeatureVector)
 		
@@ -156,15 +164,13 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 		
+		Model:setModelParameters(PrimaryModelParameters, true)
+		
 		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
 
-		local TargetModelParameters = Model:getModelParameters(true)
-
-		TargetModelParameters = rateAverageModelParameters(NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
-
-		Model:setModelParameters(TargetModelParameters, true)
+		NewDeepDoubleExpectedStateActionRewardStateActionModel.TargetModelParameters = rateAverageModelParameters(NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
 		
 		return temporalDifferenceError
 
@@ -187,6 +193,34 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 	end)
 
 	return NewDeepDoubleExpectedStateActionRewardStateActionModel
+
+end
+
+function DeepDoubleExpectedStateActionRewardStateActionModel:setTargetModelParameters(TargetModelParameters, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.TargetModelParameters = TargetModelParameters
+
+	else
+
+		self.TargetModelParameters = self:deepCopyTable(TargetModelParameters)
+
+	end
+
+end
+
+function DeepDoubleExpectedStateActionRewardStateActionModel:getTargetModelParameters(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetModelParameters
+
+	else
+
+		return self:deepCopyTable(self.TargetModelParameters)
+
+	end
 
 end
 

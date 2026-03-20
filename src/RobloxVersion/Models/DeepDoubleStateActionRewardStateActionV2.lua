@@ -84,7 +84,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
-		if (PrimaryModelParameters) then 
+		if (not PrimaryModelParameters) then 
 			
 			Model:generateLayers()
 			
@@ -94,11 +94,11 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		if (not TargetModelParameters) then TargetModelParameters = PrimaryModelParameters end
 		
-		local currentQVector = Model:forwardPropagate(currentFeatureVector)
+		local primaryPreviousQVector = Model:forwardPropagate(previousFeatureVector)
 		
-		Model:getModelParameters(TargetModelParameters, true)
-
-		local previousQVector = Model:forwardPropagate(previousFeatureVector)
+		Model:setModelParameters(TargetModelParameters, true)
+		
+		local targetCurrentQVector = Model:forwardPropagate(currentFeatureVector)
 
 		local ClassesList = Model:getClassesList()
 
@@ -108,9 +108,9 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local currentActionIndex = table.find(ClassesList, currentAction)
 
-		local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
+		local targetValue = rewardValue + (discountFactor * targetCurrentQVector[1][currentActionIndex] * (1 - terminalStateValue))
 
-		local temporalDifferenceError = targetValue - previousQVector[1][previousActionIndex] 
+		local temporalDifferenceError = targetValue - primaryPreviousQVector[1][previousActionIndex] 
 
 		local outputDimensionSizeArray = {1, numberOfClasses}
 

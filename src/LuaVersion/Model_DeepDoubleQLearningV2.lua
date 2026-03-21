@@ -104,13 +104,13 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 		
 		local targetCurrentQVector = Model:forwardPropagate(currentFeatureVector)
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * targetCurrentQVector[1][primaryCurrentActionIndex])
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * targetCurrentQVector[1][primaryCurrentActionIndex])
 
 		local primaryPreviousActionIndex = table.find(ClassesList, previousAction)
 
-		local lastValue = primaryPreviousQVector[1][primaryPreviousActionIndex]
+		local primaryPreviousQValue = primaryPreviousQVector[1][primaryPreviousActionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - primaryPreviousQValue
 		
 		local numberOfClasses = #ClassesList
 		

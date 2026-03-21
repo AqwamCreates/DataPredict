@@ -56,9 +56,9 @@ function DeepQLearningModel.new(parameterDictionary)
 		
 		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
 
-		local _, maxQValue = Model:predict(currentFeatureVector)
+		local _, maximumCurrentQValue = Model:predict(currentFeatureVector)
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maximumCurrentQValue[1][1])
 		
 		local ClassesList = Model:getClassesList()
 
@@ -68,9 +68,9 @@ function DeepQLearningModel.new(parameterDictionary)
 
 		local actionIndex = table.find(ClassesList, previousAction)
 
-		local lastValue = previousVector[1][actionIndex]
+		local previousQValue = previousVector[1][actionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - previousQValue
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 

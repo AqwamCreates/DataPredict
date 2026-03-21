@@ -80,13 +80,7 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 		
 		local averagingRateComplement = 1 - averagingRate
 		
-		if (not PrimaryModelParameters) then 
-
-			Model:generateLayers()
-
-			PrimaryModelParameters = Model:getModelParameters(true)
-
-		end
+		if (not PrimaryModelParameters) then PrimaryModelParameters = Model:generateModelParameters() end
 		
 		if (not TargetModelParameters) then TargetModelParameters = NewTabularDoubleExpectedStateActionRewardStateActionModel:deepCopyTable(PrimaryModelParameters) end
 		

@@ -110,11 +110,11 @@ function DeepNStepQLearningModel.new(parameterDictionary)
 
 		local firstExperience = replayBufferArray[1]
 
-		local _, maxQValue = Model:predict(currentFeatureVector)
+		local _, maximumCurrentQValue = Model:predict(currentFeatureVector)
 
 		local lastQVector = Model:forwardPropagate(firstExperience[1], true)
 
-		local bootstrapValue = math.pow(discountFactor, currentNStep) * maxQValue[1][1]	
+		local bootstrapValue = math.pow(discountFactor, currentNStep) * maximumCurrentQValue[1][1]	
 
 		local nStepTargetValue = returnValue + bootstrapValue
 

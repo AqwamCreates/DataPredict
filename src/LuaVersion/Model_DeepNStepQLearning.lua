@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
+local DeepReinforcementLearningBaseModel = require("Model_DeepReinforcementLearningBaseModel")
 
 local DeepNStepQLearningModel = {}
 
@@ -110,19 +110,19 @@ function DeepNStepQLearningModel.new(parameterDictionary)
 
 		local firstExperience = replayBufferArray[1]
 
-		local _, maxQValue = Model:predict(currentFeatureVector)
+		local _, maximumCurrentQValue = Model:predict(currentFeatureVector)
 
 		local lastQVector = Model:forwardPropagate(firstExperience[1], true)
 
-		local bootstrapValue = math.pow(discountFactor, currentNStep) * maxQValue[1][1]	
+		local bootstrapValue = math.pow(discountFactor, currentNStep) * maximumCurrentQValue[1][1]	
 
-		local nStepTarget = returnValue + bootstrapValue
+		local nStepTargetValue = returnValue + bootstrapValue
 
 		local actionIndex = table.find(ClassesList, firstExperience[2])
 
-		local lastValue = lastQVector[1][actionIndex]
+		local lastQValue = lastQVector[1][actionIndex]
 
-		local temporalDifferenceError = nStepTarget - lastValue
+		local temporalDifferenceError = nStepTargetValue - lastQValue
 		
 		local outputDimensionSizeArray = {1, #ClassesList}
 

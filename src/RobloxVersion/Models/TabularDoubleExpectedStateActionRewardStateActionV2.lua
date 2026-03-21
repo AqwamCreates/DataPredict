@@ -55,6 +55,8 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 	NewTabularDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
 	NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewTabularDoubleExpectedStateActionRewardStateActionModel.TargetModelParameters = parameterDictionary.TargetModelParameters
 
 	NewTabularDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
@@ -68,15 +70,37 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 		
 		local EligibilityTrace = NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 		
+		local TargetModelParameters = NewTabularDoubleExpectedStateActionRewardStateActionModel.TargetModelParameters
+		
 		local StatesList = NewTabularDoubleExpectedStateActionRewardStateActionModel:getStatesList()
 
 		local ActionsList = NewTabularDoubleExpectedStateActionRewardStateActionModel:getActionsList()
-
+		
+		local PrimaryModelParameters = Model:getModelParameters(true)
+		
 		local averagingRateComplement = 1 - averagingRate
+		
+		if (not PrimaryModelParameters) then 
 
-		local currentQVector = Model:predict(currentStateValue, true)
+			Model:generateLayers()
 
-		local previousQVector = Model:getOutputMatrix(previousStateValue, true)
+			PrimaryModelParameters = Model:getModelParameters(true)
+
+		end
+		
+		if (not TargetModelParameters) then TargetModelParameters = NewTabularDoubleExpectedStateActionRewardStateActionModel:deepCopyTable(PrimaryModelParameters) end
+		
+		local primaryPreviousQVector = Model:getOutputMatrix(previousStateValue)
+		
+		local primaryCurrentQVector = Model:getOutputMatrix(currentStateValue)
+
+		local primaryCurrentActionIndex = table.find(ActionsList, currentAction)
+		
+		local maximumPrimaryCurrentQValue = primaryCurrentQVector[1][primaryCurrentActionIndex]
+
+		Model:setModelParameters(TargetModelParameters, true)
+
+		local targetCurrentQVector = Model:getOutputMatrix(currentStateValue)
 		
 		local numberOfActions = #ActionsList
 
@@ -84,47 +108,47 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 
 		local numberOfGreedyActions = 0
 		
-		local previousVector = NewTabularDoubleExpectedStateActionRewardStateActionModel:predict(previousStateValue, true)
-		
-		local targetVector = NewTabularDoubleExpectedStateActionRewardStateActionModel:predict(currentStateValue, true)
-		
-		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
-		
 		local stateIndex = table.find(StatesList, previousStateValue)
 		
-		local actionIndex = table.find(ActionsList, previousAction)
+		local primaryPreviousActionIndex = table.find(ActionsList, previousAction)
+		
+		local unwrappedPrimaryCurrentVector = primaryCurrentQVector[1]
 
-		local unwrappedTargetVector = targetVector[1]
-
-		for i = 1, numberOfActions, 1 do
-
-			if (unwrappedTargetVector[i] == maxQValue) then
-
+		for i = 1, numberOfActions do
+			
+			if (unwrappedPrimaryCurrentVector[i] == maximumPrimaryCurrentQValue) then
+				
 				numberOfGreedyActions = numberOfGreedyActions + 1
-
+				
 			end
-
+			
 		end
 
 		local nonGreedyActionProbability = epsilon / numberOfActions
 
 		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
+		
+		local unwrappedTargetCurrentQVector = targetCurrentQVector[1]
 
 		local actionProbability
+		
+		local isGreedy
 
-		for _, qValue in ipairs(unwrappedTargetVector) do
+		for i, targetCurrentQValue in ipairs(unwrappedTargetCurrentQVector) do
+			
+			isGreedy = (unwrappedPrimaryCurrentVector[i] == maximumPrimaryCurrentQValue)
 
-			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+			actionProbability = (isGreedy and greedyActionProbability) or nonGreedyActionProbability
 
-			expectedQValue = expectedQValue + (qValue * actionProbability)
+			expectedQValue = expectedQValue + (targetCurrentQValue * actionProbability)
 
 		end
 		
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
-		local lastValue = previousVector[1][actionIndex]
+		local primaryPreviousQValue = primaryPreviousQVector[1][primaryPreviousActionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - primaryPreviousQValue
 		
 		if (EligibilityTrace) then
 			
@@ -134,29 +158,31 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 
 			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 
-			temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
+			temporalDifferenceErrorMatrix[stateIndex][primaryPreviousActionIndex] = temporalDifferenceError
 
-			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
+			EligibilityTrace:increment(stateIndex, primaryPreviousActionIndex, discountFactor, dimensionSizeArray)
 
 			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
 
-			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
+			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][primaryPreviousActionIndex]
 
 		end
 		
-		local OldModelParameters = Model:getModelParameters(true)
+		Model:setModelParameters(PrimaryModelParameters, true)
 
-		local oldWeightValue = OldModelParameters[stateIndex][actionIndex]
+		Model:getOutputMatrix(previousStateValue, true)
 
 		Model:update(-temporalDifferenceError, true)
 
-		local NewModelParameters = Model:getModelParameters(true)
+		PrimaryModelParameters = Model:getModelParameters(true)
 
-		local newWeightValue = NewModelParameters[stateIndex][actionIndex]
+		local primaryQValue = PrimaryModelParameters[stateIndex][primaryPreviousActionIndex]
 
-		NewModelParameters[stateIndex][actionIndex] = (averagingRate * oldWeightValue) + (averagingRateComplement * newWeightValue)
+		local targetQValue = TargetModelParameters[stateIndex][primaryPreviousActionIndex]
 
-		Model:setModelParameters(NewModelParameters, true)
+		TargetModelParameters[stateIndex][primaryPreviousActionIndex] = (averagingRate * primaryQValue) + (averagingRateComplement * targetQValue)
+
+		NewTabularDoubleExpectedStateActionRewardStateActionModel.TargetModelParameters = TargetModelParameters
 		
 		return temporalDifferenceError
 
@@ -179,6 +205,34 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 	end)
 
 	return NewTabularDoubleExpectedStateActionRewardStateActionModel
+
+end
+
+function TabularDoubleExpectedStateActionRewardStateActionModel:setTargetModelParameters(TargetModelParameters, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.TargetModelParameters = TargetModelParameters
+
+	else
+
+		self.TargetModelParameters = self:deepCopyTable(TargetModelParameters)
+
+	end
+
+end
+
+function TabularDoubleExpectedStateActionRewardStateActionModel:getTargetModelParameters(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetModelParameters
+
+	else
+
+		return self:deepCopyTable(self.TargetModelParameters)
+
+	end
 
 end
 

@@ -106,21 +106,25 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local numberOfClasses = #ClassesList
 
-		local actionIndex = table.find(ClassesList, previousAction)
+		local primaryPreviousActionIndex = table.find(ClassesList, previousAction)
 
 		local primaryPreviousQVector = Model:forwardPropagate(previousFeatureVector)
+		
+		local primaryCurrentQVector = Model:forwardPropagate(currentFeatureVector)
+		
+		local primaryCurrentActionIndex = table.find(ClassesList, currentAction)
+		
+		local unwrappedPrimaryCurrentVector = primaryCurrentQVector[1]
+		
+		local maximumPrimaryCurrentQValue = unwrappedPrimaryCurrentVector[primaryCurrentActionIndex]
 		
 		Model:setModelParameters(TargetModelParameters, true)
 		
 		local targetCurrentQVector = Model:forwardPropagate(currentFeatureVector)
-		
-		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetCurrentQVector)
-		
-		local unwrappedTargetVector = targetCurrentQVector[1]
 
-		for i = 1, numberOfClasses, 1 do
+		for i = 1, numberOfClasses do
 
-			if (unwrappedTargetVector[i] == maxQValue) then
+			if (unwrappedPrimaryCurrentVector[i] == maximumPrimaryCurrentQValue) then
 
 				numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -131,20 +135,26 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		local nonGreedyActionProbability = epsilon / numberOfClasses
 
 		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
+		
+		local unwrappedTargetCurrentQVector = targetCurrentQVector[1]
 
 		local actionProbability
+		
+		local isGreedy
 
-		for _, qValue in ipairs(unwrappedTargetVector) do
+		for i, targetCurrentQValue in ipairs(unwrappedTargetCurrentQVector) do
 
-			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+			isGreedy = (unwrappedPrimaryCurrentVector[i] == maximumPrimaryCurrentQValue)
 
-			expectedQValue = expectedQValue + (qValue * actionProbability)
+			actionProbability = (isGreedy and greedyActionProbability) or nonGreedyActionProbability
+
+			expectedQValue = expectedQValue + (targetCurrentQValue * actionProbability)
 
 		end
 
 		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
-		local primaryPreviousQValue = primaryPreviousQVector[1][actionIndex]
+		local primaryPreviousQValue = primaryPreviousQVector[1][primaryPreviousActionIndex]
 
 		local temporalDifferenceError = targetQValue - primaryPreviousQValue
 		
@@ -152,11 +162,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-		temporalDifferenceErrorVector[1][actionIndex] = temporalDifferenceError
+		temporalDifferenceErrorVector[1][primaryPreviousActionIndex] = temporalDifferenceError
 		
 		if (EligibilityTrace) then
 
-			EligibilityTrace:increment(1, actionIndex, discountFactor, outputDimensionSizeArray)
+			EligibilityTrace:increment(1, primaryPreviousActionIndex, discountFactor, outputDimensionSizeArray)
 
 			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 
@@ -169,6 +179,8 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
+		
+		PrimaryModelParameters = Model:getModelParameters(true)
 
 		NewDeepDoubleExpectedStateActionRewardStateActionModel.TargetModelParameters = rateAverageModelParameters(NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
 		

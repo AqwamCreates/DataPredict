@@ -64,11 +64,11 @@ function DeepQLearningModel.new(parameterDictionary)
 
 		local numberOfClasses = #ClassesList
 
-		local previousVector = Model:forwardPropagate(previousFeatureVector, true)
+		local previousQVector = Model:forwardPropagate(previousFeatureVector, true)
 
 		local actionIndex = table.find(ClassesList, previousAction)
 
-		local previousQValue = previousVector[1][actionIndex]
+		local previousQValue = previousQVector[1][actionIndex]
 
 		local temporalDifferenceError = targetQValue - previousQValue
 		

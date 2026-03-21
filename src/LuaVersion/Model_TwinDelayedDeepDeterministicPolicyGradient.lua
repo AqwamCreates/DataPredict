@@ -82,7 +82,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 	
 	NewTwinDelayedDeepDeterministicPolicyGradient.TargetCriticModelParametersArray = parameterDictionary.TargetCriticModelParametersArray or {}
 	
-	local currentNumberOfUpdate = 0
+	local currentNumberOfUpdates = 0
 	
 	NewTwinDelayedDeepDeterministicPolicyGradient:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 		
@@ -200,9 +200,9 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		end
 		
-		currentNumberOfUpdate = currentNumberOfUpdate + 1
+		currentNumberOfUpdates = currentNumberOfUpdates + 1
 		
-		if ((currentNumberOfUpdate % NewTwinDelayedDeepDeterministicPolicyGradient.policyDelayAmount) == 0) then
+		if ((currentNumberOfUpdates % NewTwinDelayedDeepDeterministicPolicyGradient.policyDelayAmount) == 0) then
 			
 			CriticModel:setModelParameters(PrimaryCriticModelParametersArray[1], true)
 
@@ -228,13 +228,13 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 	
 	NewTwinDelayedDeepDeterministicPolicyGradient:setEpisodeUpdateFunction(function() 
 		
-		currentNumberOfUpdate = 0
+		currentNumberOfUpdates = 0
 		
 	end)
 	
 	NewTwinDelayedDeepDeterministicPolicyGradient:setResetFunction(function() 
 		
-		currentNumberOfUpdate = 0
+		currentNumberOfUpdates = 0
 		
 	end)
 	

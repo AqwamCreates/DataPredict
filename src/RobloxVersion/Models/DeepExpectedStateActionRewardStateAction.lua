@@ -72,17 +72,17 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local actionIndex = table.find(ClassesList, previousAction)
 		
-		local targetVector = Model:forwardPropagate(currentFeatureVector)
+		local currentQVector = Model:forwardPropagate(currentFeatureVector)
 
-		local previousVector = Model:forwardPropagate(previousFeatureVector, true)
+		local previousQVector = Model:forwardPropagate(previousFeatureVector, true)
 
-		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+		local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(currentQVector)
 
-		local unwrappedTargetVector = targetVector[1]
+		local unwrappedTargetVector = currentQVector[1]
 
 		for i = 1, numberOfClasses, 1 do
 
-			if (unwrappedTargetVector[i] == maxQValue) then
+			if (unwrappedTargetVector[i] == maximumCurrentQValue) then
 
 				numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -98,17 +98,17 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 		for _, qValue in ipairs(unwrappedTargetVector) do
 
-			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+			actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 			expectedQValue = expectedQValue + (qValue * actionProbability)
 
 		end
 		
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
-		local lastValue = previousVector[1][actionIndex]
+		local previousQValue = previousQVector[1][actionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - previousQValue
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 

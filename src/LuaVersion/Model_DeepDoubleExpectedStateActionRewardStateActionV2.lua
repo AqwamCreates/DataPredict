@@ -169,6 +169,8 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
+		
+		PrimaryModelParameters = Model:getModelParameters(true)
 
 		NewDeepDoubleExpectedStateActionRewardStateActionModel.TargetModelParameters = rateAverageModelParameters(NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
 		

@@ -30,94 +30,56 @@ local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
 local TabularReinforcementLearningBaseModel = require("Model_TabularReinforcementLearningBaseModel")
 
-local TabularNStepExpectedStateActionRewardStateActionModel = {}
+local TabularExpectedStateActionRewardStateActionModel = {}
 
-TabularNStepExpectedStateActionRewardStateActionModel.__index = TabularNStepExpectedStateActionRewardStateActionModel
+TabularExpectedStateActionRewardStateActionModel.__index = TabularExpectedStateActionRewardStateActionModel
 
-setmetatable(TabularNStepExpectedStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
+setmetatable(TabularExpectedStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
 
 local defaultEpsilon = 0.5
 
-local defaultNStep = 3
-
-function TabularNStepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
+function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTabularNStepExpectedStateActionRewardStateActionModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewTabularExpectedStateActionRewardStateActionModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
+
+	setmetatable(NewTabularExpectedStateActionRewardStateActionModel, TabularExpectedStateActionRewardStateActionModel)
 	
-	setmetatable(NewTabularNStepExpectedStateActionRewardStateActionModel, TabularNStepExpectedStateActionRewardStateActionModel)
+	NewTabularExpectedStateActionRewardStateActionModel:setName("TabularExpectedStateActionRewardStateAction")
 	
-	NewTabularNStepExpectedStateActionRewardStateActionModel:setName("TabularNStepExpectedStateActionRewardStateAction")
+	NewTabularExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
-	NewTabularNStepExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
-	
-	NewTabularNStepExpectedStateActionRewardStateActionModel.nStep = parameterDictionary.nStep or defaultNStep
-	
-	NewTabularNStepExpectedStateActionRewardStateActionModel.replayBufferArray = parameterDictionary.replayBufferArray or {}
-	
-	NewTabularNStepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
+	NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+
+	NewTabularExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
-		local nStep = NewTabularNStepExpectedStateActionRewardStateActionModel.nStep
+		local Model = NewTabularExpectedStateActionRewardStateActionModel.Model
 		
-		local replayBufferArray = NewTabularNStepExpectedStateActionRewardStateActionModel.replayBufferArray
+		local discountFactor = NewTabularExpectedStateActionRewardStateActionModel.discountFactor
 		
-		table.insert(replayBufferArray, {previousStateValue, previousAction, rewardValue, terminalStateValue})
+		local epsilon = NewTabularExpectedStateActionRewardStateActionModel.epsilon
 		
-		local currentNStep = #replayBufferArray
+		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
 		
-		if (currentNStep < nStep) and (terminalStateValue == 0) then return 0 end
-		
-		if (currentNStep > nStep) then 
-			
-			table.remove(replayBufferArray, 1)
-			
-			currentNStep = currentNStep - 1
-			
-		end
-		
-		local Model = NewTabularNStepExpectedStateActionRewardStateActionModel.Model
-		
-		local discountFactor = NewTabularNStepExpectedStateActionRewardStateActionModel.discountFactor
-		
-		local epsilon = NewTabularNStepExpectedStateActionRewardStateActionModel.epsilon
-		
-		local ActionsList = NewTabularNStepExpectedStateActionRewardStateActionModel:getActionsList()
+		local StatesList = NewTabularExpectedStateActionRewardStateActionModel:getStatesList()
+
+		local ActionsList = NewTabularExpectedStateActionRewardStateActionModel:getActionsList()
 		
 		local numberOfActions = #ActionsList
 
 		local expectedQValue = 0
 
 		local numberOfGreedyActions = 0
-
-		local returnValue = 0
-		
-		local experience
-
-		local rewardValueAtStepI
-
-		local terminalStateValueAtStepI
-
-		for i = currentNStep, 1, -1 do
-
-			experience = replayBufferArray[i]
-
-			rewardValueAtStepI = experience[3]
-
-			terminalStateValueAtStepI = experience[4]
-
-			returnValue = rewardValueAtStepI + (discountFactor * (1 - terminalStateValueAtStepI) * returnValue)
-
-		end
-		
-		local firstExperience = replayBufferArray[1]
 		
 		local targetVector = Model:predict(currentStateValue, true)
 		
-		local lastQVector = Model:getOutputMatrix(firstExperience[1], true)
+		local previousVector = Model:getOutputMatrix(previousStateValue, true)
 		
 		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
-
+		
+		local stateIndex = table.find(StatesList, previousStateValue)
+		
 		local actionIndex = table.find(ActionsList, previousAction)
 
 		local unwrappedTargetVector = targetVector[1]
@@ -150,36 +112,54 @@ function TabularNStepExpectedStateActionRewardStateActionModel.new(parameterDict
 
 		end
 		
-		local bootstrapValue = math.pow(discountFactor, currentNStep) * expectedQValue
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
-		local nStepTarget = returnValue + bootstrapValue
+		local lastValue = previousVector[1][actionIndex]
+
+		local temporalDifferenceError = targetValue - lastValue
 		
-		local previousActionIndex = table.find(ActionsList, previousAction)
+		if (EligibilityTrace) then
+			
+			local numberOfStates = #StatesList
+			
+			local dimensionSizeArray = {numberOfStates, numberOfActions}
 
-		local lastValue = lastQVector[1][previousActionIndex]
+			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 
-		local temporalDifferenceError = nStepTarget - lastValue
+			temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
 
+			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
+
+			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
+
+			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
+
+		end
+		
 		Model:update(-temporalDifferenceError, true)
 		
 		return temporalDifferenceError
 
 	end)
 	
-	NewTabularNStepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewTabularExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		table.clear(NewTabularNStepExpectedStateActionRewardStateActionModel.replayBufferArray)
+		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	NewTabularNStepExpectedStateActionRewardStateActionModel:setResetFunction(function()
+	NewTabularExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		table.clear(NewTabularNStepExpectedStateActionRewardStateActionModel.replayBufferArray)
+		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	return NewTabularNStepExpectedStateActionRewardStateActionModel
+	return NewTabularExpectedStateActionRewardStateActionModel
 
 end
 
-return TabularNStepExpectedStateActionRewardStateActionModel
+return TabularExpectedStateActionRewardStateActionModel

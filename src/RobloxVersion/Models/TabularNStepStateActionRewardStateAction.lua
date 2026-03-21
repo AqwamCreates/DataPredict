@@ -106,15 +106,15 @@ function TabularNStepStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local currentActionIndex = table.find(ActionsList, currentAction)
 		
-		local bootstrapValue = math.pow(discountFactor, currentNStep) * currentQVector[1][currentActionIndex]	
+		local bootstrapValue = math.pow(discountFactor, currentNStep) * currentQVector[1][currentActionIndex]
 
-		local nStepTarget = returnValue + bootstrapValue
+		local nStepTargetValue = returnValue + bootstrapValue
 		
 		local previousActionIndex = table.find(ActionsList, previousAction)
 
-		local lastValue = lastQVector[1][previousActionIndex]
+		local lastQValue = lastQVector[1][previousActionIndex]
 
-		local temporalDifferenceError = nStepTarget - lastValue
+		local temporalDifferenceError = nStepTargetValue - lastQValue
 
 		Model:update(-temporalDifferenceError, true)
 		

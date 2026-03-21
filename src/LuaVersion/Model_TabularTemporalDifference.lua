@@ -64,9 +64,11 @@ function TabularTemporalDifferenceModel.new(parameterDictionary)
 
 		local currentQVector = NewTabularTemporalDifferenceModel:predict(currentStateValue, true)
 
-		local targetValue = rewardValue + (discountFactor * currentQVector[1][1] * (1 - terminalStateValue))
+		local targetQValue = rewardValue + (discountFactor * currentQVector[1][1] * (1 - terminalStateValue))
+		
+		local previousQValue = previousQVector[1][1]
 
-		local temporalDifferenceError = targetValue - previousQVector[1][1]
+		local temporalDifferenceError = targetQValue - previousQValue
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 

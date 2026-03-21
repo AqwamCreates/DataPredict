@@ -30,136 +30,238 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
 
-local TabularExpectedStateActionRewardStateActionModel = {}
+local TabularDoubleExpectedStateActionRewardStateActionModel = {}
 
-TabularExpectedStateActionRewardStateActionModel.__index = TabularExpectedStateActionRewardStateActionModel
+TabularDoubleExpectedStateActionRewardStateActionModel.__index = TabularDoubleExpectedStateActionRewardStateActionModel
 
-setmetatable(TabularExpectedStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
+setmetatable(TabularDoubleExpectedStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
 
 local defaultEpsilon = 0.5
 
-function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionary)
+function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTabularExpectedStateActionRewardStateActionModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
-
-	setmetatable(NewTabularExpectedStateActionRewardStateActionModel, TabularExpectedStateActionRewardStateActionModel)
+	local NewTabularDoubleExpectedStateActionRewardStateActionModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	NewTabularExpectedStateActionRewardStateActionModel:setName("TabularExpectedStateActionRewardStateAction")
+	setmetatable(NewTabularDoubleExpectedStateActionRewardStateActionModel, TabularDoubleExpectedStateActionRewardStateActionModel)
 	
-	NewTabularExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewTabularDoubleExpectedStateActionRewardStateActionModel:setName("TabularDoubleExpectedStateActionRewardStateActionV1")
 	
-	NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
-
-	NewTabularExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
+	NewTabularDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
+	NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewTabularDoubleExpectedStateActionRewardStateActionModel.ModelParametersArray = parameterDictionary.ModelParametersArray or {}
+	
+	NewTabularDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
 		
-		local Model = NewTabularExpectedStateActionRewardStateActionModel.Model
+		local Model = NewTabularDoubleExpectedStateActionRewardStateActionModel.Model
 		
-		local discountFactor = NewTabularExpectedStateActionRewardStateActionModel.discountFactor
+		local randomProbability = math.random()
+
+		local updateSecondModel = (randomProbability >= 0.5)
+
+		local selectedModelNumberForTargetVector = (updateSecondModel and 1) or 2
+
+		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
+
+		local temporalDifferenceError = NewTabularDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 		
-		local epsilon = NewTabularExpectedStateActionRewardStateActionModel.epsilon
+		NewTabularDoubleExpectedStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
-		
-		local StatesList = NewTabularExpectedStateActionRewardStateActionModel:getStatesList()
+		Model:getOutputMatrix(previousStateValue, true)
 
-		local ActionsList = NewTabularExpectedStateActionRewardStateActionModel:getActionsList()
-		
-		local numberOfActions = #ActionsList
-
-		local expectedQValue = 0
-
-		local numberOfGreedyActions = 0
-		
-		local targetVector = Model:predict(currentStateValue, true)
-		
-		local previousVector = Model:getOutputMatrix(previousStateValue, true)
-		
-		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
-		
-		local stateIndex = table.find(StatesList, previousStateValue)
-		
-		local actionIndex = table.find(ActionsList, previousAction)
-
-		local unwrappedTargetVector = targetVector[1]
-
-		for i = 1, numberOfActions, 1 do
-
-			if (unwrappedTargetVector[i] == maxQValue) then
-
-				numberOfGreedyActions = numberOfGreedyActions + 1
-
-			end
-
-		end
-
-		local nonGreedyActionProbability = epsilon / numberOfActions
-
-		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
-
-		for _, qValue in ipairs(unwrappedTargetVector) do
-
-			if (qValue == maxQValue) then
-
-				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
-
-			else
-
-				expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-			end
-
-		end
-		
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
-
-		local lastValue = previousVector[1][actionIndex]
-
-		local temporalDifferenceError = targetValue - lastValue
-		
-		if (EligibilityTrace) then
-			
-			local numberOfStates = #StatesList
-			
-			local dimensionSizeArray = {numberOfStates, numberOfActions}
-
-			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
-
-			temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
-
-			EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
-
-			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
-
-			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
-
-		end
-		
 		Model:update(-temporalDifferenceError, true)
+		
+		NewTabularDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
 		return temporalDifferenceError
 
 	end)
 	
-	NewTabularExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewTabularDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
+		local EligibilityTrace = NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
+		
+		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+	end)
+
+	NewTabularDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function()
+		
+		local EligibilityTrace = NewTabularDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	NewTabularExpectedStateActionRewardStateActionModel:setResetFunction(function() 
-		
-		local EligibilityTrace = NewTabularExpectedStateActionRewardStateActionModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-	end)
-
-	return NewTabularExpectedStateActionRewardStateActionModel
+	return NewTabularDoubleExpectedStateActionRewardStateActionModel
 
 end
 
-return TabularExpectedStateActionRewardStateActionModel
+function TabularDoubleExpectedStateActionRewardStateActionModel:saveModelParametersFromModelParametersArray(index)
+
+	self.ModelParametersArray[index] = self:getModelParameters()
+
+end
+
+function TabularDoubleExpectedStateActionRewardStateActionModel:loadModelParametersFromModelParametersArray(index)
+
+	local ModelParametersArray = self.ModelParametersArray
+
+	if (not ModelParametersArray[index]) then
+
+		self:saveModelParametersFromModelParametersArray(index)
+
+	end
+
+	local CurrentModelParameters = ModelParametersArray[index]
+
+	self:setModelParameters(CurrentModelParameters, true)
+
+end
+
+function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+
+	local discountFactor = self.discountFactor
+	
+	local epsilon = self.epsilon
+
+	local EligibilityTrace = self.EligibilityTrace
+	
+	local StatesList = self:getStatesList()
+
+	local ActionsList = self:getActionsList()
+
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
+	
+	local previousQVector = self:predict(previousStateValue, true)
+
+	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
+	
+	local currentQVector = self:predict(currentStateValue, true)
+
+	local numberOfActions = #ActionsList
+
+	local expectedQValue = 0
+
+	local numberOfGreedyActions = 0
+
+	local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(currentQVector)
+
+	local stateIndex = table.find(StatesList, previousStateValue)
+
+	local actionIndex = table.find(ActionsList, previousAction)
+
+	local unwrappedTargetQVector = currentQVector[1]
+
+	for i = 1, numberOfActions, 1 do
+
+		if (unwrappedTargetQVector[i] == maximumCurrentQValue) then
+
+			numberOfGreedyActions = numberOfGreedyActions + 1
+
+		end
+
+	end
+
+	local nonGreedyActionProbability = epsilon / numberOfActions
+
+	local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
+
+	local actionProbability
+
+	for _, qValue in ipairs(unwrappedTargetQVector) do
+
+		actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
+
+		expectedQValue = expectedQValue + (qValue * actionProbability)
+
+	end
+
+	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+
+	local lastValue = previousQVector[1][actionIndex]
+
+	local temporalDifferenceError = targetValue - lastValue
+
+	if (EligibilityTrace) then
+
+		local numberOfStates = #StatesList
+
+		local dimensionSizeArray = {numberOfStates, numberOfActions}
+
+		local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+
+		temporalDifferenceErrorMatrix[stateIndex][actionIndex] = temporalDifferenceError
+
+		EligibilityTrace:increment(stateIndex, actionIndex, discountFactor, dimensionSizeArray)
+
+		temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
+
+		temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][actionIndex]
+
+	end
+
+	return temporalDifferenceError
+
+end
+
+function TabularDoubleExpectedStateActionRewardStateActionModel:setModelParameters1(ModelParameters1, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.ModelParametersArray[1] = ModelParameters1
+
+	else
+
+		self.ModelParametersArray[1] = self:deepCopyTable(ModelParameters1)
+
+	end
+
+end
+
+function TabularDoubleExpectedStateActionRewardStateActionModel:setModelParameters2(ModelParameters2, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.ModelParametersArray[2] = ModelParameters2
+
+	else
+
+		self.ModelParametersArray[2] = self:deepCopyTable(ModelParameters2)
+
+	end
+
+end
+
+function TabularDoubleExpectedStateActionRewardStateActionModel:getModelParameters1(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[1]
+
+	else
+
+		return self:deepCopyTable(self.ModelParametersArray[1])
+
+	end
+
+end
+
+function TabularDoubleExpectedStateActionRewardStateActionModel:getModelParameters2(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.ModelParametersArray[2]
+
+	else
+
+		return self:deepCopyTable(self.ModelParametersArray[2])
+
+	end
+
+end
+
+return TabularDoubleExpectedStateActionRewardStateActionModel

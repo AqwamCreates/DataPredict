@@ -123,7 +123,9 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:loadModelParamet
 end
 
 function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
-
+	
+	local Model = self.Model
+	
 	local discountFactor = self.discountFactor
 	
 	local epsilon = self.epsilon
@@ -136,11 +138,11 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousQVector = self:predict(previousStateValue, true)
+	local previousQVector = Model:predict(previousStateValue, true)
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 	
-	local currentQVector = self:predict(currentStateValue, true)
+	local currentQVector = Model:predict(currentStateValue, true)
 
 	local numberOfActions = #ActionsList
 

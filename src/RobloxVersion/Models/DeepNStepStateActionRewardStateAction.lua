@@ -120,11 +120,11 @@ function DeepNStepStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local bootstrapValue = math.pow(discountFactor, currentNStep) * currentQVector[1][currentActionIndex]	
 
-		local nStepTarget = returnValue + bootstrapValue
+		local nStepTargetValue = returnValue + bootstrapValue
 
 		local lastValue = lastQVector[1][previousActionIndex]
 
-		local temporalDifferenceError = nStepTarget - lastValue
+		local temporalDifferenceError = nStepTargetValue - lastValue
 		
 		local outputDimensionSizeArray = {1, #ClassesList}
 

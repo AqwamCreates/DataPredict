@@ -60,23 +60,23 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		local ModelParametersArray = NewDeepClippedDoubleQLearningModel.ModelParametersArray
 
-		local maximumQValueArray = {}
+		local maximumCurrentQValueArray = {}
 
 		for i = 1, 2, 1 do
 
 			Model:setModelParameters(ModelParametersArray[i], true)
 
-			local _, maximumQValue = Model:predict(currentFeatureVector)
+			local _, maximumCurrentQVector = Model:predict(currentFeatureVector)
 
-			table.insert(maximumQValueArray, maximumQValue[1][1])
+			table.insert(maximumCurrentQValueArray, maximumCurrentQVector[1][1])
 			
 			ModelParametersArray[i] = Model:getModelParameters(true)
 
 		end
 
-		local minimumMaximumQValue = math.min(table.unpack(maximumQValueArray))
+		local minimumMaximumCurrentQValue = math.min(table.unpack(maximumCurrentQValueArray))
 
-		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * minimumMaximumQValue)
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * minimumMaximumCurrentQValue)
 		
 		local ClassesList = Model:getClassesList()
 

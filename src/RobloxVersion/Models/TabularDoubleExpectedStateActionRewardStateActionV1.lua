@@ -136,11 +136,11 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousVector = self:predict(previousStateValue, true)
+	local previousQVector = self:predict(previousStateValue, true)
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 	
-	local targetVector = self:predict(currentStateValue, true)
+	local currentQVector = self:predict(currentStateValue, true)
 
 	local numberOfActions = #ActionsList
 
@@ -148,17 +148,17 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	local numberOfGreedyActions = 0
 
-	local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+	local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(currentQVector)
 
 	local stateIndex = table.find(StatesList, previousStateValue)
 
 	local actionIndex = table.find(ActionsList, previousAction)
 
-	local unwrappedTargetVector = targetVector[1]
+	local unwrappedTargetQVector = currentQVector[1]
 
 	for i = 1, numberOfActions, 1 do
 
-		if (unwrappedTargetVector[i] == maxQValue) then
+		if (unwrappedTargetQVector[i] == maximumCurrentQValue) then
 
 			numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -172,9 +172,9 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	local actionProbability
 
-	for _, qValue in ipairs(unwrappedTargetVector) do
+	for _, qValue in ipairs(unwrappedTargetQVector) do
 
-		actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+		actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 		expectedQValue = expectedQValue + (qValue * actionProbability)
 
@@ -182,7 +182,7 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
-	local lastValue = previousVector[1][actionIndex]
+	local lastValue = previousQVector[1][actionIndex]
 
 	local temporalDifferenceError = targetValue - lastValue
 

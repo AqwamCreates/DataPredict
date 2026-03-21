@@ -124,11 +124,11 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		previousActionVector = AqwamTensorLibrary:add(previousActionVector, previousActionMeanVector)
 
-		local previousActionArray = previousActionVector[1] 
+		local unwrappedPreviousActionVector = previousActionVector[1]
 
-		local lowestActionValue = math.min(table.unpack(previousActionArray))
+		local lowestActionValue = math.min(table.unpack(unwrappedPreviousActionVector))
 
-		local highestActionValue = math.max(table.unpack(previousActionArray))
+		local highestActionValue = math.max(table.unpack(unwrappedPreviousActionVector))
 		
 		local ActorModelParameters = ActorModel:getModelParameters(true)
 		
@@ -358,7 +358,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel:getTargetCriticModelPar
 
 	if (doNotDeepCopy) then
 
-		return self.TargetCriticModelParametersArray
+		return self.TargetCriticModelParametersArray[1]
 
 	else
 
@@ -372,7 +372,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel:getTargetCriticModelPar
 
 	if (doNotDeepCopy) then
 
-		return self.TargetCriticModelParametersArray
+		return self.TargetCriticModelParametersArray[2]
 
 	else
 

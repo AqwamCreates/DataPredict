@@ -140,7 +140,9 @@ function SoftActorCriticModel.new(parameterDictionary)
 	
 	NewSoftActorCritic.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 	
-	NewSoftActorCritic.CriticModelParametersArray = parameterDictionary.CriticModelParametersArray or {}
+	NewSoftActorCritic.PrimaryCriticModelParametersArray = parameterDictionary.PrimaryCriticModelParametersArray or {}
+	
+	NewSoftActorCritic.TargetCriticModelParametersArray = parameterDictionary.TargetCriticModelParametersArray or {}
 	
 	NewSoftActorCritic:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 		
@@ -208,8 +210,6 @@ end
 
 function SoftActorCriticModel:update(previousFeatureVector, previousActionVector, previousLogActionProbabilityVector, previousActionProbabilityGradientVector, rewardValue, currentFeatureVector, currentActionVector, currentLogActionProbabilityVector, currentAction, terminalStateValue)
 	
-	local CriticModelParametersArray = self.CriticModelParametersArray
-	
 	local CriticModel = self.CriticModel
 
 	local ActorModel = self.ActorModel
@@ -218,7 +218,17 @@ function SoftActorCriticModel:update(previousFeatureVector, previousActionVector
 	
 	local averagingRate = self.averagingRate
 	
-	local PreviousCriticModelParametersArray = {}
+	local PrimaryCriticModelParametersArray = self.PrimaryCriticModelParametersArray
+
+	local TargetCriticModelParametersArray = self.TargetCriticModelParametersArray
+	
+	PrimaryCriticModelParametersArray[1] = PrimaryCriticModelParametersArray[1] or CriticModel:generateLayers()
+	
+	PrimaryCriticModelParametersArray[2] = PrimaryCriticModelParametersArray[2] or CriticModel:generateLayers()
+	
+	TargetCriticModelParametersArray[1] = TargetCriticModelParametersArray[1] or PrimaryCriticModelParametersArray[1]
+	
+	TargetCriticModelParametersArray[2] = TargetCriticModelParametersArray[2] or PrimaryCriticModelParametersArray[2]
 	
 	local currentLogActionProbabilityValue
 	
@@ -236,25 +246,21 @@ function SoftActorCriticModel:update(previousFeatureVector, previousActionVector
 		
 	end
 
-	local currentCriticValueArray = {}
+	local targetCurrentCriticValueArray = {}
 	
 	local concatenatedCurrentFeatureAndActionVector = AqwamTensorLibrary:concatenate(currentFeatureVector, currentActionVector, 2)
 
 	for i = 1, 2, 1 do 
 
-		CriticModel:setModelParameters(CriticModelParametersArray[i])
+		CriticModel:setModelParameters(TargetCriticModelParametersArray[i])
 
-		currentCriticValueArray[i] = CriticModel:forwardPropagate(concatenatedCurrentFeatureAndActionVector)[1][1] 
-		
-		local CriticModelParameters = CriticModel:getModelParameters(true)
-		
-		PreviousCriticModelParametersArray[i] = CriticModelParameters
+		targetCurrentCriticValueArray[i] = CriticModel:forwardPropagate(concatenatedCurrentFeatureAndActionVector)[1][1]
 
 	end
 
-	local minimumCurrentCriticValue = math.min(table.unpack(currentCriticValueArray))
+	local minimumTargetCurrentCriticValue = math.min(table.unpack(targetCurrentCriticValueArray))
 	
-	local yValuePart1 = (1 - terminalStateValue) * (minimumCurrentCriticValue - (alpha * currentLogActionProbabilityValue))
+	local yValuePart1 = (1 - terminalStateValue) * (minimumTargetCurrentCriticValue - (alpha * currentLogActionProbabilityValue))
 
 	local yValue = rewardValue + (self.discountFactor * yValuePart1)
 
@@ -266,21 +272,25 @@ function SoftActorCriticModel:update(previousFeatureVector, previousActionVector
 
 	for i = 1, 2, 1 do
 
-		CriticModel:setModelParameters(PreviousCriticModelParametersArray[i], true)
+		CriticModel:setModelParameters(PrimaryCriticModelParametersArray[i], true)
 
-		local previousCriticValue = CriticModel:forwardPropagate(concatenatedPreviousFeatureAndActionVector, true)[1][1] 
+		local primaryPreviousCriticValue = CriticModel:forwardPropagate(concatenatedPreviousFeatureAndActionVector, true)[1][1] 
 
-		local criticLoss = 2 * (previousCriticValue - yValue)
+		local criticLoss = 2 * (primaryPreviousCriticValue - yValue)
 		
-		previousCriticValueArray[i] = previousCriticValue
+		previousCriticValueArray[i] = primaryPreviousCriticValue
 
 		temporalDifferenceErrorVector[1][i] = -criticLoss -- We perform gradient descent here, so the critic loss is negated so that it can be used as temporal difference value.
 
 		CriticModel:update(criticLoss, true)
 		
-		local TargetModelParameters = CriticModel:getModelParameters(true)
+		local TargetModelParameters = TargetCriticModelParametersArray[i]
 		
-		CriticModelParametersArray[i] = rateAverageModelParameters(averagingRate, TargetModelParameters, PreviousCriticModelParametersArray[i])
+		local PrimaryModelParameters = CriticModel:getModelParameters(true)
+		
+		PrimaryCriticModelParametersArray[i] = PrimaryModelParameters
+		
+		TargetCriticModelParametersArray[i] = rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
 	end
 	
@@ -302,57 +312,85 @@ function SoftActorCriticModel:update(previousFeatureVector, previousActionVector
 	
 end
 
-function SoftActorCriticModel:setCriticModelParameters1(CriticModelParameters1, doNotDeepCopy)
+function SoftActorCriticModel:setPrimaryCriticModelParameters1(PrimaryCriticModelParameters1, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		self.CriticModelParametersArray[1] = CriticModelParameters1
+		self.PrimaryCriticModelParametersArray[1] = PrimaryCriticModelParameters1
 
 	else
 
-		self.CriticModelParametersArray[1] = self:deepCopyTable(CriticModelParameters1)
+		self.PrimaryCriticModelParametersArray[1] = self:deepCopyTable(PrimaryCriticModelParameters1)
 
 	end
 
 end
 
-function SoftActorCriticModel:setCriticModelParameters2(CriticModelParameters2, doNotDeepCopy)
+function SoftActorCriticModel:setPrimaryCriticModelParameters2(PrimaryCriticModelParameters2, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		self.CriticModelParametersArray[2] = CriticModelParameters2
+		self.PrimaryCriticModelParametersArray[2] = PrimaryCriticModelParameters2
 
 	else
 
-		self.CriticModelParametersArray[2] = self:deepCopyTable(CriticModelParameters2)
+		self.PrimaryCriticModelParametersArray[2] = self:deepCopyTable(PrimaryCriticModelParameters2)
 
 	end
 
 end
 
-function SoftActorCriticModel:getCriticModelParameters1(doNotDeepCopy)
+function SoftActorCriticModel:getPrimaryCriticModelParameters1(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		return self.CriticModelParametersArray[1]
+		return self.PrimaryCriticModelParametersArray[1]
 
 	else
 
-		return self:deepCopyTable(self.CriticModelParametersArray[1])
+		return self:deepCopyTable(self.PrimaryCriticModelParametersArray[1])
 
 	end
 
 end
 
-function SoftActorCriticModel:getCriticModelParameters2(doNotDeepCopy)
+function SoftActorCriticModel:getPrimaryCriticModelParameters2(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		return self.CriticModelParametersArray[2]
+		return self.PrimaryCriticModelParametersArray[2]
 
 	else
 
-		return self:deepCopyTable(self.CriticModelParametersArray[2])
+		return self:deepCopyTable(self.PrimaryCriticModelParametersArray[2])
+
+	end
+
+end
+
+function SoftActorCriticModel:getTargetCriticModelParameters1(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetCriticModelParametersArray[1]
+
+	else
+
+		return self:deepCopyTable(self.TargetCriticModelParametersArray[1])
+
+	end
+
+end
+
+function SoftActorCriticModel:getTargetCriticModelParameters2(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetCriticModelParametersArray[2]
+
+	else
+
+		return self:deepCopyTable(self.TargetCriticModelParametersArray[2])
 
 	end
 

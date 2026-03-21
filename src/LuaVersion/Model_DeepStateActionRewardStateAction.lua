@@ -68,9 +68,11 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 		
 		local currentActionIndex = table.find(ClassesList, currentAction)
 		
-		local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
+		local targetQValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
 		
-		local temporalDifferenceError = targetValue - previousQVector[1][previousActionIndex] 
+		local previousQValue = previousQVector[1][previousActionIndex] 
+		
+		local temporalDifferenceError = targetQValue - previousQValue
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 

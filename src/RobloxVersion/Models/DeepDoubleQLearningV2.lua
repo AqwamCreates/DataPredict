@@ -28,140 +28,138 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
+local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
 
-local DeepDoubleQLearningModel = {}
+local TabularDoubleQLearningModel = {}
 
-DeepDoubleQLearningModel.__index = DeepDoubleQLearningModel
+TabularDoubleQLearningModel.__index = TabularDoubleQLearningModel
 
-setmetatable(DeepDoubleQLearningModel, DeepReinforcementLearningBaseModel)
+setmetatable(TabularDoubleQLearningModel, TabularReinforcementLearningBaseModel)
 
 local defaultAveragingRate = 0.01
 
-local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
-
-	local averagingRateComplement = 1 - averagingRate
-
-	for layer = 1, #TargetModelParameters, 1 do
-
-		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, PrimaryModelParameters[layer])
-
-		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, TargetModelParameters[layer])
-
-		TargetModelParameters[layer] = AqwamTensorLibrary:add(PrimaryModelParametersPart, TargetModelParametersPart)
-
-	end
-
-	return TargetModelParameters
-
-end
-
-function DeepDoubleQLearningModel.new(parameterDictionary)
+function TabularDoubleQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepDoubleQLearningModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
-
-	setmetatable(NewDeepDoubleQLearningModel, DeepDoubleQLearningModel)
+	local NewTabularDoubleQLearningModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearningV2")
+	setmetatable(NewTabularDoubleQLearningModel, TabularDoubleQLearningModel)
 	
-	NewDeepDoubleQLearningModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
-
-	NewDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewTabularDoubleQLearningModel:setName("TabularDoubleQLearningV2")
 	
-	NewDeepDoubleQLearningModel.TargetModelParameters = parameterDictionary.TargetModelParameters
+	NewTabularDoubleQLearningModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+	
+	NewTabularDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewTabularDoubleQLearningModel.TargetModelParameters = parameterDictionary.TargetModelParameters
+	
+	NewTabularDoubleQLearningModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
+		
+		local Model = NewTabularDoubleQLearningModel.Model
+		
+		local averagingRate = NewTabularDoubleQLearningModel.averagingRate
+		
+		local discountFactor = NewTabularDoubleQLearningModel.discountFactor
+		
+		local EligibilityTrace = NewTabularDoubleQLearningModel.EligibilityTrace
+		
+		local TargetModelParameters = NewTabularDoubleQLearningModel.TargetModelParameters
+		
+		local StatesList = NewTabularDoubleQLearningModel:getStatesList()
 
-	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
-		
-		local Model = NewDeepDoubleQLearningModel.Model
-		
-		local discountFactor = NewDeepDoubleQLearningModel.discountFactor
-		
-		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
-		
-		local TargetModelParameters = NewDeepDoubleQLearningModel.TargetModelParameters
-		
-		local ClassesList = Model:getClassesList()
+		local ActionsList = NewTabularDoubleQLearningModel:getActionsList()
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
-
-		if (not PrimaryModelParameters) then PrimaryModelParameters = Model:generateLayers() end
 		
-		if (not TargetModelParameters) then TargetModelParameters = PrimaryModelParameters end
+		local averagingRateComplement = 1 - averagingRate
 		
-		local primaryPreviousQVector = Model:forwardPropagate(previousFeatureVector)
+		if (not PrimaryModelParameters) then PrimaryModelParameters = Model:generateModelParameters() end
 		
-		local maximumPrimaryCurrentActionVector = Model:predict(currentFeatureVector)
+		if (not TargetModelParameters) then TargetModelParameters = NewTabularDoubleQLearningModel:deepCopyTable(PrimaryModelParameters) end
 		
-		local primaryCurrentActionIndex = table.find(ClassesList, maximumPrimaryCurrentActionVector[1][1])
+		local primaryPreviousQVector = Model:getOutputMatrix(previousStateValue)
+		
+		local maximumPrimaryCurrentActionVector = Model:predict(currentStateValue)
+		
+		local primaryCurrentActionIndex = table.find(ActionsList, maximumPrimaryCurrentActionVector[1][1])
 		
 		Model:setModelParameters(TargetModelParameters, true)
-		
-		local targetCurrentQVector = Model:forwardPropagate(currentFeatureVector)
+
+		local targetCurrentQVector = Model:getOutputMatrix(currentStateValue)
 
 		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * targetCurrentQVector[1][primaryCurrentActionIndex])
+		
+		local stateIndex = table.find(StatesList, previousStateValue)
 
-		local primaryPreviousActionIndex = table.find(ClassesList, previousAction)
+		local primaryPreviousActionIndex = table.find(ActionsList, previousAction)
 
 		local primaryPreviousQValue = primaryPreviousQVector[1][primaryPreviousActionIndex]
 
 		local temporalDifferenceError = targetQValue - primaryPreviousQValue
 		
-		local numberOfClasses = #ClassesList
-		
-		local outputDimensionSizeArray = {1, numberOfClasses}
-
-		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-
-		temporalDifferenceErrorVector[1][primaryPreviousActionIndex] = temporalDifferenceError
-		
 		if (EligibilityTrace) then
+			
+			local numberOfStates = #StatesList
 
-			EligibilityTrace:increment(1, primaryPreviousActionIndex, discountFactor, outputDimensionSizeArray)
+			local numberOfActions = #ActionsList
+			
+			local dimensionSizeArray = {numberOfStates, numberOfActions}
+			
+			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+			
+			temporalDifferenceErrorMatrix[stateIndex][primaryPreviousActionIndex] = temporalDifferenceError
 
-			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
+			EligibilityTrace:increment(stateIndex, primaryPreviousActionIndex, discountFactor, dimensionSizeArray)
+
+			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
+			
+			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][primaryPreviousActionIndex]
 
 		end
 		
-		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-		
 		Model:setModelParameters(PrimaryModelParameters, true)
 		
-		Model:forwardPropagate(previousFeatureVector, true)
-
-		Model:update(negatedTemporalDifferenceErrorVector, true)
+		Model:getOutputMatrix(previousStateValue, true)
+		
+		Model:update(-temporalDifferenceError, true)
 		
 		PrimaryModelParameters = Model:getModelParameters(true)
 
-		NewDeepDoubleQLearningModel.TargetModelParameters = rateAverageModelParameters(NewDeepDoubleQLearningModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
+		local primaryQValue = PrimaryModelParameters[stateIndex][primaryPreviousActionIndex]
 		
-		return temporalDifferenceErrorVector
+		local targetQValue = TargetModelParameters[stateIndex][primaryPreviousActionIndex]
+		
+		TargetModelParameters[stateIndex][primaryPreviousActionIndex] = (averagingRate * primaryQValue) + (averagingRateComplement * targetQValue)
+		
+		NewTabularDoubleQLearningModel.TargetModelParameters = TargetModelParameters
+		
+		return temporalDifferenceError
 
 	end)
 	
-	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewTabularDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
+		local EligibilityTrace = NewTabularDoubleQLearningModel.EligibilityTrace
+		
+		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+	end)
+
+	NewTabularDoubleQLearningModel:setResetFunction(function()
+		
+		local EligibilityTrace = NewTabularDoubleQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	NewDeepDoubleQLearningModel:setResetFunction(function() 
-		
-		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-	end)
-	
-	return NewDeepDoubleQLearningModel
+	return NewTabularDoubleQLearningModel
 
 end
 
-function DeepDoubleQLearningModel:setTargetModelParameters(TargetModelParameters, doNotDeepCopy)
-	
+function TabularDoubleQLearningModel:setTargetModelParameters(TargetModelParameters, doNotDeepCopy)
+
 	if (doNotDeepCopy) then
 
 		self.TargetModelParameters = TargetModelParameters
@@ -171,10 +169,10 @@ function DeepDoubleQLearningModel:setTargetModelParameters(TargetModelParameters
 		self.TargetModelParameters = self:deepCopyTable(TargetModelParameters)
 
 	end
-	
+
 end
 
-function DeepDoubleQLearningModel:getTargetModelParameters(doNotDeepCopy)
+function TabularDoubleQLearningModel:getTargetModelParameters(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
@@ -188,4 +186,4 @@ function DeepDoubleQLearningModel:getTargetModelParameters(doNotDeepCopy)
 
 end
 
-return DeepDoubleQLearningModel
+return TabularDoubleQLearningModel

@@ -68,6 +68,10 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 	
 	NewDeepDeterministicPolicyGradientModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 	
+	NewDeepDeterministicPolicyGradientModel.TargetActorModelParameters = parameterDictionary.TargetActorModelParameters
+	
+	NewDeepDeterministicPolicyGradientModel.TargetCriticModelParameters = parameterDictionary.TargetCriticModelParameters
+	
 	NewDeepDeterministicPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 		
 		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanVector[1]}) end
@@ -78,17 +82,39 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 		
 		local averagingRate = NewDeepDeterministicPolicyGradientModel.averagingRate
 		
-		local ActorModelParameters = ActorModel:getModelParameters(true)
+		local TargetActorModelParameters = NewDeepDeterministicPolicyGradientModel.TargetActorModelParameters
 		
-		local targetCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(currentFeatureVector, currentActionMeanVector, 2)
+		local TargetCriticModelParameters = NewDeepDeterministicPolicyGradientModel.TargetCriticModelParameters
 		
-		local targetQValue = CriticModel:forwardPropagate(targetCriticActionMeanInputVector, true)[1][1]
+		local PrimaryActorModelParameters = ActorModel:getModelParameters(true) or ActorModel:generateLayers()
+		
+		local PrimaryCriticModelParameters = CriticModel:getModelParameters(true) or CriticModel:generateLayers()
+		
+		TargetActorModelParameters = TargetActorModelParameters or PrimaryActorModelParameters
+		
+		TargetCriticModelParameters = TargetCriticModelParameters or PrimaryCriticModelParameters
+		
+		ActorModel:setModelParameters(TargetActorModelParameters)
+		
+		local targetCurrentActionMeanVector = ActorModel:forwardPropagate(currentFeatureVector)
+		
+		local targetCriticActionMeanInputVector = AqwamTensorLibrary:concatenate(currentFeatureVector, targetCurrentActionMeanVector, 2)
+		
+		CriticModel:setModelParameters(TargetCriticModelParameters)
+		
+		local targetQValue = CriticModel:forwardPropagate(targetCriticActionMeanInputVector)[1][1]
 		
 		local CriticModelParameters = CriticModel:getModelParameters(true)
 	
 		local yValue = rewardValue + (NewDeepDeterministicPolicyGradientModel.discountFactor * (1 - terminalStateValue) * targetQValue)
 		
+		ActorModel:setModelParameters(PrimaryActorModelParameters)
+
+		ActorModel:forwardPropagate(previousFeatureVector, true)
+		
 		local previousCriticActionInputVector = AqwamTensorLibrary:concatenate(previousFeatureVector, previousActionMeanVector, 2)
+		
+		CriticModel:setModelParameters(PrimaryCriticModelParameters)
 		
 		local currentQValue = CriticModel:forwardPropagate(previousCriticActionInputVector, true)[1][1]
 
@@ -100,17 +126,13 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 		
 		CriticModel:update(temporalDifferenceError, true)
 		
-		local TargetActorModelParameters = ActorModel:getModelParameters(true)
+		PrimaryActorModelParameters = ActorModel:getModelParameters(true)
 		
-		local TargetCriticModelParameters = CriticModel:getModelParameters(true)
+		PrimaryCriticModelParameters = CriticModel:getModelParameters(true)
 		
-		TargetActorModelParameters = rateAverageModelParameters(averagingRate, TargetActorModelParameters, ActorModelParameters)
+		NewDeepDeterministicPolicyGradientModel.TargetActorModelParameters = rateAverageModelParameters(averagingRate, TargetActorModelParameters, PrimaryActorModelParameters)
 		
-		TargetCriticModelParameters = rateAverageModelParameters(averagingRate, TargetCriticModelParameters, CriticModelParameters)
-		
-		ActorModel:setModelParameters(TargetActorModelParameters, true)
-		
-		CriticModel:setModelParameters(TargetCriticModelParameters, true)
+		NewDeepDeterministicPolicyGradientModel.TargetCriticModelParameters = rateAverageModelParameters(averagingRate, TargetCriticModelParameters, PrimaryCriticModelParameters)
 
 		return temporalDifferenceError
 		
@@ -122,6 +144,62 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 	
 	return NewDeepDeterministicPolicyGradientModel
 	
+end
+
+function DeepDeterministicPolicyGradientModel:setTargetActorModelParameters(TargetActorModelParameters, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.TargetActorModelParameters = TargetActorModelParameters
+
+	else
+
+		self.TargetActorModelParameters = self:deepCopyTable(TargetActorModelParameters)
+
+	end
+
+end
+
+function DeepDeterministicPolicyGradientModel:setTargetCriticModelParameters(TargetCriticModelParameters, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.TargetCriticModelParameters = TargetCriticModelParameters
+
+	else
+
+		self.TargetCriticModelParameters = self:deepCopyTable(TargetCriticModelParameters)
+
+	end
+
+end
+
+function DeepDeterministicPolicyGradientModel:getTargetActorModelParameters(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetActorModelParameters
+
+	else
+
+		return self:deepCopyTable(self.TargetActorModelParameters)
+
+	end
+
+end
+
+function DeepDeterministicPolicyGradientModel:getTargetCriticModelParameters(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetCriticModelParameters
+
+	else
+
+		return self:deepCopyTable(self.TargetCriticModelParameters)
+
+	end
+
 end
 
 return DeepDeterministicPolicyGradientModel

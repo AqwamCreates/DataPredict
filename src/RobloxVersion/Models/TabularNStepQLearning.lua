@@ -104,7 +104,7 @@ function TabularNStepQLearningModel.new(parameterDictionary)
 		
 		local lastQVector = Model:getOutputMatrix(firstExperience[1], true)
 		
-		local bootstrapValue = math.pow(discountFactor, currentNStep) * maxQValue[1][1]	
+		local bootstrapValue = math.pow(discountFactor, currentNStep) * maxQValue[1][1]
 
 		local nStepTargetValue = returnValue + bootstrapValue
 

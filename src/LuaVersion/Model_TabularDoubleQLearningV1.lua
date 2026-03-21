@@ -104,17 +104,11 @@ end
 
 function TabularDoubleQLearningModel:loadModelParametersFromModelParametersArray(index)
 
-	local ModelParametersArray = self.ModelParametersArray
+	local Model = self.Model
 
-	if (not ModelParametersArray[index]) then
+	local CurrentModelParameters = self.ModelParametersArray[index] or Model:generateModelParameters()
 
-		self:saveModelParametersFromModelParametersArray(index)
-
-	end
-
-	local CurrentModelParameters = ModelParametersArray[index]
-
-	self:setModelParameters(CurrentModelParameters, true)
+	Model:setModelParameters(CurrentModelParameters, true)
 
 end
 

@@ -142,11 +142,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		end
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
-		local lastValue = primaryPreviousQVector[1][actionIndex]
+		local primaryPreviousQValue = primaryPreviousQVector[1][actionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - primaryPreviousQValue
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 

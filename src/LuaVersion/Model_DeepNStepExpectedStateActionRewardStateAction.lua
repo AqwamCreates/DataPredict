@@ -122,19 +122,19 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		local firstExperience = replayBufferArray[1]
 
-		local targetVector = Model:forwardPropagate(currentFeatureVector)
+		local currentQVector = Model:forwardPropagate(currentFeatureVector)
 
-		local previousVector = Model:forwardPropagate(previousFeatureVector, true)
+		local previousQVector = Model:forwardPropagate(previousFeatureVector, true)
 
-		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+		local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(currentQVector)
 
 		local actionIndex = table.find(ClassesList, previousAction)
 
-		local unwrappedTargetVector = targetVector[1]
+		local unwrappedQVector = currentQVector[1]
 
 		for i = 1, numberOfClasses, 1 do
 
-			if (unwrappedTargetVector[i] == maxQValue) then
+			if (unwrappedQVector[i] == maximumCurrentQValue) then
 
 				numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -148,9 +148,9 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		local actionProbability
 
-		for _, qValue in ipairs(unwrappedTargetVector) do
+		for _, qValue in ipairs(unwrappedQVector) do
 
-			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+			actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 			expectedQValue = expectedQValue + (qValue * actionProbability)
 
@@ -158,11 +158,11 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		local bootstrapValue = math.pow(discountFactor, currentNStep) * expectedQValue
 
-		local nStepTarget = returnValue + bootstrapValue
+		local nStepTargetValue = returnValue + bootstrapValue
 
-		local lastValue = previousVector[1][actionIndex]
+		local lastValue = previousQVector[1][actionIndex]
 
-		local temporalDifferenceError = nStepTarget - lastValue
+		local temporalDifferenceError = nStepTargetValue - lastValue
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 

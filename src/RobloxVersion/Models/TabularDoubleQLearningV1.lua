@@ -132,21 +132,21 @@ function TabularDoubleQLearningModel:generateTemporalDifferenceError(previousSta
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousVector = Model:predict(previousStateValue, true)
+	local previousQVector = Model:predict(previousStateValue, true)
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 	
-	local _, maxQValue = Model:predict(currentStateValue)
+	local _, maximumCurrentQValue = Model:predict(currentStateValue)
 	
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maximumCurrentQValue[1][1])
 
 	local stateIndex = table.find(StatesList, previousStateValue)
 
 	local actionIndex = table.find(ActionsList, previousAction)
 
-	local lastValue = previousVector[1][actionIndex]
+	local previousQValue = previousQVector[1][actionIndex]
 
-	local temporalDifferenceError = targetValue - lastValue
+	local temporalDifferenceError = targetQValue - previousQValue
 
 	if (EligibilityTrace) then
 

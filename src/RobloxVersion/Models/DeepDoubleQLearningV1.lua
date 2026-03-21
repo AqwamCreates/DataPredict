@@ -138,9 +138,9 @@ function DeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previous
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-	local _, maxQValue = Model:predict(currentFeatureVector)
+	local _, currentMaximumQValue = Model:predict(currentFeatureVector)
 
-	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * currentMaximumQValue[1][1])
 	
 	local ClassesList = Model:getClassesList()
 	

@@ -119,7 +119,9 @@ function TabularDoubleStateActionRewardStateActionModel:loadModelParametersFromM
 end
 
 function TabularDoubleStateActionRewardStateActionModel:generateTemporalDifferenceError(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
-
+	
+	local Model = self.Model
+	
 	local discountFactor = self.discountFactor
 
 	local EligibilityTrace = self.EligibilityTrace
@@ -130,11 +132,11 @@ function TabularDoubleStateActionRewardStateActionModel:generateTemporalDifferen
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousQVector = self:predict(previousStateValue, true)
+	local previousQVector = Model:predict(previousStateValue, true)
 
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 	
-	local currentQVector = self:predict(currentStateValue, true)
+	local currentQVector = Model:predict(currentStateValue, true)
 	
 	local previousActionIndex = table.find(ActionsList, previousAction)
 

@@ -96,7 +96,9 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 
 		local primaryCurrentActionIndex = table.find(ActionsList, currentAction)
 		
-		local maximumPrimaryCurrentQValue = primaryCurrentQVector[1][primaryCurrentActionIndex]
+		local unwrappedPrimaryCurrentVector = primaryCurrentQVector[1]
+		
+		local maximumPrimaryCurrentQValue = unwrappedPrimaryCurrentVector[primaryCurrentActionIndex]
 
 		Model:setModelParameters(TargetModelParameters, true)
 
@@ -111,8 +113,6 @@ function TabularDoubleExpectedStateActionRewardStateActionModel.new(parameterDic
 		local stateIndex = table.find(StatesList, previousStateValue)
 		
 		local primaryPreviousActionIndex = table.find(ActionsList, previousAction)
-		
-		local unwrappedPrimaryCurrentVector = primaryCurrentQVector[1]
 
 		for i = 1, numberOfActions do
 			

@@ -146,19 +146,19 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDif
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 
-	local previousVector = Model:forwardPropagate(previousFeatureVector)
+	local previousQVector = Model:forwardPropagate(previousFeatureVector)
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
-	local targetVector = Model:forwardPropagate(currentFeatureVector)
+	local currentQVector = Model:forwardPropagate(currentFeatureVector)
 
-	local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+	local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(currentQVector)
 
-	local unwrappedTargetVector = targetVector[1]
+	local unwrappedCurrentQVector = currentQVector[1]
 
 	for i = 1, numberOfClasses, 1 do
 
-		if (unwrappedTargetVector[i] == maxQValue) then
+		if (unwrappedCurrentQVector[i] == maximumCurrentQValue) then
 
 			numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -172,19 +172,19 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDif
 	
 	local actionProbability
 
-	for _, qValue in ipairs(unwrappedTargetVector) do
+	for _, qValue in ipairs(unwrappedCurrentQVector) do
 		
-		actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+		actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 		expectedQValue = expectedQValue + (qValue * actionProbability)
 
 	end
 
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 	
-	local lastValue = previousVector[1][actionIndex]
+	local previousQValue = previousQVector[1][actionIndex]
 
-	local temporalDifferenceError = targetValue - lastValue
+	local temporalDifferenceError = targetQValue - previousQValue
 	
 	local outputDimensionSizeArray = {1, numberOfClasses}
 

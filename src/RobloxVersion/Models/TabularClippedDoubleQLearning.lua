@@ -64,25 +64,27 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		local ActionsList = NewTabularClippedDoubleQLearningModel:getActionsList()
 		
-		local previousStateValueVector = {{previousStateValue}}
+		local previousStateVector = {{previousStateValue}}
+		
+		local currentStateVector = {{currentStateValue}}
 
-		local maxQValueArray = {}
+		local maximumCurrentQValueArray = {}
 
 		for i = 1, 2, 1 do
 
 			Model:setModelParameters(ModelParametersArray[i], true)
 
-			local _, maxQValue = Model:predict(previousStateValueVector)
+			local _, maximumCurrentQValue = Model:predict(currentStateVector)
 
-			table.insert(maxQValueArray, maxQValue[1][1])
+			table.insert(maximumCurrentQValueArray, maximumCurrentQValue[1][1])
 
 			ModelParametersArray[i] = Model:getModelParameters(true)
 
 		end
 
-		local maxQValue = math.min(table.unpack(maxQValueArray))
+		local minimumMaximumCurrentQValue = math.min(table.unpack(maximumCurrentQValueArray))
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue)
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * minimumMaximumCurrentQValue)
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 
@@ -110,11 +112,11 @@ function TabularClippedDoubleQLearningModel.new(parameterDictionary)
 
 			Model:setModelParameters(ModelParametersArray[i], true)
 
-			local previousVector = Model:getOutputMatrix(previousStateValueVector, true)
+			local previousVector = Model:getOutputMatrix(previousStateVector, true)
 
-			local lastValue = previousVector[1][actionIndex]
+			local previousQValue = previousVector[1][actionIndex]
 
-			local temporalDifferenceError = targetValue - lastValue
+			local temporalDifferenceError = targetQValue - previousQValue
 
 			if (EligibilityTrace) then 
 				

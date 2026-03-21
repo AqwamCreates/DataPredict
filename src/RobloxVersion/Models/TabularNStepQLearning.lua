@@ -106,13 +106,13 @@ function TabularNStepQLearningModel.new(parameterDictionary)
 		
 		local bootstrapValue = math.pow(discountFactor, currentNStep) * maxQValue[1][1]	
 
-		local nStepTarget = returnValue + bootstrapValue
+		local nStepTargetValue = returnValue + bootstrapValue
 
 		local actionIndex = table.find(ActionsList, firstExperience[2])
 
-		local lastValue = lastQVector[1][actionIndex]
+		local lastQValue = lastQVector[1][actionIndex]
 
-		local temporalDifferenceError = nStepTarget - lastValue
+		local temporalDifferenceError = nStepTargetValue - lastQValue
 
 		Model:update(-temporalDifferenceError, true)
 		

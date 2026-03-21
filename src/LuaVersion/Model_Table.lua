@@ -153,6 +153,12 @@ function TableModel:getOptimizer()
 
 end
 
+function TableModel:generateModelParameters()
+	
+	self.ModelParameters = self:initializeMatrixBasedOnMode({#self.FeaturesList, #self.ClassesList})
+	
+end
+
 function TableModel:getOutputMatrix(featureVector, saveFeatureIndexArray)
 	
 	if (type(featureVector) ~= "table") then featureVector = {{featureVector}} end

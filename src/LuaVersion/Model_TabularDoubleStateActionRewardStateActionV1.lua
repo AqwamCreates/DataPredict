@@ -142,9 +142,11 @@ function TabularDoubleStateActionRewardStateActionModel:generateTemporalDifferen
 
 	local stateIndex = table.find(StatesList, previousStateValue)
 	
-	local targetValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
+	local targetQValue = rewardValue + (discountFactor * currentQVector[1][currentActionIndex] * (1 - terminalStateValue))
+	
+	local previousQValue = previousQVector[1][previousActionIndex]
 
-	local temporalDifferenceError = targetValue - previousQVector[1][previousActionIndex]
+	local temporalDifferenceError = targetQValue - previousQValue
 
 	if (EligibilityTrace) then
 

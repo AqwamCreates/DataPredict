@@ -116,11 +116,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		
 		local maximumTargetQValue = AqwamTensorLibrary:findMaximumValue(targetCurrentQVector)
 		
-		local unwrappedTargetVector = targetCurrentQVector[1]
+		local unwrappedTargetCurrentQVector = targetCurrentQVector[1]
 
 		for i = 1, numberOfClasses, 1 do
 
-			if (unwrappedTargetVector[i] == maximumTargetQValue) then
+			if (unwrappedTargetCurrentQVector[i] == maximumTargetQValue) then
 
 				numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -134,7 +134,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local actionProbability
 
-		for _, qValue in ipairs(unwrappedTargetVector) do
+		for _, qValue in ipairs(unwrappedTargetCurrentQVector) do
 
 			actionProbability = ((qValue == maximumTargetQValue) and greedyActionProbability) or nonGreedyActionProbability
 

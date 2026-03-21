@@ -86,21 +86,23 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 		
 		local primaryPreviousQVector = Model:getOutputMatrix(previousStateValue)
 		
-		local primaryCurrentActionIndex = table.find(ActionsList, currentAction)
+		local maximumPrimaryCurrentActionVector = Model:predict(currentStateValue)
+		
+		local primaryCurrentActionIndex = table.find(ActionsList, maximumPrimaryCurrentActionVector[1][1])
 		
 		Model:setModelParameters(TargetModelParameters, true)
 
-		local targetCurrentQVector = Model:getOutputMatrix(currentStateValue, true)
+		local targetCurrentQVector = Model:getOutputMatrix(currentStateValue)
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * targetCurrentQVector[1][primaryCurrentActionIndex])
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * targetCurrentQVector[1][primaryCurrentActionIndex])
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 
 		local primaryPreviousActionIndex = table.find(ActionsList, previousAction)
 
-		local lastValue = primaryPreviousQVector[1][primaryPreviousActionIndex]
+		local primaryPreviousQValue = primaryPreviousQVector[1][primaryPreviousActionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - primaryPreviousQValue
 		
 		if (EligibilityTrace) then
 			
@@ -124,7 +126,7 @@ function TabularDoubleQLearningModel.new(parameterDictionary)
 		
 		Model:setModelParameters(PrimaryModelParameters, true)
 		
-		Model:getOutputMatrix(previousStateValue)
+		Model:getOutputMatrix(previousStateValue, true)
 		
 		Model:update(-temporalDifferenceError, true)
 		

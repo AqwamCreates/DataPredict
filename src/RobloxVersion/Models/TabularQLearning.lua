@@ -60,19 +60,19 @@ function TabularQLearningModel.new(parameterDictionary)
 
 		local ActionsList = NewTabularQLearningModel:getActionsList()
 
-		local _, maxQValue = Model:predict(currentStateValue)
+		local _, maximumCurrentQVector = Model:predict(currentStateValue)
 		
-		local lastQVector = Model:getOutputMatrix(previousStateValue, true)
+		local previousQVector = Model:getOutputMatrix(previousStateValue, true)
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maximumCurrentQVector[1][1])
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 
 		local actionIndex = table.find(ActionsList, previousAction)
 
-		local lastValue = lastQVector[1][actionIndex]
+		local previousQValue = previousQVector[1][actionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - previousQValue
 		
 		if (EligibilityTrace) then
 			

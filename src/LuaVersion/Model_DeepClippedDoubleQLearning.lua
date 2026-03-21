@@ -60,23 +60,23 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		
 		local ModelParametersArray = NewDeepClippedDoubleQLearningModel.ModelParametersArray
 
-		local maxQValueArray = {}
+		local maximumQValueArray = {}
 
 		for i = 1, 2, 1 do
 
 			Model:setModelParameters(ModelParametersArray[i], true)
 
-			local _, maxQValue = Model:predict(currentFeatureVector)
+			local _, maximumQValue = Model:predict(currentFeatureVector)
 
-			table.insert(maxQValueArray, maxQValue[1][1])
+			table.insert(maximumQValueArray, maximumQValue[1][1])
 			
 			ModelParametersArray[i] = Model:getModelParameters(true)
 
 		end
 
-		local maxQValue = math.min(table.unpack(maxQValueArray))
+		local minimumMaximumQValue = math.min(table.unpack(maximumQValueArray))
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue)
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * minimumMaximumQValue)
 		
 		local ClassesList = Model:getClassesList()
 
@@ -98,11 +98,11 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 			Model:setModelParameters(ModelParametersArray[i], true)
 
-			local previousVector = Model:forwardPropagate(previousFeatureVector, true)
+			local previousQVector = Model:forwardPropagate(previousFeatureVector, true)
 
-			local lastValue = previousVector[1][actionIndex]
+			local previousQVector = previousQVector[1][actionIndex]
 			
-			local temporalDifferenceError = targetValue - lastValue
+			local temporalDifferenceError = targetQValue - previousQVector
 			
 			local lossVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 

@@ -112,19 +112,19 @@ function TabularNStepExpectedStateActionRewardStateActionModel.new(parameterDict
 		
 		local firstExperience = replayBufferArray[1]
 		
-		local targetVector = Model:predict(currentStateValue, true)
+		local targetQVector = Model:predict(currentStateValue, true)
 		
 		local lastQVector = Model:getOutputMatrix(firstExperience[1], true)
 		
-		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+		local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(targetQVector)
 
 		local actionIndex = table.find(ActionsList, previousAction)
 
-		local unwrappedTargetVector = targetVector[1]
+		local unwrappedTargetVector = targetQVector[1]
 
 		for i = 1, numberOfActions, 1 do
 
-			if (unwrappedTargetVector[i] == maxQValue) then
+			if (unwrappedTargetVector[i] == maximumCurrentQValue) then
 
 				numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -140,7 +140,7 @@ function TabularNStepExpectedStateActionRewardStateActionModel.new(parameterDict
 
 		for _, qValue in ipairs(unwrappedTargetVector) do
 
-			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+			actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 			expectedQValue = expectedQValue + (qValue * actionProbability)
 
@@ -148,13 +148,13 @@ function TabularNStepExpectedStateActionRewardStateActionModel.new(parameterDict
 		
 		local bootstrapValue = math.pow(discountFactor, currentNStep) * expectedQValue
 
-		local nStepTarget = returnValue + bootstrapValue
+		local nStepTargetValue = returnValue + bootstrapValue
 		
 		local previousActionIndex = table.find(ActionsList, previousAction)
 
-		local lastValue = lastQVector[1][previousActionIndex]
+		local lastQValue = lastQVector[1][previousActionIndex]
 
-		local temporalDifferenceError = nStepTarget - lastValue
+		local temporalDifferenceError = nStepTargetValue - lastQValue
 
 		Model:update(-temporalDifferenceError, true)
 		

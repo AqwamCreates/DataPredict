@@ -62,7 +62,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorVector = NewDeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorVector, temporalDifferenceError = NewDeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, terminalStateValue, selectedModelNumberForTargetVector, selectedModelNumberForUpdate)
 		
 		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
 		
@@ -74,7 +74,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 		NewDeepDoubleQLearningModel:saveModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 		
-		return temporalDifferenceErrorVector
+		return temporalDifferenceError
 		
 	end)
 	
@@ -134,13 +134,13 @@ function DeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previous
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForUpdate)
 	
-	local previousVector = Model:forwardPropagate(previousFeatureVector)
+	local previousQVector = Model:forwardPropagate(previousFeatureVector)
 	
 	self:loadModelParametersFromModelParametersArray(selectedModelNumberForTargetVector)
 
 	local _, maxQValue = Model:predict(currentFeatureVector)
 
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 	
 	local ClassesList = Model:getClassesList()
 	
@@ -148,9 +148,9 @@ function DeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previous
 
 	local actionIndex = table.find(ClassesList, previousAction)
 	
-	local lastValue = previousVector[1][actionIndex]
+	local previousQValue = previousQVector[1][actionIndex]
 	
-	local temporalDifferenceError = targetValue - lastValue
+	local temporalDifferenceError = targetQValue - previousQValue
 	
 	local outputDimensionSizeArray = {1, numberOfClasses}
 		
@@ -166,7 +166,7 @@ function DeepDoubleQLearningModel:generateTemporalDifferenceErrorVector(previous
 
 	end
 	
-	return temporalDifferenceErrorVector
+	return temporalDifferenceErrorVector, temporalDifferenceError
 	
 end
 

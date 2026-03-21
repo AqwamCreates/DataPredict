@@ -340,6 +340,34 @@ function SoftActorCriticModel:setPrimaryCriticModelParameters2(PrimaryCriticMode
 
 end
 
+function SoftActorCriticModel:setTargetCriticModelParameters1(TargetCriticModelParameters1, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.TargetCriticModelParametersArray[1] = TargetCriticModelParameters1
+
+	else
+
+		self.TargetCriticModelParametersArray[1] = self:deepCopyTable(TargetCriticModelParameters1)
+
+	end
+
+end
+
+function SoftActorCriticModel:setTargetCriticModelParameters2(TargetCriticModelParameters2, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.TargetCriticModelParametersArray[2] = TargetCriticModelParameters2
+
+	else
+
+		self.TargetCriticModelParametersArray[2] = self:deepCopyTable(TargetCriticModelParameters2)
+
+	end
+
+end
+
 function SoftActorCriticModel:getPrimaryCriticModelParameters1(doNotDeepCopy)
 
 	if (doNotDeepCopy) then

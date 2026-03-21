@@ -108,9 +108,11 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local currentActionIndex = table.find(ClassesList, currentAction)
 
-		local targetValue = rewardValue + (discountFactor * targetCurrentQVector[1][currentActionIndex] * (1 - terminalStateValue))
+		local targetQValue = rewardValue + (discountFactor * targetCurrentQVector[1][currentActionIndex] * (1 - terminalStateValue))
+		
+		local primaryPreviousQValue = primaryPreviousQVector[1][previousActionIndex]
 
-		local temporalDifferenceError = targetValue - primaryPreviousQVector[1][previousActionIndex] 
+		local temporalDifferenceError = targetQValue - primaryPreviousQValue
 
 		local outputDimensionSizeArray = {1, numberOfClasses}
 

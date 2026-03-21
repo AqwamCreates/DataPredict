@@ -88,13 +88,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 		
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
-		if (not PrimaryModelParameters) then 
-			
-			Model:generateLayers()
-			
-			PrimaryModelParameters = Model:getModelParameters(true)
-			
-		end
+		if (not PrimaryModelParameters) then PrimaryModelParameters = Model:generateLayers() end
 		
 		if (not TargetModelParameters) then TargetModelParameters = PrimaryModelParameters end
 

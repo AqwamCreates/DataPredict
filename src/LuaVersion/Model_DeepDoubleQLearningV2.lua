@@ -137,6 +137,8 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 		Model:forwardPropagate(previousFeatureVector, true)
 
 		Model:update(negatedTemporalDifferenceErrorVector, true)
+		
+		PrimaryModelParameters = Model:getModelParameters(true)
 
 		NewDeepDoubleQLearningModel.TargetModelParameters = rateAverageModelParameters(NewDeepDoubleQLearningModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
 		

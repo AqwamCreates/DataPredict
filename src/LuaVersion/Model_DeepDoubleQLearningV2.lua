@@ -98,7 +98,9 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 		
 		local primaryPreviousQVector = Model:forwardPropagate(previousFeatureVector)
 		
-		local primaryCurrentActionIndex = table.find(ClassesList, currentAction)
+		local maximumPrimaryCurrentActionVector = Model:predict(currentFeatureVector)
+		
+		local primaryCurrentActionIndex = table.find(ClassesList, maximumPrimaryCurrentActionVector[1][1])
 		
 		Model:setModelParameters(TargetModelParameters, true)
 		

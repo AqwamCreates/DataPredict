@@ -26,9 +26,9 @@
 
 --]]
 
-local AqwamTensorLibrary = require("AqwamTensorLibrary")
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
+local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
 
 local TwinDelayedDeepDeterministicPolicyGradientModel = {}
 
@@ -76,9 +76,11 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 	
 	NewTwinDelayedDeepDeterministicPolicyGradient.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 	
-	NewTwinDelayedDeepDeterministicPolicyGradient.CriticModelParametersArray = parameterDictionary.CriticModelParametersArray or {}
+	NewTwinDelayedDeepDeterministicPolicyGradient.TargetActorModelParameters = parameterDictionary.TargetActorModelParameters
 	
-	local TargetCriticModelParametersArray = {}
+	NewTwinDelayedDeepDeterministicPolicyGradient.PrimaryCriticModelParametersArray = parameterDictionary.PrimaryCriticModelParametersArray or {}
+	
+	NewTwinDelayedDeepDeterministicPolicyGradient.TargetCriticModelParametersArray = parameterDictionary.TargetCriticModelParametersArray or {}
 	
 	local currentNumberOfUpdate = 0
 	
@@ -94,7 +96,23 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 		
 		local noiseClippingFactor = NewTwinDelayedDeepDeterministicPolicyGradient.noiseClippingFactor
 		
-		local CriticModelParametersArray = NewTwinDelayedDeepDeterministicPolicyGradient.CriticModelParametersArray
+		local TargetActorModelParameters = NewTwinDelayedDeepDeterministicPolicyGradient.TargetActorModelParameters
+		
+		local PrimaryCriticModelParametersArray = NewTwinDelayedDeepDeterministicPolicyGradient.PrimaryCriticModelParametersArray
+		
+		local TargetCriticModelParametersArray = NewTwinDelayedDeepDeterministicPolicyGradient.TargetCriticModelParametersArray
+		
+		local PrimaryActorModelParameters = ActorModel:getModelParameters(true) or ActorModel:generateLayers()
+		
+		PrimaryCriticModelParametersArray[1] = CriticModel:getModelParameters(true) or CriticModel:generateLayers()
+		
+		PrimaryCriticModelParametersArray[2] = CriticModel:getModelParameters(true) or CriticModel:generateLayers()
+		
+		TargetActorModelParameters = TargetActorModelParameters or PrimaryActorModelParameters
+		
+		TargetCriticModelParametersArray[1] = TargetCriticModelParametersArray[1] or PrimaryCriticModelParametersArray[1]
+		
+		TargetCriticModelParametersArray[2] = TargetCriticModelParametersArray[2] or PrimaryCriticModelParametersArray[2]
 		
 		local noiseClipFunction = function(value) return math.clamp(value, -noiseClippingFactor, noiseClippingFactor) end
 		
@@ -114,7 +132,11 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 		
 		local ActorModelParameters = ActorModel:getModelParameters(true)
 		
-		local targetActionVectorPart1 = AqwamTensorLibrary:add(currentActionMeanVector, clippedCurrentActionNoiseVector)
+		ActorModel:setModelParameters(TargetActorModelParameters)
+		
+		local targetCurrentActionMeanVector = ActorModel:forwardPropagate(currentFeatureVector)
+		
+		local targetActionVectorPart1 = AqwamTensorLibrary:add(targetCurrentActionMeanVector, clippedCurrentActionNoiseVector)
 		
 		local actionClipFunction = function(value)
 			
@@ -150,10 +172,6 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			currentCriticValueArray[i] = CriticModel:forwardPropagate(targetCriticActionInputVector)[1][1] 
 
-			local CriticModelParameters = CriticModel:getModelParameters(true)
-
-			TargetCriticModelParametersArray[i] = CriticModelParameters
-
 		end
 
 		local minimumCurrentCriticValue = math.min(table.unpack(currentCriticValueArray))
@@ -168,7 +186,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 		
 		for i = 1, 2, 1 do
 
-			CriticModel:setModelParameters(CriticModelParametersArray[i], true)
+			CriticModel:setModelParameters(PrimaryCriticModelParametersArray[i], true)
 
 			local previousCriticValue = CriticModel:forwardPropagate(previousCriticActionMeanInputVector, true)[1][1] 
 
@@ -177,8 +195,8 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 			temporalDifferenceErrorVector[1][i] = -criticLoss -- We perform gradient descent here, so the critic loss is negated so that it can be used as temporal difference value.
 
 			CriticModel:update(criticLoss, true)
-
-			CriticModelParametersArray[i] = CriticModel:getModelParameters(true)
+			
+			PrimaryCriticModelParametersArray[i] = CriticModel:getModelParameters(true)
 
 		end
 		
@@ -186,21 +204,21 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 		
 		if ((currentNumberOfUpdate % NewTwinDelayedDeepDeterministicPolicyGradient.policyDelayAmount) == 0) then
 			
-			CriticModel:setModelParameters(CriticModelParametersArray[1], true)
+			CriticModel:setModelParameters(PrimaryCriticModelParametersArray[1], true)
 
 			local currentQValue = CriticModel:forwardPropagate(previousCriticActionMeanInputVector, true)[1][1]
+			
+			ActorModel:setModelParameters(PrimaryActorModelParameters, true)
 
 			ActorModel:forwardPropagate(previousFeatureVector, true)
 
 			ActorModel:update(-currentQValue, true)
 
-			for i = 1, 2, 1 do TargetCriticModelParametersArray[i] = rateAverageModelParameters(averagingRate, TargetCriticModelParametersArray[i], CriticModelParametersArray[i]) end
+			for i = 1, 2, 1 do TargetCriticModelParametersArray[i] = rateAverageModelParameters(averagingRate, TargetCriticModelParametersArray[i], PrimaryCriticModelParametersArray[i]) end
 			
-			local TargetActorModelParameters = ActorModel:getModelParameters(true)
+			local PrimaryActorModelParameters = ActorModel:getModelParameters(true)
 
-			TargetActorModelParameters = rateAverageModelParameters(averagingRate, TargetActorModelParameters, ActorModelParameters)
-
-			ActorModel:setModelParameters(TargetActorModelParameters, true)
+			NewTwinDelayedDeepDeterministicPolicyGradient.TargetActorModelParameters = rateAverageModelParameters(averagingRate, TargetActorModelParameters, PrimaryActorModelParameters)
 			
 		end
 
@@ -224,57 +242,141 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 	
 end
 
-function TwinDelayedDeepDeterministicPolicyGradientModel:setCrtiticModelParameters1(CriticModelParameters1, doNotDeepCopy)
+function TwinDelayedDeepDeterministicPolicyGradientModel:setTargetActorModelParameters(TargetActorModelParameters, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		self.CriticModelParametersArray[1] = CriticModelParameters1
+		self.TargetActorModelParameters = TargetActorModelParameters
 
 	else
 
-		self.CriticModelParametersArray[1] = self:deepCopyTable(CriticModelParameters1)
+		self.TargetActorModelParameters = self:deepCopyTable(TargetActorModelParameters)
 
 	end
 
 end
 
-function TwinDelayedDeepDeterministicPolicyGradientModel:setCriticModelParameters2(CriticModelParameters2, doNotDeepCopy)
+function TwinDelayedDeepDeterministicPolicyGradientModel:setPrimaryCrtiticModelParameters1(PrimaryCriticModelParameters1, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		self.CriticModelParametersArray[2] = CriticModelParameters2
+		self.PrimaryCriticModelParametersArray[1] = PrimaryCriticModelParameters1
 
 	else
 
-		self.CriticModelParametersArray[2] = self:deepCopyTable(CriticModelParameters2)
+		self.PrimaryCriticModelParametersArray[1] = self:deepCopyTable(PrimaryCriticModelParameters1)
 
 	end
 
 end
 
-function TwinDelayedDeepDeterministicPolicyGradientModel:getCriticModelParameters1(doNotDeepCopy)
+function TwinDelayedDeepDeterministicPolicyGradientModel:setPrimaryCriticModelParameters2(PrimaryCriticModelParameters2, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		return self.CriticModelParametersArray[1]
+		self.PrimaryCriticModelParametersArray[2] = PrimaryCriticModelParameters2
 
 	else
 
-		return self:deepCopyTable(self.CriticModelParametersArray[1])
+		self.PrimaryCriticModelParametersArray[2] = self:deepCopyTable(PrimaryCriticModelParameters2)
 
 	end
 
 end
 
-function TwinDelayedDeepDeterministicPolicyGradientModel:getCriticModelParameters2(doNotDeepCopy)
+function TwinDelayedDeepDeterministicPolicyGradientModel:setTargetCrtiticModelParameters1(TargetCriticModelParameters1, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		return self.CriticModelParametersArray[2]
+		self.TargetCriticModelParametersArray[1] = TargetCriticModelParameters1
 
 	else
 
-		return self:deepCopyTable(self.CriticModelParametersArray[2])
+		self.TargetCriticModelParametersArray[1] = self:deepCopyTable(TargetCriticModelParameters1)
+
+	end
+
+end
+
+function TwinDelayedDeepDeterministicPolicyGradientModel:setTargetCriticModelParameters2(TargetCriticModelParameters2, doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		self.TargetCriticModelParametersArray[2] = TargetCriticModelParameters2
+
+	else
+
+		self.TargetCriticModelParametersArray[2] = self:deepCopyTable(TargetCriticModelParameters2)
+
+	end
+
+end
+
+function TwinDelayedDeepDeterministicPolicyGradientModel:getTargetActorModelParameters(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetActorModelParameters
+
+	else
+
+		return self:deepCopyTable(self.TargetActorModelParameters)
+
+	end
+
+end
+
+function TwinDelayedDeepDeterministicPolicyGradientModel:getPrimaryCriticModelParameters1(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.PrimaryCriticModelParametersArray[1]
+
+	else
+
+		return self:deepCopyTable(self.PrimaryCriticModelParametersArray[1])
+
+	end
+
+end
+
+function TwinDelayedDeepDeterministicPolicyGradientModel:getPrimaryCriticModelParameters2(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.PrimaryCriticModelParametersArray[2]
+
+	else
+
+		return self:deepCopyTable(self.PrimaryCriticModelParametersArray[2])
+
+	end
+
+end
+
+function TwinDelayedDeepDeterministicPolicyGradientModel:getTargetCriticModelParameters1(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetCriticModelParametersArray
+
+	else
+
+		return self:deepCopyTable(self.TargetCriticModelParametersArray[1])
+
+	end
+
+end
+
+function TwinDelayedDeepDeterministicPolicyGradientModel:getTargetCriticModelParameters2(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.TargetCriticModelParametersArray
+
+	else
+
+		return self:deepCopyTable(self.TargetCriticModelParametersArray[2])
 
 	end
 

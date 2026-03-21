@@ -28,137 +28,135 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
+local TabularReinforcementLearningBaseModel = require(script.Parent.TabularReinforcementLearningBaseModel)
 
-local DeepDoubleStateActionRewardStateActionModel = {}
+local TabularDoubleStateActionRewardStateActionModel = {}
 
-DeepDoubleStateActionRewardStateActionModel.__index = DeepDoubleStateActionRewardStateActionModel
+TabularDoubleStateActionRewardStateActionModel.__index = TabularDoubleStateActionRewardStateActionModel
 
-setmetatable(DeepDoubleStateActionRewardStateActionModel, DeepReinforcementLearningBaseModel)
+setmetatable(TabularDoubleStateActionRewardStateActionModel, TabularReinforcementLearningBaseModel)
 
 local defaultAveragingRate = 0.01
 
-local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
-
-	local averagingRateComplement = 1 - averagingRate
-
-	for layer = 1, #TargetModelParameters, 1 do
-
-		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, PrimaryModelParameters[layer])
-
-		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, TargetModelParameters[layer])
-
-		TargetModelParameters[layer] = AqwamTensorLibrary:add(PrimaryModelParametersPart, TargetModelParametersPart)
-
-	end
-
-	return TargetModelParameters
-
-end
-
-function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
+function TabularDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepDoubleStateActionRewardStateActionModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
-
-	setmetatable(NewDeepDoubleStateActionRewardStateActionModel, DeepDoubleStateActionRewardStateActionModel)
+	local NewTabularDoubleStateActionRewardStateActionModel = TabularReinforcementLearningBaseModel.new(parameterDictionary)
 	
-	NewDeepDoubleStateActionRewardStateActionModel:setName("DeepDoubleStateActionRewardStateActionV2")
-
-	NewDeepDoubleStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
-
-	NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	setmetatable(NewTabularDoubleStateActionRewardStateActionModel, TabularDoubleStateActionRewardStateActionModel)
 	
-	NewDeepDoubleStateActionRewardStateActionModel.TargetModelParameters = parameterDictionary.TargetModelParameters
+	NewTabularDoubleStateActionRewardStateActionModel:setName("TabularDoubleStateActionRewardStateActionV2")
+	
+	NewTabularDoubleStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+	
+	NewTabularDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewTabularDoubleStateActionRewardStateActionModel.TargetModelParameters = parameterDictionary.TargetModelParameters
+	
+	NewTabularDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousStateValue, previousAction, rewardValue, currentStateValue, currentAction, terminalStateValue)
+		
+		local Model = NewTabularDoubleStateActionRewardStateActionModel.Model
 
-	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
-		
-		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
-		
-		local discountFactor = NewDeepDoubleStateActionRewardStateActionModel.discountFactor
+		local averagingRate = NewTabularDoubleStateActionRewardStateActionModel.averagingRate
 
-		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
-		
-		local TargetModelParameters = NewDeepDoubleStateActionRewardStateActionModel.TargetModelParameters
-		
+		local discountFactor = NewTabularDoubleStateActionRewardStateActionModel.discountFactor
+
+		local EligibilityTrace = NewTabularDoubleStateActionRewardStateActionModel.EligibilityTrace
+
+		local TargetModelParameters = NewTabularDoubleStateActionRewardStateActionModel.TargetModelParameters
+
+		local StatesList = NewTabularDoubleStateActionRewardStateActionModel:getStatesList()
+
+		local ActionsList = NewTabularDoubleStateActionRewardStateActionModel:getActionsList()
+
 		local PrimaryModelParameters = Model:getModelParameters(true)
 
-		if (not PrimaryModelParameters) then PrimaryModelParameters = Model:generateLayers() end
+		local averagingRateComplement = 1 - averagingRate
 		
-		if (not TargetModelParameters) then TargetModelParameters = PrimaryModelParameters end
-		
-		local primaryPreviousQVector = Model:forwardPropagate(previousFeatureVector)
-		
+		if (not PrimaryModelParameters) then PrimaryModelParameters = Model:generateModelParameters() end
+
+		if (not TargetModelParameters) then TargetModelParameters = NewTabularDoubleStateActionRewardStateActionModel:deepCopyTable(PrimaryModelParameters) end
+
+		local primaryPreviousQVector = Model:getOutputMatrix(previousStateValue)
+
+		local primaryCurrentActionIndex = table.find(ActionsList, currentAction)
+
 		Model:setModelParameters(TargetModelParameters, true)
-		
-		local targetCurrentQVector = Model:forwardPropagate(currentFeatureVector)
 
-		local ClassesList = Model:getClassesList()
+		local targetCurrentQVector = Model:getOutputMatrix(currentStateValue)
 
-		local numberOfClasses = #ClassesList
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * targetCurrentQVector[1][primaryCurrentActionIndex])
 
-		local previousActionIndex = table.find(ClassesList, previousAction)
+		local stateIndex = table.find(StatesList, previousStateValue)
 
-		local currentActionIndex = table.find(ClassesList, currentAction)
+		local primaryPreviousActionIndex = table.find(ActionsList, previousAction)
 
-		local targetQValue = rewardValue + (discountFactor * targetCurrentQVector[1][currentActionIndex] * (1 - terminalStateValue))
-		
-		local primaryPreviousQValue = primaryPreviousQVector[1][previousActionIndex]
+		local primaryPreviousQValue = primaryPreviousQVector[1][primaryPreviousActionIndex]
 
 		local temporalDifferenceError = targetQValue - primaryPreviousQValue
 
-		local outputDimensionSizeArray = {1, numberOfClasses}
-
-		local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-
-		temporalDifferenceErrorVector[1][previousActionIndex] = temporalDifferenceError
-
 		if (EligibilityTrace) then
 
-			EligibilityTrace:increment(1, previousActionIndex, discountFactor, outputDimensionSizeArray)
+			local numberOfStates = #StatesList
 
-			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
+			local numberOfActions = #ActionsList
+
+			local dimensionSizeArray = {numberOfStates, numberOfActions}
+
+			local temporalDifferenceErrorMatrix = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+
+			temporalDifferenceErrorMatrix[stateIndex][primaryPreviousActionIndex] = temporalDifferenceError
+
+			EligibilityTrace:increment(stateIndex, primaryPreviousActionIndex, discountFactor, dimensionSizeArray)
+
+			temporalDifferenceErrorMatrix = EligibilityTrace:calculate(temporalDifferenceErrorMatrix)
+
+			temporalDifferenceError = temporalDifferenceErrorMatrix[stateIndex][primaryPreviousActionIndex]
 
 		end
-		
-		local negatedTemporalDifferenceErrorVector = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorVector) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error vector to make the neural network to perform gradient ascent.
-		
-		Model:setModelParameters(PrimaryModelParameters, true)
-		
-		Model:forwardPropagate(previousFeatureVector, true)
 
-		Model:update(negatedTemporalDifferenceErrorVector, true)
-		
+		Model:setModelParameters(PrimaryModelParameters, true)
+
+		Model:getOutputMatrix(previousStateValue, true)
+
+		Model:update(-temporalDifferenceError, true)
+
 		PrimaryModelParameters = Model:getModelParameters(true)
 
-		NewDeepDoubleStateActionRewardStateActionModel.TargetModelParameters = rateAverageModelParameters(NewDeepDoubleStateActionRewardStateActionModel.averagingRate, TargetModelParameters, PrimaryModelParameters)
+		local primaryQValue = PrimaryModelParameters[stateIndex][primaryPreviousActionIndex]
+
+		local targetQValue = TargetModelParameters[stateIndex][primaryPreviousActionIndex]
+
+		TargetModelParameters[stateIndex][primaryPreviousActionIndex] = (averagingRate * primaryQValue) + (averagingRateComplement * targetQValue)
+
+		NewTabularDoubleStateActionRewardStateActionModel.TargetModelParameters = TargetModelParameters
 		
-		return temporalDifferenceErrorVector
+		return temporalDifferenceError
 
 	end)
 	
-	NewDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewTabularDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
+		local EligibilityTrace = NewTabularDoubleStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function()
+	NewTabularDoubleStateActionRewardStateActionModel:setResetFunction(function()
 		
-		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
+		local EligibilityTrace = NewTabularDoubleStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
-	return NewDeepDoubleStateActionRewardStateActionModel
+	return NewTabularDoubleStateActionRewardStateActionModel
 
 end
 
-function DeepDoubleStateActionRewardStateActionModel:setTargetModelParameters(TargetModelParameters, doNotDeepCopy)
+function TabularDoubleStateActionRewardStateActionModel:setTargetModelParameters(TargetModelParameters, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
@@ -172,7 +170,7 @@ function DeepDoubleStateActionRewardStateActionModel:setTargetModelParameters(Ta
 
 end
 
-function DeepDoubleStateActionRewardStateActionModel:getTargetModelParameters(doNotDeepCopy)
+function TabularDoubleStateActionRewardStateActionModel:getTargetModelParameters(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
@@ -186,4 +184,4 @@ function DeepDoubleStateActionRewardStateActionModel:getTargetModelParameters(do
 
 end
 
-return DeepDoubleStateActionRewardStateActionModel
+return TabularDoubleStateActionRewardStateActionModel

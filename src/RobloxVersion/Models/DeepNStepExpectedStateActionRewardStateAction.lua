@@ -126,7 +126,7 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		local previousQVector = Model:forwardPropagate(previousFeatureVector, true)
 
-		local maximumQValue = AqwamTensorLibrary:findMaximumValue(currentQVector)
+		local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(currentQVector)
 
 		local actionIndex = table.find(ClassesList, previousAction)
 
@@ -134,7 +134,7 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		for i = 1, numberOfClasses, 1 do
 
-			if (unwrappedQVector[i] == maximumQValue) then
+			if (unwrappedQVector[i] == maximumCurrentQValue) then
 
 				numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -150,7 +150,7 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		for _, qValue in ipairs(unwrappedQVector) do
 
-			actionProbability = ((qValue == maximumQValue) and greedyActionProbability) or nonGreedyActionProbability
+			actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 			expectedQValue = expectedQValue + (qValue * actionProbability)
 

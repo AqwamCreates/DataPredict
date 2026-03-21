@@ -237,7 +237,7 @@ local function calculateCrossVariance(stateSigmaMatrixArray, meanStateMatrix, ob
 	
 end
 
-local function calculateJacobianApproximation(functionHandle, stateMatrix, epsilon)
+local function calculateJacobianApproximation(functionToApply, stateMatrix, epsilon)
 	
 	local numberOfStates = #stateMatrix
 	
@@ -269,9 +269,9 @@ local function calculateJacobianApproximation(functionHandle, stateMatrix, epsil
 		
 		stateMinusMatrix = AqwamTensorLibrary:subtract(stateMatrix, deltaMatrix)
 
-		outputPlusMatrix = functionHandle(statePlusMatrix)
+		outputPlusMatrix = functionToApply(statePlusMatrix)
 		
-		outputMinusMatrix = functionHandle(stateMinusMatrix)
+		outputMinusMatrix = functionToApply(stateMinusMatrix)
 
 		differenceMatrix = AqwamTensorLibrary:subtract(outputPlusMatrix, outputMinusMatrix)
 		

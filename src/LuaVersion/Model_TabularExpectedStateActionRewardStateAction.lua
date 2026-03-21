@@ -72,21 +72,21 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 		local numberOfGreedyActions = 0
 		
-		local targetVector = Model:predict(currentStateValue, true)
+		local currentQVector = Model:predict(currentStateValue, true)
 		
-		local previousVector = Model:getOutputMatrix(previousStateValue, true)
+		local previousQVector = Model:getOutputMatrix(previousStateValue, true)
 		
-		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetVector)
+		local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(currentQVector)
 		
 		local stateIndex = table.find(StatesList, previousStateValue)
 		
 		local actionIndex = table.find(ActionsList, previousAction)
 
-		local unwrappedTargetVector = targetVector[1]
+		local unwrappedTargetVector = currentQVector[1]
 
 		for i = 1, numberOfActions, 1 do
 
-			if (unwrappedTargetVector[i] == maxQValue) then
+			if (unwrappedTargetVector[i] == maximumCurrentQValue) then
 
 				numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -100,7 +100,7 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 		for _, qValue in ipairs(unwrappedTargetVector) do
 
-			if (qValue == maxQValue) then
+			if (qValue == maximumCurrentQValue) then
 
 				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
 
@@ -112,11 +112,11 @@ function TabularExpectedStateActionRewardStateActionModel.new(parameterDictionar
 
 		end
 		
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
-		local lastValue = previousVector[1][actionIndex]
+		local previousQValue = previousQVector[1][actionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - previousQValue
 		
 		if (EligibilityTrace) then
 			

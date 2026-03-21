@@ -154,11 +154,11 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	local actionIndex = table.find(ActionsList, previousAction)
 
-	local unwrappedTargetQVector = currentQVector[1]
+	local unwrappedCurrentQVector = currentQVector[1]
 
 	for i = 1, numberOfActions, 1 do
 
-		if (unwrappedTargetQVector[i] == maximumCurrentQValue) then
+		if (unwrappedCurrentQVector[i] == maximumCurrentQValue) then
 
 			numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -172,7 +172,7 @@ function TabularDoubleExpectedStateActionRewardStateActionModel:generateTemporal
 
 	local actionProbability
 
-	for _, qValue in ipairs(unwrappedTargetQVector) do
+	for _, qValue in ipairs(unwrappedCurrentQVector) do
 
 		actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
 

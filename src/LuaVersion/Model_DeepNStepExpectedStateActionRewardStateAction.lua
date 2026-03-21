@@ -160,9 +160,9 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		local nStepTargetValue = returnValue + bootstrapValue
 
-		local lastValue = previousQVector[1][actionIndex]
+		local previousQValue = previousQVector[1][actionIndex]
 
-		local temporalDifferenceError = nStepTargetValue - lastValue
+		local temporalDifferenceError = nStepTargetValue - previousQValue
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 

@@ -118,9 +118,9 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 		
 		local currentQValue = CriticModel:forwardPropagate(previousCriticActionInputVector, true)[1][1]
 
-		local criticError  = 2 * (currentQValue - yValue)
+		local criticLoss = 2 * (currentQValue - yValue)
 		
-		local temporalDifferenceError = -criticError
+		local temporalDifferenceError = -criticLoss
 		
 		ActorModel:update(-currentQValue, true)
 		

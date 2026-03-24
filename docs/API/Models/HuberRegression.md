@@ -24,7 +24,7 @@ HuberRegression.new(maximumNumberOfIterations: integer, learningRate: number, co
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
 
-* delta: The threshold parameter for the Huber loss function. Determines where the loss function transitions from quadratic to linear behavior. Typical values range from 0.1 to 10, with smaller values making the model more robust to outliers.
+* delta: The threshold parameter for the Huber loss function. Determines where the loss function transitions from quadratic to linear behavior. Typical values range from 0.1 to 10, with smaller values making the model more robust to outliers. [Default: 1]
 
 #### Returns:
 

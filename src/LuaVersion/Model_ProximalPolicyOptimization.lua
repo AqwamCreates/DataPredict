@@ -240,9 +240,9 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 	end)
 
-	NewProximalPolicyOptimizationModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
+	NewProximalPolicyOptimizationModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 
-		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanVector[1]}) end
 
 		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
 
@@ -258,9 +258,9 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		
 		ActorModel:setModelParameters(CurrentActorModelParameters, true)
 
-		local oldPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(oldPolicyActionMeanVector, actionStandardDeviationVector, actionNoiseVector)
+		local oldPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(oldPolicyActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
 
-		local currentPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(actionMeanVector, actionStandardDeviationVector, actionNoiseVector)
+		local currentPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
 		
 		local ratioActionProbabiltyVector
 		
@@ -278,7 +278,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		end
 		
-		local previousActionProbabilityGradientVector = calculateDiagonalGaussianProbabilityGradient(actionMeanVector, actionStandardDeviationVector, actionNoiseVector)
+		local previousActionProbabilityGradientVector = calculateDiagonalGaussianProbabilityGradient(previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
 		
 		previousActionProbabilityGradientVector = AqwamTensorLibrary:multiply(previousActionProbabilityGradientVector, ratioActionProbabiltyVector)
 		

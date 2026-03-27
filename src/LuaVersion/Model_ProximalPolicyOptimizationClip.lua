@@ -146,7 +146,7 @@ local function calculateRewardToGo(rewardHistory, discountFactor)
 
 end
 
-local function calculateActorLossValue(ratio, advantage, epsilon, actorGradientValue)
+local function calculateActorLossValue(ratio, advantage, actorGradientValue, epsilon)
 	
 	local upperRatioValue = 1 + epsilon
 	
@@ -158,7 +158,7 @@ local function calculateActorLossValue(ratio, advantage, epsilon, actorGradientV
 	
 	local canUseNegativeAdvantageValue = (not isAdvantageValuePositive) and (ratio > lowerRatioValue)
 	
-	if (canUsePositiveAdvantageValue) or (canUseNegativeAdvantageValue) then return -(advantage * ratio * actorGradientValue) end
+	if (canUsePositiveAdvantageValue) or (canUseNegativeAdvantageValue) then return -(ratio * advantage * actorGradientValue) end
 	
 	return 0
 
@@ -390,7 +390,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 			
 			local advantageVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, advantageValue)
 			
-			local actorLossVector = AqwamTensorLibrary:applyFunction(calculateActorLossValue, ratioActionProbabilityVector, advantageVector, epsilonVector, actorGradientVector)
+			local actorLossVector = AqwamTensorLibrary:applyFunction(calculateActorLossValue, ratioActionProbabilityVector, advantageVector, actorGradientVector, epsilonVector)
 
 			ActorModel:forwardPropagate(featureVector, true)
 

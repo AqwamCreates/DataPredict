@@ -36,25 +36,53 @@ ProximalPolicyOptimizationClipModel.__index = ProximalPolicyOptimizationClipMode
 
 setmetatable(ProximalPolicyOptimizationClipModel, DeepReinforcementLearningActorCriticBaseModel)
 
-local defaultClipRatio = 0.3
+local defaultepsilon = 0.3
 
 local defaultLambda = 0
 
 local defaultUseLogProbabilities = true
 
-local function calculateCategoricalProbability(valueVector)
+local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
-	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueVector)
+	local averagingRateComplement = 1 - averagingRate
 
-	local subtractedZVector = AqwamTensorLibrary:subtract(valueVector, highestActionValue)
+	for layer = 1, #TargetModelParameters, 1 do
 
-	local exponentValueVector = AqwamTensorLibrary:applyFunction(math.exp, subtractedZVector)
+		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, TargetModelParameters[layer])
 
-	local exponentValueSumVector = AqwamTensorLibrary:sum(exponentValueVector, 2)
+		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
 
-	local targetActionVector = AqwamTensorLibrary:divide(exponentValueVector, exponentValueSumVector)
+		TargetModelParameters[layer] = AqwamTensorLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
 
-	return targetActionVector
+	end
+
+	return TargetModelParameters
+
+end
+
+local function calculateCategoricalProbability(valueTensor)
+
+	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueTensor)
+
+	local subtractedZVector = AqwamTensorLibrary:subtract(valueTensor, highestActionValue)
+
+	local exponentActionVector = AqwamTensorLibrary:applyFunction(math.exp, subtractedZVector)
+
+	local exponentActionSumVector = AqwamTensorLibrary:sum(exponentActionVector, 2)
+
+	local targetActionTensor = AqwamTensorLibrary:divide(exponentActionVector, exponentActionSumVector)
+
+	return targetActionTensor
+
+end
+
+local function calculateActionVector(meanVector, standardDeviationVector, noiseVector)
+
+	local actionVectoPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, noiseVector)
+
+	local actionVector = AqwamTensorLibrary:add(meanVector, actionVectoPart1)
+
+	return actionVector
 
 end
 
@@ -77,10 +105,26 @@ local function calculateDiagonalGaussianProbability(meanVector, standardDeviatio
 	local logValueVectorPart3 = AqwamTensorLibrary:add(squaredZScoreVector, logValueVectorPart2)
 
 	local logValueVector = AqwamTensorLibrary:add(logValueVectorPart3, math.log(2 * math.pi))
-	
+
 	logValueVector = AqwamTensorLibrary:multiply(-0.5, logValueVector)
 
 	return logValueVector
+
+end
+
+local function calculateDiagonalGaussianProbabilityGradient(meanVector, standardDeviationVector, noiseVector)
+
+	local actionVectorPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, noiseVector)
+
+	local actionVector = AqwamTensorLibrary:add(meanVector, actionVectorPart1)
+
+	local actionProbabilityGradientVectorPart1 = AqwamTensorLibrary:subtract(actionVector, meanVector)
+
+	local actionProbabilityGradientVectorPart2 = AqwamTensorLibrary:power(standardDeviationVector, 2)
+
+	local actionProbabilityGradientVector = AqwamTensorLibrary:divide(actionProbabilityGradientVectorPart1, actionProbabilityGradientVectorPart2)
+
+	return actionProbabilityGradientVector
 
 end
 
@@ -102,6 +146,24 @@ local function calculateRewardToGo(rewardHistory, discountFactor)
 
 end
 
+local function maskAdvantageValue(ratio, advantage, epsilon)
+
+	local lower = 1 - epsilon
+	
+	local upper = 1 + epsilon
+	
+	local isAdvantageValuePositive = (advantage >= 0)
+	
+	local canUsePositiveAdvantageValue = (isAdvantageValuePositive) and (ratio < upper)
+	
+	local canUseNegativeAdvantageValue = (not isAdvantageValuePositive) and (ratio > lower)
+	
+	if (canUsePositiveAdvantageValue) or (canUseNegativeAdvantageValue) then return advantage end
+	
+	return 0
+
+end
+
 function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
@@ -111,20 +173,20 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 	setmetatable(NewProximalPolicyOptimizationClipModel, ProximalPolicyOptimizationClipModel)
 
 	NewProximalPolicyOptimizationClipModel:setName("ProximalPolicyOptimizationClip")
-
-	NewProximalPolicyOptimizationClipModel.clipRatio = parameterDictionary.clipRatio or defaultClipRatio
+	
+	NewProximalPolicyOptimizationClipModel.epsilon = parameterDictionary.epsilon or defaultepsilon
 
 	NewProximalPolicyOptimizationClipModel.lambda = parameterDictionary.lambda or defaultLambda
-	
-	NewProximalPolicyOptimizationClipModel.useLogProbabilities = NewProximalPolicyOptimizationClipModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
-	NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters = parameterDictionary.CurrentActorModelParameters
+	NewProximalPolicyOptimizationClipModel.useLogProbabilities = NewProximalPolicyOptimizationClipModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
 	NewProximalPolicyOptimizationClipModel.OldActorModelParameters = parameterDictionary.OldActorModelParameters
 
 	local featureVectorHistory = {}
+	
+	local ratioActionProbabilityVectorHistory = {}
 
-	local ratioActionProbabiltyVectorHistory = {}
+	local actorGradientVectorHistory = {}
 
 	local rewardValueHistory = {}
 
@@ -133,58 +195,70 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 	local advantageValueHistory = {}
 
 	NewProximalPolicyOptimizationClipModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
-
+		
 		local ActorModel = NewProximalPolicyOptimizationClipModel.ActorModel
 
 		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
 
-		NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters = ActorModel:getModelParameters(true)
+		local CurrentActorModelParameters = ActorModel:getModelParameters(true)
 
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationClipModel.OldActorModelParameters, true)
+		local OldModelParameters = NewProximalPolicyOptimizationClipModel.OldActorModelParameters or CurrentActorModelParameters
+
+		ActorModel:setModelParameters(OldModelParameters, true)
 
 		local oldPolicyActionVector = ActorModel:forwardPropagate(previousFeatureVector)
 
-		NewProximalPolicyOptimizationClipModel.OldActorModelParameters = ActorModel:getModelParameters(true)
-
-		local oldPolicyActionProbabilityVector = calculateCategoricalProbability(oldPolicyActionVector)
+		ActorModel:setModelParameters(CurrentActorModelParameters, true)
 
 		local currentPolicyActionVector = ActorModel:forwardPropagate(previousFeatureVector)
 
-		local currentPolicyActionProbabilityVector = calculateCategoricalProbability(currentPolicyActionVector)
+		local oldPolicyActionProbabilityVector = calculateCategoricalProbability(oldPolicyActionVector)
 
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters, true)
+		local currentPolicyActionProbabilityVector = calculateCategoricalProbability(currentPolicyActionVector)
 
 		local ClassesList = ActorModel:getClassesList()
 
-		local classIndex = table.find(ClassesList, previousAction)
-
+		local previousActionIndex = table.find(ClassesList, previousAction)
+		
 		local ratioActionProbabiltyVector = table.create(#ClassesList, 0)
 
 		local ratioActionProbability
 
 		if (NewProximalPolicyOptimizationClipModel.useLogProbabilities) then
 
-			ratioActionProbability = math.exp(math.log(currentPolicyActionProbabilityVector[1][classIndex]) - math.log(oldPolicyActionProbabilityVector[1][classIndex]))
+			ratioActionProbability = math.exp(math.log(currentPolicyActionProbabilityVector[1][previousActionIndex]) - math.log(oldPolicyActionProbabilityVector[1][previousActionIndex]))
 
 		else
 
-			ratioActionProbability = currentPolicyActionProbabilityVector[1][classIndex] / oldPolicyActionProbabilityVector[1][classIndex]
+			ratioActionProbability = currentPolicyActionProbabilityVector[1][previousActionIndex] / oldPolicyActionProbabilityVector[1][previousActionIndex]
 
 		end
-
-		ratioActionProbabiltyVector[classIndex] = ratioActionProbability
+		
+		ratioActionProbabiltyVector[previousActionIndex] = ratioActionProbability
 
 		ratioActionProbabiltyVector = {ratioActionProbabiltyVector}
+
+		local previousActionProbabilityGradientVector = {}
+
+		for i, _ in ipairs(ClassesList) do
+
+			previousActionProbabilityGradientVector[i] = (((i == previousActionIndex) and 1) or 0) - currentPolicyActionProbabilityVector[1][i]
+
+		end
+		
+		previousActionProbabilityGradientVector = {previousActionProbabilityGradientVector}
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
 		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
 		local advantageValue = rewardValue + (NewProximalPolicyOptimizationClipModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
-
+		
 		table.insert(featureVectorHistory, previousFeatureVector)
+		
+		table.insert(ratioActionProbabilityVectorHistory, ratioActionProbabiltyVector)
 
-		table.insert(ratioActionProbabiltyVectorHistory, ratioActionProbabiltyVector)
+		table.insert(actorGradientVectorHistory, previousActionProbabilityGradientVector)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -196,25 +270,29 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 	end)
 
-	NewProximalPolicyOptimizationClipModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
+	NewProximalPolicyOptimizationClipModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 
-		if (not actionNoiseVector) then actionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanVector[1]}) end
+		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanVector[1]}) end
+		
+		local epsilon = NewProximalPolicyOptimizationClipModel.epsilon
 
 		local ActorModel = NewProximalPolicyOptimizationClipModel.ActorModel
 
 		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
 
-		NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters = ActorModel:getModelParameters(true)
+		local CurrentActorModelParameters = ActorModel:getModelParameters(true)
 
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationClipModel.OldActorModelParameters, true)
+		local OldModelParameters = NewProximalPolicyOptimizationClipModel.OldActorModelParameters or CurrentActorModelParameters
+
+		ActorModel:setModelParameters(OldModelParameters, true)
 
 		local oldPolicyActionMeanVector = ActorModel:forwardPropagate(previousFeatureVector)
 
-		NewProximalPolicyOptimizationClipModel.OldActorModelParameters = ActorModel:getModelParameters(true)
+		ActorModel:setModelParameters(CurrentActorModelParameters, true)
 
-		local oldPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(oldPolicyActionMeanVector, actionStandardDeviationVector, actionNoiseVector)
+		local oldPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(oldPolicyActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
 
-		local currentPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(actionMeanVector, actionStandardDeviationVector, actionNoiseVector)
+		local currentPolicyActionProbabilityVector = calculateDiagonalGaussianProbability(previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
 
 		local ratioActionProbabiltyVector
 
@@ -231,16 +309,20 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 			ratioActionProbabiltyVector = AqwamTensorLibrary:divide(currentPolicyActionProbabilityVector, oldPolicyActionProbabilityVector)
 
 		end
+		
+		local previousActionProbabilityGradientVector = calculateDiagonalGaussianProbabilityGradient(previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector)
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 
 		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
 
 		local advantageValue = rewardValue + (NewProximalPolicyOptimizationClipModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
-
+		
 		table.insert(featureVectorHistory, previousFeatureVector)
+		
+		table.insert(ratioActionProbabilityVectorHistory, ratioActionProbabiltyVector)
 
-		table.insert(ratioActionProbabiltyVectorHistory, ratioActionProbabiltyVector)
+		table.insert(actorGradientVectorHistory, previousActionProbabilityGradientVector)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -257,10 +339,24 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 		local ActorModel = NewProximalPolicyOptimizationClipModel.ActorModel
 
 		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
+		
+		local epsilon = NewProximalPolicyOptimizationClipModel.epsilon
 
 		local discountFactor = NewProximalPolicyOptimizationClipModel.discountFactor
 
 		local lambda = NewProximalPolicyOptimizationClipModel.lambda
+		
+		local ClassesList = ActorModel:getClassesList()
+		
+		local numberOfClasses = #ClassesList
+		
+		local outputDimensionSizeArray = {1, numberOfClasses}
+		
+		local epsilonVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, epsilon)
+
+		local CurrentActorModelParameters = ActorModel:getModelParameters(true)
+		
+		NewProximalPolicyOptimizationClipModel.OldActorModelParameters = CurrentActorModelParameters
 
 		if (lambda ~= 0) then
 
@@ -281,30 +377,28 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 		end
 
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, discountFactor)
+		
+		local clipFunctionToApply = function(ratioActionProbability)
 
-		NewProximalPolicyOptimizationClipModel.OldActorModelParameters = NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters
-
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters, true)
-
-		local clipRatio = NewProximalPolicyOptimizationClipModel.clipRatio 
-
-		local lowerClipRatioValue = 1 - clipRatio
-
-		local upperClipRatioValue = 1 + clipRatio
-
-		local ratioValueModifierFunction = function(ratioValue) -- This is for the gradient of Proximal Policy Optimization clipped loss.
-
-			return ((ratioValue == 0) and 0) or ((ratioValue >= lowerClipRatioValue) and (ratioValue <= upperClipRatioValue) and ratioValue) or 0
+			return math.clamp(ratioActionProbability, 1 - epsilon, 1 + epsilon)
 
 		end
 
 		for h, featureVector in ipairs(featureVectorHistory) do
+			
+			local ratioActionProbabilityVector = ratioActionProbabilityVectorHistory[h]
 
-			local ratioActionProbabilityVector = AqwamTensorLibrary:applyFunction(ratioValueModifierFunction, ratioActionProbabiltyVectorHistory[h])
+			local actorGradientVector = actorGradientVectorHistory[h]
 
-			local actorLossVector = AqwamTensorLibrary:multiply(advantageValueHistory[h], ratioActionProbabilityVector)
+			local advantageValue = advantageValueHistory[h]
 
 			local criticLoss = criticValueHistory[h] - rewardToGoArray[h]
+			
+			local advantageVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, advantageValue)
+			
+			local maskedAdvantageValue = AqwamTensorLibrary:applyFunction(maskAdvantageValue, ratioActionProbabilityVector, advantageVector, epsilonVector)
+			
+			local actorLossVector = AqwamTensorLibrary:multiply(maskedAdvantageValue, ratioActionProbabilityVector, actorGradientVector)
 
 			actorLossVector = AqwamTensorLibrary:unaryMinus(actorLossVector)
 
@@ -318,11 +412,11 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		end
 
-		NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters = ActorModel:getModelParameters(true)
-
 		table.clear(featureVectorHistory)
+		
+		table.clear(ratioActionProbabilityVectorHistory)
 
-		table.clear(ratioActionProbabiltyVectorHistory)
+		table.clear(actorGradientVectorHistory)
 
 		table.clear(rewardValueHistory)
 
@@ -335,8 +429,10 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 	NewProximalPolicyOptimizationClipModel:setResetFunction(function()
 
 		table.clear(featureVectorHistory)
+		
+		table.clear(ratioActionProbabilityVectorHistory)
 
-		table.clear(ratioActionProbabiltyVectorHistory)
+		table.clear(actorGradientVectorHistory)
 
 		table.clear(rewardValueHistory)
 

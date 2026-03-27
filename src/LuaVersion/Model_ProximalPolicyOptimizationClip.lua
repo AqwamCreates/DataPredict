@@ -146,19 +146,19 @@ local function calculateRewardToGo(rewardHistory, discountFactor)
 
 end
 
-local function maskAdvantageValue(ratio, advantage, epsilon)
-
-	local lower = 1 - epsilon
+local function calculateActorLossValue(ratio, advantage, epsilon, actorGradientValue)
 	
-	local upper = 1 + epsilon
+	local upperRatioValue = 1 + epsilon
+	
+	local lowerRatioValue = 1 - epsilon
 	
 	local isAdvantageValuePositive = (advantage >= 0)
 	
-	local canUsePositiveAdvantageValue = (isAdvantageValuePositive) and (ratio < upper)
+	local canUsePositiveAdvantageValue = (isAdvantageValuePositive) and (ratio < upperRatioValue)
 	
-	local canUseNegativeAdvantageValue = (not isAdvantageValuePositive) and (ratio > lower)
+	local canUseNegativeAdvantageValue = (not isAdvantageValuePositive) and (ratio > lowerRatioValue)
 	
-	if (canUsePositiveAdvantageValue) or (canUseNegativeAdvantageValue) then return advantage end
+	if (canUsePositiveAdvantageValue) or (canUseNegativeAdvantageValue) then return -(advantage * ratio * actorGradientValue) end
 	
 	return 0
 
@@ -377,12 +377,6 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 		end
 
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, discountFactor)
-		
-		local clipFunctionToApply = function(ratioActionProbability)
-
-			return math.clamp(ratioActionProbability, 1 - epsilon, 1 + epsilon)
-
-		end
 
 		for h, featureVector in ipairs(featureVectorHistory) do
 			
@@ -396,11 +390,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 			
 			local advantageVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, advantageValue)
 			
-			local maskedAdvantageValue = AqwamTensorLibrary:applyFunction(maskAdvantageValue, ratioActionProbabilityVector, advantageVector, epsilonVector)
-			
-			local actorLossVector = AqwamTensorLibrary:multiply(maskedAdvantageValue, ratioActionProbabilityVector, actorGradientVector)
-
-			actorLossVector = AqwamTensorLibrary:unaryMinus(actorLossVector)
+			local actorLossVector = AqwamTensorLibrary:applyFunction(calculateActorLossValue, ratioActionProbabilityVector, advantageVector, epsilonVector, actorGradientVector)
 
 			ActorModel:forwardPropagate(featureVector, true)
 

@@ -220,29 +220,31 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		local previousActionIndex = table.find(ClassesList, previousAction)
 		
-		local ratioActionProbabiltyVector = table.create(#ClassesList, 0)
+		local unwrappedCurrentPolicyActionProbabilityVector = currentPolicyActionProbabilityVector[1]
+
+		local currentPolicyActionProbability = unwrappedCurrentPolicyActionProbabilityVector[previousActionIndex]
+
+		local oldPolicyActionProbability = oldPolicyActionProbabilityVector[1][previousActionIndex]
 
 		local ratioActionProbability
 
 		if (NewProximalPolicyOptimizationClipModel.useLogProbabilities) then
 
-			ratioActionProbability = math.exp(math.log(currentPolicyActionProbabilityVector[1][previousActionIndex]) - math.log(oldPolicyActionProbabilityVector[1][previousActionIndex]))
+			ratioActionProbability = math.exp(math.log(currentPolicyActionProbability) - math.log(oldPolicyActionProbability))
 
 		else
 
-			ratioActionProbability = currentPolicyActionProbabilityVector[1][previousActionIndex] / oldPolicyActionProbabilityVector[1][previousActionIndex]
+			ratioActionProbability = currentPolicyActionProbability / oldPolicyActionProbability
 
 		end
 		
-		ratioActionProbabiltyVector[previousActionIndex] = ratioActionProbability
-
-		ratioActionProbabiltyVector = {ratioActionProbabiltyVector}
+		local ratioActionProbabilityVector = AqwamTensorLibrary:createTensor({1, #ClassesList}, ratioActionProbability)
 
 		local previousActionProbabilityGradientVector = {}
 
 		for i, _ in ipairs(ClassesList) do
 
-			previousActionProbabilityGradientVector[i] = (((i == previousActionIndex) and 1) or 0) - currentPolicyActionProbabilityVector[1][i]
+			previousActionProbabilityGradientVector[i] = (((i == previousActionIndex) and 1) or 0) - unwrappedCurrentPolicyActionProbabilityVector[i]
 
 		end
 		
@@ -256,7 +258,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 		
 		table.insert(featureVectorHistory, previousFeatureVector)
 		
-		table.insert(ratioActionProbabilityVectorHistory, ratioActionProbabiltyVector)
+		table.insert(ratioActionProbabilityVectorHistory, ratioActionProbabilityVector)
 
 		table.insert(actorGradientVectorHistory, previousActionProbabilityGradientVector)
 

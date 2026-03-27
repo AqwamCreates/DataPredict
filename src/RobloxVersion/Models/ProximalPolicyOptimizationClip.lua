@@ -76,16 +76,6 @@ local function calculateCategoricalProbability(valueTensor)
 
 end
 
-local function calculateActionVector(meanVector, standardDeviationVector, noiseVector)
-
-	local actionVectoPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, noiseVector)
-
-	local actionVector = AqwamTensorLibrary:add(meanVector, actionVectoPart1)
-
-	return actionVector
-
-end
-
 local function calculateDiagonalGaussianProbability(meanVector, standardDeviationVector, noiseVector)
 
 	local valueVectorPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, noiseVector)

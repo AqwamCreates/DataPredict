@@ -142,11 +142,11 @@ local function calculateActorLossValue(ratioValue, advantageValue, actorGradient
 	
 	local lowerRatioValue = 1 - epsilon
 	
-	local clippedRatio = math.clamp(ratioValue, lowerRatioValue, upperRatioValue)
+	local clippedRatioValue = math.clamp(ratioValue, lowerRatioValue, upperRatioValue)
 	
 	local unclippedAdvantageValue = ratioValue * advantageValue
 	
-	local clippedAdvantageValue = clippedRatio * advantageValue
+	local clippedAdvantageValue = clippedRatioValue * advantageValue
 	
 	local isUnclippedAdvantageValueIsUsed = (unclippedAdvantageValue <= clippedAdvantageValue)
 	

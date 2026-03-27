@@ -36,7 +36,7 @@ ProximalPolicyOptimizationClipModel.__index = ProximalPolicyOptimizationClipMode
 
 setmetatable(ProximalPolicyOptimizationClipModel, DeepReinforcementLearningActorCriticBaseModel)
 
-local defaultepsilon = 0.3
+local defaultEpsilon = 0.3
 
 local defaultLambda = 0
 
@@ -168,7 +168,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 	NewProximalPolicyOptimizationClipModel:setName("ProximalPolicyOptimizationClip")
 	
-	NewProximalPolicyOptimizationClipModel.epsilon = parameterDictionary.epsilon or defaultepsilon
+	NewProximalPolicyOptimizationClipModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
 	NewProximalPolicyOptimizationClipModel.lambda = parameterDictionary.lambda or defaultLambda
 

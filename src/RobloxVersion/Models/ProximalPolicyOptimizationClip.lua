@@ -138,11 +138,11 @@ end
 
 local function calculateActorLossValue(ratioActionProbabilityValue, advantageValue, actorGradientValue, epsilon)
 	
-	local upperRatioValue = 1 + epsilon
+	local upperRatioActionProbabilityValue = 1 + epsilon
 	
-	local lowerRatioValue = 1 - epsilon
+	local lowerRatioActionProbabilityValue = 1 - epsilon
 	
-	local clippedRatioActionProbabilityValue = math.clamp(ratioActionProbabilityValue, lowerRatioValue, upperRatioValue)
+	local clippedRatioActionProbabilityValue = math.clamp(ratioActionProbabilityValue, lowerRatioActionProbabilityValue, upperRatioActionProbabilityValue)
 	
 	local unclippedAdvantageValue = ratioActionProbabilityValue * advantageValue
 	
@@ -150,7 +150,7 @@ local function calculateActorLossValue(ratioActionProbabilityValue, advantageVal
 	
 	local isUnclippedAdvantageValueIsUsed = (unclippedAdvantageValue <= clippedAdvantageValue)
 	
-	local isRatioActionProbabilityValueNotClipped = (ratioActionProbabilityValue >= lowerRatioValue) and (ratioActionProbabilityValue <= upperRatioValue)
+	local isRatioActionProbabilityValueNotClipped = (ratioActionProbabilityValue >= lowerRatioActionProbabilityValue) and (ratioActionProbabilityValue <= upperRatioActionProbabilityValue)
 	
 	if (isUnclippedAdvantageValueIsUsed) or (isRatioActionProbabilityValueNotClipped) then return -(ratioActionProbabilityValue * advantageValue * actorGradientValue) end
 	

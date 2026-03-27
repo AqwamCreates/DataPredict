@@ -147,16 +147,16 @@ local function calculateRewardToGo(rewardHistory, discountFactor)
 end
 
 local function maskAdvantageValue(ratio, advantage, epsilon)
-
-	local lower = 1 - epsilon
 	
-	local upper = 1 + epsilon
+	local upperRatioValue = 1 + epsilon
+	
+	local lowerRatioValue = 1 - epsilon
 	
 	local isAdvantageValuePositive = (advantage >= 0)
 	
-	local canUsePositiveAdvantageValue = (isAdvantageValuePositive) and (ratio < upper)
+	local canUsePositiveAdvantageValue = (isAdvantageValuePositive) and (ratio < upperRatioValue)
 	
-	local canUseNegativeAdvantageValue = (not isAdvantageValuePositive) and (ratio > lower)
+	local canUseNegativeAdvantageValue = (not isAdvantageValuePositive) and (ratio > lowerRatioValue)
 	
 	if (canUsePositiveAdvantageValue) or (canUseNegativeAdvantageValue) then return advantage end
 	

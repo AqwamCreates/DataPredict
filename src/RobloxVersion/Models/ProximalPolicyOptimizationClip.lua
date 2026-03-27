@@ -146,23 +146,23 @@ local function calculateRewardToGo(rewardHistory, discountFactor)
 
 end
 
-local function calculateActorLossValue(ratio, advantageValue, actorGradientValue, epsilon)
+local function calculateActorLossValue(ratioValue, advantageValue, actorGradientValue, epsilon)
 	
 	local upperRatioValue = 1 + epsilon
 	
 	local lowerRatioValue = 1 - epsilon
 	
-	local clippedRatio = math.clamp(ratio, lowerRatioValue, upperRatioValue)
+	local clippedRatio = math.clamp(ratioValue, lowerRatioValue, upperRatioValue)
 	
-	local unclippedAdvantageValue = ratio * advantageValue
+	local unclippedAdvantageValue = ratioValue * advantageValue
 	
 	local clippedAdvantageValue = clippedRatio * advantageValue
 	
 	local isUnclippedAdvantageValueIsUsed = (unclippedAdvantageValue <= clippedAdvantageValue)
 	
-	local isRatioClipped = (ratio < lowerRatioValue) or (ratio > upperRatioValue)
+	local isRatioClipped = (ratioValue < lowerRatioValue) or (ratioValue > upperRatioValue)
 	
-	if (isUnclippedAdvantageValueIsUsed) or (not isRatioClipped) then return -(ratio * advantageValue * actorGradientValue) end
+	if (isUnclippedAdvantageValueIsUsed) or (not isRatioClipped) then return -(ratioValue * advantageValue * actorGradientValue) end
 	
 	return 0
 

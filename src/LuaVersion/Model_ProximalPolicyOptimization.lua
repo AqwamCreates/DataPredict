@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local DeepReinforcementLearningActorCriticBaseModel = require('Model_DeepReinforcementLearningActorCriticBaseModel")
+local DeepReinforcementLearningActorCriticBaseModel = require("Model_DeepReinforcementLearningActorCriticBaseModel")
 
 local ProximalPolicyOptimizationModel = {}
 
@@ -71,16 +71,6 @@ local function calculateCategoricalProbability(valueTensor)
 	local targetActionTensor = AqwamTensorLibrary:divide(exponentActionVector, exponentActionSumVector)
 
 	return targetActionTensor
-
-end
-
-local function calculateActionVector(meanVector, standardDeviationVector, noiseVector)
-
-	local actionVectoPart1 = AqwamTensorLibrary:multiply(standardDeviationVector, noiseVector)
-
-	local actionVector = AqwamTensorLibrary:add(meanVector, actionVectoPart1)
-
-	return actionVector
 
 end
 
@@ -223,8 +213,6 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		end
 
 		previousActionProbabilityGradientVector = {previousActionProbabilityGradientVector}
-		
-		previousActionProbabilityGradientVector = AqwamTensorLibrary:multiply(previousActionProbabilityGradientVector, ratioActionProbability)
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector)[1][1]
 

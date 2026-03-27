@@ -150,9 +150,9 @@ local function calculateActorLossValue(ratioValue, advantageValue, actorGradient
 	
 	local isUnclippedAdvantageValueIsUsed = (unclippedAdvantageValue <= clippedAdvantageValue)
 	
-	local isRatioClipped = (ratioValue < lowerRatioValue) or (ratioValue > upperRatioValue)
+	local isRatioValueNotClipped = (ratioValue >= lowerRatioValue) and (ratioValue <= upperRatioValue)
 	
-	if (isUnclippedAdvantageValueIsUsed) or (not isRatioClipped) then return -(ratioValue * advantageValue * actorGradientValue) end
+	if (isUnclippedAdvantageValueIsUsed) or (isRatioValueNotClipped) then return -(ratioValue * advantageValue * actorGradientValue) end
 	
 	return 0
 

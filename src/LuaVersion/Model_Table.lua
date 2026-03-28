@@ -193,7 +193,7 @@ function TableModel:getOutputMatrix(featureVector, saveFeatureIndexArray)
 
 		if (not featureIndex) then error("Feature \"" .. feature ..  "\" does not exist in the features list.") end
 
-		outputMatrix[i] = ModelParameters[featureIndex]
+		outputMatrix[i] = table.clone(ModelParameters[featureIndex])
 		
 		featureIndexArray[i] = featureIndex
 

@@ -431,9 +431,7 @@ function TableModel:predict(featureVector, returnOriginalOutput)
 			
 		end
 		
-		class = ClassesList[highestClassIndex] 
-		
-		if (not class) then error("Class for class index " .. highestClassIndex .. "  does not exist in the classes list.") end
+		class = ClassesList[highestClassIndex]
 		
 		outputVector[i] = {class}
 		

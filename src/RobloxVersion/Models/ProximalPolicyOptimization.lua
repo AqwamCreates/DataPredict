@@ -307,6 +307,8 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		local lambda = NewProximalPolicyOptimizationModel.lambda
 		
 		local CurrentActorModelParameters = ActorModel:getModelParameters(true)
+		
+		NewProximalPolicyOptimizationModel.OldActorModelParameters = CurrentActorModelParameters
 
 		if (lambda ~= 0) then
 
@@ -359,8 +361,6 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		table.clear(criticValueHistory)
 
 		table.clear(advantageValueHistory)
-		
-		NewProximalPolicyOptimizationModel.OldActorModelParameters = CurrentActorModelParameters
 
 	end)
 

@@ -481,7 +481,7 @@ function MarkovModel:predict(stateVector, returnOriginalOutput)
 		
 		local stateIndex = stateSelectionFunctionToApply({unwrappedResultVector}, temperature)
 		
-		local state = SelectedList[stateIndex] 
+		local state = SelectedList[stateIndex]
 		
 		local value = unwrappedResultVector[stateIndex]
 		

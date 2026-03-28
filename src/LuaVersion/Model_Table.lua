@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local IterativeMethodBaseModel = require("IterativeMethodBaseModel")
+local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
 
 local TableModel = {}
 
@@ -431,9 +431,7 @@ function TableModel:predict(featureVector, returnOriginalOutput)
 			
 		end
 		
-		class = ClassesList[highestClassIndex] 
-		
-		if (not class) then error("Class for class index " .. highestClassIndex .. "  does not exist in the classes list.") end
+		class = ClassesList[highestClassIndex]
 		
 		outputVector[i] = {class}
 		

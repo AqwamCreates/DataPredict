@@ -481,11 +481,9 @@ function MarkovModel:predict(stateVector, returnOriginalOutput)
 		
 		local stateIndex = stateSelectionFunctionToApply({unwrappedResultVector}, temperature)
 		
-		local value = unwrappedResultVector[stateIndex]
-		
 		local state = SelectedList[stateIndex] 
 		
-		if (not state) then error("Output state for index " .. stateIndex .. " does not exist in the list.") end
+		local value = unwrappedResultVector[stateIndex]
 		
 		stateVector[i] = {state}
 		

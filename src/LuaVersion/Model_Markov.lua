@@ -457,7 +457,7 @@ function MarkovModel:predict(stateVector, returnOriginalOutput)
 		
 		if (not stateIndex) then error("State \"" .. state ..  "\" does not exist in the states list.") end
 		
-		resultTensor[i] = selectedMatrix[stateIndex]
+		resultTensor[i] = table.clone(selectedMatrix[stateIndex])
 		
 	end
 	

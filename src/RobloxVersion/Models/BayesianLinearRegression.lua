@@ -40,7 +40,7 @@ local defaultPriorPrecision = 1 -- alpha = 1 / (standardDeviationForPrior) ^ 2
 
 local defaultLikelihoodPrecision = 1 -- beta = 1 / (standardDeviationForLikelihood) ^ 2
 
-local defaultWeightDecay = 1
+local defaultForgetFactor = 1
 
 local defaultUseLogProbabilities = false
 
@@ -84,7 +84,7 @@ function BayesianLinearRegressionModel.new(parameterDictionary)
 
 	NewBayesianLinearRegressionModel.likelihoodPrecision = parameterDictionary.likelihoodPrecision or defaultLikelihoodPrecision
 	
-	NewBayesianLinearRegressionModel.weightDecay = parameterDictionary.weightDecay or defaultWeightDecay
+	NewBayesianLinearRegressionModel.forgetFactor = parameterDictionary.forgetFactor or defaultForgetFactor
 	
 	NewBayesianLinearRegressionModel.useLogProbabilities = NewBayesianLinearRegressionModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
@@ -100,7 +100,7 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 
 	local likelihoodPrecision = self.likelihoodPrecision
 	
-	local weightDecay = self.weightDecay
+	local forgetFactor = self.forgetFactor
 
 	local ModelParameters = self.ModelParameters or {}
 
@@ -120,7 +120,7 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 	
 	if (oldInversePosteriorCovarianceMatrix) then
 
-		oldInversePosteriorCovarianceMatrix = AqwamTensorLibrary:multiply(weightDecay, oldInversePosteriorCovarianceMatrix)
+		oldInversePosteriorCovarianceMatrix = AqwamTensorLibrary:multiply(forgetFactor, oldInversePosteriorCovarianceMatrix)
 
 	else
 
@@ -140,7 +140,7 @@ function BayesianLinearRegressionModel:train(featureMatrix, labelVector)
 
 	if (oldMultipliedDotProductFeatureMatrixLabelVector) then
 		
-		oldMultipliedDotProductFeatureMatrixLabelVector = AqwamTensorLibrary:multiply(weightDecay, oldMultipliedDotProductFeatureMatrixLabelVector)
+		oldMultipliedDotProductFeatureMatrixLabelVector = AqwamTensorLibrary:multiply(forgetFactor, oldMultipliedDotProductFeatureMatrixLabelVector)
 
 		newMultipliedDotProductFeatureMatrixLabelVector = AqwamTensorLibrary:add(newMultipliedDotProductFeatureMatrixLabelVector, oldMultipliedDotProductFeatureMatrixLabelVector)
 

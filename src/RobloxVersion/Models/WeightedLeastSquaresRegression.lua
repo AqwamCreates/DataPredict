@@ -36,6 +36,8 @@ WeightedLeastSquaresRegressionModel.__index = WeightedLeastSquaresRegressionMode
 
 setmetatable(WeightedLeastSquaresRegressionModel, BaseModel)
 
+local defaultForgetFactor = 1
+
 local defaultModelParametersInitializationMode = "Zero"
 
 function WeightedLeastSquaresRegressionModel.new(parameterDictionary)
@@ -50,6 +52,8 @@ function WeightedLeastSquaresRegressionModel.new(parameterDictionary)
 	
 	NewWeightedLeastSquaresRegressionModel:setName("WeightedLeastSquaresRegression")
 	
+	NewWeightedLeastSquaresRegressionModel.forgetFactor = parameterDictionary.forgetFactor or defaultForgetFactor
+	
 	NewWeightedLeastSquaresRegressionModel.weightMatrix = parameterDictionary.weightMatrix
 
 	return NewWeightedLeastSquaresRegressionModel
@@ -61,6 +65,8 @@ function WeightedLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 	local numberOfdata = #featureMatrix
 
 	if (numberOfdata ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	
+	local forgetFactor = self.forgetFactor
 	
 	local weightMatrix = self.weightMatrix
 
@@ -101,6 +107,8 @@ function WeightedLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 	betaChangeVector = AqwamTensorLibrary:inverse(betaChangeVector)
 	
 	betaChangeVector = AqwamTensorLibrary:dotProduct(betaChangeVector, tansposedFeatureMatrix, weightMatrix, errorVector)
+	
+	betaVector = AqwamTensorLibrary:multiply(forgetFactor, betaVector)
 	
 	betaVector = AqwamTensorLibrary:add(betaVector, betaChangeVector)
 		

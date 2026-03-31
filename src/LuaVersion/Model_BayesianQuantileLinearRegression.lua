@@ -38,9 +38,9 @@ BayesianQuantileLinearRegressionModel.__index = BayesianQuantileLinearRegression
 
 setmetatable(BayesianQuantileLinearRegressionModel, BaseModel)
 
-local defaultPriorPrecision = 1 -- alpha = 1 / (standardDeviationForPrior) ^ 2
+local defaultPriorPrecision = 1 -- alpha = 1 / (standardDeviationForPrior ^ 2)
 
-local defaultLikelihoodPrecision = 1 -- beta = 1 / (standardDeviationForLikelihood) ^ 2
+local defaultLikelihoodPrecision = 1 -- beta = 1 / (standardDeviationForLikelihood ^ 2)
 
 local defaultForgetFactor = 1
 

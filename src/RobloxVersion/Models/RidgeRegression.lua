@@ -30,38 +30,50 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseModel = require(script.Parent.BaseModel)
 
-local OrdinaryLeastSquaresRegressionModel = {}
+local RidgeRegressionModel = {}
 
-OrdinaryLeastSquaresRegressionModel.__index = OrdinaryLeastSquaresRegressionModel
+RidgeRegressionModel.__index = RidgeRegressionModel
 
-setmetatable(OrdinaryLeastSquaresRegressionModel, BaseModel)
+setmetatable(RidgeRegressionModel, BaseModel)
+
+local defaultLambda = 0
+
+local defaultForgetFactor = 1
 
 local defaultModelParametersInitializationMode = "Zero"
 
-function OrdinaryLeastSquaresRegressionModel.new(parameterDictionary)
+function RidgeRegressionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
 	parameterDictionary.modelParametersInitializationMode = parameterDictionary.modelParametersInitializationMode or defaultModelParametersInitializationMode
 
-	local NewOrdinaryLeastSquaresRegressionModel = BaseModel.new(parameterDictionary)
+	local NewRidgeRegressionModel = BaseModel.new(parameterDictionary)
 
-	setmetatable(NewOrdinaryLeastSquaresRegressionModel, OrdinaryLeastSquaresRegressionModel)
+	setmetatable(NewRidgeRegressionModel, RidgeRegressionModel)
 
-	NewOrdinaryLeastSquaresRegressionModel:setName("OrdinaryLeastSquaresRegression")
+	NewRidgeRegressionModel:setName("RidgeRegression")
 
-	return NewOrdinaryLeastSquaresRegressionModel
+	NewRidgeRegressionModel.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewRidgeRegressionModel.forgetFactor = parameterDictionary.forgetFactor or defaultForgetFactor
+
+	return NewRidgeRegressionModel
 
 end
 
-function OrdinaryLeastSquaresRegressionModel:train(featureMatrix, labelVector)
+function RidgeRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
-	local numberOfFeatures = #featureMatrix[1]
+	local lambda = self.lambda
+	
+	local forgetFactor = self.forgetFactor
 	
 	local betaVector = self.ModelParameters
-
+	
+	local numberOfFeatures = #featureMatrix[1]
+	
 	if (betaVector) then
 
 		if (numberOfFeatures ~= #betaVector) then error("The number of features are not the same as the model parameters.") end
@@ -76,21 +88,31 @@ function OrdinaryLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
 
-	local inverseDotProductMatrix = AqwamTensorLibrary:inverse(dotProductFeatureMatrix)
+	if (lambda ~= 0) then
+
+		local lambdaIdentityMatrix = AqwamTensorLibrary:createIdentityTensor({numberOfFeatures, numberOfFeatures}, lambda)
+
+		dotProductFeatureMatrix = AqwamTensorLibrary:add(dotProductFeatureMatrix, lambdaIdentityMatrix)
+
+	end
+
+	local inverseDotProductFeatureMatrix = AqwamTensorLibrary:inverse(dotProductFeatureMatrix)
 	
 	local responseVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 	
 	local errorVector = AqwamTensorLibrary:subtract(labelVector, responseVector)
 	
-	local betaChangeVector = AqwamTensorLibrary:dotProduct(inverseDotProductMatrix, transposedFeatureMatrix, errorVector)
-
+	local betaChangeVector = AqwamTensorLibrary:dotProduct(inverseDotProductFeatureMatrix, transposedFeatureMatrix, errorVector)
+	
+	betaVector = AqwamTensorLibrary:multiply(forgetFactor, betaVector)
+	
 	betaVector = AqwamTensorLibrary:add(betaVector, betaChangeVector)
 
 	self.ModelParameters = betaVector
 
 end
 
-function OrdinaryLeastSquaresRegressionModel:predict(featureMatrix)
+function RidgeRegressionModel:predict(featureMatrix)
 
 	local betaVector = self.ModelParameters
 
@@ -106,4 +128,4 @@ function OrdinaryLeastSquaresRegressionModel:predict(featureMatrix)
 
 end
 
-return OrdinaryLeastSquaresRegressionModel
+return RidgeRegressionModel

@@ -36,6 +36,8 @@ OrdinaryLeastSquaresRegressionModel.__index = OrdinaryLeastSquaresRegressionMode
 
 setmetatable(OrdinaryLeastSquaresRegressionModel, BaseModel)
 
+local defaultForgetFactor = 1
+
 local defaultModelParametersInitializationMode = "Zero"
 
 function OrdinaryLeastSquaresRegressionModel.new(parameterDictionary)
@@ -49,6 +51,8 @@ function OrdinaryLeastSquaresRegressionModel.new(parameterDictionary)
 	setmetatable(NewOrdinaryLeastSquaresRegressionModel, OrdinaryLeastSquaresRegressionModel)
 
 	NewOrdinaryLeastSquaresRegressionModel:setName("OrdinaryLeastSquaresRegression")
+	
+	NewOrdinaryLeastSquaresRegressionModel.forgetFactor = parameterDictionary.forgetFactor or defaultForgetFactor
 
 	return NewOrdinaryLeastSquaresRegressionModel
 
@@ -58,9 +62,11 @@ function OrdinaryLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
-	local numberOfFeatures = #featureMatrix[1]
+	local forgetFactor = self.forgetFactor
 	
 	local betaVector = self.ModelParameters
+	
+	local numberOfFeatures = #featureMatrix[1]
 
 	if (betaVector) then
 
@@ -77,14 +83,14 @@ function OrdinaryLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 	local dotProductFeatureMatrix = AqwamTensorLibrary:dotProduct(transposedFeatureMatrix, featureMatrix)
 
 	local inverseDotProductMatrix = AqwamTensorLibrary:inverse(dotProductFeatureMatrix)
-
-	if (not inverseDotProductMatrix) then error("Could not find the model parameters.") end
 	
 	local responseVector = AqwamTensorLibrary:dotProduct(featureMatrix, betaVector)
 	
 	local errorVector = AqwamTensorLibrary:subtract(labelVector, responseVector)
 	
 	local betaChangeVector = AqwamTensorLibrary:dotProduct(inverseDotProductMatrix, transposedFeatureMatrix, errorVector)
+	
+	betaVector = AqwamTensorLibrary:multiply(forgetFactor, betaVector)
 
 	betaVector = AqwamTensorLibrary:add(betaVector, betaChangeVector)
 

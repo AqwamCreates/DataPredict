@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseModel = require(script.Parent.BaseModel)
+local BaseModel = require("Model_BaseModel")
 
 local OrdinaryLeastSquaresRegressionModel = {}
 
@@ -77,8 +77,6 @@ function OrdinaryLeastSquaresRegressionModel:train(featureMatrix, labelVector)
 		betaVector = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 
 	end
-	
-
 
 	local transposedFeatureMatrix = AqwamTensorLibrary:transpose(featureMatrix)
 

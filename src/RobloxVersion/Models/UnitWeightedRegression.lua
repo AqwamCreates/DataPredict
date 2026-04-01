@@ -49,26 +49,48 @@ function UnitWeightedRegressionModel.new(parameterDictionary)
 end
 
 function UnitWeightedRegressionModel:train(featureMatrix, labelVector)
+	
+	local currentNumberOfData = #featureMatrix
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	
+	local ModelParameters = self.ModelParameters or {}
+	
+	local oldMeanBiasValue = ModelParameters[1]
+	
+	local oldNumberOfData = ModelParameters[2]
 
 	local sumFeatureVector = AqwamTensorLibrary:sum(featureMatrix, 2)
 
 	local biasVector = AqwamTensorLibrary:subtract(labelVector, sumFeatureVector)
 
-	local biasValue = AqwamTensorLibrary:mean(biasVector)
+	local sumCurrentBiasValue = AqwamTensorLibrary:sum(biasVector)
+	
+	if (oldMeanBiasValue) and (oldNumberOfData) then
+		
+		local sumOldBiasValue = oldMeanBiasValue * oldNumberOfData
+		
+		sumCurrentBiasValue = sumCurrentBiasValue + sumOldBiasValue
+		
+		currentNumberOfData = currentNumberOfData + oldNumberOfData
+		
+	end
+	
+	local meanBiasValue = sumCurrentBiasValue / currentNumberOfData
 
-	self.ModelParameters = biasValue
+	self.ModelParameters = {meanBiasValue, currentNumberOfData}
 
 end
 
 function UnitWeightedRegressionModel:predict(featureMatrix)
+	
+	local ModelParameters = self.ModelParameters or {}
 
-	local biasValue = self.ModelParameters or math.huge
+	local meanBiasValue = ModelParameters[1] or math.huge
 
 	local sumFeatureVector = AqwamTensorLibrary:sum(featureMatrix, 2)
 
-	return AqwamTensorLibrary:add(sumFeatureVector, biasValue)
+	return AqwamTensorLibrary:add(sumFeatureVector, meanBiasValue)
 
 end
 

@@ -94,7 +94,7 @@ function TheilSenRegressionModel:train(featureMatrix, labelVector)
 
 	if (#labelVector[1] ~= 1) then error("The label matrix must only have 1 column.") end
 	
-	local gradientValueArray = {}
+	local slopeValueArray = {}
 	
 	local primaryFeatureValue
 	
@@ -104,11 +104,11 @@ function TheilSenRegressionModel:train(featureMatrix, labelVector)
 	
 	local secondaryLabelValue
 	
-	local denominatorGradientValue
+	local denominatorSlopeValue
 	
-	local nominatorGradientValue
+	local nominatorSlopeValue
 	
-	local gradientValue
+	local slopeValue
 	
 	for primaryIndex, unwrappedPrimaryFeatureVector in ipairs(featureMatrix) do
 		
@@ -122,15 +122,15 @@ function TheilSenRegressionModel:train(featureMatrix, labelVector)
 
 			secondaryLabelValue = labelVector[secondaryIndex][1]
 
-			denominatorGradientValue = secondaryFeatureValue - primaryFeatureValue
+			denominatorSlopeValue = secondaryFeatureValue - primaryFeatureValue
 
-			if (denominatorGradientValue ~= 0) then
+			if (denominatorSlopeValue ~= 0) then
 
-				nominatorGradientValue = secondaryLabelValue - primaryLabelValue
+				nominatorSlopeValue = secondaryLabelValue - primaryLabelValue
 
-				gradientValue = nominatorGradientValue / denominatorGradientValue
+				slopeValue = nominatorSlopeValue / denominatorSlopeValue
 
-				table.insert(gradientValueArray, gradientValue)
+				table.insert(slopeValueArray, slopeValue)
 
 			end
 			
@@ -138,13 +138,13 @@ function TheilSenRegressionModel:train(featureMatrix, labelVector)
 		
 	end
 	
-	if (#gradientValueArray == 0) then error("All feature values are equal. No gradient values can be used.") end
+	if (#slopeValueArray == 0) then error("All feature values are equal. No slope values can be used.") end
 
-	local chosenGradientValue = getMedianValueFromArray(gradientValueArray)
+	local chosenSlopeValue = getMedianValueFromArray(slopeValueArray)
 	
-	local featureMatrixMultipliedByGradientValue = AqwamTensorLibrary:multiply(featureMatrix, chosenGradientValue)
+	local featureMatrixMultipliedBySlopeValue = AqwamTensorLibrary:multiply(featureMatrix, chosenSlopeValue)
 	
-	local medianBiasVector = AqwamTensorLibrary:subtract(labelVector, featureMatrixMultipliedByGradientValue)
+	local medianBiasVector = AqwamTensorLibrary:subtract(labelVector, featureMatrixMultipliedBySlopeValue)
 	
 	local transposedMedianBiasVector = AqwamTensorLibrary:transpose(medianBiasVector)
 	
@@ -152,7 +152,7 @@ function TheilSenRegressionModel:train(featureMatrix, labelVector)
 	
 	local chosenBiasValue = getMedianValueFromArray(medianBiasArray)
 
-	self.ModelParameters = {chosenGradientValue, chosenBiasValue}
+	self.ModelParameters = {chosenSlopeValue, chosenBiasValue}
 
 end
 
@@ -160,11 +160,11 @@ function TheilSenRegressionModel:predict(featureMatrix)
 	
 	local ModelParameters = self.ModelParameters or {}
 
-	local medianGradientValue = ModelParameters[1] or math.huge
+	local medianSlopeValue = ModelParameters[1] or math.huge
 	
 	local medianBiasValue = ModelParameters[2] or math.huge
 	
-	local predictedLabelVector = AqwamTensorLibrary:multiply(featureMatrix, medianGradientValue)
+	local predictedLabelVector = AqwamTensorLibrary:multiply(featureMatrix, medianSlopeValue)
 	
 	predictedLabelVector = AqwamTensorLibrary:add(predictedLabelVector, medianBiasValue)
 

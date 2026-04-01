@@ -76,9 +76,9 @@ function UnitWeightedRegressionModel:train(featureMatrix, labelVector)
 		
 	end
 	
-	local meanBiasValue = sumCurrentBiasValue / currentNumberOfData
+	local currentMeanBiasValue = sumCurrentBiasValue / currentNumberOfData
 
-	self.ModelParameters = {meanBiasValue, currentNumberOfData}
+	self.ModelParameters = {currentMeanBiasValue, currentNumberOfData}
 
 end
 

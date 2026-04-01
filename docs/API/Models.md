@@ -45,7 +45,7 @@
 
   * Contains most of the deep reinforcement learning and generative models listed here.
 
-* Currently, DataPredict™ has ~90% (99 out of 100) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~92% (100 out of 109) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
 
 * No dimensionality reduction models due to not being suitable for game-related use cases. They tend to be computationally expensive and are only useful when a full dataset is collected. This can be offset by choosing proper features and remove the unnecessary ones.
 
@@ -78,7 +78,7 @@
 | [PartialLeastSquaresRegression](Models/PartialLeastSquaresRegression.md)                         | PLS                                        | 💾 ⚡ 🟡        | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Latent Factors         |
 | [WeightedLeastSquaresRegression](Models/WeightedLeastSquaresRegression.md)*                      | WLS                                        | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [LeastTrimmedSquaresRegression](Models/LeastTrimmedSquaresRegression.md)*                        | TLS                                        | 💾 ⚡ 🟡 ⚠️    | Robust Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation        |
-| [UnitWeightRegression](Models/UnitWeightRegression.md)*                                          | None                                       | 💾 ⚡ 🟡 ⚠️    | Simple Robust Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [UnitWeightRegression](Models/UnitWeightRegression.md)*                                          | None                                       | 💾 ⚡ 🟢 🟡 ⚠️ | Simple Robust Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 
 \* The models assume that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 

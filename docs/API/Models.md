@@ -45,7 +45,7 @@
 
   * Contains most of the deep reinforcement learning and generative models listed here.
 
-* Currently, DataPredict™ has ~93% (99 out of 106) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~92% (99 out of 107) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
 
 * No dimensionality reduction models due to not being suitable for game-related use cases. They tend to be computationally expensive and are only useful when a full dataset is collected. This can be offset by choosing proper features and remove the unnecessary ones.
 

@@ -64,19 +64,19 @@ function UnitWeightedRegressionModel:train(featureMatrix, labelVector)
 
 	local biasVector = AqwamTensorLibrary:subtract(labelVector, sumFeatureVector)
 
-	local sumCurrentBiasValue = AqwamTensorLibrary:sum(biasVector)
+	local currentSumBiasValue = AqwamTensorLibrary:sum(biasVector)
 	
 	if (oldMeanBiasValue) and (oldNumberOfData) then
 		
 		local oldSumBiasValue = oldMeanBiasValue * oldNumberOfData
 		
-		sumCurrentBiasValue = sumCurrentBiasValue + oldSumBiasValue
+		currentSumBiasValue = currentSumBiasValue + oldSumBiasValue
 		
 		currentNumberOfData = currentNumberOfData + oldNumberOfData
 		
 	end
 	
-	local currentMeanBiasValue = sumCurrentBiasValue / currentNumberOfData
+	local currentMeanBiasValue = currentSumBiasValue / currentNumberOfData
 
 	self.ModelParameters = {currentMeanBiasValue, currentNumberOfData}
 

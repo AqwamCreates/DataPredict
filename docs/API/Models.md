@@ -224,15 +224,6 @@
 | [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md) | Funk MF         | 🟢 🟡 🛡️  | Early Netflix-Style User-Item Recommendation |
 | [TwoTower](Models/TwoTower.md)                                                             | None            | 🟢 🟡     | YouTube-Style User-Item Recommendation        |
 
-## Ranking
-
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
-
-| Model                                                                                              | Alternate Names | Properties | Use Cases                     |
-|----------------------------------------------------------------------------------------------------|-----------------|------------|-------------------------------|
-| [RankingSupportVectorMachine](Models/RankingSupportVectorMachine.md)                               | Ranking SVM     | 💾 🟡     | Margin-Based Ranking          |
-| [RankingSupportVectorMachineGradientVariant](Models/RankingSupportVectorMachineGradientVariant.md) | Ranking SVM     | 🟢 🟡     | Margin-Based Ranking          |
-
 ## Generative
 
 > ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy

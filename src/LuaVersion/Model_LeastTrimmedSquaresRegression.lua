@@ -79,7 +79,10 @@ function calculateCost(featureMatrix, labelVector, ModelParameters, numberOfPoin
 	for i = 1, numberOfPoints, 1 do cost = cost + residualValueArray[i] end
 
 	return cost
+	
 end
+
+local sortFunctionToApply = function(a, b) return (a.value < b.value) end
 
 function LeastTrimmedSquaresRegressionModel.new(parameterDictionary)
 	
@@ -177,7 +180,7 @@ function LeastTrimmedSquaresRegressionModel:train(featureMatrix, labelVector)
 			
 		end
 
-		table.sort(residualIndexDictionaryArray, function(a, b) return a.value < b.value end)
+		table.sort(residualIndexDictionaryArray, sortFunctionToApply)
 		
 		subFeatureMatrix = {}
 		

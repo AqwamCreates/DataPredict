@@ -72,6 +72,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	IsotonicRegression = require(Models.IsotonicRegression),
 	
+	TheilSenRegression = require(Models.TheilSenRegression),
+	
 	PassiveAggressiveRegressor = require(Models.PassiveAggressiveRegressor),
 	
 	SupportVectorRegression = require(Models.SupportVectorRegression),

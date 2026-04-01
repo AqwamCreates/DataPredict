@@ -78,7 +78,7 @@
 | [PartialLeastSquaresRegression](Models/PartialLeastSquaresRegression.md)                         | PLS                                        | 💾 ⚡ 🟡        | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Latent Factors         |
 | [WeightedLeastSquaresRegression](Models/WeightedLeastSquaresRegression.md)*                      | WLS                                        | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [LeastTrimmedSquaresRegression](Models/LeastTrimmedSquaresRegression.md)*                        | TLS                                        | 💾 🟡 ⚠️        | Robust Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation        |
-| [UnitWeightRegression](Models/UnitWeightRegression.md)*                                          | None                                       | ⚡ 🟢 🟡 ⚠️    | Simple Robust Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
+| [UnitWeightedRegression](Models/UnitWeightedRegression.md)*                                      | None                                       | ⚡ 🟢 🟡 ⚠️    | Simple Robust Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 
 \* The models assume that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 

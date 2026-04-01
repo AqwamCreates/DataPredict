@@ -201,11 +201,21 @@ function LeastTrimmedSquaresRegressionModel:train(featureMatrix, labelVector)
 			
 			ModelParameters = AqwamTensorLibrary:dotProduct(pseudoInverseSubFeatureMatrix, subLabelVector)
 			
-			cost = calculateCost(featureMatrix, labelVector, ModelParameters, numberOfPoints)
+			cost = self:calculateCostWhenRequired(numberOfIterations, function()
+
+				return calculateCost(featureMatrix, labelVector, ModelParameters, numberOfPoints)
+
+			end)
+			
+			if (cost) then 
+
+				table.insert(costArray, cost)
+
+				self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+
+			end
 			
 		end
-
-		table.insert(costArray, cost)
 		
 	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
 	

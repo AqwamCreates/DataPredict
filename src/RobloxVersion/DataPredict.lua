@@ -54,7 +54,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 18 Models
+	-- Regression - 20 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -69,6 +69,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	GammaRegression = require(Models.GammaRegression),
 	
 	TweedieRegression = require(Models.TweedieRegression),
+	
+	TheilSenRegression = require(Models.TheilSenRegression),
 	
 	IsotonicRegression = require(Models.IsotonicRegression),
 	

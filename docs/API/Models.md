@@ -8,7 +8,7 @@
 
 | Model Type                                                        | Purpose                                         | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Continuous Value Prediction                     | 19    |
+| [Regression](#regression)                                         | Continuous Value Prediction                     | 20    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
@@ -19,7 +19,7 @@
 | [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 106   |
+| Total                                                             |                                                 | 107   |
 
 ### Legend
 
@@ -45,7 +45,7 @@
 
   * Contains most of the deep reinforcement learning and generative models listed here.
 
-* Currently, DataPredict™ has ~93% (99 out of 106) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~92% (99 out of 107) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
 
 * No dimensionality reduction models due to not being suitable for game-related use cases. They tend to be computationally expensive and are only useful when a full dataset is collected. This can be offset by choosing proper features and remove the unnecessary ones.
 
@@ -63,8 +63,9 @@
 | [PoissonRegression](Models/PoissonRegression.md)                                                 | None                                       | 🟢 🟡 ⚠️         | Rate-Based Prediction                                                                                   |
 | [NegativeBinomialRegression](Models/NegativeBinomialRegression.md)                               | None                                       | ❗ 🟢 🟡 ⚠️      | Flexible Rate-Based Prediction                                                                          |
 | [GammaRegression](Models/GammaRegression.md)                                                     | None                                       | 🟢 🟡 ⚠️         | Positive-Value Time-To-Leave Prediction And In-Game Currency Price Generation                           |
-| [TweedieRegression](Models/TweedieRegression.md)                                                 | None                                       | 🟢 🟡             | Rate-Based Prediction                                                       |
-| [IsotonicRegression](Models/IsotonicRegression.md)                                               | None                                       | ⚡ 🟢 🟡         | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                      |
+| [TweedieRegression](Models/TweedieRegression.md)                                                 | None                                       | 🟢 🟡             | Rate-Based Prediction                                                                                  |
+| [TheilSenRegression](Models/TheilSenRegression.md)                                               | None                                       | ⚡ 🟡            | 1-Dimensional Robust Time-To-Leave Prediction                                                           |
+| [IsotonicRegression](Models/IsotonicRegression.md)                                               | None                                       | ⚡ 🟡            | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                      |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                               | PA-R                                       | ⚡ 🟢            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
 | [SupportVectorRegression](Models/SupportVectorRegression.md)                                     | SVR                                        | 💾 🟡            | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |
 | [SupportVectorRegressionGradientVariant](Models/SupportVectorRegressionGradientVariant.md)       | SVR                                        | 🟢 🟡            | Real-Time Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                     |

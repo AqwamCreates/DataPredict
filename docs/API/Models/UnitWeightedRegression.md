@@ -6,9 +6,9 @@ UnitWeightedRegression is a supervised machine learning model that predicts cont
 
 Contains a matrix.  
 
-* ModelParameters[1]: biasValue.
+* ModelParameters[1][1]: biasValue.
 
-* ModelParameters[2]: numberOfData.
+* ModelParameters[1][2]: numberOfData.
 
 ## Constructors
 

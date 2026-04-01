@@ -54,11 +54,13 @@ function UnitWeightedRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
-	local ModelParameters = self.ModelParameters or {}
+	local ModelParameters = self.ModelParameters or {{}} -- In order to allow this model to be used for distributed training, this must be in matrix form.
 	
-	local oldMeanBiasValue = ModelParameters[1]
+	local unwrappedModelParameters = ModelParameters[1]
 	
-	local oldNumberOfData = ModelParameters[2]
+	local oldMeanBiasValue = unwrappedModelParameters[1]
+	
+	local oldNumberOfData = unwrappedModelParameters[2]
 
 	local sumFeatureVector = AqwamTensorLibrary:sum(featureMatrix, 2)
 
@@ -78,15 +80,15 @@ function UnitWeightedRegressionModel:train(featureMatrix, labelVector)
 	
 	local currentMeanBiasValue = currentSumBiasValue / currentNumberOfData
 
-	self.ModelParameters = {currentMeanBiasValue, currentNumberOfData}
+	self.ModelParameters = {{currentMeanBiasValue, currentNumberOfData}}
 
 end
 
 function UnitWeightedRegressionModel:predict(featureMatrix)
 	
-	local ModelParameters = self.ModelParameters or {}
+	local ModelParameters = self.ModelParameters or {{}} -- In order to allow this model to be used for distributed training, this must be in matrix form.
 
-	local meanBiasValue = ModelParameters[1] or math.huge
+	local meanBiasValue = ModelParameters[1][1] or math.huge
 
 	local sumFeatureVector = AqwamTensorLibrary:sum(featureMatrix, 2)
 

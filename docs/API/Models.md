@@ -140,7 +140,7 @@
 | [DeepNStepExpectedStateActionRewardStateAction](Models/DeepExpectedStateActionRewardStateAction.md)            | Deep N-Step Expected SARSA    | 🟢         | Balanced Self-Learning Player AIs, Balanced Recommendation Systems        |
 | [DeepDoubleExpectedStateActionRewardStateActionV1](Models/DeepDoubleExpectedStateActionRewardStateActionV1.md) | Double Deep Expected SARSA    | 🛡️ 🟢      | Stable Balanced Self-Learning Player AIs, Balanced Recommendation Systems |
 | [DeepDoubleExpectedStateActionRewardStateActionV2](Models/DeepDoubleExpectedStateActionRewardStateActionV2.md) | Double Deep Expected SARSA    | 🛡️ 🟢      | Stable Balanced Self-Learning Player AIs, Balanced Recommendation Systems |
-| [DeepMonteCarloControl](Models/DeepMonteCarloControl.md)                                                       | None                          | ❗ 🟢      | Online Self-Learning Player AIs                                           |
+| [DeepMonteCarloControl](Models/DeepMonteCarloControl.md)                                                       | None                          | 🟢         | Online Self-Learning Player AIs                                           |
 | [DeepOffPolicyMonteCarloControl](Models/DeepOffPolicyMonteCarloControl.md)                                     | None                          | 🟢         | Offline Self-Learning Player AIs                                          |
 | [DeepTemporalDifference](Models/DeepTemporalDifference.md)                                                     | TD                            | 🟢         | Priority Systems                                                          |
 | [DeepREINFORCE](Models/DeepREINFORCE.md)                                                                       | None                          | 🟢         | Reward-Based Self-Learning Player AIs                                     |
@@ -149,10 +149,10 @@
 | [AdvantageActorCritic](Models/AdvantageActorCritic.md)                                                         | A2C                           | 🟢         | Advantage-Based Self-Learning Player AIs                                  |
 | [TemporalDifferenceActorCritic](Models/TemporalDifferenceActorCritic.md)                                       | TD-AC                         | 🟢         | Bootsrapped Online Self-Learning Player AIs                               |
 | [ProximalPolicyOptimization](Models/ProximalPolicyOptimization.md)                                             | PPO                           | 🟢         | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs    |
-| [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                     | PPO-Clip                      | 🟢         | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs    |
-| [SoftActorCritic](Models/SoftActorCritic.md)                                                                   | SAC                           | 💾 🛡️ 🟢  | Self-Learning Vehicle AIs                                                 |
-| [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                   | DDPG                          | 🟢 ⚙️      | Self-Learning Vehicle AIs                                                 |
-| [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)             | TD3                           | 🟢 🛡️ ⚙️   | Self-Learning Vehicle AIs                                                 |
+| [ProximalPolicyOptimizationClip](Models/ProximalPolicyOptimizationClip.md)                                     | PPO-Clip                      | 🟢           | Industry-Grade And Research-Grade Self-Learning Player And Vehicle AIs    |
+| [SoftActorCritic](Models/SoftActorCritic.md)                                                                   | SAC                           | 💾 🛡️ 🟢    | Self-Learning Vehicle AIs                                                 |
+| [DeepDeterministicPolicyGradient](Models/DeepDeterministicPolicyGradient.md)                                   | DDPG                          | ❗ 🟢 ⚙️    | Self-Learning Vehicle AIs                                                 |
+| [TwinDelayedDeepDeterministicPolicyGradient](Models/TwinDelayedDeepDeterministicPolicyGradient.md)             | TD3                           | ❗ 🟢 🛡️ ⚙️ | Self-Learning Vehicle AIs                                                 |
 
 ## Tabular Reinforcement Learning
 

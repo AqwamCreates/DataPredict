@@ -54,7 +54,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 20 Models
+	-- Regression - 21 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	
@@ -95,6 +95,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	PartialLeastSquaresRegression = require(Models.PartialLeastSquaresRegression),
 	
 	WeightedLeastSquaresRegression = require(Models.WeightedLeastSquaresRegression),
+	
+	LeastTrimmedSquaresRegression = require(Models.LeastTrimmedSquaresRegression),
 	
 	-- Classification - 13 Models
 	

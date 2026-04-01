@@ -36,7 +36,7 @@ setmetatable(IterativeBaseModel, BaseModel)
 
 local defaultMaximumNumberOfIterations = math.huge
 
-local defaultNumberOfIterationsPerCostCalculation = math.huge
+local defaultNumberOfIterationsPerCostCalculation = 1
 
 local defaultMaximumModelParametersInitializationValue = nil
 

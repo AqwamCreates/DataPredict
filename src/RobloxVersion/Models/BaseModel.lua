@@ -36,7 +36,19 @@ BaseModel.__index = BaseModel
 
 setmetatable(BaseModel, BaseInstance)
 
-local defaultModelParametersInitializationMode = "Zero"
+local defaultIsOutputPrinted = true
+
+local defaultModelParametersInitializationMode = "RandomUniform"
+
+local defaultMaximumModelParametersInitializationValue = nil
+
+local defaultMinimumModelParametersInitializationValue = nil
+
+local defaultModelParametersMeanValue = nil
+
+local defaultModelParametersStandardDeviationValue = nil
+
+local defaultModelParametersDiagonalValue = nil
 
 function BaseModel.new(parameterDictionary)
 	
@@ -50,21 +62,21 @@ function BaseModel.new(parameterDictionary)
 
 	NewBaseModel:setClassName("Model")
 	
-	NewBaseModel.isOutputPrinted = NewBaseModel:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, true)
+	NewBaseModel.isOutputPrinted = NewBaseModel:getValueOrDefaultValue(parameterDictionary.isOutputPrinted, defaultIsOutputPrinted)
+	
+	NewBaseModel.modelParametersInitializationMode = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersInitializationMode, defaultModelParametersInitializationMode) 
 
+	NewBaseModel.maximumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.maximumModelParametersInitializationValue, defaultMaximumModelParametersInitializationValue)
+	
+	NewBaseModel.minimumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.minimumModelParametersInitializationValue, defaultMinimumModelParametersInitializationValue)
+	
+	NewBaseModel.modelParametersMeanValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersMeanValue, defaultModelParametersMeanValue)
+
+	NewBaseModel.modelParametersStandardDeviationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersStandardDeviationValue, defaultModelParametersStandardDeviationValue)
+	
+	NewBaseModel.modelParametersDiagonalValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersDiagonalValue, defaultModelParametersDiagonalValue)
+	
 	NewBaseModel.ModelParameters = NewBaseModel:getValueOrDefaultValue(parameterDictionary.ModelParameters, nil)
-	
-	NewBaseModel.modelParametersInitializationMode = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersInitializationMode, "RandomUniform") 
-
-	NewBaseModel.maximumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.maximumModelParametersInitializationValue, nil)
-	
-	NewBaseModel.minimumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.minimumModelParametersInitializationValue, nil)
-	
-	NewBaseModel.modelParametersMeanValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersMeanValue, nil)
-
-	NewBaseModel.modelParametersStandardDeviationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersStandardDeviationValue, nil)
-	
-	NewBaseModel.modelParametersDiagonalValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.modelParametersDiagonalValue, nil)
 
 	return NewBaseModel
 	

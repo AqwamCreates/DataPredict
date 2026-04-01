@@ -68,9 +68,9 @@ function UnitWeightedRegressionModel:train(featureMatrix, labelVector)
 	
 	if (oldMeanBiasValue) and (oldNumberOfData) then
 		
-		local sumOldBiasValue = oldMeanBiasValue * oldNumberOfData
+		local oldSumBiasValue = oldMeanBiasValue * oldNumberOfData
 		
-		sumCurrentBiasValue = sumCurrentBiasValue + sumOldBiasValue
+		sumCurrentBiasValue = sumCurrentBiasValue + oldSumBiasValue
 		
 		currentNumberOfData = currentNumberOfData + oldNumberOfData
 		

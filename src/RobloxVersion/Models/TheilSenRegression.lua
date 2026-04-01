@@ -158,7 +158,7 @@ end
 
 function TheilSenRegressionModel:predict(featureMatrix)
 	
-	local ModelParameters = self.ModelParameters
+	local ModelParameters = self.ModelParameters or {}
 
 	local medianGradientValue = ModelParameters[1] or math.huge
 	

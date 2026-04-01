@@ -8,7 +8,7 @@
 
 | Model Type                                                        | Purpose                                         | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Continuous Value Prediction                     | 21    |
+| [Regression](#regression)                                         | Continuous Value Prediction                     | 22    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
@@ -19,7 +19,7 @@
 | [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 108   |
+| Total                                                             |                                                 | 109   |
 
 ### Legend
 
@@ -45,7 +45,7 @@
 
   * Contains most of the deep reinforcement learning and generative models listed here.
 
-* Currently, DataPredict™ has ~92% (99 out of 108) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
+* Currently, DataPredict™ has ~90% (99 out of 100) models with online learning capabilities. By default, most models would perform offline / batch training on the first train before switching to online / incremental / sequential after the first train.
 
 * No dimensionality reduction models due to not being suitable for game-related use cases. They tend to be computationally expensive and are only useful when a full dataset is collected. This can be offset by choosing proper features and remove the unnecessary ones.
 
@@ -78,6 +78,7 @@
 | [PartialLeastSquaresRegression](Models/PartialLeastSquaresRegression.md)                         | PLS                                        | 💾 ⚡ 🟡        | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Latent Factors         |
 | [WeightedLeastSquaresRegression](Models/WeightedLeastSquaresRegression.md)*                      | WLS                                        | 💾 ⚡ 🟢 🟡 ⚠️ | Instant Train Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 | [LeastTrimmedSquaresRegression](Models/LeastTrimmedSquaresRegression.md)*                        | TLS                                        | 💾 ⚡ 🟡 ⚠️    | Robust Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation        |
+| [UnitWeightRegression](Models/UnitWeightRegression.md)*                                          | TLS                                        | 💾 ⚡ 🟡 ⚠️    | Simple Robust Time-To-Leave Prediction And In-Game Currency Price Generation With Probability Estimation |
 
 \* The models assume that the features have a linear relationship with the label values, which is almost certainly not true in game-related settings.
 

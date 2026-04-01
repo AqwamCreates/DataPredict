@@ -54,7 +54,7 @@ function UnitWeightedRegressionModel:train(featureMatrix, labelVector)
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
 	
-	local ModelParameters = self.ModelParameters or {{}} -- In order to allow this model to be used for distributed training, model parameters must be in matrix form.
+	local ModelParameters = self.ModelParameters or {{}} -- In order to allow this model to be used for distributed training, the model parameters must be in matrix form.
 	
 	local unwrappedModelParameters = ModelParameters[1]
 	
@@ -86,7 +86,7 @@ end
 
 function UnitWeightedRegressionModel:predict(featureMatrix)
 	
-	local ModelParameters = self.ModelParameters or {{}} -- In order to allow this model to be used for distributed training, model parameters must be in matrix form.
+	local ModelParameters = self.ModelParameters or {{}} -- In order to allow this model to be used for distributed training, the model parameters must be in matrix form.
 
 	local meanBiasValue = ModelParameters[1][1] or math.huge
 

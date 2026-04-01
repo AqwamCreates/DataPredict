@@ -8,7 +8,7 @@
 
 | Model Type                                                        | Purpose                                         | Count |
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
-| [Regression](#regression)                                         | Continuous Value Prediction                     | 19    |
+| [Regression](#regression)                                         | Continuous Value Prediction                     | 20    |
 | [Classification](#classification)                                 | Feature-Class Prediction                        | 13    |
 | [Clustering](#clustering)                                         | Feature Grouping                                | 10    |
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
@@ -19,7 +19,7 @@
 | [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
 | [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
-| Total                                                             |                                                 | 106   |
+| Total                                                             |                                                 | 107   |
 
 ### Legend
 
@@ -63,7 +63,8 @@
 | [PoissonRegression](Models/PoissonRegression.md)                                                 | None                                       | 🟢 🟡 ⚠️         | Rate-Based Prediction                                                                                   |
 | [NegativeBinomialRegression](Models/NegativeBinomialRegression.md)                               | None                                       | ❗ 🟢 🟡 ⚠️      | Flexible Rate-Based Prediction                                                                          |
 | [GammaRegression](Models/GammaRegression.md)                                                     | None                                       | 🟢 🟡 ⚠️         | Positive-Value Time-To-Leave Prediction And In-Game Currency Price Generation                           |
-| [TweedieRegression](Models/TweedieRegression.md)                                                 | None                                       | 🟢 🟡             | Rate-Based Prediction                                                       |
+| [TweedieRegression](Models/TweedieRegression.md)                                                 | None                                       | 🟢 🟡             | Rate-Based Prediction                                                                                  |
+| [TeheilSenRegression](Models/TeheilSenRegression.md)                                             | None                                       | ⚡ 🟢 🟡         | 1-Dimensional Robust Time-To-Leave Prediction                                                           |
 | [IsotonicRegression](Models/IsotonicRegression.md)                                               | None                                       | ⚡ 🟢 🟡         | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                      |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                               | PA-R                                       | ⚡ 🟢            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
 | [SupportVectorRegression](Models/SupportVectorRegression.md)                                     | SVR                                        | 💾 🟡            | Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                               |

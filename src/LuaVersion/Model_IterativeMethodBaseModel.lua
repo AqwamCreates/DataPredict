@@ -26,7 +26,7 @@
 
 --]]
 
-local BaseModel = require("Model_BaseModel')
+local BaseModel = require("Model_BaseModel")
 
 local IterativeBaseModel = {}
 
@@ -34,9 +34,29 @@ IterativeBaseModel.__index = IterativeBaseModel
 
 setmetatable(IterativeBaseModel, BaseModel)
 
+local defaultMaximumNumberOfIterations = math.huge
+
+local defaultNumberOfIterationsPerCostCalculation = 1
+
+local defaultMaximumModelParametersInitializationValue = nil
+
+local defaultMinimumModelParametersInitializationValue = nil
+
+local defaultTargetCostUpperBound = 0
+
+local defaultTargetCostLowerBound = 0
+
+local defaultNumberOfIterationsToCheckIfConverged = 3
+
 local defaultAutoResetConvergenceCheck = true
 
 local defaultAutoResetSolvers = true
+
+local defaultIterationWaitDuration = nil
+
+local defaultWaitDuration = nil
+
+local defaultSequenceWaitDuration = nil
 
 function IterativeBaseModel.new(parameterDictionary)
 	
@@ -50,34 +70,34 @@ function IterativeBaseModel.new(parameterDictionary)
 
 	NewBaseModel:setClassName("IterativeModel")
 	
-	NewBaseModel.maximumNumberOfIterations = NewBaseModel:getValueOrDefaultValue(parameterDictionary.maximumNumberOfIterations, 1) 
+	NewBaseModel.maximumNumberOfIterations = NewBaseModel:getValueOrDefaultValue(parameterDictionary.maximumNumberOfIterations, defaultMaximumNumberOfIterations)
 	
-	NewBaseModel.numberOfIterationsPerCostCalculation = NewBaseModel:getValueOrDefaultValue(parameterDictionary.numberOfIterationsPerCostCalculation, 1) 
+	NewBaseModel.numberOfIterationsPerCostCalculation = NewBaseModel:getValueOrDefaultValue(parameterDictionary.numberOfIterationsPerCostCalculation, defaultNumberOfIterationsPerCostCalculation) 
 
-	NewBaseModel.maximumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.maximumModelParametersInitializationValue, nil)
+	NewBaseModel.maximumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.maximumModelParametersInitializationValue, defaultMaximumModelParametersInitializationValue)
 	
-	NewBaseModel.minimumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.minimumModelParametersInitializationValue, nil)
+	NewBaseModel.minimumModelParametersInitializationValue = NewBaseModel:getValueOrDefaultValue(parameterDictionary.minimumModelParametersInitializationValue, defaultMinimumModelParametersInitializationValue)
 	
-	NewBaseModel.iterationWaitDuration = NewBaseModel:getValueOrDefaultValue(parameterDictionary.iterationWaitDuration, nil)
+	NewBaseModel.targetCostUpperBound = NewBaseModel:getValueOrDefaultValue(parameterDictionary.targetCostUpperBound, defaultTargetCostUpperBound)
 	
-	NewBaseModel.dataWaitDuration = NewBaseModel:getValueOrDefaultValue(parameterDictionary.dataWaitDuration, nil)
+	NewBaseModel.targetCostLowerBound = NewBaseModel:getValueOrDefaultValue(parameterDictionary.targetCostLowerBound, defaultTargetCostLowerBound)
 	
-	NewBaseModel.sequenceWaitDuration = NewBaseModel:getValueOrDefaultValue(parameterDictionary.sequenceWaitDuration, nil)
+	NewBaseModel.numberOfIterationsToCheckIfConverged = NewBaseModel:getValueOrDefaultValue(parameterDictionary.numberOfIterationsToCheckIfConverged, defaultNumberOfIterationsToCheckIfConverged)
 	
-	NewBaseModel.targetCostUpperBound = NewBaseModel:getValueOrDefaultValue(parameterDictionary.targetCostUpperBound, 0)
+	NewBaseModel.autoResetConvergenceCheck = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetConvergenceCheck, defaultAutoResetConvergenceCheck)
+
+	NewBaseModel.autoResetSolvers = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetSolvers, defaultAutoResetSolvers)
 	
-	NewBaseModel.targetCostLowerBound = NewBaseModel:getValueOrDefaultValue(parameterDictionary.targetCostLowerBound, 0)
-	
-	NewBaseModel.currentCostToCheckForConvergence = NewBaseModel:getValueOrDefaultValue(parameterDictionary.currentCostToCheckForConvergence, nil)
+	NewBaseModel.iterationWaitDuration = NewBaseModel:getValueOrDefaultValue(parameterDictionary.iterationWaitDuration, defaultIterationWaitDuration)
+
+	NewBaseModel.dataWaitDuration = NewBaseModel:getValueOrDefaultValue(parameterDictionary.dataWaitDuration, defaultWaitDuration)
+
+	NewBaseModel.sequenceWaitDuration = NewBaseModel:getValueOrDefaultValue(parameterDictionary.sequenceWaitDuration, defaultSequenceWaitDuration)
 	
 	NewBaseModel.currentNumberOfIterationsToCheckIfConverged = NewBaseModel:getValueOrDefaultValue(parameterDictionary.currentNumberOfIterationsToCheckIfConverged, 1)
 	
-	NewBaseModel.numberOfIterationsToCheckIfConverged = NewBaseModel:getValueOrDefaultValue(parameterDictionary.numberOfIterationsToCheckIfConverged, math.huge)
+	NewBaseModel.currentCostToCheckForConvergence = NewBaseModel:getValueOrDefaultValue(parameterDictionary.currentCostToCheckForConvergence, nil)
 	
-	NewBaseModel.autoResetConvergenceCheck = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetConvergenceCheck, defaultAutoResetConvergenceCheck)
-	
-	NewBaseModel.autoResetSolvers = NewBaseModel:getValueOrDefaultValue(parameterDictionary.autoResetSolvers, defaultAutoResetSolvers)
-
 	return NewBaseModel
 	
 end

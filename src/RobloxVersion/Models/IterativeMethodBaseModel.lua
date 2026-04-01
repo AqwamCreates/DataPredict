@@ -130,9 +130,11 @@ function IterativeBaseModel:checkIfConverged(cost)
 		
 	end
 	
-	if (self.currentNumberOfIterationsToCheckIfConverged < (self.numberOfIterationsToCheckIfConverged - 1)) then
+	local currentNumberOfIterationsToCheckIfConverged = self.currentNumberOfIterationsToCheckIfConverged + 1
+	
+	if (currentNumberOfIterationsToCheckIfConverged < self.numberOfIterationsToCheckIfConverged) then
 		
-		self.currentNumberOfIterationsToCheckIfConverged = self.currentNumberOfIterationsToCheckIfConverged + 1
+		self.currentNumberOfIterationsToCheckIfConverged = currentNumberOfIterationsToCheckIfConverged
 		
 		return false
 		

@@ -42,11 +42,11 @@ local function getMedianValueFromArray(array)
 	
 	local isNumberOfElementsEven = ((numberOfElements % 2) == 0)
 
-	table.sort(array)
-
 	local chosenIndex
 
 	local chosenValue
+	
+	table.sort(array)
 	
 	if (isNumberOfElementsEven) then
 

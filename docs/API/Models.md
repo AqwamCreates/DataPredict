@@ -64,7 +64,7 @@
 | [NegativeBinomialRegression](Models/NegativeBinomialRegression.md)                               | None                                       | ❗ 🟢 🟡 ⚠️      | Flexible Rate-Based Prediction                                                                          |
 | [GammaRegression](Models/GammaRegression.md)                                                     | None                                       | 🟢 🟡 ⚠️         | Positive-Value Time-To-Leave Prediction And In-Game Currency Price Generation                           |
 | [TweedieRegression](Models/TweedieRegression.md)                                                 | None                                       | 🟢 🟡             | Rate-Based Prediction                                                                                  |
-| [UnitWeightedRegression](Models/UnitWeightedRegression.md)*                                      | None                                       | ⚡ 🟢 🟡 ⚠️     | Simple Robust Currency Price Generation                                                                 |
+| [UnitWeightedRegression](Models/UnitWeightedRegression.md)                                       | None                                       | ⚡ 🟢 🟡         | Simple Robust Currency Price Generation                                                                 |
 | [TheilSenRegression](Models/TheilSenRegression.md)                                               | None                                       | ⚡ 🟡            | 1-Dimensional Robust Time-To-Leave Prediction                                                           |
 | [IsotonicRegression](Models/IsotonicRegression.md)                                               | None                                       | ⚡ 🟡            | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                      |
 | [PassiveAggressiveRegressor](Models/PassiveAggressiveRegressor.md)                               | PA-R                                       | ⚡ 🟢            | Fast Constrained Time-To-Leave Prediction And In-Game Currency Price Generation                          |
@@ -223,15 +223,6 @@
 | [SimonFunkMatrixFactorization](Models/SimonFunkMatrixFactorization.md)                     | Funk MF         | 🟢 🟡     | Early Netflix-Style User-Item Recommendation |
 | [SimonFunkMatrixFactorizationWithBiases](Models/SimonFunkMatrixFactorizationWithBiases.md) | Funk MF         | 🟢 🟡 🛡️  | Early Netflix-Style User-Item Recommendation |
 | [TwoTower](Models/TwoTower.md)                                                             | None            | 🟢 🟡     | YouTube-Style User-Item Recommendation        |
-
-## Ranking
-
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
-
-| Model                                                                                              | Alternate Names | Properties | Use Cases                     |
-|----------------------------------------------------------------------------------------------------|-----------------|------------|-------------------------------|
-| [RankingSupportVectorMachine](Models/RankingSupportVectorMachine.md)                               | Ranking SVM     | 💾 🟡     | Margin-Based Ranking          |
-| [RankingSupportVectorMachineGradientVariant](Models/RankingSupportVectorMachineGradientVariant.md) | Ranking SVM     | 🟢 🟡     | Margin-Based Ranking          |
 
 ## Generative
 

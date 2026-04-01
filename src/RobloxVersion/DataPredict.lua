@@ -70,6 +70,8 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
 	TweedieRegression = require(Models.TweedieRegression),
 	
+	UnitWeightedRegression = require(Models.UnitWeightedRegression),
+	
 	TheilSenRegression = require(Models.TheilSenRegression),
 	
 	IsotonicRegression = require(Models.IsotonicRegression),
@@ -97,8 +99,6 @@ AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	WeightedLeastSquaresRegression = require(Models.WeightedLeastSquaresRegression),
 	
 	LeastTrimmedSquaresRegression = require(Models.LeastTrimmedSquaresRegression),
-	
-	UnitWeightedRegression = require(Models.UnitWeightedRegression),
 	
 	-- Classification - 13 Models
 	

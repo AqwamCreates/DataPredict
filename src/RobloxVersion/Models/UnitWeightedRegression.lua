@@ -36,13 +36,19 @@ UnitWeightedRegressionModel.__index = UnitWeightedRegressionModel
 
 setmetatable(UnitWeightedRegressionModel, BaseModel)
 
+local defaultMaximumNumberOfDataPoints = nil
+
 function UnitWeightedRegressionModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
 	local NewUnitWeightedRegressionModel = BaseModel.new(parameterDictionary)
 
 	setmetatable(NewUnitWeightedRegressionModel, UnitWeightedRegressionModel)
 
 	NewUnitWeightedRegressionModel:setName("UnitWeightedRegression")
+	
+	NewUnitWeightedRegressionModel.maximumNumberOfDataPoints = NewUnitWeightedRegressionModel:getValueOrDefaultValue(parameterDictionary.maximumNumberOfDataPoints, defaultMaximumNumberOfDataPoints)
 
 	return NewUnitWeightedRegressionModel
 
@@ -53,6 +59,8 @@ function UnitWeightedRegressionModel:train(featureMatrix, labelVector)
 	local currentNumberOfData = #featureMatrix
 
 	if (#featureMatrix ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	
+	local maximumNumberOfDataPoints = self.maximumNumberOfDataPoints
 	
 	local ModelParameters = self.ModelParameters or {{}} -- In order to allow this model to be used for distributed training, the model parameters must be in the matrix form.
 	
@@ -75,6 +83,12 @@ function UnitWeightedRegressionModel:train(featureMatrix, labelVector)
 		currentSumBiasValue = currentSumBiasValue + oldSumBiasValue
 		
 		currentNumberOfData = currentNumberOfData + oldNumberOfData
+		
+	end
+	
+	if (type(maximumNumberOfDataPoints) == "number") then
+		
+		if (currentNumberOfData > maximumNumberOfDataPoints) then currentNumberOfData = 1 end
 		
 	end
 	

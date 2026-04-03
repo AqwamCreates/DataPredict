@@ -294,11 +294,11 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 				
 				oldMinimumFeatureValue, oldMaximumFeatureValue, oldTargetLabelValue = unwrappedOldInformationVector[1], unwrappedOldInformationVector[2], unwrappedOldInformationVector[3]
 
-				-- Check for overlap between intervals.
+				-- Check for the overlap between intervals.
 				
 				if ((newMinimumFeatureValue <= oldMaximumFeatureValue) and (newMaximumFeatureValue >= oldMinimumFeatureValue)) then
 					
-					-- Calculate merged interval and average.
+					-- Calculate the merged interval and the average.
 					
 					mergedMinimumFeatureValue = math.min(newMinimumFeatureValue, oldMinimumFeatureValue)
 					
@@ -314,7 +314,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 					mergedTargetLabelValue = (newTargetLabelValue * newWeight + oldTargetLabelValue * oldWeight) / (newWeight + oldWeight)
 
-					-- Update the new information with merged values.
+					-- Update the new information with the merged values.
 					
 					unwrappedNewInformationVector[1] = mergedMinimumFeatureValue
 					
@@ -322,7 +322,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 					
 					unwrappedNewInformationVector[3] = mergedTargetLabelValue
 
-					-- Update corresponding meta data.
+					-- Update the corresponding meta data.
 					
 					if (unwrappedNewMetaDataVector) then
 						
@@ -340,7 +340,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 		end
 
-		-- After merging, we need to ensure isotonic constraints are maintained.
+		-- After merging, we need to ensure that the isotonic constraints are maintained.
 		
 		for informationIndex = 1, (#informationMatrix - 1) do
 			
@@ -352,7 +352,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 			if (isIncreasing and (unwrappedCurrentInformationVector[3] > unwrappedNextInformationVector[3])) or ((not isIncreasing) and (unwrappedCurrentInformationVector[3] < unwrappedNextInformationVector[3])) then
 				
-				-- Merge violating intervals.
+				-- Merge the violating intervals.
 				
 				mergedMinimumFeatureValue = math.min(unwrappedCurrentInformationVector[1], unwrappedNextInformationVector[1])
 				

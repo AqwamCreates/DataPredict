@@ -344,7 +344,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 		
 		-- This would typically involve running the "Pool Adjacent Violators Algorithm" again or merging adjacent.
 		
-		-- intervals that violate the monotonic constraint.
+		-- Intervals that violate the monotonic constraint.
 		
 		for informationIndex = 1, (#informationMatrix - 1) do
 			

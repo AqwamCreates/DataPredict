@@ -342,7 +342,7 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 		-- After merging, we need to ensure isotonic constraints are maintained.
 		
-		-- This would typically involve running the PAVA algorithm again or merging adjacent.
+		-- This would typically involve running the "Pool Adjacent Violators Algorithm" again or merging adjacent.
 		
 		-- intervals that violate the monotonic constraint.
 		

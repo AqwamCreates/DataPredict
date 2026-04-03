@@ -8,7 +8,7 @@
 
 > And Keep The Source Of Retention And Revenue Out Of Competitors' Sight!
 
-[How Does DataPredict Reduces Costs?](https://github.com/AqwamCreates/DataPredict/blob/main/docs/CostReductionInformation.md)
+[How Does DataPredict Reduce Costs For In-Game Machine Learning?](https://github.com/AqwamCreates/DataPredict/blob/main/docs/CostReductionInformation.md)
 
 ## Disclaimer
 

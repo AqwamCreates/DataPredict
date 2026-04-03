@@ -17,8 +17,12 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-UnitWeightedRegression.new(): ModelObject
+UnitWeightedRegression.new(maximumNumberOfDataPoints: number): ModelObject
 ```
+
+#### Parameters:
+
+* maximumNumberOfDataPoints: The number of datapoints for average before reseting it to one.
 
 #### Returns:
 

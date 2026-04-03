@@ -8,6 +8,8 @@
 
 > And Keep The Source Of Retention And Revenue Out Of Competitors' Sight!
 
+[How Does DataPredict Reduce Costs For In-Game Machine Learning?](https://github.com/AqwamCreates/DataPredict/blob/main/docs/CostReductionInformation.md)
+
 ## Disclaimer
 
 * The "minimal implementation time" assumes that a junior gameplay machine learning engineer is handling the implementation.

@@ -152,17 +152,19 @@ function TheilSenRegressionModel:train(featureMatrix, labelVector)
 	
 	local chosenBiasValue = getMedianValueFromArray(medianBiasArray)
 
-	self.ModelParameters = {chosenSlopeValue, chosenBiasValue}
+	self.ModelParameters = {{chosenSlopeValue, chosenBiasValue}}
 
 end
 
 function TheilSenRegressionModel:predict(featureMatrix)
 	
-	local ModelParameters = self.ModelParameters or {}
-
-	local medianSlopeValue = ModelParameters[1] or math.huge
+	local ModelParameters = self.ModelParameters or {{}}
 	
-	local medianBiasValue = ModelParameters[2] or math.huge
+	local unwrappedModelParameters = ModelParameters[1]
+
+	local medianSlopeValue = unwrappedModelParameters[1] or math.huge
+	
+	local medianBiasValue = unwrappedModelParameters[2] or math.huge
 	
 	local predictedLabelVector = AqwamTensorLibrary:multiply(featureMatrix, medianSlopeValue)
 	

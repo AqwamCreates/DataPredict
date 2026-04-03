@@ -1,14 +1,14 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - UnitWeightedRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - TheilSenRegression
 
-UnitWeightedRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses matrix calculations to find the best model parameters.
+TheilSenRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses matrix calculations to find the best model parameters.
 
 ## Stored Model Parameters
 
 Contains a matrix.  
 
-* ModelParameters[1][1]: biasValue.
+* ModelParameters[1][1]: medianSlopeValue.
 
-* ModelParameters[1][2]: numberOfData.
+* ModelParameters[1][2]: medianBiasValue.
 
 ## Constructors
 
@@ -17,12 +17,8 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-UnitWeightedRegression.new(maximumNumberOfDataPoints: number): ModelObject
+TheilSenRegression.new(): ModelObject
 ```
-
-#### Parameters:
-
-* maximumNumberOfDataPoints: The number of datapoints for average before reseting it to one.
 
 #### Returns:
 
@@ -35,7 +31,7 @@ UnitWeightedRegression.new(maximumNumberOfDataPoints: number): ModelObject
 Train the model.
 
 ```
-UnitWeightedRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+TheilSenRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 ```
 
 #### Parameters:
@@ -49,7 +45,7 @@ UnitWeightedRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-UnitWeightedRegression:predict(featureMatrix: Matrix): Matrix
+TheilSenRegression:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:

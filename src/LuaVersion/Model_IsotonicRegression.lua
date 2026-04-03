@@ -288,13 +288,13 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 			for oldInformationIndex, unwrappedOldInformationVector in ipairs(oldInformationMatrix) do
 
-				-- Check if the new information overlaps with old information.
+				-- Check if the new information overlaps with the old information.
 				
 				newMinimumFeatureValue, newMaximumFeatureValue, newTargetLabelValue = unwrappedNewInformationVector[1], unwrappedNewInformationVector[2], unwrappedNewInformationVector[3]
 				
 				oldMinimumFeatureValue, oldMaximumFeatureValue, oldTargetLabelValue = unwrappedOldInformationVector[1], unwrappedOldInformationVector[2], unwrappedOldInformationVector[3]
 
-				-- Check for the overlap between intervals.
+				-- Check for the overlap between the intervals.
 				
 				if ((newMinimumFeatureValue <= oldMaximumFeatureValue) and (newMaximumFeatureValue >= oldMinimumFeatureValue)) then
 					

@@ -342,10 +342,6 @@ function IsotonicRegressionModel:train(featureMatrix, labelVector)
 
 		-- After merging, we need to ensure isotonic constraints are maintained.
 		
-		-- This would typically involve running the "Pool Adjacent Violators Algorithm" again or merging adjacent.
-		
-		-- Intervals that violate the monotonic constraint.
-		
 		for informationIndex = 1, (#informationMatrix - 1) do
 			
 			unwrappedCurrentInformationVector = informationMatrix[informationIndex]

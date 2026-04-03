@@ -13,7 +13,7 @@
 | Security              | If Hosted Externally, Vulnerable To Hacking.                   | Data Stays Between The Roblox's Servers And Clients.               |
 | Reliability           | May Be Inaccurate Or Underperform When Building From Scratch. If Hosted Externally, Models May Be Impacted By Third Party Servers. | Mostly Depends On Roblox's Servers. |   
 | Legal                 | If Hosted Externally, Requires Active Compliance For Data Protection Laws. | Data Stays Between The Servers And Clients. As A Result, Mostly Complies With Data Protection laws. |
-| Domain Specialization | Machine Learning Engineers Generally Do Not Specialize In Games. | Built Over 3 Years With Game Domain Specialty And Optimization. |
+| Domain Specialization | Machine Learning Engineers Generally Do Not Specialize In Games. | Built Over 3 Years With Game Domain Specialties And Optimizations. |
 
 ## Licensing Costs
 

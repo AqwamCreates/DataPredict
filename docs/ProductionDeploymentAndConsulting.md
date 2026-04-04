@@ -32,7 +32,9 @@ This approach prioritizes predictability, reversibility, and player safety over 
 
 ### Regression
 
-* Normal Linear Regression
+* Gamma Regression
+
+* Ordinary Least Squares Regression
 
 * Bayesian Linear Regression
 

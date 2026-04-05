@@ -1,6 +1,6 @@
 # Creating A Machine/Deep Learning Model Object
 
-For our first model, we will use "LogisticRegression". We will create a new "LogisticRegression" model object using new(). 
+For our first model, we will use "BinaryRegression". We will create a new "BinaryRegression" model object using new(). 
 
 ```lua
 local BinaryRegression = DataPredict.Models.BinaryRegression

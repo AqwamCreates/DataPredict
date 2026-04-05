@@ -3,9 +3,9 @@
 For our first model, we will use "LogisticRegression". We will create a new "LogisticRegression" model object using new(). 
 
 ```lua
-local LogisticRegression = DataPredict.Models.LogisticRegression
+local BinaryRegression = DataPredict.Models.BinaryRegression
 
-local LogisticRegressionModel = LogisticRegression.new()
+local BinaryRegressionModel = BinaryRegression.new()
 ```
 
 Although the new() can take in a number of arguments, we will use the default values provided by the library to simplify our introduction. You can see what different models takes as their arguments in the API Reference. You can also change them at anytime you want using setParameters() function.
@@ -55,7 +55,7 @@ local labelVectorLogistic = {
 With our featureMatrix and labelVector in place, we will supply them to our model's train() function.
 
 ```lua
-LogisticRegressionModel:train(featureMatrix, labelVectorLogistic)
+BinaryRegressionModel:train(featureMatrix, labelVectorLogistic)
 ```
 
 Once you run the function, the model will generate its model parameters. However, during your training, your model might go to unusual cases and may need to adjust certain parameters for our model. We will cover this in the next section.
@@ -91,7 +91,7 @@ It means that during training, the model is no longer "learning" but does the co
 To predict, we will use predict() function for our model. We will then supply data to the model so that it can predict the value.
 
 ```lua
-local predictedVector = LogisticRegressionModel:predict(testData)
+local predictedVector = BinaryRegressionModel:predict(testData)
 ```
 
 I will give you a test data for you to use. The value of prediction should be 1 and 0.
@@ -104,7 +104,7 @@ local testData = {
 
 }
 
-local predictedVector = LogisticRegressionModel:predict(testData)
+local predictedVector = BinaryRegressionModel:predict(testData)
 
 local value1 = predictedVector[1][1]
 

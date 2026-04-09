@@ -270,7 +270,7 @@ local activationFunctionList = {
 
 local elementWiseActivationFunctionDerivativeList = {
 	
-	["Exponent"] = function (h, z) return h end,
+	["Exponent"] = function (a, z) return a end,
 
 	["Sigmoid"] = function (a, z) return (a * (1 - a)) end,
 

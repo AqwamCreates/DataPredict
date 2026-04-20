@@ -116,16 +116,20 @@ while true do
 
     local reward = getReward(currentEnvironmentFeatureVector)
 
+    local hasGameEnded = checkIfGameHasEnded(environmentVector)
+
+    local terminalStateValue = (hasGameEnded and 1) or 0
+
    --[[
 
     update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
 
-  --]] 
+  --]]
 
-    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, previousAction, reward, currentEnvironmentFeatureVector, currentAction, 0) 
+    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, previousAction, reward, currentEnvironmentFeatureVector, currentAction, terminalStateValue) 
     previousEnvironmentFeatureVector = currentEnvironmentFeatureVector
 
-    local hasGameEnded = checkIfGameHasEnded(environmentVector)
+  
 
     if hasGameEnded then break end
 

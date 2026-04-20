@@ -129,8 +129,6 @@ while true do
     DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, previousAction, reward, currentEnvironmentFeatureVector, currentAction, terminalStateValue) 
     previousEnvironmentFeatureVector = currentEnvironmentFeatureVector
 
-  
-
     if hasGameEnded then break end
 
     previousAction = currentAction

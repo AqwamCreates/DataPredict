@@ -9,9 +9,9 @@
 | Compute Cost          | If Models Are Hosted Externally, Compute Cost Increases As Number Of Players Increases. | Utilize Roblox Servers' And Players' CPUs At No Additional Cost. |
 | Choosing Models       | Need To Learn Multiple ML Frameworks For Machine Learning, Deep Learning And Reinforcement Learning In Different Programming Languages If Models Are Hosted Externally.  | Unified Under Same API Design. All Models With High-Value Use Cases Are Covered. |
 | Time-To-Market        | Requires Multi-Year Engineering For The Whole Library If Building From Scratch. Minimum Of 1 Week If Using Existing ML Frameworks Hosted In Different Programming Languages. | Within A Day.
-| Latency               | Network Latency And Serialization Issues If Hosted Externally. | Latency Only Comes From Models' Training And Predictions. |
+| Latency               | Network Latency And Serialization Issues If Hosted Externally. | Latency Only Comes From Models' Training And Predictions. Mostly Depends On Roblox's Servers. |
 | Security              | If Hosted Externally, Vulnerable To Hacking.                   | Data Stays Between The Roblox's Servers And Clients.               |
-| Reliability           | May Be Inaccurate Or Underperform When Building From Scratch. If Hosted Externally, Models May Be Impacted By Third Party Servers. | Mostly Depends On Roblox's Servers. |   
+| Reliability           | May Be Inaccurate Or Underperform When Building From Scratch. If Hosted Externally, Models May Be Impacted By Third Party Servers. | 3-Years Of Development. |   
 | Legal                 | If Hosted Externally, Requires Active Compliance For Data Protection Laws. | Data Stays Between The Servers And Clients. As A Result, Mostly Complies With Data Protection laws. |
 | Domain Specialization | Machine Learning Engineers Generally Do Not Specialize In Games. | Built Over 3 Years With Game Domain Specialties And Optimizations. |
 

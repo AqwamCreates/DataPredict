@@ -97,7 +97,7 @@ print(gaussNewtonLabelValue, gradientLabelValue) -- Both should be very close to
 
 That's all for now! Remember, the solver that you choose must be based on your goal.
 
-However, I'll warn you that the solvers may predict different label values if you are using a dirty / noisy feature matrix despite the solvers are using same dataset.
+However, I'll warn you that the solvers may predict different label values if you are using a dirty / noisy feature matrix despite the solvers are using the same dataset.
 
 Also, the solvers actually have a cache system that speeds up calculations for linear models. So, if you are worried that certain solvers may be computationally expensive, the cache is always available when training with full dataset. 
 

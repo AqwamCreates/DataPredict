@@ -8,15 +8,15 @@
 
 ## The Basics - Level 2
 
-* [Using Solvers](BasicTutorials/UsingSolvers.md)
+* [Using Solvers](BasicTutorials/UsingSolvers.md) (Training Methods)
 
-* [Using Optimizers](BasicTutorials/UsingOptimizers.md)
+* [Using Optimizers](BasicTutorials/UsingOptimizers.md) (Training Speed-Up)
 
-* [Using Regularizers](BasicTutorials/UsingRegularizers.md)
+* [Using Regularizers](BasicTutorials/UsingRegularizers.md) (Dirty / Noisy Data Handling)
 
-* [Using Training Modifiers](BasicTutorials/UsingTrainingModifiers.md)
+* [Using Training Modifiers](BasicTutorials/UsingTrainingModifiers.md) (Data Subset Training)
 
-* [Using Model Checker](BasicTutorials/UsingModelChecker.md)
+* [Using Model Checker](BasicTutorials/UsingModelChecker.md) (Verification And Validation)
 
 ## The Basics - Level 3
 

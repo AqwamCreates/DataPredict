@@ -20,7 +20,9 @@
 
 ## The Basics - Level 3
 
-* [Distributed Training](BasicTutorials/DistributedTraining.md)
+* [Data Trasnformation](BasicTutorials/DataTrasnformation.md) (Specialized Data Handling)
+
+* [Distributed Training](BasicTutorials/DistributedTraining.md) (Cross-Server And Cross-Player Training)
 
 ## The Neural Networks
 

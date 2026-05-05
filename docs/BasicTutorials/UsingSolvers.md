@@ -99,6 +99,8 @@ That's all for now! Remember, the solver that you choose must be based on your g
 
 However, I'll warn you that the solvers may predict different label values if you are using a dirty / noisy feature matrix despite the solvers are using same dataset.
 
-Also, the solvers actually have cache system that speeds up calculations for linear models. So, if you are worried that certain solvers may be computationally expensive, the cache is always available when training with full dataset. Though, if you are attempting to train incrementally using a partial dataset, it is recommended to use the gradient solver.
+Also, the solvers actually have cache system that speeds up calculations for linear models. So, if you are worried that certain solvers may be computationally expensive, the cache is always available when training with full dataset. 
+
+It is recommended to use the gradient solver if you are attempting to train incrementally using a partial dataset, .
 
 Lastly, check the API reference to see which models are able to use the solvers.

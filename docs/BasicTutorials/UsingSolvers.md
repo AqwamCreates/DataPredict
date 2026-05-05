@@ -1,0 +1,96 @@
+# What Are Solvers?
+
+Solvers are the "engines" behind our models. They determine **how** the model calculates its answers. Some solvers are fast but approximate (like taking a shortcut), while others are slow but mathematically perfect (like measuring every step).
+
+Choosing the right solver depends on your dataset size and whether you need an instant answer or a highly precise one.
+
+# Getting Started
+
+To see the difference, we will use a very small, clean dataset. This allows even the slowest solvers to finish quickly so we can compare them.
+
+```lua
+
+-- A simple linear trend: Y = 2*X + 5.
+
+-- Input (X) -> Expected Output (Y).
+
+-- 1 -> 7
+-- 2 -> 9
+-- 3 -> 11
+-- 4 -> 13
+-- 5 -> 15
+
+-- The column of 1 is for bias (the +5).
+
+local featureMatrix = { 
+
+    {1, 1},
+    {1, 2},
+    {1, 3},
+    {1, 4},
+    {1, 5},
+}
+
+local labelVector = {
+
+    {7},
+    {9},
+    {11},
+    {13},
+    {15},
+
+}
+
+```
+
+# Instant vs. Iterative Solvers
+
+In this comparison, we will test two different types of solvers:
+
+* Gauss-Newton Solver: Directly finds the next best solution based on current model parameters. Generally requires number of datapoints greater than number of features in the feature matrix.
+
+* Gradient Solver: It starts with a random guess and slowly improves it step-by-step. It takes longer but can handle massive datasets that would crash the Instant solver.
+
+Note that all solvers uses the "residual form" and not the "complete form". In other words, improvements are made based on the difference between the true label value and predicted label value.
+
+```lua
+
+local LinearRegression = DataPredict.Models.LinearRegression
+
+local GaussNewtonSolver = DataPredict.Solvers.GaussNewton.new() 
+
+local GradientSolver = DataPredict.Solvers.Gradient.new()
+
+local GaussNewtonModel = LinearRegression.new({Solver = GaussNewtonSolver})
+
+local GradientModel = LinearRegression.new({Solver = GradientSolver})
+
+```
+
+Now, let's train both models. Watch the output console closely!
+
+```lua
+
+GaussNewtonModel:train(featureMatrix, labelVector)
+
+GradientModel:train(featureMatrix, labelVector)
+
+-- You will notice that Gauss-Newton solver converges faster when compared to the gradient solver.
+
+```
+
+Despite the different methods, if you predict using both, they should give nearly identical results for this small dataset!
+
+```lua
+
+local testData = {{1, 10}}
+
+local gaussNewtonLabelValue = InstantModel:predict(testData)[1][1]
+
+local gradientLabelValue = IterativeModel:predict(testData)[1][1]
+
+print(gaussNewtonLabelValue, gradientLabelValue) -- Both should be very close to 25!
+
+```
+
+That's all for now! Remember, the best solver isn't always the fastest one; it's the one that fits your data size. Check the API reference to see which solvers are compatible with your chosen model.

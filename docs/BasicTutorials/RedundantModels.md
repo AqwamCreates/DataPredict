@@ -137,6 +137,12 @@ TensorL:printTensor(GammaRegressionModelParameters, StrangeLinearRegressionModel
 
 ```
 
+You can also replace binary regression with linear regression as well, but to keep the tutorial simple, I chose Gamma regression due to only requiring logarithm and exponent values handling.
+
 That's all I have to show for today. As you can see, you all were sold a lie that you need specialized models for handling complex cases.
 
 I just proved you otherwise. Keep this in mind.
+
+Keep it simple. Keep it instant.
+
+Nothing can beat a closed-form linear regression with some data transformation.

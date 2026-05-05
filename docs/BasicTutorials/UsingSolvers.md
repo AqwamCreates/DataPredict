@@ -85,11 +85,11 @@ Despite the different solvers, they both should give nearly identical results fo
 
 ```lua
 
-local testData = {{1, 10}}
+local testFeatureVector = {{1, 10}}
 
-local gaussNewtonLabelValue = InstantModel:predict(testData)[1][1]
+local gaussNewtonLabelValue = GaussNewtonModel:predict(testFeatureVector)[1][1]
 
-local gradientLabelValue = IterativeModel:predict(testData)[1][1]
+local gradientLabelValue = GradientModel:predict(testFeatureVector)[1][1]
 
 print(gaussNewtonLabelValue, gradientLabelValue) -- Both should be very close to 25!
 

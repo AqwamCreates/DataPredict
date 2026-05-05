@@ -1,6 +1,6 @@
 # What Are Redudant Models
 
-This may be surprising to you, but most of the models that handles regression are actually redundant. Though, those models were added for users' convenience as well as "fluffing up my model count".
+This may be surprising to you, but most of the DataPredict's models that handles regression are actually redundant. Though, those models were added for users' convenience as well as "fluffing up my model count".
 
 To show what I mean, I'll generate a dataset that best captures this.
 

@@ -8,6 +8,8 @@
 
 ## The Basics - Level 2
 
+* [Using Solvers](BasicTutorials/UsingSolvers.md)
+
 * [Using Optimizers](BasicTutorials/UsingOptimizers.md)
 
 * [Using Regularizers](BasicTutorials/UsingRegularizers.md)
@@ -15,6 +17,8 @@
 * [Using Training Modifiers](BasicTutorials/UsingTrainingModifiers.md)
 
 * [Using Model Checker](BasicTutorials/UsingModelChecker.md)
+
+## The Basics - Level 3
 
 * [Distributed Training](BasicTutorials/DistributedTraining.md)
 

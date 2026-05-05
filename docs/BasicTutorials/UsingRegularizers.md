@@ -95,11 +95,11 @@ print(memorizedLabelValue, generalizedLabelValue) -- You'll notice that the memo
 
 ```lua
 
-local featureVectorFromExistingFeatureMatrix = {{1, 1}}
+local testFeatureVector = {{1, 1}}
 
-local memorizedLabelValue = MemorizedLinearRegression:predict(featureVectorFromExistingFeatureMatrix)[1][1]
+local memorizedLabelValue = MemorizedLinearRegression:predict(testFeatureVector)[1][1]
 
-local generalizedLabelValue = GeneralizedLinearRegression:predict(featureVectorFromExistingFeatureMatrix)[1][1]
+local generalizedLabelValue = GeneralizedLinearRegression:predict(testFeatureVector)[1][1]
 
 print(memorizedLabelValue, generalizedLabelValue) -- You'll notice that the generalized label value is closer to the original label value.
 

@@ -6,7 +6,7 @@ Regularizers are used to ensure that the model do not overfit. In other words, w
 
 In order to show how regularization works, we need to introduce a single dataset
 
-```
+```lua
 
 -- A simple linear trend: Y = X + 10.
 
@@ -65,7 +65,7 @@ local GeneralizedLinearRegression = LinearRegression.new({Regularizer = ElasticN
 
 In here, this is where our training starts.
 
-```
+```lua
 
 MemorizedLinearRegression:train(featureMatrix, labelVector)
 

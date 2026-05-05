@@ -123,12 +123,14 @@ Since you read the whole introduction, I recommend you to have a look at these t
 
 * [Saving And Loading Model Parameters](SavingAndLoadingModelParameters.md)
 
-* [Using Model Checker](UsingModelChecker.md)
+* [Using Solvers](UsingSolvers.md)
 
 * [Using Optimizers](UsingOptimizers.md)
 
+* [Using Regularizers](UsingRegularizers.md)
+
 * [Using Gradient Descent Modifiers](UsingGradientDescentModifiers.md)
 
-* [Using Regularization](UsingRegularization.md)
+* [Using Model Checker](UsingModelChecker.md)
 
 * [Using Neural Networks Part 1](UsingNeuralNetworksPart1.md)

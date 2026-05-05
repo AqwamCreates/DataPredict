@@ -43,11 +43,11 @@ local labelVector = {
 
 ```
 
-# Instant vs. Iterative Solvers
+# Training
 
 In this comparison, we will test two different types of solvers:
 
-* Gauss-Newton Solver: Directly finds the next best solution based on current model parameters. Generally requires number of datapoints greater than number of features in the feature matrix.
+* Gauss-Newton Solver: Directly finds the next best solution based on current model parameters. Generally requires the number of datapoints to be greater than the number of features in the feature matrix. This is generally the default setting for most models.
 
 * Gradient Solver: It starts with a random guess and slowly improves it step-by-step. It takes longer but can handle massive datasets that would crash the Instant solver.
 
@@ -67,7 +67,7 @@ local GradientModel = LinearRegression.new({Solver = GradientSolver})
 
 ```
 
-Now, let's train both models. Watch the output console closely!
+Now, let's train both models. Note that the models prints out the cost for each number of iterations.
 
 ```lua
 
@@ -75,11 +75,13 @@ GaussNewtonModel:train(featureMatrix, labelVector)
 
 GradientModel:train(featureMatrix, labelVector)
 
--- You will notice that Gauss-Newton solver converges faster when compared to the gradient solver.
-
 ```
 
-Despite the different methods, if you predict using both, they should give nearly identical results for this small dataset!
+Notice will notice that Gauss-Newton solver converges faster when compared to the gradient solver.
+
+# Prediction
+
+Despite the different solvers, they both should give nearly identical results for this dataset.
 
 ```lua
 
@@ -93,4 +95,6 @@ print(gaussNewtonLabelValue, gradientLabelValue) -- Both should be very close to
 
 ```
 
-That's all for now! Remember, the best solver isn't always the fastest one; it's the one that fits your data size. Check the API reference to see which solvers are compatible with your chosen model.
+That's all for now! Remember, the solver that you choose must be based on your goal. Though, if you are attempting to train incrementally, it is recommended to use gradient solver.
+
+Check the API reference to see which models are able to use the solvers.

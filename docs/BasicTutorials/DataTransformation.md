@@ -12,6 +12,17 @@ To show what I mean, I'll generate a dataset that best captures this.
 
 ```lua
 
+-- A simple time-to-leave trend: Y = f(XW)
+
+-- Input (X) -> Expected Output (Y).
+
+-- 1 -> 11
+-- 2 -> 12
+-- 3 -> 13
+-- 4 -> 14
+-- 5 -> 15
+-- 6 -> 99
+
 local featureMatrix = {
 
   {1},
@@ -22,3 +33,9 @@ local featureMatrix = {
   {6}
 
 }
+
+```
+
+## Equivalent Models
+
+

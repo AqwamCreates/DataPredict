@@ -24,7 +24,7 @@ In order to show how optimizers works, we need to introduce a single dataset.
 
 local featureMatrix = { -- The column of 1 is for bias so that it can learn to add +10.
 
-  {1, 1},
+	{1, 1},
 	{1, 2},
 	{1, 3},
 	{1, 4},

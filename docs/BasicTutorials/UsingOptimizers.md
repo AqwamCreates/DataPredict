@@ -12,8 +12,6 @@ In order to show how optimizers works, we need to introduce a single dataset.
 
 -- A simple linear trend: Y = X + 10.
 
--- But we add one "noisy" data point at the end to trick the model.
-
 -- Input (X) -> Expected Output (Y).
 
 -- 1 -> 11

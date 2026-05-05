@@ -19,7 +19,7 @@ In order to show how regularization works, we need to introduce a single dataset
 -- 3 -> 13
 -- 4 -> 14
 -- 5 -> 15
--- 6 -> 100  <-- This is the incorrect / noisy / outlier datapoint.
+-- 6 -> 100 <-- This is the incorrect / noisy / outlier datapoint.
 
 local featureMatrix = { -- The column of 1 is for bias so that it can learn to add +10.
 

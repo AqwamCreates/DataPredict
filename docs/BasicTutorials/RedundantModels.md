@@ -142,7 +142,11 @@ TensorL2D:printTensor(GammaRegressionModelParameters, StrangeLinearRegressionMod
 
 ```
 
-You can also replace binary regression with linear regression as well, but to keep the tutorial simple, I chose gamma regression due to only requiring logarithm and exponent values handling.
+# Conclusion
+
+As you can see, all the fancy regression models can be reduced two different parts: linear regression and data transformation.
+
+This means that you can also replace binary regression with linear regression as well, but to keep the tutorial simple, I chose gamma regression due to only requiring logarithm and exponent values handling.
 
 That's all I have to show for today. As you can see, you all were sold a lie that you need specialized models for handling complex cases.
 

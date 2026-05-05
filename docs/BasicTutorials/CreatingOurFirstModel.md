@@ -21,6 +21,7 @@ To train our model, we need to supply two things: featureMatrix and labelVector.
 I will give you the codes for the featureMatrix and the labelVector for you to practice. You can see that if the data contains 0 or greater, it will result to 1. Otherise, the value is 0.
 
 ```lua
+
 local featureMatrix = {
 	
 	{1, 0,  0},
@@ -50,12 +51,15 @@ local labelVectorLogistic = {
 	{0}
 	
 }
+
 ```
 
 With our featureMatrix and labelVector in place, we will supply them to our model's train() function.
 
 ```lua
+
 BinaryRegressionModel:train(featureMatrix, labelVectorLogistic)
+
 ```
 
 Once you run the function, the model will generate its model parameters. However, during your training, your model might go to unusual cases and may need to adjust certain parameters for our model. We will cover this in the next section.
@@ -88,15 +92,38 @@ It means that during training, the model is no longer "learning" but does the co
 
 # Predicting Using Our Models
 
+## Case 3 - Cost Is Not Changing
+
+It is likely due to one of these reasons:
+
+* You set the learning rate to 0.
+
+* The solver inside the model cannot find the solution, resulting in gradients containing only zero values.
+
+For the second reason, you need to know that most models uses GaussNewton solvers and hence require some dataset requirements for it to work. As such, you may need to perform this action:
+
+```lua
+
+local GradientSolver = DataPredict.Models.Solver.new()
+
+BinaryRegressionModel = BinaryRegression.new({Solver = GradientSolver})
+
+```
+
+# Prediction
+
 To predict, we will use predict() function for our model. We will then supply data to the model so that it can predict the value.
 
 ```lua
+
 local predictedVector = BinaryRegressionModel:predict(testData)
+
 ```
 
 I will give you a test data for you to use. The value of prediction should be 1 and 0.
 
 ```lua
+
 local testData = {
 
 	{1, 90, 32},
@@ -113,6 +140,7 @@ local value2 = predictedVector[2][1]
 print(value1) -- This is 1.
 
 print(value2) -- This is 0.
+
 ```
 
 # And Finally...

@@ -16,7 +16,7 @@
 
 * [Using Training Modifiers](BasicTutorials/UsingTrainingModifiers.md) (Data Subset Training)
 
-* [Using Model Checker](BasicTutorials/UsingModelChecker.md) (Verification And Validation)
+* [Using Model Checker](BasicTutorials/UsingModelChecker.md) (Testing And Validation)
 
 ## The Basics - Level 3
 

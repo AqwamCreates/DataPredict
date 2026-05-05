@@ -21,6 +21,7 @@ In order to show how optimizers works, we need to introduce a single dataset.
 -- 3 -> 13
 -- 4 -> 14
 -- 5 -> 15
+-- 6 -> 16
 
 local featureMatrix = { -- The column of 1 is for bias so that it can learn to add +10.
 
@@ -29,6 +30,7 @@ local featureMatrix = { -- The column of 1 is for bias so that it can learn to a
 	{1, 3},
 	{1, 4},
 	{1, 5},
+	{1, 6},
 
 }
 
@@ -39,26 +41,32 @@ local labelVector = {
 	{13},
 	{14},
 	{15},
-
+	{16},
 }
 
 ```
 
-In order for us to use the regularization, we need to create an regularizer object.
-
 # Unoptimized Vs Optimized Training
 
-In here, we will show you the comparisons between using and not using a regularizer.
+In here, we will show you the comparisons between using and not using an optimizer.
+
+Note that it is recommended to use optimizers with the gradient solvers. This is because optimizers are redundant for other solvers
 
 ```lua
 
+local GradientSolver = DataPredict.Solvers.Gradient
+
+local GradientSolver1 = GradientSolver.new()
+
+local GradientSolver2 = GradientSolver.new()
+
 local LinearRegression = DataPredict.Models.LinearRegression
 
-local MemorizedLinearRegression = LinearRegression.new()
+local UnoptimizedLinearRegression = LinearRegression.new({Solver = GradientSolver1})
 
-local ElasticNetRegularizer = DataPredict.Regularizer.ElasticNet.new() # This is our regularizer.
+local AdaptiveGradientOptimizer = DataPredict.Optimizer.AdaptiveGradient.new() # This is our optimizer.
 
-local GeneralizedLinearRegression = LinearRegression.new({Regularizer = ElasticNetRegularizer}) # The regularizer is placed into this model.
+local OptimizedLinearRegression = LinearRegression.new({Solver2 = GradientSolver1, Optimizer = AdaptiveGradientOptimizer}) # The optimizer is placed into this model.
 
 ```
 
@@ -66,18 +74,16 @@ In here, this is where our training starts.
 
 ```lua
 
-MemorizedLinearRegression:train(featureMatrix, labelVector)
+UnoptimizedLinearRegression:train(featureMatrix, labelVector)
 
-GeneralizedLinearRegression:train(featureMatrix, labelVector)
+OptimizedLinearRegression:train(featureMatrix, labelVector)
 
 ```
 
-
-
-Then, we can now train with our optimizer included. Do note that not all models uses optimizers, so please check the API reference if this option is available or not.
+Notice that the unoptimized model converges far more slowly compared to the optimized one. The optimizer basically speeds up the model's learning process by reducing the number of iterations needed to converge.
 
 # GradientClippers And ValueShedulers Can Be Optimizers Too!
 
-Because the way we designed the gradient clippers and value schedulers to be similar to optimizers, we can adjust the model's cost function derivatives without the need for the optimizer themselves.
+Because the way DataPredict designed the gradient clippers and value schedulers to be similar to optimizers, we can adjust the model's cost function derivatives without the need for the optimizer themselves.
 
-That's all for now!
+That's all for now! Do note that not all models uses optimizers, so please check the API reference if this option is available or not.

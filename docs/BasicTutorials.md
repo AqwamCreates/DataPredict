@@ -4,7 +4,7 @@
 
 * [Creating Our First Model](BasicTutorials/CreatingOurFirstModel.md) (Training, Prediction And Debugging)
 
-* [Saving And Loading Model Parameters](BasicTutorials/SavingAndLoadingModelParameters.md) 
+* [Saving And Loading Model Parameters](BasicTutorials/SavingAndLoadingModelParameters.md) (Training And Prediction Continuation)
 
 ## The Basics - Level 2
 

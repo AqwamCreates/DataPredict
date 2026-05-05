@@ -12,7 +12,7 @@ In order to show how regularization works, we need to introduce a single dataset
 
 -- But we add one "noisy" data point at the end to trick the model.
 
--- Input (X) -> Expected Output (Y)'
+-- Input (X) -> Expected Output (Y).
 
 -- 1 -> 11
 -- 2 -> 12
@@ -104,5 +104,3 @@ print(memorizedLabelValue, generalizedLabelValue) -- You'll notice that the gene
 ```
 
 That's all for today! Do note that not all models uses regularizer, so please check the API reference if this option is available or not.
-
-That's all for now!

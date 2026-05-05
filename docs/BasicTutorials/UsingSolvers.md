@@ -99,4 +99,6 @@ That's all for now! Remember, the solver that you choose must be based on your g
 
 However, I'll warn you that the solvers may predict different label values if you are using a dirty / noisy feature matrix despite the solvers are using same dataset.
 
-That being said, check the API reference to see which models are able to use the solvers.
+Also, DataPredict actually have cache system that speeds up calculations. So, if you are worried that certain solvers may be computationally expensive, the cache is always stored for linear models.
+
+Lastly, check the API reference to see which models are able to use the solvers.

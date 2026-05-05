@@ -55,9 +55,9 @@ local LinearRegression = DataPredict.Models.LinearRegression
 
 local MemorizedLinearRegression = LinearRegression.new()
 
-local ElasticNetRegularizer = DataPredict.Regularizer.ElasticNet.new() # This is our regularizer.
+local ElasticNetRegularizer = DataPredict.Regularizer.ElasticNet.new() -- This is our regularizer.
 
-local GeneralizedLinearRegression = LinearRegression.new({Regularizer = ElasticNetRegularizer}) # The regularizer is placed into this model.
+local GeneralizedLinearRegression = LinearRegression.new({Regularizer = ElasticNetRegularizer}) -- The regularizer is placed into this model.
 
 ```
 

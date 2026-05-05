@@ -125,7 +125,7 @@ print(predictedLabelVector[1][1]) -- We get 9!
 
 If you use getModelParameters(), you will see that these models contains the same weights (generally).
 
-```
+```lua
 
 local GammaRegressionModelParameters = GammaRegression:getModelParameters()
 

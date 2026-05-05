@@ -2,9 +2,9 @@
 
 ## The Basics - Level 1
 
-* [Creating Our First Model](BasicTutorials/CreatingOurFirstModel.md)
+* [Creating Our First Model](BasicTutorials/CreatingOurFirstModel.md) (Training, Prediction And Debugging)
 
-* [Saving And Loading Model Parameters](BasicTutorials/SavingAndLoadingModelParameters.md)
+* [Saving And Loading Model Parameters](BasicTutorials/SavingAndLoadingModelParameters.md) 
 
 ## The Basics - Level 2
 

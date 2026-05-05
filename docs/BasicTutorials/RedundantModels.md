@@ -6,7 +6,7 @@ To show what I mean, I'll generate a dataset that best captures this.
 
 ```lua
 
--- A simple time-to-leave trend: Y = (XW)^2.
+-- A simple time-to-leave trend: Y = (X)^2.
 
 -- Input (X) -> Expected Output (Y).
 

@@ -47,7 +47,7 @@ local labelVector = {
 
 ```
 
-# Memorized Vs Generalized Pattern Prediction
+# Memorized Vs Generalized Training
 
 In here, we will show you the comparisons between using and not using a regularizer.
 
@@ -72,6 +72,8 @@ MemorizedLinearRegression:train(featureMatrix, labelVector)
 GeneralizedLinearRegression:train(featureMatrix, labelVector)
 
 ```
+
+# Memorized Vs Generalized Pattern Prediction
 
 This is where how we determine if the model "memorized" the data's pattern.
 

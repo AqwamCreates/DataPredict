@@ -156,4 +156,4 @@ Keep it simple. Keep it instant.
 
 Nothing can beat a closed-form linear regression with some data transformation.
 
-Suddenly, you realize the lines between a machine learning engineer, a data scientist and a statistician begin to blur. This is basically the combination from these three roles' knowledge.
+Suddenly, you realize the lines between a machine learning engineer, a data scientist and a statistician begin to blur. This is basically the combination of these three roles' knowledge.

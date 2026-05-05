@@ -4,7 +4,7 @@ Regularizers are used to ensure that the model do not overfit. In other words, w
 
 # Getting Started
 
-In order to show how regularization works, we need to introduce a single dataset
+In order to show how regularization works, we need to introduce a single dataset.
 
 ```lua
 

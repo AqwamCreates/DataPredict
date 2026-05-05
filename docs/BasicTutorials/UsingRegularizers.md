@@ -39,7 +39,7 @@ local labelVector = {
 	{13},
 	{14},
 	{15},
-	{100} -- This outlier forces the non-regularized model to "memorize" this error.
+	{100} -- This outlier forces the non-regularized model to "memorize" this value.
 
 }
 

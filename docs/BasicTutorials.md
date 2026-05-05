@@ -22,7 +22,7 @@
 
 * [Data Trasnformation](BasicTutorials/DataTrasnformation.md) (Specialized Data Handling)
 
-* [Distributed Training](BasicTutorials/DistributedTraining.md) (Cross-Server And Cross-Player Training)
+* [Distributed Training](BasicTutorials/DistributedTraining.md) (Server-To-Server, Player-To-Server And Player-To-Player Training)
 
 ## The Neural Networks
 

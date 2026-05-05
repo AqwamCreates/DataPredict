@@ -43,7 +43,7 @@ local labelVector = {
 
 ```
 
-## Equivalent Models
+# Equivalent Models
 
 In here, you can give your linear regression to have gamma regression properties provided that you perform these steps:
 
@@ -95,9 +95,9 @@ But wait! It gets better!
 
 Linear regression requires multiple number of iterations, just like gamma regression. Let's grab a closed-form model: ridge regression.
 
-Suddenly, it becomes instant solution!
+Suddenly, it becomes an instant solution!
 
-```
+```lua
 
 local StrangeRidgeRegression = DataPredict.Models.RidgeRegression.new()
 
@@ -120,3 +120,23 @@ local predictedLabelVector = TensorL2D:applyFunction(math.exp, modifiedPredicted
 print(predictedLabelVector[1][1]) -- We get 9!
 
 ```
+
+# Investigating The Model Parameters
+
+If you use getModelParameters(), you will see that these models contains the same weights (generally).
+
+```
+
+local GammaRegressionModelParameters = GammaRegression:getModelParameters()
+
+local StrangeLinearRegressionModelParameters = StrangeLinearRegression:getModelParameters()
+
+local StrangeRidgeRegressionModelParameters = StrangeRidgeRegression:getModelParameters()
+
+TensorL:printTensor(GammaRegressionModelParameters, StrangeLinearRegressionModelParameters, StrangeRidgeRegressionModelParameters) -- Gasp! They're the same as well!
+
+```
+
+That's all I have to show for today. As you can see, you all were sold a lie that you need specialized models for handling complex cases.
+
+I just proved you otherwise. Keep this in mind.

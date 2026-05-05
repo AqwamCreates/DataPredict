@@ -61,9 +61,9 @@ local LinearRegression = DataPredict.Models.LinearRegression
 
 local UnoptimizedLinearRegression = LinearRegression.new({Solver = GradientSolver1})
 
-local AdaptiveGradientOptimizer = DataPredict.Optimizer.AdaptiveGradient.new() # This is our optimizer.
+local AdaptiveGradientOptimizer = DataPredict.Optimizer.AdaptiveGradient.new() -- This is our optimizer.
 
-local OptimizedLinearRegression = LinearRegression.new({Solver = GradientSolver2, Optimizer = AdaptiveGradientOptimizer}) # The optimizer is placed into this model.
+local OptimizedLinearRegression = LinearRegression.new({Solver = GradientSolver2, Optimizer = AdaptiveGradientOptimizer}) -- The optimizer is placed into this model.
 
 ```
 

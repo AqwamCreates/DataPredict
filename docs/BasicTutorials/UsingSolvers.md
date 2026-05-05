@@ -101,6 +101,6 @@ However, I'll warn you that the solvers may predict different label values if yo
 
 Also, the solvers actually have cache system that speeds up calculations for linear models. So, if you are worried that certain solvers may be computationally expensive, the cache is always available when training with full dataset. 
 
-It is recommended to use the gradient solver if you are attempting to train incrementally using a partial dataset, .
+It is recommended to use the gradient solver if you are attempting to train incrementally using a partial dataset.
 
 Lastly, check the API reference to see which models are able to use the solvers.

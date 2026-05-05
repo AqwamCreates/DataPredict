@@ -69,7 +69,7 @@ StrangeLinearRegression:train(featureMatrix, modifiedLabelVector)
 
 local modifiedPredictedLabelVector = StrangeLinearRegression:train({{3}})
 
--- 4. Convert it back using the inverse function of log.
+-- 4. Convert it back using the inverse function of logarithm, which is the exponent.
 
 local predictedLabelVector = TensorL2D:applyFunction(math.exp, modifiedPredictedLabelVector)
 
@@ -119,7 +119,7 @@ StrangeRidgeRegression:train(featureMatrix, modifiedLabelVector)
 
 local modifiedPredictedLabelVector = StrangeRidgeRegression:train({{3}})
 
--- 4. Convert it back using the inverse function of log.
+-- 4. Convert it back using the inverse function of logarithm, which is the exponent.
 
 local predictedLabelVector = TensorL2D:applyFunction(math.exp, modifiedPredictedLabelVector)
 

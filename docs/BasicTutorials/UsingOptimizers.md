@@ -69,7 +69,7 @@ local OptimizedLinearRegression = LinearRegression.new({Solver2 = GradientSolver
 
 ```
 
-In here, this is where our training starts.
+In here, this is where our training starts. Note that the models prints out the cost for each number of iterations.
 
 ```lua
 

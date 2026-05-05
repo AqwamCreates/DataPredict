@@ -134,7 +134,7 @@ local StrangeLinearRegressionModelParameters = StrangeLinearRegression:getModelP
 
 local StrangeRidgeRegressionModelParameters = StrangeRidgeRegression:getModelParameters()
 
-TensorL:printTensor(GammaRegressionModelParameters, StrangeLinearRegressionModelParameters, StrangeRidgeRegressionModelParameters) -- Gasp! They're the same as well!
+TensorL2D:printTensor(GammaRegressionModelParameters, StrangeLinearRegressionModelParameters, StrangeRidgeRegressionModelParameters) -- Gasp! They're the same as well!
 
 ```
 

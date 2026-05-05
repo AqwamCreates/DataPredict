@@ -142,7 +142,7 @@ TensorL2D:printTensor(GammaRegressionModelParameters, StrangeLinearRegressionMod
 
 ```
 
-You can also replace binary regression with linear regression as well, but to keep the tutorial simple, I chose Gamma regression due to only requiring logarithm and exponent values handling.
+You can also replace binary regression with linear regression as well, but to keep the tutorial simple, I chose gamma regression due to only requiring logarithm and exponent values handling.
 
 That's all I have to show for today. As you can see, you all were sold a lie that you need specialized models for handling complex cases.
 
@@ -152,4 +152,4 @@ Keep it simple. Keep it instant.
 
 Nothing can beat a closed-form linear regression with some data transformation.
 
-Suddenly, you realize the lines begin to blur between a machine learning engineer, data scientist and statistician. This is basically the combination from these three roles' knowledge.
+Suddenly, you realize the lines begin to blur between a machine learning engineer, a data scientist and a statistician. This is basically the combination from these three roles' knowledge.

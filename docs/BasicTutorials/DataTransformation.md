@@ -94,3 +94,35 @@ local predictedLabelVector = GammaRegression:train({{3}})
 print(predictedLabelVector[1][1]) -- We get 9!
 
 ```
+
+Gasp! They're the same! So it is redundant!
+
+But wait! It gets better!
+
+Linear regression requires multiple number of iterations, just like gamma regression. Let's grab a closed-form model: ridge regression.
+
+Suddenly, it becomes instant solution!
+
+```
+
+local StrangeRidgeRegression = DataPredict.Models.RidgeRegression.new()
+
+-- 1. Convert your label vector so that it becomes log(Y).
+
+local modifiedLabelVector = TensorL2D:applyFunction(math.log, labelVector)
+
+-- 2. Train your model using this modified label vector.
+
+StrangeRidgeRegression:train(featureMatrix, modifiedLabelVector)
+
+-- 3. Predict using a test feature matrix.
+
+local modifiedPredictedLabelVector = StrangeRidgeRegression:train({{3}})
+
+-- 4. Convert it back using the inverse function of log.
+
+local predictedLabelVector = TensorL2D:applyFunction(math.exp, modifiedPredictedLabelVector)
+
+print(predictedLabelVector[1][1]) -- We get 9!
+
+```

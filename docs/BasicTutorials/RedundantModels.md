@@ -10,7 +10,8 @@ To show what I mean, I'll generate a dataset that best captures this.
 
 -- Input (X) -> Expected Output (Y).
 
--- Notice that these are positive-only label values. Hence, you cannot use linear regression as it will predict negative label values.
+-- Notice that these are positive-only label values.
+-- Hence, you cannot use linear regression as it will predict negative label values.
 
 -- 1 -> 1
 -- 2 -> 4

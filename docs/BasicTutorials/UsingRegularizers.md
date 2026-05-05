@@ -103,4 +103,4 @@ print(memorizedLabelValue, generalizedLabelValue) -- You'll notice that the gene
 
 ```
 
-That's all for today! Do note that not all models uses the regularizers, so please check the API reference if this option is available or not.
+That's all for today! Do note that not all models use the regularizers, so please check the API reference if this option is available or not.

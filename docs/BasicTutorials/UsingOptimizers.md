@@ -47,7 +47,7 @@ local labelVector = {
 
 In here, we will show you the comparisons between using and not using an optimizer.
 
-Note that it is recommended to use optimizers with the gradient solvers. This is because optimizers are redundant for other solvers
+Note that it is recommended to use optimizers with the gradient solvers. This is because optimizers are redundant for other solvers.
 
 ```lua
 

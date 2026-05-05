@@ -46,7 +46,7 @@ local labelVector = {
 
 In order for us to use the regularization, we need to create an regularizer object.
 
-# Memorized Vs Generalized Pattern Prediction
+# Unoptimized Vs Optimized Training
 
 In here, we will show you the comparisons between using and not using a regularizer.
 

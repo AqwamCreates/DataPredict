@@ -47,7 +47,7 @@ local labelVector = {
 
 In this comparison, we will test two different types of solvers:
 
-* Gauss-Newton Solver: Directly finds the next best solution based on current model parameters. Generally requires the number of datapoints to be greater than the number of features in the feature matrix. This is generally the default setting for most models.
+* Gauss-Newton Solver: Directly finds the next best solution based on the current model parameters. Generally requires the number of datapoints to be greater than the number of features in the feature matrix. This is generally the default setting for most models.
 
 * Gradient Solver: It starts with a random guess and slowly improves it step-by-step. It takes longer but can handle massive datasets that would crash the Instant solver.
 

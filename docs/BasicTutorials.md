@@ -20,9 +20,11 @@
 
 ## The Basics - Level 3
 
-* [Data Transformation](BasicTutorials/DataTransformation.md) (Specialized Data Handling)
-
 * [Distributed Training](BasicTutorials/DistributedTraining.md) (Server-To-Server, Client-To-Server And Client-To-Client Training)
+
+## Data Transformation
+
+* [Redundant Models](BasicTutorials/RedundantModels.md)
 
 ## The Neural Networks
 

@@ -66,7 +66,7 @@ StrangeLinearRegression:train(featureMatrix, modifiedLabelVector)
 
 -- 3. Predict using a test feature matrix.
 
-local modifiedPredictedLabelVector = StrangeLinearRegression:train({{3}})
+local modifiedPredictedLabelVector = StrangeLinearRegression:predict({{3}})
 
 -- 4. Convert it back using the inverse function of logarithm, which is the exponent.
 
@@ -88,7 +88,7 @@ GammaRegression:train(featureMatrix, labelVector)
 
 -- 2. Predict using a test feature matrix.
 
-local predictedLabelVector = GammaRegression:train({{3}})
+local predictedLabelVector = GammaRegression:predict({{3}})
 
 print(predictedLabelVector[1][1]) -- We get 9!
 
@@ -116,7 +116,7 @@ StrangeRidgeRegression:train(featureMatrix, modifiedLabelVector)
 
 -- 3. Predict using a test feature matrix.
 
-local modifiedPredictedLabelVector = StrangeRidgeRegression:train({{3}})
+local modifiedPredictedLabelVector = StrangeRidgeRegression:predict({{3}})
 
 -- 4. Convert it back using the inverse function of logarithm, which is the exponent.
 

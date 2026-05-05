@@ -97,4 +97,6 @@ print(gaussNewtonLabelValue, gradientLabelValue) -- Both should be very close to
 
 That's all for now! Remember, the solver that you choose must be based on your goal. Though, if you are attempting to train incrementally, it is recommended to use gradient solver.
 
-Check the API reference to see which models are able to use the solvers.
+However, I'll warn you that the solvers may predict different label values if you are using a dirty / noisy feature matrix despite the solvers are using same dataset.
+
+That being said, check the API reference to see which models are able to use the solvers.

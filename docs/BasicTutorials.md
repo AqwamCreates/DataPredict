@@ -20,7 +20,7 @@
 
 ## The Basics - Level 3
 
-* [Data Trasnformation](BasicTutorials/DataTrasnformation.md) (Specialized Data Handling)
+* [Data Transformation](BasicTutorials/DataTransformation.md) (Specialized Data Handling)
 
 * [Distributed Training](BasicTutorials/DistributedTraining.md) (Server-To-Server, Client-To-Server And Client-To-Client Training)
 

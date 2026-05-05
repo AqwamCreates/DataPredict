@@ -85,7 +85,7 @@ local memorizedLabelValue = MemorizedLinearRegression:predict(featureVectorFromE
 
 local generalizedLabelValue = GeneralizedLinearRegression:predict(featureVectorFromExistingFeatureMatrix)[1][1]
 
-print(memorizedLabelValue, generalizedLabelValue) -- You'll notice that the memorized label value is closer to the original value.
+print(memorizedLabelValue, generalizedLabelValue) -- You'll notice that the memorized label value is closer to the original label value.
 
 ```
 
@@ -99,7 +99,7 @@ local memorizedLabelValue = MemorizedLinearRegression:predict(featureVectorFromE
 
 local generalizedLabelValue = GeneralizedLinearRegression:predict(featureVectorFromExistingFeatureMatrix)[1][1]
 
-print(memorizedLabelValue, generalizedLabelValue) -- You'll notice that the generalized label value is closer to the original value.
+print(memorizedLabelValue, generalizedLabelValue) -- You'll notice that the generalized label value is closer to the original label value.
 
 ```
 

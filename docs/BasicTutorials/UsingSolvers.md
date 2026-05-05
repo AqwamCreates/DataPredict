@@ -95,10 +95,10 @@ print(gaussNewtonLabelValue, gradientLabelValue) -- Both should be very close to
 
 ```
 
-That's all for now! Remember, the solver that you choose must be based on your goal. Though, if you are attempting to train incrementally, it is recommended to use gradient solver.
+That's all for now! Remember, the solver that you choose must be based on your goal.
 
 However, I'll warn you that the solvers may predict different label values if you are using a dirty / noisy feature matrix despite the solvers are using same dataset.
 
-Also, DataPredict actually have cache system that speeds up calculations. So, if you are worried that certain solvers may be computationally expensive, the cache is always stored for linear models.
+Also, the solvers actually have cache system that speeds up calculations for linear models. So, if you are worried that certain solvers may be computationally expensive, the cache is always available when training with full dataset. Though, if you are attempting to train incrementally, it is recommended to use gradient solver.
 
 Lastly, check the API reference to see which models are able to use the solvers.

@@ -1,4 +1,4 @@
-# Game Design Meets Machine Learning
+# [Documentation](index.md) - Game Design Meets Machine Learning
 
 Note: This documentation is still under construction. There will be links that go more in depth.
 

@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseSolver = require("Model_BaseSolver")
+local BaseSolver = require("Solver_BaseSolver")
 
 local GradientSolver = {}
 
@@ -48,19 +48,19 @@ function GradientSolver.new(parameterDictionary)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinearInput = (not NewGradientSolver.isNonLinearInput)
+		local isLinear = (not NewGradientSolver.isNonLinear)
 
-		local transposedJacobianMatrix = (isLinearInput and NewGradientSolver.cache)
+		local transposedJacobianMatrix = (isLinear and NewGradientSolver.cache)
 		
 		if (not transposedJacobianMatrix) then
 			
 			local jacobianMatrix = inputMatrix
 			
-			if (not isLinearInput) then jacobianMatrix = AqwamTensorLibrary:multiply(jacobianMatrix, firstDerivativeMatrix) end
+			if (not isLinear) then jacobianMatrix = AqwamTensorLibrary:multiply(jacobianMatrix, firstDerivativeMatrix) end
 			
 			transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
 			
-			if (isLinearInput) then NewGradientSolver.cache = transposedJacobianMatrix end
+			if (isLinear) then NewGradientSolver.cache = transposedJacobianMatrix end
 			
 		end
 		

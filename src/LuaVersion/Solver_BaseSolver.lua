@@ -34,7 +34,7 @@ BaseSolver.__index = BaseSolver
 
 setmetatable(BaseSolver, BaseInstance)
 
-local defaultIsNonLinearInput = false
+local defaultIsNonLinear = true
 
 function BaseSolver.new(parameterDictionary)
 	
@@ -48,7 +48,7 @@ function BaseSolver.new(parameterDictionary)
 	
 	NewBaseSolver:setClassName("Solver")
 	
-	NewBaseSolver.isNonLinearInput = NewBaseSolver:getValueOrDefaultValue(parameterDictionary.isNonLinearInput, defaultIsNonLinearInput)
+	NewBaseSolver.isNonLinear = NewBaseSolver:getValueOrDefaultValue(parameterDictionary.isNonLinear, defaultIsNonLinear)
 	
 	NewBaseSolver.calculateFunction = parameterDictionary.calculateFunction
 	

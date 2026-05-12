@@ -86,7 +86,7 @@ function PoissonRegressionModel:calculateLossFunctionDerivativeVector(lossGradie
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, nil, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -170,7 +170,7 @@ function PoissonRegressionModel.new(parameterDictionary)
 
 	NewPoissonRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewPoissonRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+	NewPoissonRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewPoissonRegressionModel
 

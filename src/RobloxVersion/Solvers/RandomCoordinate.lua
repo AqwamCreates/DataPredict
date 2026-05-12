@@ -44,19 +44,21 @@ function RandomCoordinateSolver.new(parameterDictionary)
 	
 	NewRandomCoordinateSolver:setName("RandomCoordinate")
 	
-	NewRandomCoordinateSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewRandomCoordinateSolver:setCalculateFunction(function(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
-		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
-		
-		local isLinearInput = (not NewRandomCoordinateSolver.isNonLinearInput)
+		local isLinear = NewRandomCoordinateSolver.isLinear
 
-		local transposedFirstDerivativeMatrix = (isLinearInput and NewRandomCoordinateSolver.cache)
+		local transposedJacobianMatrix = (isLinear and NewRandomCoordinateSolver.cache)
 		
-		if (not transposedFirstDerivativeMatrix) then
+		if (not transposedJacobianMatrix) then
 			
-			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+			local jacobianMatrix = inputMatrix
+
+			if (not isLinear) then jacobianMatrix = AqwamTensorLibrary:multiply(jacobianMatrix, firstDerivativeMatrix) end
 			
-			if (isLinearInput) then NewRandomCoordinateSolver.cache = transposedFirstDerivativeMatrix end
+			transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
+			
+			if (isLinear) then NewRandomCoordinateSolver.cache = transposedJacobianMatrix end
 			
 		end
 		
@@ -74,7 +76,7 @@ function RandomCoordinateSolver.new(parameterDictionary)
 		
 		local randomOutputIndex = math.random(1, numberOfOutputs)
 		
-		local transposedFirstDerivativeSubTensor = {transposedFirstDerivativeMatrix[randomFeatureIndex]}
+		local transposedFirstDerivativeSubTensor = {transposedJacobianMatrix[randomFeatureIndex]}
 		
 		local firstDerivativeLossSubTensor = AqwamTensorLibrary:extract(firstDerivativeLossMatrix, {1, randomOutputIndex}, {numberOfData, randomOutputIndex})
 		

@@ -44,27 +44,33 @@ function ConjugateGradientSolver.new(parameterDictionary)
 	
 	NewConjugateGradientSolver:setName("ConjugateGradient")
 	
-	NewConjugateGradientSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewConjugateGradientSolver:setCalculateFunction(function(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
-		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
+		local isLinear = NewConjugateGradientSolver.isLinear
 		
-		local isLinearInput = (not NewConjugateGradientSolver.isNonLinearInput)
+		local cache = NewConjugateGradientSolver.cache
 		
-		local aMatrix = (isLinearInput and NewConjugateGradientSolver.cache)
+		local transposedJacobianMatrix = (isLinear and cache[1])
 		
-		local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+		local aMatrix = (isLinear and cache[2])
 		
 		if (not aMatrix) then
+			
+			local jacobianMatrix = inputMatrix
 
-			aMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
+			if (not isLinear) then jacobianMatrix = AqwamTensorLibrary:multiply(jacobianMatrix, firstDerivativeMatrix) end
+			
+			transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
 
-			if (isLinearInput) then NewConjugateGradientSolver.cache = aMatrix end
+			aMatrix = AqwamTensorLibrary:dotProduct(transposedJacobianMatrix, jacobianMatrix)
+
+			if (isLinear) then NewConjugateGradientSolver.cache = {transposedJacobianMatrix, aMatrix} end
 
 		end
 		
 		local unaryFirstDerivativeLossMatrix = AqwamTensorLibrary:unaryMinus(firstDerivativeLossMatrix)
 		
-		local weightChangeMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, unaryFirstDerivativeLossMatrix)
+		local weightChangeMatrix = AqwamTensorLibrary:dotProduct(transposedJacobianMatrix, unaryFirstDerivativeLossMatrix)
 		
 		-- Using weightMatrix here as the initial guess for online learning.
 		

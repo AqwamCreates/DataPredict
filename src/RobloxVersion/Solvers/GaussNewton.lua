@@ -46,9 +46,7 @@ function GaussNewtonSolver.new(parameterDictionary)
 	
 	NewGaussNewtonSolver:setCalculateFunction(function(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
-		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
-		
-		local isLinear = (not NewGaussNewtonSolver.isNonLinear)
+		local isLinear = NewGaussNewtonSolver.isLinear
 		
 		local pseudoInverseMatrix = (isLinear and NewGaussNewtonSolver.cache)
 

@@ -54,6 +54,8 @@ function ConjugateGradientSolver.new(parameterDictionary)
 		
 		local aMatrix = (isLinear and cache[2])
 		
+		local pMatrix = cache[3]
+		
 		if (not aMatrix) then
 			
 			local jacobianMatrix = inputMatrix
@@ -64,7 +66,7 @@ function ConjugateGradientSolver.new(parameterDictionary)
 
 			aMatrix = AqwamTensorLibrary:dotProduct(transposedJacobianMatrix, jacobianMatrix)
 
-			if (isLinear) then NewConjugateGradientSolver.cache = {transposedJacobianMatrix, aMatrix} end
+			if (isLinear) then cache = {transposedJacobianMatrix, aMatrix} end
 
 		end
 		
@@ -81,10 +83,6 @@ function ConjugateGradientSolver.new(parameterDictionary)
 		local maximumNumberOfIterations = weightDimensionSizeArray[1] * weightDimensionSizeArray[2]
 		
 		local originalWeightMatrix = weightMatrix
-		
-		local pMatrix = residualMatrix
-		
-		local numberOfIterations = 0
 		
 		local transposedResidualMatrix
 		
@@ -112,51 +110,43 @@ function ConjugateGradientSolver.new(parameterDictionary)
 		
 		local previousResidualScoreValue = math.huge
 		
-		local residualScoreValue
+		pMatrix = pMatrix or residualMatrix
+
+		transposedResidualMatrix = AqwamTensorLibrary:transpose(residualMatrix)
+
+		transposedPMatrix = AqwamTensorLibrary:transpose(pMatrix)
+
+		alphaNumeratorMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)
+
+		alphaDenominatorMatrix = AqwamTensorLibrary:dotProduct(transposedPMatrix, aMatrix, pMatrix)
+
+		alphaMatrix =  AqwamTensorLibrary:divide(alphaNumeratorMatrix, alphaDenominatorMatrix)
+
+		weightChangeMatrix = AqwamTensorLibrary:multiply(alphaMatrix, pMatrix)
+
+		weightMatrix = AqwamTensorLibrary:add(weightMatrix, weightChangeMatrix)
+
+		residualChangeMatrix = AqwamTensorLibrary:multiply(alphaMatrix, pMatrix)
+
+		newResidualMatrix = AqwamTensorLibrary:subtract(residualMatrix, residualChangeMatrix)
+
+		transposedNewResidualMatrix = AqwamTensorLibrary:transpose(newResidualMatrix)
+
+		betaNumeratorMatrix = AqwamTensorLibrary:dotProduct(transposedNewResidualMatrix, newResidualMatrix)
+
+		betaDenominatorMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)
+
+		betaMatrix = AqwamTensorLibrary:divide(betaNumeratorMatrix, betaDenominatorMatrix)
+
+		pChangeMatrix = AqwamTensorLibrary:dotProduct(aMatrix, pMatrix)
+
+		pChangeMatrix = AqwamTensorLibrary:multiply(pChangeMatrix, betaMatrix)
+
+		pMatrix = AqwamTensorLibrary:add(newResidualMatrix, pChangeMatrix)
 		
-		repeat
-			
-			numberOfIterations = numberOfIterations + 1
-			
-			transposedResidualMatrix = AqwamTensorLibrary:transpose(residualMatrix)
-			
-			transposedPMatrix = AqwamTensorLibrary:transpose(pMatrix)
-			
-			alphaNumeratorMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)
-			
-			alphaDenominatorMatrix = AqwamTensorLibrary:dotProduct(transposedPMatrix, aMatrix, pMatrix)
-			
-			alphaMatrix =  AqwamTensorLibrary:divide(alphaNumeratorMatrix, alphaDenominatorMatrix)
-			
-			weightChangeMatrix = AqwamTensorLibrary:multiply(alphaMatrix, pMatrix)
-			
-			weightMatrix = AqwamTensorLibrary:add(weightMatrix, weightChangeMatrix)
-			
-			residualChangeMatrix = AqwamTensorLibrary:multiply(alphaMatrix, pMatrix)
-			
-			newResidualMatrix = AqwamTensorLibrary:subtract(residualMatrix, residualChangeMatrix)
-			
-			transposedNewResidualMatrix = AqwamTensorLibrary:transpose(newResidualMatrix)
-			
-			betaNumeratorMatrix = AqwamTensorLibrary:dotProduct(transposedNewResidualMatrix, newResidualMatrix)
-			
-			betaDenominatorMatrix = AqwamTensorLibrary:dotProduct(transposedResidualMatrix, residualMatrix)
-			
-			betaMatrix = AqwamTensorLibrary:divide(betaNumeratorMatrix, betaDenominatorMatrix)
-			
-			pChangeMatrix = AqwamTensorLibrary:dotProduct(aMatrix, pMatrix)
-			
-			pChangeMatrix = AqwamTensorLibrary:multiply(pChangeMatrix, betaMatrix)
-			
-			pMatrix = AqwamTensorLibrary:add(newResidualMatrix, pChangeMatrix)
-			
-			residualScoreValue = AqwamTensorLibrary:sum(residualMatrix)
-			
-			if (residualScoreValue == previousResidualScoreValue) then break end
-			
-			previousResidualScoreValue = residualScoreValue
-			
-		until (numberOfIterations == maximumNumberOfIterations) 
+		cache[3] = pMatrix
+		
+		NewConjugateGradientSolver.cache = cache
 		
 		return AqwamTensorLibrary:subtract(weightMatrix, originalWeightMatrix) -- To apply optimizer later.
 		

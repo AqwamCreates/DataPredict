@@ -48,7 +48,7 @@ function ConjugateGradientSolver.new(parameterDictionary)
 		
 		local isLinear = NewConjugateGradientSolver.isLinear
 		
-		local cache = NewConjugateGradientSolver.cache
+		local cache = NewConjugateGradientSolver.cache or {}
 		
 		local transposedJacobianMatrix = (isLinear and cache[1])
 		

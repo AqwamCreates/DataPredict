@@ -44,23 +44,27 @@ function GradientSolver.new(parameterDictionary)
 	
 	NewGradientSolver:setName("Gradient")
 	
-	NewGradientSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewGradientSolver:setCalculateFunction(function(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
 		local isLinearInput = (not NewGradientSolver.isNonLinearInput)
 
-		local transposedFirstDerivativeMatrix = (isLinearInput and NewGradientSolver.cache)
+		local transposedJacobianMatrix = (isLinearInput and NewGradientSolver.cache)
 		
-		if (not transposedFirstDerivativeMatrix) then
+		if (not transposedJacobianMatrix) then
 			
-			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+			local jacobianMatrix = inputMatrix
 			
-			if (isLinearInput) then NewGradientSolver.cache = transposedFirstDerivativeMatrix end
+			if (not isLinearInput) then jacobianMatrix = AqwamTensorLibrary:dotProduct(firstDerivativeMatrix, jacobianMatrix) end
+			
+			transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
+			
+			if (isLinearInput) then NewGradientSolver.cache = transposedJacobianMatrix end
 			
 		end
 		
-		return AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeLossMatrix)
+		return AqwamTensorLibrary:dotProduct(transposedJacobianMatrix, firstDerivativeLossMatrix)
 		
 	end)
 	

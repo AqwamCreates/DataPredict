@@ -62,6 +62,8 @@ function LevenbergMarquardtSolver.new(parameterDictionary)
 
 			local transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
 			
+			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(transposedJacobianMatrix, jacobianMatrix)
+			
 			local pMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(pseudoInverseMatrix)
 			
 			local diagonalMatrix = AqwamTensorLibrary:createIdentityTensor(pMatrixDimensionSizeArray, NewLevenbergMarquardtSolver.lambda)

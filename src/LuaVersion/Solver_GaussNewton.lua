@@ -44,19 +44,25 @@ function GaussNewtonSolver.new(parameterDictionary)
 	
 	NewGaussNewtonSolver:setName("GaussNewton")
 	
-	NewGaussNewtonSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewGaussNewtonSolver:setCalculateFunction(function(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinearInput = (not NewGaussNewtonSolver.isNonLinearInput)
+		local isLinear = (not NewGaussNewtonSolver.isNonLinear)
 		
-		local pseudoInverseMatrix = (isLinearInput and NewGaussNewtonSolver.cache)
+		local pseudoInverseMatrix = (isLinear and NewGaussNewtonSolver.cache)
 
 		if (not pseudoInverseMatrix) then
 
-			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+			local jacobianMatrix = inputMatrix
 
-			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
+			if (not isLinear) then jacobianMatrix = AqwamTensorLibrary:multiply(jacobianMatrix, firstDerivativeMatrix) end
+
+			local transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
+
+			if (isLinear) then NewGaussNewtonSolver.cache = transposedJacobianMatrix end
+
+			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(transposedJacobianMatrix, jacobianMatrix)
 
 			pseudoInverseMatrix = AqwamTensorLibrary:inverse(pseudoInverseMatrix)
 			
@@ -64,9 +70,9 @@ function GaussNewtonSolver.new(parameterDictionary)
 			
 			if (not pseudoInverseMatrix) then return AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(weightMatrix), 0) end
 
-			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, transposedFirstDerivativeMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, transposedJacobianMatrix)
 			
-			if (isLinearInput) then NewGaussNewtonSolver.cache = pseudoInverseMatrix end
+			if (isLinear) then NewGaussNewtonSolver.cache = pseudoInverseMatrix end
 
 		end
 

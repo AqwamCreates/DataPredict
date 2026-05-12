@@ -48,19 +48,19 @@ function LevenbergMarquardtSolver.new(parameterDictionary)
 	
 	NewLevenbergMarquardtSolver.lambda = parameterDictionary.lambda or defaultLambda
 	
-	NewLevenbergMarquardtSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewLevenbergMarquardtSolver:setCalculateFunction(function(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
-		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
+		local isLinear = NewLevenbergMarquardtSolver.isLinear
 		
-		local isLinearInput = (not NewLevenbergMarquardtSolver.isNonLinearInput)
-		
-		local pseudoInverseMatrix = (isLinearInput and NewLevenbergMarquardtSolver.cache)
+		local pseudoInverseMatrix = (isLinear and NewLevenbergMarquardtSolver.cache)
 
 		if (not pseudoInverseMatrix) then
 
-			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+			local jacobianMatrix = inputMatrix
 
-			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
+			if (not isLinear) then jacobianMatrix = AqwamTensorLibrary:multiply(jacobianMatrix, firstDerivativeMatrix) end
+
+			local transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
 			
 			local pMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(pseudoInverseMatrix)
 			
@@ -74,9 +74,9 @@ function LevenbergMarquardtSolver.new(parameterDictionary)
 			
 			if (not pseudoInverseMatrix) then return AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(weightMatrix), 0) end
 
-			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, transposedFirstDerivativeMatrix)
+			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, transposedJacobianMatrix)
 			
-			if (isLinearInput) then NewLevenbergMarquardtSolver.cache = pseudoInverseMatrix end
+			if (isLinear) then NewLevenbergMarquardtSolver.cache = pseudoInverseMatrix end
 
 		end
 

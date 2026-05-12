@@ -48,7 +48,7 @@ function GradientSolver.new(parameterDictionary)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinear = (not NewGradientSolver.isNonLinear)
+		local isLinear = NewGradientSolver.isLinear
 
 		local transposedJacobianMatrix = (isLinear and NewGradientSolver.cache)
 		

@@ -122,17 +122,29 @@ function GaussSeidelSolver.new(parameterDictionary)
 	
 	NewGaussSeidelSolver:setName("GaussSeidel")
 	
-	NewGaussSeidelSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewGaussSeidelSolver:setCalculateFunction(function(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinearInput = (not NewGaussSeidelSolver.isNonLinearInput)
+		local isLinear = NewGaussSeidelSolver.isLinear
 		
 		local cache = NewGaussSeidelSolver.cache or {}
 		
-		local transposedFirstDerivativeMatrix = (isLinearInput and cache[1]) or AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+		local jacobianMatrix = inputMatrix
 		
-		local aMatrix = (isLinearInput and cache[2])
+		if (not isLinear) then jacobianMatrix = AqwamTensorLibrary:dotProduct(inputMatrix, firstDerivativeMatrix) end
+		
+		local transposedJacobianMatrix = (isLinear and cache[1])
+		
+		if (not transposedJacobianMatrix) then
+			
+			transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
+			
+			if (isLinear) then cache[1] = transposedJacobianMatrix end
+			
+		end
+		
+		local aMatrix = (isLinear and cache[2])
 		
 		local inverseLMatrix = cache[3]
 		
@@ -146,19 +158,19 @@ function GaussSeidelSolver.new(parameterDictionary)
 
 		local numberOfOutputs = weightMatrixDimensionSizeArray[2]
 		
-		local bMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeLossMatrix)
+		local bMatrix = AqwamTensorLibrary:dotProduct(transposedJacobianMatrix, jacobianMatrix)
 		
 		local lMatrix
 
 		if (not aMatrix) then
 
-			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+			local transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
 
-			aMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeMatrix)
+			aMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, jacobianMatrix)
 			
 			aMatrix, diagonaMatrixIndexArray = rearrangeMatrixToDominantDiagonalMatrix(aMatrix)
 			
-			if (isLinearInput) then 
+			if (isLinear) then 
 				
 				cache[2] = aMatrix 
 				
@@ -170,7 +182,7 @@ function GaussSeidelSolver.new(parameterDictionary)
 		
 		if (inverseLMatrix) then
 			
-			if (not isLinearInput) then 
+			if (not isLinear) then 
 				
 				lMatrix = AqwamTensorLibrary:multiply(lMatrix, aMatrix)
 
@@ -182,7 +194,7 @@ function GaussSeidelSolver.new(parameterDictionary)
 			
 			lMatrix = AqwamTensorLibrary:createLowerTriangularTensor(weightMatrixDimensionSizeArray, 1)
 			
-			if (isLinearInput) then
+			if (isLinear) then
 
 				lMatrix = AqwamTensorLibrary:multiply(lMatrix, aMatrix)
 				
@@ -204,7 +216,7 @@ function GaussSeidelSolver.new(parameterDictionary)
 		
 		if (uMatrix) then
 			
-			if (not isLinearInput) then
+			if (not isLinear) then
 				
 				uMatrix = AqwamTensorLibrary:multiply(uMatrix, aMatrix)
 				
@@ -216,7 +228,7 @@ function GaussSeidelSolver.new(parameterDictionary)
 			
 			uMatrix = AqwamTensorLibrary:createUpperTriangularTensor(weightMatrixDimensionSizeArray, 0, 1)
 			
-			if (isLinearInput) then
+			if (isLinear) then
 				
 				uMatrix = AqwamTensorLibrary:multiply(uMatrix, aMatrix)
 				

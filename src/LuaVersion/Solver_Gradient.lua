@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local BaseSolver = require("Solver_BaseSolver")
+local BaseSolver = require("Model_BaseSolver")
 
 local GradientSolver = {}
 
@@ -56,7 +56,7 @@ function GradientSolver.new(parameterDictionary)
 			
 			local jacobianMatrix = inputMatrix
 			
-			if (not isLinearInput) then jacobianMatrix = AqwamTensorLibrary:dotProduct(firstDerivativeMatrix, jacobianMatrix) end
+			if (not isLinearInput) then jacobianMatrix = AqwamTensorLibrary:multiply(jacobianMatrix, firstDerivativeMatrix) end
 			
 			transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
 			

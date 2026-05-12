@@ -94,7 +94,7 @@ function LinearRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, nil, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -178,7 +178,7 @@ function LinearRegressionModel.new(parameterDictionary)
 
 	NewLinearRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewLinearRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+	NewLinearRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewLinearRegressionModel
 

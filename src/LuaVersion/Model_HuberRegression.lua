@@ -47,19 +47,19 @@ local defaultDelta = 1
 local defaultSolver = "GaussNewton"
 
 local function huberLossFunctionToApply(h, y, delta)
-	
+
 	local errorValue = h - y
-	
+
 	local absoluteErrorValue = math.abs(errorValue)
 
 	if (absoluteErrorValue <= delta) then return (math.pow(errorValue, 2) / 2) end
 
 	return (delta * (absoluteErrorValue - (delta / 2)))
-	
+
 end
 
 local function huberLossFunctionGradientToApply(h, y, delta)
-	
+
 	local errorValue = h - y
 
 	local absoluteErrorValue = math.abs(errorValue)
@@ -67,19 +67,19 @@ local function huberLossFunctionGradientToApply(h, y, delta)
 	if (absoluteErrorValue <= delta) then return errorValue end
 
 	return (delta * math.sign(errorValue))
-	
+
 end
 
 function HuberRegressionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
-	
+
 	local delta = self.delta
 
 	local costVector = AqwamTensorLibrary:applyFunction(huberLossFunctionToApply, hypothesisVector, labelVector, {{delta}})
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
-	
+
 	local Regularizer = self.Regularizer
 
 	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
@@ -104,7 +104,7 @@ function HuberRegressionModel:calculateLossFunctionDerivativeVector(lossGradient
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, nil, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -115,13 +115,13 @@ end
 function HuberRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
 
 	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
-	
+
 	local ModelParameters = self.ModelParameters
-	
+
 	local Regularizer = self.Regularizer
-	
+
 	local Optimizer = self.Optimizer
-	
+
 	local learningRate = self.learningRate
 
 	if (Regularizer) then
@@ -169,26 +169,26 @@ function HuberRegressionModel:update(lossGradientVector, hasBias, clearAllMatric
 end
 
 function HuberRegressionModel.new(parameterDictionary)
-	
+
 	parameterDictionary = parameterDictionary or {}
-	
+
 	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	local NewHuberRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
 
 	setmetatable(NewHuberRegressionModel, HuberRegressionModel)
-	
+
 	NewHuberRegressionModel:setName("HuberRegression")
 
 	NewHuberRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
-	
+
 	NewHuberRegressionModel.delta = parameterDictionary.delta or defaultDelta
 
 	NewHuberRegressionModel.Optimizer = parameterDictionary.Optimizer
 
 	NewHuberRegressionModel.Regularizer = parameterDictionary.Regularizer
-	
-	NewHuberRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+
+	NewHuberRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewHuberRegressionModel
 
@@ -213,13 +213,13 @@ function HuberRegressionModel:setSolver(Solver)
 end
 
 function HuberRegressionModel:train(featureMatrix, labelVector)
-	
+
 	local numberOfData = #featureMatrix
 
 	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
-	
+
 	local numberOfFeatures = #featureMatrix[1]
-	
+
 	local ModelParameters = self.ModelParameters
 
 	if (ModelParameters) then
@@ -231,23 +231,23 @@ function HuberRegressionModel:train(featureMatrix, labelVector)
 		self.ModelParameters = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
 
 	end
-	
+
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
-	
+
 	local delta = self.delta
 
 	local Optimizer = self.Optimizer
-	
+
 	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
-	
+
 	local deltaVector = AqwamTensorLibrary:createTensor({numberOfData, 1}, delta)
 
 	local costArray = {}
 
 	local numberOfIterations = 0
-	
+
 	local cost
-	
+
 	repeat
 
 		numberOfIterations = numberOfIterations + 1
@@ -283,11 +283,11 @@ function HuberRegressionModel:train(featureMatrix, labelVector)
 		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
 
 	end
-	
+
 	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
 
 	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
-	
+
 	if (self.autoResetSolvers) then self.Solver:reset() end
 
 	return costArray
@@ -295,15 +295,15 @@ function HuberRegressionModel:train(featureMatrix, labelVector)
 end
 
 function HuberRegressionModel:predict(featureMatrix)
-	
+
 	local ModelParameters = self.ModelParameters
-	
+
 	if (not ModelParameters) then
-		
+
 		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
-		
+
 		self.ModelParameters = ModelParameters
-		
+
 	end
 
 	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)

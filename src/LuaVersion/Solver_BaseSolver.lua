@@ -84,9 +84,9 @@ function BaseSolver:getCache(cache)
 
 end
 
-function BaseSolver:calculate(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+function BaseSolver:calculate(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 
-	return self.calculateFunction(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	return self.calculateFunction(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 
 end
 

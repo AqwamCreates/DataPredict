@@ -34,6 +34,8 @@
 | 🟡   | Session-Adaptive / Offline | Can be retrained each session.                          |
 | ⚠️   | Assumption-Heavy           | Have restrictive rules on using the model.              |
 | ⚙️   | Configuration-Heavy        | Requires a lot of manual configuration to use.          |
+| ➕   | Positive Output            | Generate positive values only.                          |
+| #️⃣   | Integer Output             | Generate (near) integer values only.                    |
 
 ### Note
 
@@ -53,17 +55,17 @@
 
 ## Regression
 
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy ➕ Positive Output #️⃣ Integer Output
 
 | Model                                                                                            | Alternate Names                            | Properties        | Use Cases                                                                                                |
 |--------------------------------------------------------------------------------------------------|--------------------------------------------|-------------------|----------------------------------------------------------------------------------------------------------|
 | [LinearRegression](Models/LinearRegression.md)                                                   | LR                                         | 🔰 🟢 🟡        | General Continuous Value Prediction And Generation                                                       |
 | [HuberRegression](Models/HuberRegression.md)                                                     | None                                       | 🛡️ 🟢 🟡        | Robust Continuous Value Prediction And Generation                                                       |
 | [QuantileRegression](Models/QuantileRegression.md)                                               | None                                       | 🟢 🟡            | Case-Based Time-To-Leave Prediction And In-Game Currency Price Generation                                |
-| [PoissonRegression](Models/PoissonRegression.md)                                                 | None                                       | 🟢 🟡 ⚠️         | Rate-Based Prediction                                                                                   |
-| [NegativeBinomialRegression](Models/NegativeBinomialRegression.md)                               | None                                       | ❗ 🟢 🟡 ⚠️      | Flexible Rate-Based Prediction                                                                          |
-| [GammaRegression](Models/GammaRegression.md)                                                     | None                                       | 🟢 🟡 ⚠️         | Positive-Value Time-To-Leave Prediction And In-Game Currency Price Generation                           |
-| [TweedieRegression](Models/TweedieRegression.md)                                                 | None                                       | 🟢 🟡             | Rate-Based Prediction                                                                                  |
+| [PoissonRegression](Models/PoissonRegression.md)                                                 | None                                       | 🟢 🟡 ⚠️ ➕ #️⃣  | Rate-Based Prediction                                                                                   |
+| [NegativeBinomialRegression](Models/NegativeBinomialRegression.md)                               | None                                       | ❗ 🟢 🟡 ⚠️ ➕  | Flexible Rate-Based Prediction                                                                          |
+| [GammaRegression](Models/GammaRegression.md)                                                     | None                                       | 🟢 🟡 ⚠️ ➕      | Positive-Value Time-To-Leave Prediction And In-Game Currency Price Generation                           |
+| [TweedieRegression](Models/TweedieRegression.md)                                                 | None                                       | 🟢 🟡 ➕         | Rate-Based Prediction                                                                                  |
 | [UnitWeightedRegression](Models/UnitWeightedRegression.md)                                       | None                                       | ⚡ 🟢 🟡         | Simple Robust Currency Price Generation                                                                 |
 | [TheilSenRegression](Models/TheilSenRegression.md)                                               | None                                       | ⚡ 🟡            | 1-Dimensional Robust Time-To-Leave Prediction                                                           |
 | [IsotonicRegression](Models/IsotonicRegression.md)                                               | None                                       | ⚡ 🟡            | 1-Dimensional Skill-Based Time-To-Leave Prediction                                                      |
@@ -84,7 +86,7 @@
 
 ## Classification
 
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy ➕ Positive Output #️⃣ Integer Output
 
 | Model                                                                                | Alternate Names                | Properties       | Use Cases                                                                                                      |
 |--------------------------------------------------------------------------------------|--------------------------------|------------------|----------------------------------------------------------------------------------------------------------------|
@@ -123,7 +125,7 @@
 
 ## Deep Reinforcement Learning
 
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy ➕ Positive Output #️⃣ Integer Output
 
 | Model                                                                                                          | Alternate Names               | Properties  | Use Cases                                                                 |
 |----------------------------------------------------------------------------------------------------------------|-------------------------------|-------------|---------------------------------------------------------------------------|
@@ -156,7 +158,7 @@
 
 ## Tabular Reinforcement Learning
 
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy ➕ Positive Output #️⃣ Integer Output
 
 | Model                                                                                                                | Alternate Names           | Properties  | Use Cases                           |
 |----------------------------------------------------------------------------------------------------------------------|---------------------------|-------------|-------------------------------------|
@@ -180,7 +182,7 @@
 
 ## Sequence Modelling
 
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy ➕ Positive Output #️⃣ Integer Output
 
 | Model                                                         | Alternate Names | Properties | Use Cases                                 |
 |---------------------------------------------------------------|-----------------|------------|-------------------------------------------|
@@ -192,7 +194,7 @@
 
 ## Filtering
 
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy ➕ Positive Output #️⃣ Integer Output
 
 | Model                                                                                            | Alternate Names | Properties | Use Cases                       |
 |--------------------------------------------------------------------------------------------------|-----------------|------------|---------------------------------|
@@ -203,7 +205,7 @@
 
 ## Outlier Detection
 
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy ➕ Positive Output #️⃣ Integer Output
 
 | Model                                                                                | Alternate Names | Properties | Use Cases                                                           |
 |--------------------------------------------------------------------------------------|-----------------|------------| --------------------------------------------------------------------|
@@ -214,7 +216,7 @@
 
 ## Recommendation
 
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy ➕ Positive Output #️⃣ Integer Output
 
 | Model                                                                                      | Alternate Names | Properties | Use Cases                                    |
 |--------------------------------------------------------------------------------------------|-----------------|------------| ---------------------------------------------|
@@ -226,7 +228,7 @@
 
 ## Generative
 
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy ➕ Positive Output #️⃣ Integer Output
 
 | Model                                                                                                              | Alternate Names | Properties | Use Cases                                 |
 |--------------------------------------------------------------------------------------------------------------------|-----------------|------------| ------------------------------------------|
@@ -237,7 +239,7 @@
 
 ## Feature-Class Containers
 
-> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
+> ❗Implementation Issue 🔰 Beginner Model 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy ➕ Positive Output #️⃣ Integer Output
 
 | Model                    | Alternate Names | Properties | Use Cases      |
 |--------------------------|-----------------|------------| ---------------|

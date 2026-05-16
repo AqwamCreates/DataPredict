@@ -17,8 +17,8 @@
 | [Filtering](#filtering)                                           | Next State Tracking / Estimation                | 4     |
 | [Outlier Detection](#outlier-detection)                           | Outlier Score Generation                        | 4     |
 | [Recommendation](#recommendation)                                 | User-Item Pairing                               | 5     |
-| [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
-| [Feature-Class Containers](#feature-class-containers)             | Feature-Class Look Up                           | 1     |
+| [Generative](#generative)                                         | Novel Feature Generation                        | 4     |
+| [Feature-Class Containers](#feature-class-containers)             | Feature-To-Class Look Up                        | 1     |
 | Total                                                             |                                                 | 109   |
 
 ### Legend

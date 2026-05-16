@@ -44,19 +44,21 @@ function GreedyCoordinateSolver.new(parameterDictionary)
 	
 	NewGreedyCoordinateSolver:setName("GreedyCoordinate")
 	
-	NewGreedyCoordinateSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewGreedyCoordinateSolver:setCalculateFunction(function(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
-		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
-		
-		local isLinearInput = (not NewGreedyCoordinateSolver.isNonLinearInput)
+		local isLinear = NewGreedyCoordinateSolver.isLinear
 
-		local transposedFirstDerivativeMatrix = (isLinearInput and NewGreedyCoordinateSolver.cache)
+		local transposedJacobianMatrix = (isLinear and NewGreedyCoordinateSolver.cache)
 		
-		if (not transposedFirstDerivativeMatrix) then
+		if (not transposedJacobianMatrix) then
 			
-			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+			local jacobianMatrix = inputMatrix
+
+			if (not isLinear) then jacobianMatrix = AqwamTensorLibrary:multiply(jacobianMatrix, firstDerivativeMatrix) end
+
+			transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
 			
-			if (isLinearInput) then NewGreedyCoordinateSolver.cache = transposedFirstDerivativeMatrix end
+			if (isLinear) then NewGreedyCoordinateSolver.cache = transposedJacobianMatrix end
 			
 		end
 		
@@ -64,27 +66,27 @@ function GreedyCoordinateSolver.new(parameterDictionary)
 		
 		local coordinateWeightChangeMatrix = AqwamTensorLibrary:createTensor(weightMatrixDimensionSizeArray)
 		
-		local weightChangeMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, firstDerivativeLossMatrix)
+		local weightChangeMatrix = AqwamTensorLibrary:dotProduct(transposedJacobianMatrix, firstDerivativeLossMatrix)
 		
 		local maximumValueDimensionIndexArray, maximumValue = AqwamTensorLibrary:findMaximumValueDimensionIndexArray(weightChangeMatrix)
 		
 		local minimumValueDimensionIndexArray, minimumValue = AqwamTensorLibrary:findMinimumValueDimensionIndexArray(weightChangeMatrix)
 		
-		local maximumValueMagnitude = math.abs(maximumValue)
+		local absoluteMaximumValue = math.abs(maximumValue)
 		
-		local minimumValueMagnitude = math.abs(minimumValue)
+		local absoluteMinimumValue = math.abs(minimumValue)
 		
 		local targetDimensionIndexArray
 		
 		local targetValue
 		
-		if (maximumValueMagnitude > minimumValueMagnitude) then
+		if (absoluteMaximumValue > absoluteMinimumValue) then
 			
 			targetDimensionIndexArray = maximumValueDimensionIndexArray
 			
 			targetValue = maximumValue
 			
-		elseif (minimumValueMagnitude > minimumValueMagnitude) then
+		elseif (absoluteMinimumValue > absoluteMaximumValue) then
 			
 			targetDimensionIndexArray = minimumValueDimensionIndexArray
 			

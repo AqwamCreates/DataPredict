@@ -98,7 +98,7 @@ function ConditionalRandomFieldModel:calculateLossFunctionDerivativeMatrix(lossG
 
 	if (type(lossGradientMatrix) == "number") then lossGradientMatrix = {{lossGradientMatrix}} end
 
-	local lossFunctionDerivativeMatrix = self.Solver:calculate(self.ModelParameters, self.stateMatrix, lossGradientMatrix)
+	local lossFunctionDerivativeMatrix = self.Solver:calculate(self.ModelParameters, self.stateMatrix, nil, lossGradientMatrix)
 
 	if (self.areGradientsSaved) then self.Gradients = lossFunctionDerivativeMatrix end
 
@@ -178,7 +178,7 @@ function ConditionalRandomFieldModel.new(parameterDictionary)
 
 	NewConditionalRandomFieldModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewConditionalRandomFieldModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+	NewConditionalRandomFieldModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewConditionalRandomFieldModel
 

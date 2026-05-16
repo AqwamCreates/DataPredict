@@ -1,22 +1,30 @@
-# Basic Tutorials
+# [Documentation](index.md) - Basic Tutorials
 
 ## The Basics - Level 1
 
-* [Creating Our First Model](BasicTutorials/CreatingOurFirstModel.md)
+* [Creating Our First Model](BasicTutorials/CreatingOurFirstModel.md) (Training, Prediction And Debugging)
 
-* [Saving And Loading Model Parameters](BasicTutorials/SavingAndLoadingModelParameters.md)
+* [Saving And Loading Model Parameters](BasicTutorials/SavingAndLoadingModelParameters.md) (Training And Prediction Continuation)
 
 ## The Basics - Level 2
 
-* [Using Optimizers](BasicTutorials/UsingOptimizers.md)
+* [Using Solvers](BasicTutorials/UsingSolvers.md) (Training Methods)
 
-* [Using Regularizers](BasicTutorials/UsingRegularizers.md)
+* [Using Optimizers](BasicTutorials/UsingOptimizers.md) (Training Speed-Up)
 
-* [Using Training Modifiers](BasicTutorials/UsingTrainingModifiers.md)
+* [Using Regularizers](BasicTutorials/UsingRegularizers.md) (Dirty / Noisy Data Handling)
 
-* [Using Model Checker](BasicTutorials/UsingModelChecker.md)
+* [Using Training Modifiers](BasicTutorials/UsingTrainingModifiers.md) (Data Subset Training)
 
-* [Distributed Training](BasicTutorials/DistributedTraining.md)
+* [Using Model Checker](BasicTutorials/UsingModelChecker.md) (Testing And Validation)
+
+## The Basics - Level 3
+
+* [Distributed Training](BasicTutorials/DistributedTraining.md) (Server-To-Server, Client-To-Server And Client-To-Client Training)
+
+## Data Transformation
+
+* [Redundant Models](BasicTutorials/RedundantModels.md)
 
 ## The Neural Networks
 

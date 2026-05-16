@@ -177,19 +177,13 @@ function NegativeBinomialRegressionModel:calculateCost(hypothesisVector, labelVe
 	return averageCost
 end
 
-function NegativeBinomialRegressionModel:calculateHypothesisVector(featureMatrix, saveMatrices)
+function NegativeBinomialRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
 	
 	local exponentTermVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
 
 	local hypothesisVector = AqwamTensorLibrary:applyFunction(math.exp, exponentTermVector)
 
-	if (saveMatrices) then 
-
-		self.featureMatrix = featureMatrix
-
-		self.hypothesisVector = hypothesisVector
-
-	end
+	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
 
 	return hypothesisVector
 
@@ -199,7 +193,7 @@ function NegativeBinomialRegressionModel:calculateLossFunctionDerivativeVector(l
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, nil, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -285,7 +279,7 @@ function NegativeBinomialRegressionModel.new(parameterDictionary)
 
 	NewNegativeBinomialRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewNegativeBinomialRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+	NewNegativeBinomialRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewNegativeBinomialRegressionModel
 

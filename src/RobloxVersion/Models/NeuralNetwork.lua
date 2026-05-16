@@ -959,10 +959,8 @@ function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 		local partialErrorMatrix = AqwamTensorLibrary:dotProduct(layerCostMatrix, transposedWeightMatrix)
 
 		derivativeMatrix = deriveLayer(forwardPropagateArray[layerNumber], zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber], activationFunctionArray[layerNumber])
-
-		layerCostMatrix = AqwamTensorLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 		
-		costFunctionDerivativeMatrixArray[weightNumber] = Solver:calculate(weightMatrix, forwardPropagateArray[weightNumber], layerCostMatrix) 
+		costFunctionDerivativeMatrixArray[weightNumber] = Solver:calculate(weightMatrix, forwardPropagateArray[weightNumber], derivativeMatrix, partialErrorMatrix) 
 
 		self:sequenceWait()
 
@@ -1332,7 +1330,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		
 		--[[
 		
-			Do not set isNonLinearInput to false for the second layer due to common usage of this library for deep reinforcement learning.
+			Do not set isLinear to true for the second layer due to common usage of this library for deep reinforcement learning.
 		
 			This is because deep reinforcement learning often uses storchastic or mini-batch training.
 		
@@ -1340,7 +1338,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		
 		--]]
 		
-		SolverArray[layer] = ((layer >= 2) and AbstractSolver.new({isNonLinearInput = true}))
+		SolverArray[layer] = ((layer >= 2) and AbstractSolver.new())
 
 	end
 	
@@ -1396,7 +1394,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	
 	--[[
 		
-		Do not set isNonLinearInput to false for the second layer due to common usage of this library for deep reinforcement learning.
+		Do not set true to false for the second layer due to common usage of this library for deep reinforcement learning.
 	
 		This is because deep reinforcement learning often uses storchastic or mini-batch training.
 		
@@ -1404,7 +1402,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 		
 	--]]
 	
-	Solver = Solver or (not isFirstLayer and require(Solvers[defaultSolver]).new({isNonLinearInput = true}))
+	Solver = Solver or (not isFirstLayer and require(Solvers[defaultSolver]).new())
 
 	table.insert(numberOfNeuronsArray, numberOfNeurons)
 

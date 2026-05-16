@@ -98,7 +98,7 @@ function QuantileRegressionModel:calculateLossFunctionDerivativeMatrix(lossGradi
 	
 	local gradientWeightMatrix = AqwamTensorLibrary:applyFunction(lossFunctionGradientToApply, lossGradientMatrix, {self.QuantilesList})
 
-	local lossFunctionDerivativeMatrix = self.Solver:calculate(self.ModelParameters, self.featureMatrix, gradientWeightMatrix)
+	local lossFunctionDerivativeMatrix = self.Solver:calculate(self.ModelParameters, self.featureMatrix, nil, gradientWeightMatrix)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeMatrix = lossFunctionDerivativeMatrix end
 
@@ -186,7 +186,7 @@ function QuantileRegressionModel.new(parameterDictionary)
 
 	NewQuantileRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewQuantileRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+	NewQuantileRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewQuantileRegressionModel
 

@@ -116,7 +116,7 @@ function SupportVectorMachineGradientVariantModel:calculateLossFunctionDerivativ
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, nil, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -202,7 +202,7 @@ function SupportVectorMachineGradientVariantModel.new(parameterDictionary)
 
 	NewSupportVectorMachineGradientVariantModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewSupportVectorMachineGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+	NewSupportVectorMachineGradientVariantModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewSupportVectorMachineGradientVariantModel
 

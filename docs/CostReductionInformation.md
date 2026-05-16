@@ -13,13 +13,13 @@
 | Security              | If Hosted Externally, Vulnerable To Hacking.                   | Data Stays Between The Roblox's Servers And Clients.               |
 | Reliability           | May Be Inaccurate Or Underperform When Building From Scratch. If Hosted Externally, Models May Be Impacted By Third Party Servers. | 3-Years Of Development. |   
 | Legal                 | If Hosted Externally, Requires Active Compliance For Data Protection Laws. | Data Stays Between The Servers And Clients. As A Result, Mostly Complies With Data Protection laws. |
-| Domain Specialization | Machine Learning Engineers Generally Do Not Specialize In Games. | Built Over 3 Years With Game Domain Specialties And Optimizations. |
+| Domain Specialization | Machine Learning Engineers Generally Do Not Specialize In Games. | Built With Game Domain Specialties And Optimizations. |
 
 ## Licensing Costs
 
 | License Type Based On Gross Revenue Per Company / Organization / Group / Individual | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          | Licensing Cost When A Project Earns 3K / 10K / 100K / 1M USD Per Month |
 |-------------------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------|
-| Non-B2B + Less Than Or Equal To 3K USD Within 365 Days (Not Per 365 Days)           | 0%                                                        | Requires Public Disclosure Of DataPredict | Not Applicable                                                         |
+| Non-B2B + Less Than Or Equal To 5K USD Within 365 Days (Not Per 365 Days)           | 0%                                                        | Requires Public Disclosure Of DataPredict | Not Applicable                                                         |
 | Standard                                                                            | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 57 USD / 160 USD / 1300 USD / 10,530 USD                               |
 | White-Label                                                                         | 5%                                                        | None                                      | 150 USD / 500 USD / 5000 USD / 50,000 USD                              |
 

@@ -44,37 +44,37 @@ function IterativelyReweightedSolver.new(parameterDictionary)
 	
 	NewIterativelyReweightedSolver:setName("IterativelyReweighted")
 	
-	NewIterativelyReweightedSolver:setCalculateFunction(function(weightMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
+	NewIterativelyReweightedSolver:setCalculateFunction(function(weightMatrix, inputMatrix, firstDerivativeMatrix, firstDerivativeLossMatrix)
 		
 		-- Can only cache from linear models since the derivative is a feature matrix. Hence, these values are constant.
 		
-		local isLinearInput = (not NewIterativelyReweightedSolver.isNonLinearInput)
+		local isLinear = NewIterativelyReweightedSolver.isLinear
 		
-		local transposedFirstDerivativeMatrix = (isLinearInput and NewIterativelyReweightedSolver.cache)
+		local transposedJacobianMatrix = (isLinear and NewIterativelyReweightedSolver.cache)
 		
 		local numberOfdata = AqwamTensorLibrary:getDimensionSizeArray(firstDerivativeLossMatrix)[1]
 		
-		local diagonalMatrix = AqwamTensorLibrary:createTensor({numberOfdata, numberOfdata})
+		local jacobianMatrix = inputMatrix
 
-		if (not transposedFirstDerivativeMatrix) then
+		if (not isLinear) then jacobianMatrix = AqwamTensorLibrary:multiply(jacobianMatrix, firstDerivativeMatrix) end
 
-			transposedFirstDerivativeMatrix = AqwamTensorLibrary:transpose(firstDerivativeMatrix)
+		if (not transposedJacobianMatrix) then
+
+			transposedJacobianMatrix = AqwamTensorLibrary:transpose(jacobianMatrix)
 			
-			if (isLinearInput) then NewIterativelyReweightedSolver.cache = transposedFirstDerivativeMatrix end
+			if (isLinear) then NewIterativelyReweightedSolver.cache = transposedJacobianMatrix end
 
 		end
 		
 		local weightMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(weightMatrix) 
 		
-		local firstDerivativeLossMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(firstDerivativeLossMatrix)
+		local firstDerivativeLossMatrixDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(inputMatrix)
 		
 		local numberOfData = firstDerivativeLossMatrixDimensionSizeArray[1]
 		
 		local numberOfFeatures = weightMatrixDimensionSizeArray[1]
 		
 		local numberOfOutputs = weightMatrixDimensionSizeArray[2]
-		
-		local weightVectorDimensionSizeArray = {numberOfFeatures, 1}
 		
 		local firstDerivativeLossVector
 		
@@ -84,27 +84,39 @@ function IterativelyReweightedSolver.new(parameterDictionary)
 		
 		local weightChangeMatrix
 		
+		local diagonalMatrix
+		
+		pseudoInverseMatrix = transposedJacobianMatrix
+		
+		if (not isLinear) then
+			
+			diagonalMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfData}, 0)
+			
+			for dataIndex, unwrappedFirstDerivativeVector in ipairs(firstDerivativeMatrix) do diagonalMatrix[dataIndex][dataIndex] = unwrappedFirstDerivativeVector[1] end
+			
+			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, diagonalMatrix)
+			
+		end
+		
+		pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, jacobianMatrix)
+		
+		pseudoInverseMatrix = AqwamTensorLibrary:inverse(pseudoInverseMatrix)
+		
+		-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
+		
+		if (not pseudoInverseMatrix) then return AqwamTensorLibrary:createTensor(weightMatrixDimensionSizeArray, 0) end
+		
+		pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, transposedJacobianMatrix)
+		
+		local weightChangeBaseVector = pseudoInverseMatrix
+		
+		if (not isLinear) then weightChangeBaseVector = AqwamTensorLibrary:dotProduct(weightChangeBaseVector, diagonalMatrix) end
+		
 		for outputIndex = 1, numberOfOutputs, 1 do
 			
 			firstDerivativeLossVector = AqwamTensorLibrary:extract(firstDerivativeLossMatrix, {1, outputIndex}, {numberOfData, outputIndex})
 			
-			for dataIndex, unwrappedErrorVector in ipairs(firstDerivativeLossVector) do diagonalMatrix[dataIndex][dataIndex] = unwrappedErrorVector[1] end
-			
-			pseudoInverseMatrix = AqwamTensorLibrary:dotProduct(transposedFirstDerivativeMatrix, diagonalMatrix, firstDerivativeMatrix)
-			
-			pseudoInverseMatrix = AqwamTensorLibrary:inverse(pseudoInverseMatrix)
-			
-			-- If it is non-invertible, then do not return any weight change values as it is likely to be a local minimum.
-			
-			if (pseudoInverseMatrix) then
-				
-				weightChangeVector = AqwamTensorLibrary:dotProduct(pseudoInverseMatrix, transposedFirstDerivativeMatrix, diagonalMatrix, firstDerivativeLossVector)
-				
-			else
-				
-				weightChangeVector = AqwamTensorLibrary:createTensor(weightVectorDimensionSizeArray, 0)
-				
-			end
+			weightChangeVector = AqwamTensorLibrary:dotProduct(weightChangeBaseVector, firstDerivativeLossVector)
 			
 			if (weightChangeMatrix) then
 				

@@ -42,31 +42,23 @@ local defaultMaximumNumberOfIterations = 500
 
 local defaultLearningRate = 0.3
 
-local defaultCostFunction = "MeanSquaredError"
+local defaultPValue = 2 -- 2 is for "Mean Squared Error". 1 is for "Mean Absolute Error".
 
 local defaultSolver = "GaussNewton"
 
-local lossFunctionList = {
-
-	["MeanSquaredError"] = function (h, y) return ((h - y)^2) end,
-
-	["MeanAbsoluteError"] = function (h, y) return math.abs(h - y) end,
-
-}
-
-local lossFunctionGradientList = {
-
-	["MeanSquaredError"] = function (h, y) return (2 * (h - y)) end,
-
-	["MeanAbsoluteError"] = function (h, y) return math.sign(h - y) end,
-
-}
+local function functionToApply(h, y)
+	
+	return math.abs(h - y)
+	
+end
 
 function LinearRegressionModel:calculateCost(hypothesisVector, labelVector, hasBias)
 
 	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
 
-	local costVector = AqwamTensorLibrary:applyFunction(lossFunctionList[self.costFunction], hypothesisVector, labelVector)
+	local costVector = AqwamTensorLibrary:applyFunction(functionToApply, hypothesisVector, labelVector)
+	
+	costVector = AqwamTensorLibrary:power(costVector, self.pValue)
 
 	local totalCost = AqwamTensorLibrary:sum(costVector)
 	
@@ -94,7 +86,7 @@ function LinearRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 
 	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
 
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, nil, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
 
@@ -172,13 +164,13 @@ function LinearRegressionModel.new(parameterDictionary)
 
 	NewLinearRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 
-	NewLinearRegressionModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
+	NewLinearRegressionModel.pValue = parameterDictionary.pValue or defaultPValue
 
 	NewLinearRegressionModel.Optimizer = parameterDictionary.Optimizer
 
 	NewLinearRegressionModel.Regularizer = parameterDictionary.Regularizer
 	
-	NewLinearRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new()
+	NewLinearRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
 
 	return NewLinearRegressionModel
 
@@ -222,15 +214,29 @@ function LinearRegressionModel:train(featureMatrix, labelVector)
 
 	end
 	
-	local lossFunctionGradientFunctionToApply = lossFunctionGradientList[self.costFunction]
-
-	if (not lossFunctionGradientFunctionToApply) then error("Invalid cost function.") end
+	local pValue = self.pValue
 	
 	local maximumNumberOfIterations = self.maximumNumberOfIterations
 
 	local Optimizer = self.Optimizer
 	
 	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
+	
+	local pValueMinusOne = pValue - 1
+	
+	local lossFunctionGradientFunctionToApply = function(h, y)
+		
+		local differenceValue = h - y
+		
+		local signValue = math.sign(differenceValue)
+		
+		local absoluteDifferenceValue = math.abs(differenceValue)
+		
+		local powerAbsoluteDifferenceValue = math.pow(absoluteDifferenceValue, pValueMinusOne)
+		
+		return (pValue * signValue * powerAbsoluteDifferenceValue)
+		
+	end
 
 	local costArray = {}
 

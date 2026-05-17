@@ -48,7 +48,7 @@
 
 * [Simulating Curiosity With Random Network Distillation](BasicTutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
-* [Improving Action-To-Reward Assignment For Discrete Action Space](BasicTutorials/ImprovingActionToRewardAssignmentForDiscreteActionSpace.md)
+* [Improving Action-Reward Association For Discrete Action Space](BasicTutorials/ImprovingActionRewardAssociationForDiscreteActionSpace.md)
 
 ## Learning AIs - Level 3
 

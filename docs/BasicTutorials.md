@@ -48,7 +48,7 @@
 
 * [Improving Action-Reward Association For Discrete Action Space](BasicTutorials/ImprovingActionRewardAssociationForDiscreteActionSpace.md)
 
-* [Self-Learning Car Using Continuous Action Space](BasicTutorials/SelfLearningCarUsingDicreteActionSpace.md)
+* [Self-Learning Car Using Continuous Action Space](BasicTutorials/SelfLearningCarUsingContinuousActionSpace.md)
 
 ## Learning AIs - Level 3
 

@@ -92,7 +92,7 @@ while true do
 
     local currentEnvironmentFeatureVector, reward = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, previousAction)
 
-    local currentAction = DeepQLearning:predict(currentEnvironmentFeatureVector, true)[1][1]
+    local currentAction = DeepQLearning:predict(currentEnvironmentFeatureVector)[1][1]
 
     local hasGameEnded = checkIfGameHasEnded(currentEnvironmentFeatureVector)
 

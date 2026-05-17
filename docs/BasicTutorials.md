@@ -53,3 +53,5 @@
 ## Learning AIs - Level 3
 
 * [Deep Reinforcement Learning Algorithms Properties](BasicTutorials/DeepReinforcementLearningAlgorithmsProperties.md)
+
+* [Multi-Agent Reinforecement Learning Setup](BasicTutorials/MultiAgentReinforecementLearningSetup.md)

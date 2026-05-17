@@ -104,7 +104,7 @@ Below we will show you the difference between the two above. But first, let's de
 
 ```lua
 
-local numberOfInputs = #environmentFeatureVector - 1 -- -1 is added to exclude bias from our total environment feature count.
+local numberOfInputs = #environmentFeatureVector[1] - 1 -- -1 is added to exclude bias from our total environment feature count.
 
 local NeuralNetwork = DataPredict.Models.NeuralNetwork
 

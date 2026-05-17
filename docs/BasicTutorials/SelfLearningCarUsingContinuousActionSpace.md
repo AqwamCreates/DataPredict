@@ -32,7 +32,7 @@ local steerAngleStandardDeviation = math.sqrt(90)
 
 --[[
 
-  Humans often increase and decrease by values of ten. We can consider this as our variance.
+  Humans often increase and decrease by values of ten for kilometers per hour. We can consider this as our variance.
 
   You can decrease this if you want to reduce risky exploration.
 

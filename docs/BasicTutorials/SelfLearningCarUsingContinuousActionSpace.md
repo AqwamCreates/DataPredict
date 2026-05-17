@@ -38,9 +38,17 @@ local standardDeviationActionVector = { -- This control how far the values can g
 
 ```lua
 
+--[[
+
+  1 is added at first column for bias, but it is optional.
+
+  Additionally, continous action space deep reinforcement learning models are extremely sensitive to rewards. Hence we use inverse distance for our inputs to stabilize our model's training.
+
+--]]
+
 local environmentFeatureVector = {
 
-  {1, frontRaycastDistance, backRaycastDistance, leftRaycastDistance, rightRaycastDistance} -- 1 is added at first column for bias, but it is optional.
+  {1, inverseFrontRaycastDistance, inverseBackRaycastDistance, inverseLeftRaycastDistance, inverseRightRaycastDistance} 
 
 }
 
@@ -52,7 +60,7 @@ local environmentFeatureVector = {
 
 local memoryEnvironmentFeatureVector = {
 
-  {previousFrontRaycastDistance, previousBackRaycastDistance, previousLeftRaycastDistance, previousRightRaycastDistance}
+  {previousInverseFrontRaycastDistance, previousInverseBackRaycastDistance, previousInverseLeftRaycastDistance, previousInverseRightRaycastDistance}
 
 }
 

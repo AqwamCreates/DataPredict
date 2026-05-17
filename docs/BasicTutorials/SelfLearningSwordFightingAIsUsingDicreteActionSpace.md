@@ -100,7 +100,7 @@ while true do
 
   }
 
-  local previousAction = 1
+  local previousAction = "None"
 
   for step = 1, 1000, 1 do
 
@@ -160,7 +160,7 @@ local previousEnvironmentFeatureVector = {
 
 }
 
-local action = 1
+local action = "None"
 
 local reward = 0
 

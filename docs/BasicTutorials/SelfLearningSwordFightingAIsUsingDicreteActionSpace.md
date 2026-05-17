@@ -22,7 +22,7 @@ local environmentFeatureVector = {
 
 ```lua
 
-local ActionList = {"Forward", "Backward", "Left", "Right, "Jump", "Attack", "None"}
+local ActionList = {"Forward", "Backward", "Left", "Right", "Jump", "Attack", "None"}
 
 ```
 

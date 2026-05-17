@@ -100,7 +100,7 @@ while true do
 
     --[[
 
-      update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
+      categoricalUpdate() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
 
     --]]
 

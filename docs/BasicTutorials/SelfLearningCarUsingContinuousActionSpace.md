@@ -10,7 +10,7 @@
 
 ```lua
 
-local numberOfActions = 2 -- Steering Angle, Throttle
+local numberOfActions = 2 -- Steering Angle, Speed
 
 local actionDimensionSizeArray = {1, numberOfActions}
 
@@ -24,25 +24,25 @@ local actionDimensionSizeArray = {1, numberOfActions}
 
   Maximum steering angle for one side is 90 degrees. We can consider this as our variance.
 
-  You may decrease this if you want to reduce risky exploration.
+  You can decrease this if you want to reduce risky exploration.
 
 --]]
 
-local steeringAngleStandardDeviation = math.sqrt(90)
+local steerAngleStandardDeviation = math.sqrt(90)
 
 --[[
 
-  Humans often increase and decrease by values of ten. We can consider this as our variance. 
+  Humans often increase and decrease by values of ten. We can consider this as our variance.
 
-  You may decrease this if you want to reduce risky exploration.
+  You can decrease this if you want to reduce risky exploration.
 
 --]]
 
-local throttleStandardDeviation = math.sqrt(10)
+local speedStandardDeviation = math.sqrt(10)
 
 local standardDeviationActionVector = { -- This control how far the values can go from the center / mean.
 
-  {steeringAngleStandardDeviation, throttleStandardDeviation}
+  {steerAngleStandardDeviation, speedStandardDeviation}
 
 }
 

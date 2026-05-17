@@ -140,9 +140,9 @@ local DeepQLearningQuickSetup = DataPredict.QuickSetups.SingleCategoricalPolicy.
 
 local environmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous environment feature vector.
 
-local action = "None"
-
 local reward = 0
+
+local action
 
 while true do
 

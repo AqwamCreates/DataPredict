@@ -4,9 +4,17 @@
 
 * Knowledge on how to build neural networks, which can be found [here](UsingNeuralNetworksPart1.md).
 
+## Action List
+
+```lua
+
+local ActionList = {"Forward", "Backward", "Left", "Right", "Jump", "Attack", "None"}
+
+```
+
 ## Environment Feature Vector
 
-An example of environment feature vector will look like this:
+### Basic
 
 ```lua
 
@@ -18,11 +26,31 @@ local environmentFeatureVector = {
 
 ```
 
-## Action List
+### To Remember Multiple States (Optional)
 
 ```lua
 
-local ActionList = {"Forward", "Backward", "Left", "Right", "Jump", "Attack", "None"}
+local memoryEnvironmentFeatureVector = {
+
+  {previousHealth, previousEnemyHealth, previousEnemyDistance, previousIsEnemyLooking}
+
+}
+
+environmentFeatureVector = TensorL:concatenate(environmentFeatureVector, memoryEnvironmentFeatureVector, 2)
+
+```
+
+### To Remember Multiple Previously Taken Actions (Optional)
+
+```lua
+
+local memoryActionVector = {
+
+  {didForward, didBackward, didLeft, didRight, didJump, didAttack, didNone} -- 0 and 1 values only, where 1 means that action has been taken previously.
+
+}
+
+environmentFeatureVector = TensorL:concatenate(environmentFeatureVector, memoryActionVector, 2)
 
 ```
 
@@ -40,7 +68,7 @@ Below we will show you the difference between the two above. But first, let's de
 
 local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionList}) -- Create the NeuralNetwork model first.
 
-NeuralNetwork:addLayer(4, true, "None")
+NeuralNetwork:addLayer((#environmentFeatureVector - 1), true, "None")
 
 NeuralNetwork:addLayer(#ActionList, false, "LeakyReLU")
 

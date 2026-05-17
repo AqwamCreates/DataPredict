@@ -84,11 +84,7 @@ local DeepQLearning = DataPredict.Models.DeepQLearning.new({Model = NeuralNetwor
 
 while true do
 
-  local previousEnvironmentFeatureVector = {
-
-    {1, 0, 0, 0, 0} -- We must keep track our previous feature vector.
-
-  }
+  local previousEnvironmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous feature vector.
 
   local previousAction = "None"
 

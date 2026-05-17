@@ -58,7 +58,7 @@ local standardDeviationActionVector = { -- This control how far the values can g
 
   1 is added at first column for bias, but it is optional.
 
-  Additionally, continous action space deep reinforcement learning models are extremely sensitive to rewards. Hence we use inverse distance for our inputs to stabilize our model's training.
+  Additionally, continuous action space deep reinforcement learning models are extremely sensitive to rewards. Hence we use inverse distance for our inputs to stabilize our model's training.
 
 --]]
 

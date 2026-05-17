@@ -6,15 +6,27 @@
 
 ## Actions Vectors
 
+### General Action Information
+
 ```lua
 
 local numberOfActions = 2 -- Steering Angle, Throttle
 
 local actionDimensionSizeArray = {1, numberOfActions}
 
+```
+
+### Action Standard Deviation Information
+
+```lua
+
+local steeringAngleStandardDeviation = math.sqrt(90) -- Maximum steering angle for one side is 90 degrees. You may decrease this if you want to reduce risky exploration.
+
+local throttleStandardDeviation = 
+
 local standardDeviationActionVector = { -- This control how far the values can go from the center / mean.
 
-  {math.sqrt(180), } -- Maximum steering angle is 180, 
+  {steeringAngleStandardDeviation, throttleStandardDeviation}
 
 }
 

@@ -4,26 +4,26 @@
 
 * Knowledge on how to build neural networks, which can be found [here](UsingNeuralNetworksPart1.md).
 
-## The Basics
-
-### Environment Feature Vector
-
-An environment feature vector is a vector containing all the information related to model's environment. It can contain as many information such as:
-
-* Distance
-
-* Health
-
-* Speed
+## Environment Feature Vector
 
 An example of environment feature vector will look like this:
 
 ```lua
+
 local environmentFeatureVector = {
 
-  {1, -32, 234, 12, -97} -- 1 is added at first column for bias, but it is optional.
+  {1, health, enemyHealth, enemyDistance, isEnemyLooking} -- 1 is added at first column for bias, but it is optional.
 
 }
+
+```
+
+## Action List
+
+```lua
+
+local ActionList = {"Forward", "Backward", "Left", "Right, "Jump", "Attack", "None"}
+
 ```
 
 ## Setting Up Our Reinforcement Learning Model
@@ -38,13 +38,11 @@ Below we will show you the difference between the two above. But first, let's de
 
 ```lua
 
-local ClassesList = {1, 2}
-
-local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ClassesList}) -- Create the NeuralNetwork first.
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionList}) -- Create the NeuralNetwork first.
 
 NeuralNetwork:addLayer(4, true, "None")
 
-NeuralNetwork:addLayer(2, false, "LeakyReLU")
+NeuralNetwork:addLayer(#ActionList, false, "LeakyReLU")
 
 local DeepQLearning = DataPredict.Models.DeepQLearning.new({Model = NeuralNetwork}) -- Then create the DeepQLearning.
 

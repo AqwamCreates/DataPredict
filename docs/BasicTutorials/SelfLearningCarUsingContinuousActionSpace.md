@@ -4,7 +4,7 @@
 
 * Knowledge on how to build neural networks, which can be found [here](UsingNeuralNetworksPart1.md).
 
-## Actions Vectors
+## Action Vectors
 
 ### General Action Information
 

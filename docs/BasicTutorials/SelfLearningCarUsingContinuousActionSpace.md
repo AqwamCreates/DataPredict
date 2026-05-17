@@ -196,9 +196,9 @@ local TemporalDifferenceActorCriticQuickSetup = DataPredict.QuickSetups.SingleDi
 
 local environmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous environment feature vector.
 
-local actionMeanVector
-
 local reward = 0
+
+local actionMeanVector
 
 while true do
 

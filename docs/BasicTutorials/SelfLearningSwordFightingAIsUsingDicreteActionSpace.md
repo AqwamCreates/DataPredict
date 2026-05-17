@@ -68,9 +68,9 @@ Below we will show you the difference between the two above. But first, let's de
 
 -- Create the NeuralNetwork model first.
 
-local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionsList}) -- -1 is added to exclude bias from our total environment feature count.
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionsList})
 
-NeuralNetwork:addLayer((#environmentFeatureVector - 1), true, "None")
+NeuralNetwork:addLayer((#environmentFeatureVector - 1), true, "None") -- -1 is added to exclude bias from our total environment feature count.
 
 NeuralNetwork:addLayer(#ActionList, false, "LeakyReLU")
 

@@ -98,11 +98,11 @@ while true do
 
     local terminalStateValue = (hasGameEnded and 1) or 0
 
-   --[[
+    --[[
 
-    update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
+      update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
 
-  --]]
+    --]]
 
     DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, previousAction, reward, currentEnvironmentFeatureVector, currentAction, terminalStateValue)
 

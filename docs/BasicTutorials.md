@@ -42,13 +42,13 @@
 
 * [Self-Learning Sword-Fighting AIs Using Dicrete Action Space](BasicTutorials/SelfLearningSwordFightingAIsUsingDicreteActionSpace.md)
 
-* [Self-Learning Car Using Continuous Action Space](BasicTutorials/SelfLearningCarUsingDicreteActionSpace.md)
-
 ## Learning AIs - Level 2
 
 * [Simulating Curiosity With Random Network Distillation](BasicTutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
 * [Improving Action-Reward Association For Discrete Action Space](BasicTutorials/ImprovingActionRewardAssociationForDiscreteActionSpace.md)
+
+* [Self-Learning Car Using Continuous Action Space](BasicTutorials/SelfLearningCarUsingDicreteActionSpace.md)
 
 ## Learning AIs - Level 3
 

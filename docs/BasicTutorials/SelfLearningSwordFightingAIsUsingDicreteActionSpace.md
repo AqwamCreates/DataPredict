@@ -138,11 +138,7 @@ To reduce the amount of things we need to track, we can use SingleCategoricalPol
 
 local DeepQLearningQuickSetup = DataPredict.QuickSetups.SingleCategoricalPolicy.new({Model = DeepQLearning})
 
-local previousEnvironmentFeatureVector = {
-
-  {1, 0, 0, 0, 0} -- We must keep track our previous feature vector.
-
-}
+local previousEnvironmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous feature vector.
 
 local action = "None"
 

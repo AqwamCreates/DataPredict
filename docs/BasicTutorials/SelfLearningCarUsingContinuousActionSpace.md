@@ -102,7 +102,7 @@ while true do
 
   local previousEnvironmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous environment feature vector.
 
-  local previousMeanActionVector = TensorL:createTensor(actionDimensionSizeArray, 0)
+  local previousActionMeanVector = TensorL:createTensor(actionDimensionSizeArray, 0)
 
   local previousActionNoiseVector
 
@@ -110,7 +110,7 @@ while true do
 
     local currentEnvironmentFeatureVector, reward = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, previousMeanActionVector)
 
-    local currentMeanActionVector = TemporalDifferenceActorCriticModel:predict(currentEnvironmentFeatureVector, true)
+    local currentActionMeanVector = TemporalDifferenceActorCriticModel:predict(currentEnvironmentFeatureVector, true)
 
     local previousActionNoiseVector = TensorL:createRandomNormalTensor(actionDimensionSizeArray)
 
@@ -124,9 +124,11 @@ while true do
 
     --]]
 
-    TemporalDifferenceActorCriticModel:diagonalGaussianUpdate(previousEnvironmentFeatureVector, previousMeanActionVector, standardDeviationActionVector, previousActionNoiseVector, reward, currentEnvironmentFeatureVector, currentMeanActionVector, terminalStateValue)
+    TemporalDifferenceActorCriticModel:diagonalGaussianUpdate(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
 
     previousEnvironmentFeatureVector = currentEnvironmentFeatureVector
+
+    previousActionMeanVector = currentActionMeanVector
 
     if hasGameEnded then break end
 
@@ -160,15 +162,15 @@ local TemporalDifferenceActorCriticQuickSetup = DataPredict.QuickSetups.SingleDi
 
 local previousEnvironmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous environment feature vector.
 
-local meanActionVector = TensorL:createTensor(actionDimensionSizeArray, 0)
+local actionMeanVector = TensorL:createTensor(actionDimensionSizeArray, 0)
 
 local reward = 0
 
 while true do
 
-  meanActionVector = TemporalDifferenceActorCriticQuickSetup:reinforce(environmentFeatureVector, reward)
+  actionMeanVector = TemporalDifferenceActorCriticQuickSetup:reinforce(environmentFeatureVector, reward)
 
-  environmentFeatureVector, reward = fetchEnvironmentFeatureVector(environmentFeatureVector, meanActionVector)
+  environmentFeatureVector, reward = fetchEnvironmentFeatureVector(environmentFeatureVector, actionMeanVector)
 
 end
 

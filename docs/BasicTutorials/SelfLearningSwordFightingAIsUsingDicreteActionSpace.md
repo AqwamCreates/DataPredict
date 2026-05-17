@@ -66,7 +66,9 @@ Below we will show you the difference between the two above. But first, let's de
 
 ```lua
 
-local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionList}) -- Create the NeuralNetwork model first.
+-- Create the NeuralNetwork model first.
+
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionList}) -- -1 is added to exclude bias from our total environment feature count.
 
 NeuralNetwork:addLayer((#environmentFeatureVector - 1), true, "None")
 

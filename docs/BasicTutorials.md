@@ -38,14 +38,18 @@
 
 * [Introduction To Reinforcement Learning](BasicTutorials/IntroductionToReinforcementLearning.md)
 
+* [Choosing The Most Effective Environment Inputs](BasicTutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
+
 * [Self-Learning Sword-Fighting AIs Using Dicrete Action Space](BasicTutorials/SelfLearningSwordFightingAIsUsingDicreteActionSpace.md)
 
 * [Self-Learning Car Using Continuous Action Space](BasicTutorials/SelfLearningCarUsingDicreteActionSpace.md)
 
-* [Choosing The Most Effective Environment Inputs](BasicTutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
+## Learning AIs - Level 2
 
 * [Simulating Curiosity With Random Network Distillation](BasicTutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
-## Learning AIs - Level 2
+* [Improving Action-To-Reward Assignment For Discrete Action Space](BasicTutorials/ImprovingActionToRewardAssignmentForDiscreteActionSpace.md)
+
+## Learning AIs - Level 3
 
 * [Deep Reinforcement Learning Algorithms Properties](BasicTutorials/DeepReinforcementLearningAlgorithmsProperties.md)

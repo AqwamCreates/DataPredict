@@ -194,7 +194,7 @@ To reduce the amount of things we need to track, we can use SingleCategoricalPol
 
 local TemporalDifferenceActorCriticQuickSetup = DataPredict.QuickSetups.SingleDiagonalGaussianPolicy.new({Model = TemporalDifferenceActorCriticModel, standardDeviationActionVector = standardDeviationActionVector})
 
-local previousEnvironmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous environment feature vector.
+local environmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous environment feature vector.
 
 local actionMeanVector = TensorL:createTensor(actionDimensionSizeArray, 0)
 

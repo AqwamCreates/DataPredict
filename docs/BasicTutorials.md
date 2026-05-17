@@ -44,9 +44,9 @@
 
 ## Learning AIs - Level 2
 
-* [Simulating Curiosity With Random Network Distillation](BasicTutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
+* [Using Random Network Distillation](BasicTutorials/UsingRandomNetworkDistillation.md) (Simulating Curiosity)
 
-* [Improving Action-Reward Association For Discrete Action Space](BasicTutorials/ImprovingActionRewardAssociationForDiscreteActionSpace.md)
+* [Using Eligibility Traces](BasicTutorials/UsingEligibilityTraces.md) (Improving Action-Reward Association For Discrete Action Space)
 
 * [Self-Learning Car Using Continuous Action Space](BasicTutorials/SelfLearningCarUsingContinuousActionSpace.md)
 

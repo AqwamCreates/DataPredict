@@ -4,11 +4,11 @@
 
 * Knowledge on how to build neural networks, which can be found [here](UsingNeuralNetworksPart1.md).
 
-## Action List
+## Actions List
 
 ```lua
 
-local ActionList = {"Forward", "Backward", "Left", "Right", "Jump", "Attack", "None"}
+local ActionsList = {"Forward", "Backward", "Left", "Right", "Jump", "Attack", "None"}
 
 ```
 
@@ -68,7 +68,7 @@ Below we will show you the difference between the two above. But first, let's de
 
 -- Create the NeuralNetwork model first.
 
-local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionList}) -- -1 is added to exclude bias from our total environment feature count.
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionsList}) -- -1 is added to exclude bias from our total environment feature count.
 
 NeuralNetwork:addLayer((#environmentFeatureVector - 1), true, "None")
 

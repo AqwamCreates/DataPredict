@@ -28,9 +28,9 @@
 
 ## The Neural Networks
 
-* [Using Neural Networks Part 1](BasicTutorials/UsingNeuralNetworksPart1.md)
+* [Using Neural Networks, Part 1](BasicTutorials/UsingNeuralNetworksPart1.md)
 
-* [Using Neural Networks Part 2](BasicTutorials/UsingNeuralNetworksPart2.md)
+* [Using Neural Networks, Part 2](BasicTutorials/UsingNeuralNetworksPart2.md)
 
 * [General Guide For Neural Networks Settings](BasicTutorials/GeneralGuideForNeuralNetworksSettings.md)
 

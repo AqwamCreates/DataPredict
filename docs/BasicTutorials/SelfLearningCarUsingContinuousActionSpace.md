@@ -162,7 +162,7 @@ local reward = 0
 
 while true do
 
-  currentMeanActionVector = DeepQLearningQuickSetup:reinforce(environmentFeatureVector, reward)
+  currentMeanActionVector = TemporalActorCriticQuickSetup:reinforce(environmentFeatureVector, reward)
 
   environmentFeatureVector, reward = fetchEnvironmentFeatureVector(environmentFeatureVector, meanActionVector)
 

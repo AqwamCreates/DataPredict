@@ -94,4 +94,4 @@
 
 [Aqwam's Machine, Deep And Reinforcement Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamMachineDeepAndReinforcementLearningLibrary.rbxm)
 
-[Aqwam's Matrix Library](https://github.com/AqwamCreates/MatrixL/blob/main/module_scripts/AqwamMatrixLibrary.rbxm)
+[Aqwam's 2D Tensor Library](https://github.com/AqwamCreates/TensorL-2D/blob/main/src/TensorL2D.lua)

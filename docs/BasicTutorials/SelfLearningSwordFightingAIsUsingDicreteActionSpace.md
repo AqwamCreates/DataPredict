@@ -90,11 +90,9 @@ while true do
 
   for step = 1, 1000, 1 do
 
-    local currentEnvironmentFeatureVector = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, action)
+    local currentEnvironmentFeatureVector, reward = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, previousAction)
 
     local currentAction = DeepQLearning:predict(currentEnvironmentFeatureVector, true)[1][1]
-
-    local reward = getReward(currentEnvironmentFeatureVector)
 
     local hasGameEnded = checkIfGameHasEnded(currentEnvironmentFeatureVector)
 
@@ -154,9 +152,7 @@ while true do
 
   action = DeepQLearningQuickSetup:reinforce(environmentFeatureVector, reward)
 
-  environmentFeatureVector = fetchEnvironmentFeatureVector(environmentFeatureVector, action)
-
-  reward = getReward(environmentFeatureVector, action)
+  environmentFeatureVector, reward = fetchEnvironmentFeatureVector(environmentFeatureVector, action)
 
 end
 

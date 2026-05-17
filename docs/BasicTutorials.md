@@ -36,14 +36,14 @@
 
 ## Learning AIs - Level 1
 
-* [Getting Started With Deep Reinforcement Learning](BasicTutorials/GettingStartedWithDeepReinforcementLearning.md)
+* [Self-Learning SwordFighting AIs Using Dicrete Action Space](BasicTutorials/SelfLearningSwordFightingAIsUsingDicreteActionSpace.md)
+
+* [Self-Learning Car Using Continuous Action Space](BasicTutorials/SelfLearningCarUsingDicreteActionSpace.md)
 
 * [Choosing The Most Effective Environment Inputs](BasicTutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
 
 * [Simulating Curiosity With Random Network Distillation](BasicTutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
 ## Learning AIs - Level 2
-
-* [The Action Space And The Reinforcement Learning Algorithms](BasicTutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
 
 * [Deep Reinforcement Learning Algorithms Properties](BasicTutorials/DeepReinforcementLearningAlgorithmsProperties.md)

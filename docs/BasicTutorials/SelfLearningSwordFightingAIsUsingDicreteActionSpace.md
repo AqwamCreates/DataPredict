@@ -1,4 +1,4 @@
-# Getting Started With Deep Reinforcement Learning
+# Self-Learning SwordFighting AIs Using Dicrete Action Space
 
 ## Requirements
 

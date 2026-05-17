@@ -36,7 +36,9 @@
 
 ## Learning AIs - Level 1
 
-* [Self-Learning SwordFighting AIs Using Dicrete Action Space](BasicTutorials/SelfLearningSwordFightingAIsUsingDicreteActionSpace.md)
+* [Introduction To Reinforcement Learning](BasicTutorials/IntroductionToReinforcementLearning.md)
+
+* [Self-Learning Sword-Fighting AIs Using Dicrete Action Space](BasicTutorials/SelfLearningSwordFightingAIsUsingDicreteActionSpace.md)
 
 * [Self-Learning Car Using Continuous Action Space](BasicTutorials/SelfLearningCarUsingDicreteActionSpace.md)
 

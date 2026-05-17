@@ -172,13 +172,13 @@ while true do
 
   end
 
- --[[
+  --[[
 
-   episodeUpdate() is used whenever an episode ends. 
-   An episode is the total number of steps that determines when the model should stop training.
-   The value of one indicates that the current environment feature vector is a terminal state.
- 
- --]] 
+     episodeUpdate() is used whenever an episode ends. 
+     An episode is the total number of steps that determines when the model should stop training.
+     The value of one indicates that the current environment feature vector is a terminal state.
+
+  --]] 
 
   TemporalDifferenceActorCriticModel:episodeUpdate(1)
 

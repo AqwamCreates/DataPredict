@@ -4,45 +4,45 @@
 
 ### DataPredict Library
 
-[Release Version 2.20](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.20.rbxm)
+[Release Version 2.20](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.20.rbxm)
 
-[Release Version 2.19](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.19.rbxm)
+[Release Version 2.19](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.19.rbxm)
 
-[Release Version 2.18](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.18.rbxm)
+[Release Version 2.18](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.18.rbxm)
 
-[Release Version 2.17](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.17.rbxm)
+[Release Version 2.17](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.17.rbxm)
 
-[Release Version 2.16](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.16.rbxm)
+[Release Version 2.16](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.16.rbxm)
 
-[Release Version 2.15](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.15.rbxm)
+[Release Version 2.15](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.15.rbxm)
 
-[Release Version 2.14](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.14.rbxm)
+[Release Version 2.14](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.14.rbxm)
 
-[Release Version 2.13](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.13.rbxm)
+[Release Version 2.13](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.13.rbxm)
 
-[Release Version 2.12](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.12.rbxm)
+[Release Version 2.12](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.12.rbxm)
 
-[Release Version 2.11](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.11.rbxm)
+[Release Version 2.11](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.11.rbxm)
 
-[Release Version 2.10](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.10.rbxm)
+[Release Version 2.10](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.10.rbxm)
 
-[Release Version 2.9](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.9.rbxm)
+[Release Version 2.9](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.9.rbxm)
 
-[Release Version 2.8](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.8.rbxm)
+[Release Version 2.8](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.8.rbxm)
 
-[Release Version 2.7](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.7.rbxm)
+[Release Version 2.7](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.7.rbxm)
 
-[Release Version 2.6](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.6.rbxm)
+[Release Version 2.6](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.6.rbxm)
 
-[Release Version 2.5](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.5.rbxm)
+[Release Version 2.5](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.5.rbxm)
 
-[Release Version 2.4](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.4.rbxm)
+[Release Version 2.4](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.4.rbxm)
 
-[Release Version 2.3](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.3.rbxm)
+[Release Version 2.3](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.3.rbxm)
 
-[Release Version 2.2](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.2.rbxm)
+[Release Version 2.2](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.2.rbxm)
 
-[Release Version 2.1](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%202.1.rbxm)
+[Release Version 2.1](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.1.rbxm)
 
 [Release Version 1.22](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20%20-%20Release%20Version%201.22.rbxm)
 

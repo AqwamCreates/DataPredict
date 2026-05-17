@@ -38,13 +38,13 @@ Below we will show you the difference between the two above. But first, let's de
 
 ```lua
 
-local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionList}) -- Create the NeuralNetwork first.
+local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionList}) -- Create the NeuralNetwork model first.
 
 NeuralNetwork:addLayer(4, true, "None")
 
 NeuralNetwork:addLayer(#ActionList, false, "LeakyReLU")
 
-local DeepQLearning = DataPredict.Models.DeepQLearning.new({Model = NeuralNetwork}) -- Then create the DeepQLearning.
+local DeepQLearning = DataPredict.Models.DeepQLearning.new({Model = NeuralNetwork}) -- Then create the DeepQLearning model.
 
 ```
 

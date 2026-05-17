@@ -85,6 +85,24 @@ What you will need to know instead that you will need to match the correct Quick
 | Discrete     | CategoricalPolicy        | categoricalUpdate()                         | A single action                                        |
 | Continuous   | DiagonalGaussianPolicy   | diagonalGaussianUpdate()                    | An action vector containing all values for all actions |
 
+# Reward Values
+
+This is the value where we reward or punish the models. The properties of reward value is shown below:
+
+* Positive value: Reward
+
+* Negative Value: Punishment
+
+* Large value: Large reward / punishment
+
+* Small value: Small reward / punishment
+
+It is recommended to set the reward that is within the range of:
+
+```lua
+-1 <= (total reward * learning rate) <= 1
+```
+
 That's all what you need to know for today!
 
 Thank you very much for reading this tutorial. Have a nice day!

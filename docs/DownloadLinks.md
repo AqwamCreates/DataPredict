@@ -4,6 +4,10 @@
 
 ### DataPredict Library
 
+[Release Version 2.22](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.22.rbxm)
+
+[Release Version 2.21](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.21.rbxm)
+
 [Release Version 2.20](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.20.rbxm)
 
 [Release Version 2.19](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/DataPredict%20-%20Release%20Version%202.19.rbxm)

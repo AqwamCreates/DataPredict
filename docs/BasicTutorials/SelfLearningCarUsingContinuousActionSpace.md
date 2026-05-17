@@ -28,7 +28,7 @@ local actionDimensionSizeArray = {1, numberOfActions}
 
 --]]
 
-local steerAngleStandardDeviation = math.sqrt(90)
+local steerAngleStandardDeviationValue = math.sqrt(90)
 
 --[[
 
@@ -38,11 +38,11 @@ local steerAngleStandardDeviation = math.sqrt(90)
 
 --]]
 
-local speedStandardDeviation = math.sqrt(10)
+local speedStandardDeviationValue = math.sqrt(10)
 
 local standardDeviationActionVector = { -- This control how far the values can go from the center / mean.
 
-  {steerAngleStandardDeviation, speedStandardDeviation}
+  {steerAngleStandardDeviationValue, speedStandardDeviationValue}
 
 }
 

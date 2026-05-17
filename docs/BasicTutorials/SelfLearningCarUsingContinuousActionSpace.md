@@ -8,13 +8,7 @@
 
 ```lua
 
-local meanActionVector = {
-
-  {
-
-}
-
-local numberOfActions = #meanActionVector[1]
+local numberOfActions = 2 -- Steering, Throttle
 
 local actionDimensionSizeArray = {1, numberOfActions}
 

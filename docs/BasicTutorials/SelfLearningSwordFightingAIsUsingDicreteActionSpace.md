@@ -32,23 +32,6 @@ local environmentFeatureVector = {
 }
 ```
 
-### Reward Value
-
-This is the value where we reward or punish the models. The properties of reward value is shown below:
-
-* Positive value: Reward
-
-* Negative Value: Punishment
-
-* Large value: Large reward / punishment
-
-* Small value: Small reward / punishment
-
-It is recommended to set the reward that is within the range of:
-
-```lua
--1 <= (total reward * learning rate) <= 1
-```
 
 ### Action Labels
 

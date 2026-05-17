@@ -1,14 +1,8 @@
-# Self-Learning SwordFighting AIs Using Dicrete Action Space
+# Self-Learning Sword-Fighting AIs Using Dicrete Action Space
 
 ## Requirements
 
 * Knowledge on how to build neural networks, which can be found [here](UsingNeuralNetworksPart1.md).
-
-## What Is Reinforcement Learning?
-
-Reinforcement learning is a way for our models to learn on its own without the labels.
-
-We can expect our models to perform poorly at the start of the training but they will gradually improve over time.
 
 ## The Basics
 
@@ -31,15 +25,6 @@ local environmentFeatureVector = {
 
 }
 ```
-
-
-### Action Labels
-
-Action label is a label produced by the model. This label can be a part of decision-making classes or classification classes. For example:
-
-* Decision-making classes: "Up", "Down", "Left", "Right", "Forward", "Backward"
-
-* Classification classes: 1, 2, 3, 4, 5, 6
 
 ## Setting Up Our Reinforcement Learning Model
 

@@ -10,7 +10,7 @@ In order to show how optimizers works, we need to introduce a single dataset.
 
 -- A simple linear trend: Y = X + 10.
 
--- Input (X) -> Expected Output (Y).
+-- Input (X) -> Output (Y).
 
 -- 1 -> 11
 -- 2 -> 12

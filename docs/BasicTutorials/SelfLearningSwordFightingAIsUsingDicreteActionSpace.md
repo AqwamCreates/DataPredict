@@ -108,9 +108,9 @@ while true do
 
     previousEnvironmentFeatureVector = currentEnvironmentFeatureVector
 
-    if hasGameEnded then break end
-
     previousAction = currentAction
+
+    if hasGameEnded then break end
 
   end
 

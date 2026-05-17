@@ -8,7 +8,15 @@
 
 ```lua
 
-local ActionsList = {"Forward", "Backward", "Left", "Right", "Jump", "Attack", "None"}
+local meanActionVector = {
+
+  {
+
+}
+
+local numberOfActions = #meanActionVector[1]
+
+local actionDimensionSizeArray = {1, numberOfActions}
 
 ```
 
@@ -44,13 +52,7 @@ environmentFeatureVector = TensorL:concatenate(environmentFeatureVector, memoryE
 
 ```lua
 
-local memoryActionVector = {
-
-  {didForward, didBackward, didLeft, didRight, didJump, didAttack, didNone} -- 0 and 1 values only, where 1 means that action has been taken previously.
-
-}
-
-environmentFeatureVector = TensorL:concatenate(environmentFeatureVector, memoryActionVector, 2)
+environmentFeatureVector = TensorL:concatenate(environmentFeatureVector, meanActionVector, 2)
 
 ```
 
@@ -72,7 +74,7 @@ local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = Action
 
 NeuralNetwork:addLayer((#environmentFeatureVector - 1), true, "None") -- -1 is added to exclude bias from our total environment feature count.
 
-NeuralNetwork:addLayer(#ActionList, false, "LeakyReLU")
+NeuralNetwork:addLayer(numberOfActions, false, "None") -- Be careful when choosing the activation function at the final layer. For most use cases, I recommend you to stick with "None" or "Tanh" due to symmetric output values.
 
 local DeepQLearning = DataPredict.Models.DeepQLearning.new({Model = NeuralNetwork}) -- Then create the Temporal Actor-Critic model.
 
@@ -86,13 +88,13 @@ while true do
 
   local previousEnvironmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous environment feature vector.
 
-  local previousAction = "None"
+  local previousMeanActionVector = TensorL:createTensor(actionDimensionSizeArray, 0)
 
   for step = 1, 1000, 1 do
 
-    local currentEnvironmentFeatureVector, reward = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, previousAction)
+    local currentEnvironmentFeatureVector, reward = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, previousMeanActionVector)
 
-    local currentAction = DeepQLearning:predict(currentEnvironmentFeatureVector, true)
+    local currentMeanActionVector = DeepQLearning:predict(currentEnvironmentFeatureVector, true)
 
     local hasGameEnded = checkIfGameHasEnded(currentEnvironmentFeatureVector)
 
@@ -104,7 +106,7 @@ while true do
 
     --]]
 
-    DeepQLearning:diagonalGaussianUpdate(previousEnvironmentFeatureVector, previousAction, reward, currentEnvironmentFeatureVector, currentAction, terminalStateValue)
+    DeepQLearning:diagonalGaussianUpdate(previousEnvironmentFeatureVector, previousMeanActionVector, reward, currentEnvironmentFeatureVector, currentMeanActionVector, terminalStateValue)
 
     previousEnvironmentFeatureVector = currentEnvironmentFeatureVector
 
@@ -140,15 +142,15 @@ local DeepQLearningQuickSetup = DataPredict.QuickSetups.SingleCategoricalPolicy.
 
 local previousEnvironmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous environment feature vector.
 
-local action = "None"
+local meanActionVector = TensorL:createTensor(actionDimensionSizeArray, 0)
 
 local reward = 0
 
 while true do
 
-  action = DeepQLearningQuickSetup:reinforce(environmentFeatureVector, reward)
+  currentMeanActionVector = DeepQLearningQuickSetup:reinforce(environmentFeatureVector, reward)
 
-  environmentFeatureVector, reward = fetchEnvironmentFeatureVector(environmentFeatureVector, action)
+  environmentFeatureVector, reward = fetchEnvironmentFeatureVector(environmentFeatureVector, meanActionVector)
 
 end
 

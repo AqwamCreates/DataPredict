@@ -74,7 +74,7 @@ NeuralNetwork:addLayer((#environmentFeatureVector - 1), true, "None") -- -1 is a
 
 NeuralNetwork:addLayer(#ActionList, false, "LeakyReLU")
 
-local DeepQLearning = DataPredict.Models.DeepQLearning.new({Model = NeuralNetwork}) -- Then create the DeepQLearning model.
+local DeepQLearning = DataPredict.Models.DeepQLearning.new({Model = NeuralNetwork}) -- Then create the Temporal Actor-Critic model.
 
 ```
 
@@ -92,7 +92,7 @@ while true do
 
     local currentEnvironmentFeatureVector, reward = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, previousAction)
 
-    local currentAction = DeepQLearning:predict(currentEnvironmentFeatureVector, true)[1][1]
+    local currentAction = DeepQLearning:predict(currentEnvironmentFeatureVector, true)
 
     local hasGameEnded = checkIfGameHasEnded(currentEnvironmentFeatureVector)
 
@@ -100,11 +100,11 @@ while true do
 
     --[[
 
-      update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
+      diagonalGaussianUpdate() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
 
     --]]
 
-    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, previousAction, reward, currentEnvironmentFeatureVector, currentAction, terminalStateValue)
+    DeepQLearning:diagonalGaussianUpdate(previousEnvironmentFeatureVector, previousAction, reward, currentEnvironmentFeatureVector, currentAction, terminalStateValue)
 
     previousEnvironmentFeatureVector = currentEnvironmentFeatureVector
 

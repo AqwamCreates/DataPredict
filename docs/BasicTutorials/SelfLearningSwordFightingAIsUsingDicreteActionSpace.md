@@ -26,7 +26,7 @@ local environmentFeatureVector = {
 
 ```
 
-### To Remember Multiple States (Optional)
+### Previous Environment Feature Memory (Optional)
 
 ```lua
 
@@ -40,7 +40,7 @@ environmentFeatureVector = TensorL:concatenate(environmentFeatureVector, memoryE
 
 ```
 
-### To Remember Multiple Previously Taken Actions (Optional)
+### Previous Action Memory (Optional)
 
 ```lua
 

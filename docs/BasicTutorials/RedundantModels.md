@@ -8,7 +8,7 @@ To show what I mean, I'll generate a dataset that best captures this.
 
 -- A simple time-to-leave trend: Y = X^2.
 
--- Input (X) -> Expected Output (Y).
+-- Input (X) -> Output (Y).
 
 --[[
 

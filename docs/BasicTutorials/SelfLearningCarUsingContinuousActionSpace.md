@@ -168,8 +168,6 @@ while true do
 
     if hasGameEnded then break end
 
-    previousAction = currentAction
-
   end
 
   --[[

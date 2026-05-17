@@ -4,13 +4,19 @@
 
 * Knowledge on how to build neural networks, which can be found [here](UsingNeuralNetworksPart1.md).
 
-## Actions List
+## Actions Vectors
 
 ```lua
 
-local numberOfActions = 2 -- Steering, Throttle
+local numberOfActions = 2 -- Steering Angle, Throttle
 
 local actionDimensionSizeArray = {1, numberOfActions}
+
+local standardDeviationActionVector = { -- This control how far the values can go from the center / mean.
+
+  {math.sqrt(180), } -- Maximum steering angle is 180, 
+
+}
 
 ```
 
@@ -84,7 +90,7 @@ CriticModel:addLayer(numberOfInputs, true, "None")
 
 CriticModel:addLayer(1, false, "LeakyReLU") -- Critic only output one value.
 
-local TemporalActorCriticModel = DataPredict.Models.TemporalActorCritic.new({ActorModel = ActorModel, CriticModel = CriticModel}) -- Then create the Temporal Actor-Critic model.
+local TemporalDifferenceActorCriticModel = DataPredict.Models.TemporalDifferenceActorCritic.new({ActorModel = ActorModel, CriticModel = CriticModel}) -- Then create the TemporalDifference Actor-Critic model.
 
 ```
 
@@ -98,11 +104,15 @@ while true do
 
   local previousMeanActionVector = TensorL:createTensor(actionDimensionSizeArray, 0)
 
+  local previousActionNoiseVector
+
   for step = 1, 1000, 1 do
 
     local currentEnvironmentFeatureVector, reward = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, previousMeanActionVector)
 
-    local currentMeanActionVector = TemporalActorCriticModel:predict(currentEnvironmentFeatureVector, true)
+    local currentMeanActionVector = TemporalDifferenceActorCriticModel:predict(currentEnvironmentFeatureVector, true)
+
+    local previousActionNoiseVector = TensorL:createRandomNormalTensor(actionDimensionSizeArray)
 
     local hasGameEnded = checkIfGameHasEnded(currentEnvironmentFeatureVector)
 
@@ -114,7 +124,7 @@ while true do
 
     --]]
 
-    TemporalActorCriticModel:diagonalGaussianUpdate(previousEnvironmentFeatureVector, previousMeanActionVector, reward, currentEnvironmentFeatureVector, currentMeanActionVector, terminalStateValue)
+    TemporalDifferenceActorCriticModel:diagonalGaussianUpdate(previousEnvironmentFeatureVector, previousMeanActionVector, standardDeviationActionVector, previousActionNoiseVector, reward, currentEnvironmentFeatureVector, currentMeanActionVector, terminalStateValue)
 
     previousEnvironmentFeatureVector = currentEnvironmentFeatureVector
 
@@ -132,7 +142,7 @@ while true do
  
  --]] 
 
-  TemporalActorCriticModel:episodeUpdate(1)
+  TemporalDifferenceActorCriticModel:episodeUpdate(1)
 
 end
 
@@ -146,7 +156,7 @@ To reduce the amount of things we need to track, we can use SingleCategoricalPol
 
 ```lua
 
-local TemporalActorCriticQuickSetup = DataPredict.QuickSetups.SingleCategoricalPolicy.new({Model = DeepQLearning})
+local TemporalDifferenceActorCriticQuickSetup = DataPredict.QuickSetups.SingleDiagonalGaussianPolicy.new({Model = TemporalDifferenceActorCriticModel, standardDeviationActionVector = standardDeviationActionVector})
 
 local previousEnvironmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous environment feature vector.
 
@@ -156,7 +166,7 @@ local reward = 0
 
 while true do
 
-  currentMeanActionVector = TemporalActorCriticQuickSetup:reinforce(environmentFeatureVector, reward)
+  meanActionVector = TemporalDifferenceActorCriticQuickSetup:reinforce(environmentFeatureVector, reward)
 
   environmentFeatureVector, reward = fetchEnvironmentFeatureVector(environmentFeatureVector, meanActionVector)
 

@@ -68,15 +68,29 @@ Below we will show you the difference between the two above. But first, let's de
 
 ```lua
 
--- Create the NeuralNetwork model first.
+local numberOfInputs = #environmentFeatureVector - 1 -- -1 is added to exclude bias from our total environment feature count.
 
-local NeuralNetwork = DataPredict.Models.NeuralNetwork.new({ClassesList = ActionsList})
+local NeuralNetwork = DataPredict.Models.NeuralNetwork
 
-NeuralNetwork:addLayer((#environmentFeatureVector - 1), true, "None") -- -1 is added to exclude bias from our total environment feature count.
+-- Create the NeuralNetwork models first. We will need two different ones.
 
-NeuralNetwork:addLayer(numberOfActions, false, "None") -- Be careful when choosing the activation function at the final layer. For most use cases, I recommend you to stick with "None" or "Tanh" due to symmetric output values.
+local ActorModel = NeuralNetwork.new()
 
-local DeepQLearning = DataPredict.Models.DeepQLearning.new({Model = NeuralNetwork}) -- Then create the Temporal Actor-Critic model.
+-- Actor NeuralNetwork for controlling actions.
+
+ActorModel:addLayer(numberOfInputs, true, "None") 
+
+ActorModel:addLayer(numberOfActions, false, "None") -- Be careful when choosing the activation function at the final layer. For most use cases, I recommend you to stick with "None" or "Tanh" due to symmetric output values.
+
+-- Critic NeuralNetwork for evaluating actions.
+
+local CriticModel = NeuralNetwork.new()
+
+CriticModel:addLayer(numberOfInputs, true, "None") 
+
+CriticModel:addLayer(1, false, "LeakyReLU") -- Critic only output one value.
+
+local TemporalActorCriticModel = DataPredict.Models.TemporalActorCritic.new({ActorModel = ActorModel, CriticModel = CriticModel}) -- Then create the Temporal Actor-Critic model.
 
 ```
 
@@ -106,7 +120,7 @@ while true do
 
     --]]
 
-    DeepQLearning:diagonalGaussianUpdate(previousEnvironmentFeatureVector, previousMeanActionVector, reward, currentEnvironmentFeatureVector, currentMeanActionVector, terminalStateValue)
+    TemporalActorCriticModel:diagonalGaussianUpdate(previousEnvironmentFeatureVector, previousMeanActionVector, reward, currentEnvironmentFeatureVector, currentMeanActionVector, terminalStateValue)
 
     previousEnvironmentFeatureVector = currentEnvironmentFeatureVector
 
@@ -124,7 +138,7 @@ while true do
  
  --]] 
 
-  QLearningNeuralNetwork:episodeUpdate(1)
+  TemporalActorCriticModel:episodeUpdate(1)
 
 end
 
@@ -138,7 +152,7 @@ To reduce the amount of things we need to track, we can use SingleCategoricalPol
 
 ```lua
 
-local DeepQLearningQuickSetup = DataPredict.QuickSetups.SingleCategoricalPolicy.new({Model = DeepQLearning})
+local TemporalActorCriticQuickSetup = DataPredict.QuickSetups.SingleCategoricalPolicy.new({Model = DeepQLearning})
 
 local previousEnvironmentFeatureVector = initializeEnvironmentFeatureVector() -- We must keep track our previous environment feature vector.
 

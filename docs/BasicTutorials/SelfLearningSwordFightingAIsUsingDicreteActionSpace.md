@@ -170,12 +170,8 @@ As you can see, the SingleCategoricalPolicy compresses a number of codes into re
 
 # Wrapping It All Up
 
-In this tutorial, you have learnt the starting point of the reinforcement learning neural networks. 
+In this tutorial, you have learnt the starting point of the deep reinforcement learning. 
 
-These only cover the basics. You can find more information here:
+In future lessons, you will learn on how to handle a variety of situations as well as improving the performance of these deep reinforcement learning models.
 
-* [Deep Q-Learning](../API/Models/DeepQLearning.md)
-
-* [Deep SARSA](../API/Models/DeepStateActionRewardStateAction.md)
-
-* [Deep Expected SARSA](../API/Models/DeepExpectedStateActionRewardStateAction.md)
+That's all for today!

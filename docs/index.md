@@ -8,7 +8,7 @@
 
 ## Commercial Use Information
 
-* [What Is Machine Learning Capable Of In Games?](HighValueProjectTutorials.md)
+* [What Are Revenue-Generating Use Cases For Machine Learning](HighValueProjectTutorials.md)
 
 * [Commercial Use Licensing](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesCommercialLicensingAgreements.md)
 

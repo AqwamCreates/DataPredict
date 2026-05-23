@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
+local GradientMethodBaseModel = require("Core_GradientMethodBaseModel")
 
 local ZTableFunction = require("Core_ZTableFunction")
 
@@ -475,6 +475,8 @@ local lossFunctionList = {
 	["HingeLoss"] = function(generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end,
 
 	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
+	
+	["PerceptronLoss"] = function (h, y) return math.max(0, -(h * y)) end,
 
 	["BinaryCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end,
 
@@ -507,6 +509,16 @@ local lossFunctionGradientList = {
 		local scale = ((margin > 0) and margin) or 0
 
 		return -(2 * y * scale)
+
+	end,
+	
+	["PerceptronLoss"] = function (h, y) 
+
+		local value = (h * y)
+
+		if (value > 0) then return 0 end
+
+		return -value
 
 	end,
 
@@ -938,13 +950,13 @@ function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 	
 	local derivativeMatrix = deriveLayer(forwardPropagateArray[numberOfLayers], zMatrixArray[numberOfLayers], hasBiasNeuronArray[numberOfLayers], activationFunctionArray[numberOfLayers])
 
-	local layerCostMatrix = AqwamTensorLibrary:multiply(lossGradientMatrix, derivativeMatrix)
+	local layerCostMatrix = AqwamTensorLibrary:multiply(derivativeMatrix, lossGradientMatrix)
 	
 	local weightMatrix = ModelParameters[numberOfLayersMinusOne]
 	
 	local Solver = SolverArray[numberOfLayers]
 	
-	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = Solver:calculate(weightMatrix, forwardPropagateArray[numberOfLayersMinusOne], layerCostMatrix) 
+	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = Solver:calculate(weightMatrix, forwardPropagateArray[numberOfLayersMinusOne], derivativeMatrix, lossGradientMatrix) 
 
 	for layerNumber = numberOfLayersMinusOne, 2, -1 do
 		
@@ -959,6 +971,8 @@ function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 		local partialErrorMatrix = AqwamTensorLibrary:dotProduct(layerCostMatrix, transposedWeightMatrix)
 
 		derivativeMatrix = deriveLayer(forwardPropagateArray[layerNumber], zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber], activationFunctionArray[layerNumber])
+		
+		layerCostMatrix = AqwamTensorLibrary:multiply(derivativeMatrix, partialErrorMatrix)
 		
 		costFunctionDerivativeMatrixArray[weightNumber] = Solver:calculate(weightMatrix, forwardPropagateArray[weightNumber], derivativeMatrix, partialErrorMatrix) 
 
@@ -1394,7 +1408,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	
 	--[[
 		
-		Do not set true to false for the second layer due to common usage of this library for deep reinforcement learning.
+		Do not set isLinear to true for the second layer due to common usage of this library for deep reinforcement learning.
 	
 		This is because deep reinforcement learning often uses storchastic or mini-batch training.
 		

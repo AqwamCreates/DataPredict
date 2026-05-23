@@ -12,7 +12,7 @@ In order to show how regularization works, we need to introduce a single dataset
 
 -- But we add one "noisy" data point at the end to trick the model.
 
--- Input (X) -> Expected Output (Y).
+-- Input (X) -> Output (Y).
 
 -- 1 -> 11
 -- 2 -> 12

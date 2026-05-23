@@ -119,6 +119,8 @@ local binaryFunctionGradientList = {
 local lossFunctionList = {
 
 	["BinaryCrossEntropy"] = function (h, y) return -((y * math.log(h)) + ((1 - y) * math.log(1 - h))) end,
+	
+	["PerceptronLoss"] = function (h, y) return math.max(0, -(h * y)) end,
 
 	["HingeLoss"] = function (h, y) return math.max(0, (1 - (h * y))) end,
 
@@ -133,6 +135,16 @@ local lossFunctionList = {
 local lossFunctionGradientList = {
 
 	["BinaryCrossEntropy"] = function (h, y) return ((h - y) / (h * (1 - h))) end,
+	
+	["PerceptronLoss"] = function (h, y) 
+
+		local value = (h * y)
+
+		if (value > 0) then return 0 end
+
+		return -value
+
+	end,
 
 	["HingeLoss"] = function (h, y)
 
@@ -230,9 +242,7 @@ function BinaryRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 	
 	local binaryFunctionDerivativeVector = AqwamTensorLibrary:applyFunction(binaryFunctionGradientList[self.binaryFunction], self.hypothesisVector, self.zVector)
 	
-	lossGradientVector = AqwamTensorLibrary:multiply(lossGradientVector, binaryFunctionDerivativeVector)
-	
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, binaryFunctionDerivativeVector, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.Gradients = lossFunctionDerivativeVector end
 

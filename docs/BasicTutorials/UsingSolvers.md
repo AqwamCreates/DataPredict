@@ -12,7 +12,7 @@ To see the difference, we will use a very small, clean dataset. This allows even
 
 -- A simple linear trend: Y = 2*X + 5.
 
--- Input (X) -> Expected Output (Y).
+-- Input (X) -> Output (Y).
 
 -- 1 -> 7
 -- 2 -> 9

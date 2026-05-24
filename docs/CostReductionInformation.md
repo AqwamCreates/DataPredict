@@ -35,7 +35,7 @@ The table assumes that only one person is working on each library at machine lea
 
 ## Factors That Led To These Pricing Strategies
 
-* DataPredict was initially built from passion, but eventually went to commercial licensing to allow it to be capable for production-grade use. Hence, the first year of development costs are considered "subsidized" due to it being more of a learning experience more than building a serious project.
+* DataPredict was initially built from passion as a fresh graduate, but eventually went to commercial licensing to allow it to be capable for production-grade use. Hence, the first year of development costs are considered "subsidized" due to it being more of a learning experience more than building a serious project.
 
 * I am based from Malaysia, and we can keep the costs low compared to the United States.
 

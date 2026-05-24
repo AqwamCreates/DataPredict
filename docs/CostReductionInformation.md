@@ -39,4 +39,6 @@ The table assumes that only one person is working on each library at machine lea
 
 * I am based from Malaysia, and we can keep the costs low compared to the United States.
 
-* Solo development means that there is no overhead from managing people, keeping the costs low.
+* Being a solo developer means that there is no overhead from managing people, keeping the costs low.
+
+* I rely on the community to search for potential bugs in addition of my own bug hunting, keeping the costs low by not hiring a dedicated tester.

@@ -22,10 +22,9 @@
 | Non-B2B + Less Than Or Equal To 5K USD Within 365 Days (Not Per 365 Days)           | 0%                                                        | Requires Public Disclosure Of DataPredict | Not Applicable                                                         |
 | Standard                                                                            | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 89 USD / 160 USD / 1300 USD / 10,530 USD                               |
 | White-Label                                                                         | 5%                                                        | None                                      | 250 USD / 500 USD / 5000 USD / 50,000 USD                              |
-
 ## Development Costs
 
-The table assumes that only one person is working on each library at machine learning engineer average salary rate.
+The table assumes that only one person is working on each library at machine learning engineer average salary rate in the United States.
 
 | Library             | Time Cost               | Monetary Cost (USD) |
 |---------------------|-------------------------|---------------------|
@@ -33,3 +32,11 @@ The table assumes that only one person is working on each library at machine lea
 | DataPredict™ Neural | 17000+ Hours (~2 Years) | 200,000             |
 | DataPredict™ Axon   | 4000+ Hours (~6 Months) | 50,000              |
 | All                 | 43800+ Hours (~5 Years) | 550,000             |
+
+## Factors That Led To These Pricing Strategies
+
+* DataPredict was initially built from passion, but eventually went to commercial licensing to allow it to be capable for production-grade use. Hence, the first year of development costs are considered "subsidized" due to it being more of a learning experience more than building a serious project.
+
+* I am based from Malaysia, and we can keep the costs low compared to the United States.
+
+* Solo development means that there is no overhead from managing people, keeping the costs low.

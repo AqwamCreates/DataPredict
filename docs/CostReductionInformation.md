@@ -22,6 +22,9 @@
 | Non-B2B + Less Than Or Equal To 5K USD Within 365 Days (Not Per 365 Days)           | 0%                                                        | Requires Public Disclosure Of DataPredict | Not Applicable                                                         |
 | Standard                                                                            | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 89 USD / 160 USD / 1300 USD / 10,530 USD                               |
 | White-Label                                                                         | 5%                                                        | None                                      | 250 USD / 500 USD / 5000 USD / 50,000 USD                              |
+
+* Note: At the $5,000/year revenue mark, the licensing fee is approximately $8/month for "Standard" license. Hence, it is not worth a headache to charge these users, effectively subsidizing the usage on top of zero marginal costs on our side.
+
 ## Development Costs
 
 The table assumes that only one person is working on each library at machine learning engineer average salary rate in the United States.

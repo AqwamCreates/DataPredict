@@ -1,4 +1,4 @@
-# Creating A Machine Learning Model Object
+# Creating A Machine Learning Model
 
 For our first model, we will use "BinaryRegression". We will create a new "BinaryRegression" model object using new(). 
 

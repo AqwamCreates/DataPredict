@@ -108,7 +108,7 @@ local function removeAllAssetsWithLowInteractionProbability()
 
   local assetFolderChildren = AssetFolder:getChildren()
 
-  for i, child in ipairs(assetFolderChildren) do
+  for _, child in ipairs(assetFolderChildren) do
 
     local keepChild = false
 
@@ -120,7 +120,7 @@ local function removeAllAssetsWithLowInteractionProbability()
 
     local childPositionZ = childPosition.Z
 
-    for j, unwrappedMeanVector in ipairs(meanMatrix) do
+    for _, unwrappedMeanVector in ipairs(meanMatrix) do
 
      local distanceVector = Vector3.new(childPositionX - unwrappedMeanVector[1], childPositionY - unwrappedMeanVector[2], childPositionZ - unwrappedMeanVector[3])
 

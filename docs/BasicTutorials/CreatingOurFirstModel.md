@@ -90,8 +90,6 @@ This case can also happen if any of the internal model components are calculatin
 
 It means that during training, the model is no longer "learning" but does the complete opposite. When attempting to predict using this model, it is highly likely that you will get wrong prediction. To fix this, use an optimizer or adjust the parameters. This is a parameter issue.
 
-# Predicting Using Our Models
-
 ## Case 3 - Cost Is Not Changing
 
 It is likely due to one of these reasons:

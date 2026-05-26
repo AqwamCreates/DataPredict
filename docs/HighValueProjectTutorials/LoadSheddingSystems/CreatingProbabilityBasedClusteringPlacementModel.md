@@ -110,6 +110,8 @@ local function removeAllAssetsWithLowInteractionProbability()
 
   for i, child in ipairs(assetFolderChildren) do
 
+    local keepChild = false
+
     local childPosition = child.Position
 
     local childPositionX = childPosition.X
@@ -124,9 +126,15 @@ local function removeAllAssetsWithLowInteractionProbability()
 
      local distance = distanceVector.Magnitude
 
-     if (distance > removeAssetDistanceThreshold) then child:Destroy() end
+     if (distance > removeAssetDistanceThreshold) then continue end
+
+     keepChild = true
+
+     break
 
     end
+
+    if (not keepChild) then child:Destroy() end
 
   end
 

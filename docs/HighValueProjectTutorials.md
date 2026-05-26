@@ -50,18 +50,18 @@
 
 ## High-Value Project Tutorials
 
-| System                                                                                           | Properties                                                            | Minimal Implementation Time With DataPredict |
-|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|----------------------------|
-| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave prediction and leave detection. | 30 minutes - 6 hours       |
-| [Stress](HighValueProjectTutorials/StressSystems.md)                                             | Handles stress detection and minimization.                            | To be added soon           |
-| [Economy](HighValueProjectTutorials/EconomySystems.md)                                           | Maximize the value of in-game items and events.                       | 30 minutes                 |
-| [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                             | 2 hours                    |
-| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Increaes the players' interaction towards the enemies.                | 30 minutes - 2 hours       |
-| [Team Balancing](HighValueProjectTutorials/TeamBalancingSystems.md)                              | Ensures that teams are balanced based on their data.                  | 30 minutes                 |
-| [AI Player](HighValueProjectTutorials/AIPlayerSystems.md)                                        | Replace players if players aren't enough.                             | 30 minutes - 1 hour        |
-| [Smart NPC](HighValueProjectTutorials/SmartNPCSystems.md)                                        | Makes NPCs capable of predicting and planning actions.                | 30 minutes                 |
-| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Detects unusual players from normal players.                          | 30 minutes                 |
-| [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.              | 30 minutes - 1 hour        |
-| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Queueing players or items based on their data.                        | To be added soon           |
-| [Placement](HighValueProjectTutorials/PlacementSystems.md)                                       | Finds an empty space to place players or items.                       | 30 minutes                 |
-| [Quality Assurance](HighValueProjectTutorials/QualityAssuranceSystems.md) (Incomplete)           | Tries to break game mechanics to find bugs and glitches.              | To be added soon           |
+| System                                                                                           | Properties                                                                                  | Minimal Implementation Time With DataPredict |
+|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|----------------------------------------------|
+| [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave prediction and leave detection.                       | 30 minutes - 6 hours                         |
+| [Stress](HighValueProjectTutorials/StressSystems.md) (Incomplete)                                | Handles stress detection and minimization.                                                  | To be added soon                             |
+| [Economy](HighValueProjectTutorials/EconomySystems.md)                                           | Maximize the value of in-game items and events.                                             | 30 minutes                                   |
+| [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                   | 2 hours                                      |
+| [Dynamic Difficulty Adjustment](HighValueProjectTutorials/DynamicDifficultyAdjustmentSystems.md) | Increaes the players' interaction towards the enemies.                                      | 30 minutes - 2 hours                         |
+| [Team Balancing](HighValueProjectTutorials/TeamBalancingSystems.md)                              | Ensures that teams are balanced based on their data.                                        | 30 minutes                                   |
+| [AI Player](HighValueProjectTutorials/AIPlayerSystems.md)                                        | Replace players if players aren't enough.                                                   | 30 minutes - 1 hour                          |
+| [Smart NPC](HighValueProjectTutorials/SmartNPCSystems.md)                                        | Makes NPCs capable of predicting and planning actions.                                      | 30 minutes                                   |
+| [Anti-Cheat](HighValueProjectTutorials/AntiCheatSystems.md)                                      | Detects unusual players from normal players.                                                | 30 minutes                                   |
+| [Targeting](HighValueProjectTutorials/TargetingSystems.md)                                       | Maximizes the likelihood of hitting clusters of players.                                    | 30 minutes - 1 hour                          |
+| [Priority](HighValueProjectTutorials/PrioritySystems.md) (Incomplete)                            | Queueing players or items based on their data.                                              | To be added soon                             |
+| [Load Shedding](HighValueProjectTutorials/LoadShedding.md)                                       | Minimizes the servers' and clients' computational resources by reducing unnecessary assets. | 30 minutes                                   |
+| [Quality Assurance](HighValueProjectTutorials/QualityAssuranceSystems.md) (Incomplete)           | Tries to break game mechanics to find bugs and glitches.                                    | To be added soon                             |

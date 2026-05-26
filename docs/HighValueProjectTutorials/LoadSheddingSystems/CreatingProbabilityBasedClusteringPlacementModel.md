@@ -8,7 +8,7 @@ For best results, please use Expectation-Maximization model.
 
 ```lua
 
- -- For this tutorial, we will let the model decide how many clusters it will produce based on player / asset spread.
+-- For this tutorial, we will let the model decide how many clusters it will produce based on player / asset spread.
 
 -- Note, we're setting math.huge here, but that doesn't mean we will begin producing an infinite amount of clusters! It will start at 1 and increases it until the model finds a suitable number of clusters.
 

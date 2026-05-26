@@ -18,37 +18,45 @@ To train our model, we need to supply two things: featureMatrix and labelVector.
 
 * For the labelVector, the rows are the number of values and the columns are the values that have certain relationship to that individual data.
 
-I will give you the codes for the featureMatrix and the labelVector for you to practice. You can see that if the data contains 0 or greater, it will result to 1. Otherise, the value is 0.
+I will give you the codes for the featureMatrix and the labelVector for you to practice. This will be based on "bot detection".
 
 ```lua
 
+-- Value of 1 is added at first column for bias.
+
+-- Column 2 is for session length in seconds.
+
+-- Column 3 is for number of chats.
+
 local featureMatrix = {
 	
-	{1, 0,  0},
-	{1, 10, 2},
-	{1, -3, -2},
-	{1, -12, -22},
-	{1, 2,  2},
-	{1, 1,  1},
-	{1,-11, -12},
-	{1, 3,  3},
-	{1, -2, -2},
+    {1, 60,  30}, -- Human: Long play, lots of chat
+    {1, 45,  20}, -- Human
+    {1, 5,   0},  -- Bot: Short play, no chat
+    {1, 2,   0},  -- Bot
+    {1, 90,  40},-- Human
+    {1, 55,  20}, -- Human
+    {1, 1,   0},  -- Bot
+    {1, 30,  10}, -- Human
+    {1, 3,   1},  -- Bot (Maybe a slightly smarter bot, but still suspicious)
 
 }
 
--- Value of 1 is added at first column for bias.
+
+
+-- LABEL VECTOR: 1 = Bot, 0 = Human
 
 local labelVectorLogistic = {
 	
-	{1},
-	{1},
-	{0},
-	{0},
-	{1},
-	{1},
-	{0},
-	{1},
-	{0}
+    {0}, -- Corresponds to row 1 above.
+    {0},
+    {1},
+    {1},
+    {0},
+    {0},
+    {1},
+    {0},
+    {1}
 	
 }
 
@@ -124,20 +132,20 @@ I will give you a test data for you to use. The value of prediction should be 1 
 
 local testData = {
 
-	{1, 90, 32},
-	{1, -120, -41}
+	{1, 90, 32}, -- Player 1: Long session, active chatter
+	{1, 2, 0} -- Player 2: Very short session, silent
 
 }
 
 local predictedVector = BinaryRegressionModel:predict(testData)
 
-local value1 = predictedVector[1][1]
+local botProbability1 = predictedVector[1][1]
 
-local value2 = predictedVector[2][1]
+local botProbability2 = predictedVector[2][1]
 
-print(value1) -- This is 1.
+print(botProbability1) -- Should be 0.
 
-print(value2) -- This is 0.
+print(botProbability2) -- Should be 1.
 
 ```
 

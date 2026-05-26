@@ -30,21 +30,19 @@ I will give you the codes for the featureMatrix and the labelVector for you to p
 
 local featureMatrix = {
 	
-    {1, 60,  30}, -- Human: Long play, lots of chat
+    {1, 60,  30}, -- Human: Long play, lots of chat.
     {1, 45,  20}, -- Human
-    {1, 5,   0},  -- Bot: Short play, no chat
+    {1, 5,   0},  -- Bot: Short play, no chat.
     {1, 2,   0},  -- Bot
     {1, 90,  40},-- Human
     {1, 55,  20}, -- Human
     {1, 1,   0},  -- Bot
     {1, 30,  10}, -- Human
-    {1, 3,   1},  -- Bot (Maybe a slightly smarter bot, but still suspicious)
+    {1, 3,   1},  -- Bot (Maybe a slightly smarter bot, but still suspicious).
 
 }
 
-
-
--- LABEL VECTOR: 1 = Bot, 0 = Human
+-- 1 = Bot, 0 = Human
 
 local labelVectorLogistic = {
 	

@@ -8,7 +8,7 @@ For best results, please use Expectation-Maximization model.
 
 ```lua
 
- -- For this tutorial, we will let the model decide how many clusters it will produce based on player / item spread.
+ -- For this tutorial, we will let the model decide how many clusters it will produce based on player / asset spread.
 
 -- Note, we're setting math.huge here, but that doesn't mean we will begin producing an infinite amount of clusters! It will start at 1 and increases it until the model finds a suitable number of clusters.
 
@@ -60,11 +60,13 @@ centroidMatrix = centroidMatrix[1]
 
 Since we have dynamic number of clusters, we can expect multiple rows for our matrix. As such we can process our game logic here.
 
+### Asset Placement
+
 ```lua
 
-local ModelParameters = PlacementModel:getModelParameters()
+local function placeAssetAtRandomLocation(Asset)
 
-local function placeItemAtRandomLocation(Item)
+  local ModelParameters = PlacementModel:getModelParameters()
 
   local meanMatrix = ModelParameters[1]
   
@@ -84,7 +86,49 @@ local function placeItemAtRandomLocation(Item)
 
   local z = randomUnwrappedMeanVector[3] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[3])
 
-  placeItem(item, x, y, z)
+  placeAsset(asset, x, y, z)
+
+end
+
+```
+
+### Asset Removal
+
+```lua
+
+local AssetFolder = workspace.AssetFolder
+
+local removeAssetDistanceThreshold = 10
+
+local function removeAllAssetsWithLowInteractionProbability()
+
+  local ModelParameters = PlacementModel:getModelParameters()
+
+  local meanMatrix = ModelParameters[1]
+
+  local assetFolderChildren = AssetFolder:getChildren()
+
+  for i, child in ipairs(assetFolderChildren) do
+
+    local childPosition = child.Position
+
+    local childPositionX = childPosition.X
+
+    local childPositionY = childPosition.Y
+
+    local childPositionZ = childPosition.Z
+
+    for j, unwrappedMeanVector in ipairs(meanMatrix) do
+
+     local distanceVector = Vector3.new(childPositionX - unwrappedMeanVector[1], childPositionY - unwrappedMeanVector[2], childPositionZ - unwrappedMeanVector[3])
+
+     local distance = distanceVector.Magnitude
+
+     if (distance > removeAssetDistanceThreshold) then child:Destroy() end
+
+    end
+
+  end
 
 end
 

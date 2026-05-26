@@ -2,7 +2,7 @@
 
 Hi guys! In this tutorial, we will demonstrate on how to create cluster-based placement model.
 
-For best results, please use Expectation-Maximization model.
+You must use Expectation-Maximization model.
 
 ## Initializing The Clustering Model
 

@@ -84,7 +84,7 @@ local function placePlayerAtARandomLocation(Player)
 
   local z = randomUnwrappedMeanVector[3] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[3])
 
-  placePlayer(Player, x, y, z)
+  placeItem(Player, x, y, z)
 
 end
 

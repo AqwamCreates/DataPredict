@@ -64,7 +64,7 @@ Since we have dynamic number of clusters, we can expect multiple rows for our ma
 
 local ModelParameters = PlacementModel:getModelParameters()
 
-local function placePlayerAtARandomLocation(Player)
+local function placeItemAtRandomLocation(Item)
 
   local meanMatrix = ModelParameters[1]
   
@@ -84,7 +84,7 @@ local function placePlayerAtARandomLocation(Player)
 
   local z = randomUnwrappedMeanVector[3] + ((math.random() * 2 - 1) * randomUnwrappedVarianceVector[3])
 
-  placeItem(Player, x, y, z)
+  placeItem(item, x, y, z)
 
 end
 

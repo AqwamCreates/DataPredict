@@ -4,6 +4,6 @@
 
   * Identifies areas of high player densities for spawning assets.
  
-  * Reduces the servers' and clients' computational resources by spawning items in places that are highly likely to be interact by the player.
+  * Reduces the servers' and clients' computational resources by spawning items in places that are highly likely to be interact by the players.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.

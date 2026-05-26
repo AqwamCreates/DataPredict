@@ -44,7 +44,7 @@ local featureMatrix = {
 
 -- 1 = Bot, 0 = Human
 
-local labelVectorLogistic = {
+local labelVector = {
 	
     {0}, -- Corresponds to row 1 above.
     {0},
@@ -64,7 +64,7 @@ With our featureMatrix and labelVector in place, we will supply them to our mode
 
 ```lua
 
-BinaryRegressionModel:train(featureMatrix, labelVectorLogistic)
+BinaryRegressionModel:train(featureMatrix, labelVector)
 
 ```
 

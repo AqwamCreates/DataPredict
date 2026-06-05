@@ -26,7 +26,7 @@ An environment feature value is an element of the states list value.
 
 ```lua
 
-local StatesList = {"Fight", "Idle"}}
+local StatesList = {"Fight", "Idle"}
 
 ```
 

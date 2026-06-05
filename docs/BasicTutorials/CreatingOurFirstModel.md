@@ -8,7 +8,7 @@ local BinaryRegression = DataPredict.Models.BinaryRegression
 local BinaryRegressionModel = BinaryRegression.new({learningRate = 0.1, maximumNumberOfIterations = 30})
 ```
 
-Although the new() can take in a number of arguments, we will use some of them as default values provided by the library to simplify our introduction. You can see what different models takes as their arguments in the API Reference. You can also change them at anytime you want using setParameters() function.
+Although the new() can take in a number of arguments, we will use some of them as default values provided by the library to simplify our introduction. You can see what different models takes as their arguments in the API reference.
 
 # Training Our Model
 

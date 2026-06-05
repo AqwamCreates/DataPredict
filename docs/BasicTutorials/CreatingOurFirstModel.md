@@ -130,8 +130,8 @@ I will give you a test data for you to use. The value of prediction should be 1 
 
 local testData = {
 
-	{1, 90, 32}, -- Player 1: Long session, active chatter
-	{1, 2, 0} -- Player 2: Very short session, silent
+	{1, 90, 32}, -- Player 1: Long session, active chatter.
+	{1, 2, 0} -- Player 2: Very short session, silent.
 
 }
 

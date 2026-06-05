@@ -54,4 +54,4 @@
 
 * [Deep Reinforcement Learning Algorithms Properties](BasicTutorials/DeepReinforcementLearningAlgorithmsProperties.md)
 
-* [Multi-Agent Reinforecement Learning Setup](BasicTutorials/MultiAgentReinforecementLearningSetup.md)
+* [Multi-Agent Reinforcement Learning Setup](BasicTutorials/MultiAgentReinforcementLearningSetup.md)

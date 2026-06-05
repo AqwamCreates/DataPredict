@@ -22,9 +22,13 @@ Currently, because different methods requires different way on how we input thin
 
 ### Environment Value For Tabular Reinforcement Learning
 
-An environment feature value is one of 
+An environment feature value is an element of the states list value.
 
+```lua
 
+local StatesList = {"Fight", "Idle"}}
+
+```
 
 ### Environment Vector For Deep Reinforcement Learning
 

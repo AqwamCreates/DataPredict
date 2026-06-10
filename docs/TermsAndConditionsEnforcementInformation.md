@@ -16,13 +16,13 @@ This is how I structure the enforcement strategy to ensure that companies would 
 
 4. I will contact multiple pro-bono lawyers to review the whistleblower's evidence. Once a pro-bono lawyer agrees to take this case, the whistleblower, the pro-bono lawyer and me will work together to maximize the likelihood of success. This includes:
 
-  * The whistleblower gathering more evidence about the violation.
+   * The whistleblower gathering more evidence about the violation.
 
-  * The pro-bono lawyer would instruct what evidence should be collected by the whistleblower.
+   * The pro-bono lawyer would instruct what evidence should be collected by the whistleblower.
 
-  * Pro-bono lawyer would inform me which violation have occured according to the DataPredict™'s [Terms And Conditions](TermsAndConditions.md) written by me.
+   * Pro-bono lawyer would inform me which violation have occured according to the DataPredict™'s [Terms And Conditions](TermsAndConditions.md) written by me.
 
-  * The process would repeat multiple times until the case is refined enough so that it leads to high likelihood of winning in court.
+   * The process would repeat multiple times until the case is refined enough so that it leads to high likelihood of winning in court.
 
 5. The violators will most likely settle more than dragging it into a court case. If the violators choose to settle, it is very likely that the monetary payment will be based on the commercial licensing cost on top of additional costs for paying the pro-bono lawyer and the whistleblower.
 

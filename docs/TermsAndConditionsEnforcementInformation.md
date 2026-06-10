@@ -24,7 +24,7 @@ This is how I structure the enforcement strategy to ensure that companies would 
 
 4. The violators will most likely settle more than dragging it into a court case. If the violators choose to settle, it is very likely that the monetary payment will be based on the commercial licensing cost on top of additional costs for paying the pro-bono lawyer and the whistleblower.
 
-The amount paid to the whistleblower would be based on DataPredict™'s [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md)
+The amount paid to the whistleblower would be based on DataPredict™'s [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
 ## Potential Whistleblowers
 

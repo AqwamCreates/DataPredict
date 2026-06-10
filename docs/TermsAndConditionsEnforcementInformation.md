@@ -10,9 +10,11 @@ This is how I structure the enforcement strategy to ensure that companies would 
 
 1. Advertise the bounty reward to the public.
 
-2. Once a whistleblower found a company that violates the terms and conditions, the whistleblower is requested to give all the evidence of companies' usage. This is for building an intial evidence to convince pro-bono lawyers to take this case.
+2. Once a whistleblower found a company that violates the terms and conditions, the whistleblower must contact me before making any actions towards the violating company. This is to evaluate the nature of evaluation, the amount of fees that can be recovered and so on. The larger the violating company's revenue, the more likely it is worth it to build a case against this violating company.
 
-3. I will contact multiple pro-bono lawyers to review the whistleblower's evidence. Once a pro-bono lawyer agrees to take this case, the whistleblower, the pro-bono lawyer and me will work together to maximize the likelihood of success. This includes:
+3. Once I determine that building the case for this company is worth it, the whistleblower is requested to give all the evidence of companies' usage. This is for building an intial evidence to convince pro-bono lawyers to take this case.
+
+4. I will contact multiple pro-bono lawyers to review the whistleblower's evidence. Once a pro-bono lawyer agrees to take this case, the whistleblower, the pro-bono lawyer and me will work together to maximize the likelihood of success. This includes:
 
   * The whistleblower gathering more evidence about the violation.
 
@@ -22,7 +24,7 @@ This is how I structure the enforcement strategy to ensure that companies would 
 
   * The process would repeat multiple times until the case is refined enough so that it leads to high likelihood of winning in court.
 
-4. The violators will most likely settle more than dragging it into a court case. If the violators choose to settle, it is very likely that the monetary payment will be based on the commercial licensing cost on top of additional costs for paying the pro-bono lawyer and the whistleblower.
+5. The violators will most likely settle more than dragging it into a court case. If the violators choose to settle, it is very likely that the monetary payment will be based on the commercial licensing cost on top of additional costs for paying the pro-bono lawyer and the whistleblower.
 
 The amount paid to the whistleblower would be based on DataPredict™'s [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 

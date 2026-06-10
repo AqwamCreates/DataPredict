@@ -23,3 +23,11 @@ This is how I structure the enforcement strategy to ensure that companies would 
   * The process would repeat multiple times until the case is refined enough so that it leads to high likelihood of winning in court.
 
 4. The violators will most likely settle more than dragging it into a court case. If the violators choose to settle, it is very likely that the monetary payment will be based on the commercial licensing cost on top of additional costs for paying the pro-bono lawyer and the whistleblower.
+
+## Potential Whistleblowers
+
+* An unhappy employee of the violating company.
+
+* A company's competitor.
+
+* Someone who wants to make a quick cash.

@@ -10,7 +10,7 @@ This is how I structure the enforcement strategy to ensure that companies would 
 
 1. Advertise the bounty reward to the public.
 
-2. Once a whistleblower found a company that violates the terms and conditions, the whistleblower is requested to give all the evidence of companies' usage.
+2. Once a whistleblower found a company that violates the terms and conditions, the whistleblower is requested to give all the evidence of companies' usage. This is for building an intial evidence to convince pro-bono lawyers to take this case.
 
 3. I will contact a pro-bono lawyer to review the whistleblower's evidence. Once a pro-bono lawyer agrees to take this case, the whistleblower, the pro-bono lawyer and me will work together to maximize the likelihood of success. This includes:
 

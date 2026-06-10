@@ -36,7 +36,7 @@ These terms and conditions (“Agreement”) is a legal agreement between you (o
 
   * Any individual or entity that receives, accesses, or benefits from the Library through User's actions;
 
-  * Clients, customers, contractors, subcontractors, partners, affiliates, or any entity to which User provides access to the Library.
+  * Clients, customers, employees, contractors, subcontractors, partners, affiliates, or any entity to which User provides access to the Library.
 
 ## Commercial Use Conditions
 

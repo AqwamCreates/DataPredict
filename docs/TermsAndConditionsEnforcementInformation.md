@@ -20,7 +20,7 @@ This is how I structure the enforcement strategy to ensure that companies would 
 
   * The pro-bono lawyer would instruct what evidence should be collected by the whistleblower.
 
-  * Pro-bono lawyer would inform me which violation have occured according to the [Terms And Conditions](TermsAndConditions.md) written by me.
+  * Pro-bono lawyer would inform me which violation have occured according to the DataPredict™'s [Terms And Conditions](TermsAndConditions.md) written by me.
 
   * The process would repeat multiple times until the case is refined enough so that it leads to high likelihood of winning in court.
 

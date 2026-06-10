@@ -4,7 +4,7 @@ As a solo developer, we know that it takes a lot money to actually sue a company
 
 As a result, I have crafted a primary strategy that does not require money upfront, but will certainly give me a good success rate should a violation is found.
 
-This is how I structure the enforcement strategy to ensure that companies would comply with the DataPredict™'s terms and conditions.
+This is how I structure the enforcement strategy to ensure that companies would comply with the DataPredict™'s [Terms And Conditions](TermsAndConditions.md).
 
 ## Enforcement Strategy
 

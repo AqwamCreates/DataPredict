@@ -12,7 +12,7 @@ This is how I structure the enforcement strategy to ensure that companies would 
 
 2. Once a whistleblower found a company that violates the terms and conditions, the whistleblower must contact me before making any actions towards the violating company. This is to evaluate the nature of violation, the amount of fees that can be recovered and so on. The larger the violating company's revenue, the more likely it is worth it to build a case against this violating company.
 
-3. Once I determine that building the case for this company is worth it, the whistleblower is requested to give all the evidence of companies' usage. This is for building an intial evidence to convince pro-bono lawyers to take this case.
+3. Once I determine that building the case for this company is worth it, the whistleblower is requested to give all the evidence of companies' usage. This is for building an initial evidence to convince pro-bono lawyers to take this case.
 
 4. I will contact multiple pro-bono lawyers to review the whistleblower's evidence. Once a pro-bono lawyer agrees to take this case, the whistleblower, the pro-bono lawyer and me will work together to maximize the likelihood of success. This includes:
 

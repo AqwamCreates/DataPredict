@@ -12,7 +12,7 @@
 
 * [Using Optimizers](BasicTutorials/UsingOptimizers.md) (Training Speed-Up)
 
-* [Using Regularizers](BasicTutorials/UsingRegularizers.md) (Data Memorization / Generalization Handling)
+* [Using Regularizers](BasicTutorials/UsingRegularizers.md) (Data Pattern Memorization / Generalization Handling)
 
 * [Using Training Modifiers](BasicTutorials/UsingTrainingModifiers.md) (Data Subset Training)
 

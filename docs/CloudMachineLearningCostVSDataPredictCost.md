@@ -24,9 +24,11 @@ The table assumes that:
 
 * The game has an average play time of 10 minutes.
 
-* Machine learning model is required to perform constant training and predictions.
+* A machine learning model is required to perform constant training and predictions.
 
 * Single CPU only.
+
+Note: Not to be confused with concurrent users. 
 
 | Total Monthly Player Count | DataPredict™ | Google Cloud               | Microsoft Azure            | Amazon SageMaker           |
 |----------------------------|--------------|----------------------------|----------------------------|----------------------------|

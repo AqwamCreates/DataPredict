@@ -1,4 +1,4 @@
-# [Documentation](index.md) - Cost Reduction Information
+# [High Value Project Tutorials](https://github.com/AqwamCreates/DataPredict/blob/main/docs/HighValueProjectTutorials.md) - Cost Reduction Information
 
 ## Cost Reduction Factors
 

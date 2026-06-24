@@ -12,7 +12,7 @@
 
 [How Does DataPredict Reduce Costs For In-Game Machine Learning?](https://github.com/AqwamCreates/DataPredict/blob/main/docs/CostReductionInformation.md)
 
-[Cloud Machine Learning Cost VS DataPredict Cost](https://github.com/AqwamCreates/DataPredict/blob/main/docs/CloudMachineLearningCostVSDataPredictCost.md)
+[Cloud Machine Learning Costs VS DataPredict Costs](https://github.com/AqwamCreates/DataPredict/blob/main/docs/CloudMachineLearningCostsVSDataPredictCosts.md)
 
 ## Disclaimer
 

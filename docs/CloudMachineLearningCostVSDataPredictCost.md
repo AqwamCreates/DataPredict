@@ -18,6 +18,24 @@
 | Can Each Player Run Their Own Models | Yes (Free CPU Per Player)                                | Yes (Paid CPU Per Player)  | Yes (Paid CPU Per Player)  | Yes (Paid CPU Per Player)  |
 | Can Share GPU                        | Cannot Use GPU, But Redundant Due To Free CPU Per Player | Yes                        | Yes                        | Yes                        |
 
+## Total Monthly Player Count Cost
+
+The table assumes that:
+
+* The game has an average play time of 10 minutes.
+
+* Machine learning model is required to perform constant training and predictions.
+
+* Single CPU only.
+
+| Total Monthly Player Count | DataPredict™ | Google Cloud               | Microsoft Azure            | Amazon SageMaker           |
+|----------------------------|--------------|----------------------------|----------------------------|----------------------------|
+| 10                         | $0           | $3.667                     | $1.883                     | $0.833                     |
+| 100                        | $0           | $36.667                    | $18.833                    | $8.333                     |
+| 1000                       | $0           | $366.667                   | $188.333                   | $83.333                    |
+| 1000                       | $0           | $3666.667                  | $1883.333                  | $883.333                   |
+| 10000                      | $0           | $36666.667                 | $18833.333                 | $8833.333                  |
+
 ## DataPredict™ License Cost
 
 | License Type Based On Gross Revenue Per Company / Organization / Group / Individual | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          | Licensing Cost When A Project Earns 5K / 10K / 100K / 1M USD Per Month |

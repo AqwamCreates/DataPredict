@@ -1,4 +1,4 @@
-# [High Value Project Tutorials](https://github.com/AqwamCreates/DataPredict/blob/main/docs/HighValueProjectTutorials.md) - Cloud Machine Learning Cost VS DataPredict Cost
+# [High Value Project Tutorials](https://github.com/AqwamCreates/DataPredict/blob/main/docs/HighValueProjectTutorials.md) - Cloud Machine Learning Costs VS DataPredict Costs
 
 ## General Pricing
 

@@ -1,9 +1,9 @@
 # [High Value Project Tutorials](https://github.com/AqwamCreates/DataPredict/blob/main/docs/HighValueProjectTutorials.md) - Cloud Machine Learning Cost VS DataPredict Cost
 
-| Factor                    | DataPredict™ | Google Cloud | Microsoft Azure | Amazon AWS |
-|---------------------------|--------------|
-| Lowest Cost Per Inference | $0           |
-| Lowest Cost Per Hour      | $0           |
+| Factor                            | DataPredict™ | Google Cloud | Microsoft Azure | Amazon SageMaker |
+|-----------------------------------|--------------|--------------|-----------------|------------------|
+| Lowest Cost Per Inference Per CPU | $0           | N/A          | N/A             | N/A              |
+| Lowest Cost Per Hour Per CPU      | $0           | $0.22        | $0.113          | $0.050           |
 
 * Information based on June 25 2026.
 

@@ -18,6 +18,8 @@
 | Can Each Player Run Their Own Models | Yes (Free CPU Per Player) | Yes (Paid CPU Per Player)  | Yes (Paid CPU Per Player)  | Yes (Paid CPU Per Player)  |
 | Can Share CPU                        | Yes                       | Yes                        | Yes                        | Yes                        |
 
+## DataPredict™ License Cost
+
 | License Type Based On Gross Revenue Per Company / Organization / Group / Individual | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          | Licensing Cost When A Project Earns 5K / 10K / 100K / 1M USD Per Month |
 |-------------------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------|
 | Non-B2B + Less Than Or Equal To 5K USD Within 365 Days (Not Per 365 Days)           | 0%                                                        | Requires Public Disclosure Of DataPredict | Not Applicable                                                         |

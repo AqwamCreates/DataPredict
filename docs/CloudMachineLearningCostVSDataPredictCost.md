@@ -12,11 +12,11 @@
 
 ## Scalability
 
-| Factor                               | DataPredict™              | Google Cloud               | Microsoft Azure            | Amazon SageMaker           |
-|--------------------------------------|---------------------------|----------------------------|----------------------------|----------------------------|
-| Player Count Per CPU                 | Free CPU Per Player       | Must Purchase Individually | Must Purchase Individually | Must Purchase Individually |
-| Can Each Player Run Their Own Models | Yes (Free CPU Per Player) | Yes (Paid CPU Per Player)  | Yes (Paid CPU Per Player)  | Yes (Paid CPU Per Player)  |
-| Can Share CPU                        | Yes                       | Yes                        | Yes                        | Yes                        |
+| Factor                               | DataPredict™                                             | Google Cloud               | Microsoft Azure            | Amazon SageMaker           |
+|--------------------------------------|----------------------------------------------------------|----------------------------|----------------------------|----------------------------|
+| Player Count Per CPU                 | Free CPU Per Player                                      | Must Purchase Individually | Must Purchase Individually | Must Purchase Individually |
+| Can Each Player Run Their Own Models | Yes (Free CPU Per Player)                                | Yes (Paid CPU Per Player)  | Yes (Paid CPU Per Player)  | Yes (Paid CPU Per Player)  |
+| Can Share GPU                        | Cannot Use GPU, But Redundant Due To Free CPU Per Player | Yes                        | Yes                        | Yes                        |
 
 ## DataPredict™ License Cost
 

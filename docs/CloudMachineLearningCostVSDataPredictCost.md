@@ -1,11 +1,22 @@
 # [High Value Project Tutorials](https://github.com/AqwamCreates/DataPredict/blob/main/docs/HighValueProjectTutorials.md) - Cloud Machine Learning Cost VS DataPredict Cost
 
+## General Pricing
+
 | Factor                            | DataPredict™ | Google Cloud | Microsoft Azure | Amazon SageMaker |
 |-----------------------------------|--------------|--------------|-----------------|------------------|
 | Lowest Cost Per Inference Per CPU | $0           | N/A          | N/A             | N/A              |
 | Lowest Cost Per Hour Per CPU      | $0           | $0.22        | $0.113          | $0.050           |
+| Certification Cost                | N/A          | $200         | $99-$165        | $100-$300        |
 
 * Information based on June 25 2026.
+
+## Scalability
+
+| Factor                               | DataPredict™              | Google Cloud               | Microsoft Azure            | Amazon SageMaker           |
+|--------------------------------------|---------------------------|----------------------------|----------------------------|----------------------------|
+| Player Count Per CPU                 | Free CPU Per Player       | Must Purchase Individually | Must Purchase Individually | Must Purchase Individually |
+| Can Each Player Run Their Own Models | Yes (Free CPU Per Player) | Yes (Paid CPU Per Player)  | Yes (Paid CPU Per Player)  | Yes (Paid CPU Per Player)  |
+| Can Share CPU                        | Yes                       | Yes                        | Yes                        | Yes                        |
 
 | License Type Based On Gross Revenue Per Company / Organization / Group / Individual | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          | Licensing Cost When A Project Earns 5K / 10K / 100K / 1M USD Per Month |
 |-------------------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------|

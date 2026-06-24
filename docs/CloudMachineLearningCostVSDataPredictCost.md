@@ -6,6 +6,7 @@
 |-----------------------------------|--------------|--------------|-----------------|------------------|
 | Lowest Cost Per Inference Per CPU | $0           | N/A          | N/A             | N/A              |
 | Lowest Cost Per Hour Per CPU      | $0           | $0.22        | $0.113          | $0.050           |
+| Lowest Cost Per Storage GB        | $0           | $0.22        | $0.15           | $0.4             |
 | Certification Cost                | N/A          | $200         | $99-$165        | $100-$300        |
 
 * Information based on June 25 2026.

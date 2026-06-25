@@ -8,7 +8,7 @@
 | Lowest Cost Per Storage GB   | $0           | $0.22        | $0.15           | $0.4             |
 | Certification Cost Per Exam  | N/A          | $200         | $99-$165        | $100-$300        |
 
-* Information based on June 25 2026.
+* Information based on 25 June 2026.
 
 ## Scalability
 

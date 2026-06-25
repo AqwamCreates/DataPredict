@@ -2,11 +2,11 @@
 
 ## General Pricing
 
-| Factor                            | DataPredict™ | Google Cloud | Microsoft Azure | Amazon SageMaker |
-|-----------------------------------|--------------|--------------|-----------------|------------------|
-| Lowest Cost Per Hour Per CPU      | $0           | $0.22        | $0.113          | $0.050           |
-| Lowest Cost Per Storage GB        | $0           | $0.22        | $0.15           | $0.4             |
-| Certification Cost Per Exam       | N/A          | $200         | $99-$165        | $100-$300        |
+| Factor                       | DataPredict™ | Google Cloud | Microsoft Azure | Amazon SageMaker |
+|------------------------------|--------------|--------------|-----------------|------------------|
+| Lowest Cost Per Hour Per CPU | $0           | $0.22        | $0.113          | $0.050           |
+| Lowest Cost Per Storage GB   | $0           | $0.22        | $0.15           | $0.4             |
+| Certification Cost Per Exam  | N/A          | $200         | $99-$165        | $100-$300        |
 
 * Information based on June 25 2026.
 

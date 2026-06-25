@@ -34,6 +34,8 @@
 
 * For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
+* I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
+
 ## Preparation
 
 * [Production Deployment And Consulting](ProductionDeploymentAndConsulting.md) (Optional)

@@ -2,8 +2,6 @@
 
 ### Disclaimer
 
-* I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
-
 * I do not negotiate for the purchase of the whole DataPredict ecosystem. However, I am open for partnerships for game ML consultation businesses where:
 
    * If your client has already paid extra 500 USD (to remove 3-months cool-off) on top of these license, then you may consult with your clients without additional cost.

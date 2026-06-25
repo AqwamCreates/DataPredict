@@ -58,7 +58,7 @@ The table assumes that:
 
 | Metric                                    | DataPredict | Google Cloud | Microsoft Azure | Amazon SageMaker |
 |-------------------------------------------|-------------|--------------|-----------------|------------------|
-| Lowest Infrastructure Cost (Compute Only) | $0.000      | $0.367       | $0.188          | $0.083           |
+| Lowest Infrastructure Cost (Compute Only) | $0          | $0.367       | $0.188          | $0.083           |
 | ARPU (Average Revenue Per User)           | $0.50       | $0.50        | $0.50           | $0.50            |
 | Monthly Gross Revenue Per Player          | $0.50       | $0.50        | $0.50           | $0.50            |
 | DataPredict License Fee (2% of Revenue)   | $0.010      | N/A          | N/A             | N/A              |

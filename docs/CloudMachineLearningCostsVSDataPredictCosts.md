@@ -46,6 +46,8 @@ Note: Not to be confused with concurrent users.
 | Standard                                                                            | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 89 USD / 160 USD / 1300 USD / 10,530 USD                               |
 | White-Label                                                                         | 5%                                                        | None                                      | 250 USD / 500 USD / 5000 USD / 50,000 USD                              |
 
+* Note: At the $5,000/year revenue mark, the licensing fee is approximately $8/month for "Standard" license. Collecting micro-payments of this size creates administrative overhead that exceeds the revenue itself. Therefore, we subsidize 100% of costs for organizations under this threshold. We only begin billing when your success generates a fee large enough to be meaningful for both parties.
+
 ## Full Cost & Profitability Comparison (Per Player)
 
 The table assumes that:

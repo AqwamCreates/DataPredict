@@ -46,11 +46,7 @@ Note: Not to be confused with concurrent users.
 | Standard                                                                            | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 89 USD / 160 USD / 1300 USD / 10,530 USD                               |
 | White-Label                                                                         | 5%                                                        | None                                      | 250 USD / 500 USD / 5000 USD / 50,000 USD                              |
 
-Here is the full, plain-text cost comparison table based on your request.
-
----
-
-### Full Cost & Profitability Comparison (Per Player)
+## Full Cost & Profitability Comparison (Per Player)
 
 The table assumes that:
 

@@ -58,11 +58,11 @@ The table assumes that:
 
 | Metric                                    | DataPredict | Google Cloud | Microsoft Azure | Amazon SageMaker |
 |-------------------------------------------|-------------|--------------|-----------------|------------------|
-| Lowest Infrastructure Cost (Compute Only) | 0.000       | 0.367        | 0.188           | 0.083            |
-| ARPU (Average Revenue Per User)           | 0.50        | 0.50         | 0.50            | 0.50             |
-| Monthly Gross Revenue Per Player          | 0.50        | 0.50         | 0.50            | 0.50             |
-| DataPredict License Fee (2% of Revenue)   | 0.010       | N/A          | N/A             | N/A              |
-| Total ML Infrastructure Cost Per Player   | 0.010       | 0.367        | 0.188           | 0.083            |
-| Monthly Net Revenue Per Player (After ML) | 0.490       | 0.133        | 0.312           | 0.417            |
+| Lowest Infrastructure Cost (Compute Only) | $0.000      | $0.367       | $0.188          | $0.083           |
+| ARPU (Average Revenue Per User)           | $0.50       | $0.50        | $0.50           | $0.50            |
+| Monthly Gross Revenue Per Player          | $0.50       | $0.50        | $0.50           | $0.50            |
+| DataPredict License Fee (2% of Revenue)   | $0.010      | N/A          | N/A             | N/A              |
+| Total ML Infrastructure Cost Per Player   | $0.010      | $0.367       | $0.188          | $0.083           |
+| Monthly Net Revenue Per Player (After ML) | $0.490      | $0.133       | $0.312          | $0.417           |
 | Profit Margin Per Player (After ML)       | 98%         | 27%          | 62%             | 82%              |
 | ML Cost as % of Revenue Per Player        | 2%          | 73%          | 38%             | 18%              |

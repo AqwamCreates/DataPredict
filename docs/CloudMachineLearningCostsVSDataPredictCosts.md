@@ -61,7 +61,7 @@ The table assumes that:
 | Lowest Infrastructure Cost (CPU Only)     | $0                     | $0                        | $0.367       | $0.188          | $0.083           |
 | ARPU (Average Revenue Per User)           | $0.50                  | $0.50                     | $0.50        | $0.50           | $0.50            |
 | Monthly Gross Revenue Per Player          | $0.50                  | $0.50                     | $0.50        | $0.50           | $0.50            |
-| Total ML Infrastructure Cost Per Player   | $0.010                 | $0.025                    | $0.367       | $0.188          | $0.083           |
+| ML Cost Per Player                        | $0.010                 | $0.025                    | $0.367       | $0.188          | $0.083           |
 | Monthly Net Revenue Per Player (After ML) | $0.490                 | $0.475                    | $0.133       | $0.312          | $0.417           |
 | Profit Margin Per Player (After ML)       | 98%                    | 95%                       | 27%          | 62%             | 82%              |
 | ML Cost as % of Revenue Per Player        | 2%                     | 5%                        | 73%          | 38%             | 18%              |

@@ -65,7 +65,7 @@ local objectPlacementFeatureMatrixToTrain = {}
 
 local objectPlacementLabelVectorToTrain = {}
 
-local function onPlacement(...) -- All the features from the previous feature matrix.
+local function onPlacement(Player, ...) -- All the features from the previous feature matrix.
 
  local objectPlacementUnwrappedFeatureVector = {
 
@@ -154,7 +154,7 @@ In order to produce recommendations from our model, we must perform this operati
 
 ```lua
 
-local function predictNextObject()
+local function displayPredictedObject(Player, ...)
  
  local probabilityVector = PlacementPredictionModel:predict(objectPlacementFeatureMatrixToTrain, true) -- This consists of all objects available to the player for predicting object placement, which can be arranged based on ID.
  
@@ -162,7 +162,7 @@ local function predictNextObject()
  
  local topID = maximumValueDimensionIndexArray[1] -- We only need the maximum from rows since there is only one column generated here.
  
- recommend(topID)
+ displayObject(Player, topID)
 
 end
 

@@ -38,18 +38,18 @@ local objectPlacementFeatureMatrix = {
         changeInPositionX, -- This is calculated based on previous object placement position and the target placement position.
         changeInPositionY,
         changeInPositionZ,
-        objectRarityValue,
 
+        objectRarityValue,
         objectCost,
         isAWallPart, -- This only accepts 1 and 0. Additionally, you can also use 1 and -1.
         isInteractable, -- Same as above.
-        isLivingRoomObject,
-        isKitchenObject,
-        isBathroomObject,
-        isBedroomObject
+        isLivingRoomObject, -- Same as above.
+        isKitchenObject, -- Same as above.
+        isBathroomObject, -- Same as above.
+        isBedroomObject -- Same as above.
         
-        currentPlayerCashAmount,
-        
+        currentPlayerCashAmount, -- The mount of cash that the player is current holding.
+        consecutiveNumberOfTimesPlayerPlacedThisObject, -- The number of time that the player have placed this object without choosing another object in between. Not to be confused with total number of this object placed by the player.
     }
 }
 
@@ -87,9 +87,8 @@ local function onPlacement(...) -- All the features from the previous feature ma
   isBathroomObject,
   isBedroomObject,
 
-
   currentPlayerCashAmount,
-
+  consecutiveNumberOfTimesPlayerPlacedThisObject,
 
 }
 
@@ -100,9 +99,6 @@ local function onPlacement(...) -- All the features from the previous feature ma
 end
 
 ```
-
-
-
 
 This should give you a model that predicts a rough estimate when they'll Placement.
 
@@ -152,33 +148,21 @@ Under this case, the procedure is the same to case 2 except that you need to:
 
 * Perform auto-save with the optional ability of merging with saved model parameters from other servers.
 
-## Prediction Handling
+## Upon Player Placement Target
 
-In other to produce predictions from our model, we must perform this operation:
-
-```lua
-
-local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, math.log(timePlayedInCurrentSession), math.log(timePlayedInAllSessions), healthAmount}}
-
-local predictedLabelVector = PlacementPredictionModel:predict(currentPlayerDataVector)
-
-```
-
-Once you receive the predicted label vector, you can grab the pure number output by doing this:
+In order to produce recommendations from our model, we must perform this operation:
 
 ```lua
 
-local timeToPlacementPrediction = predictedLabelVector[1][1]
-
-```
-
-We can do this for every 10 seconds and use this to extend the players' playtime by doing something like this:
-
-```lua
-
-if (probabilityToPlacementPrediction >= 0.97) then  -- Can be changed instead of 0.97.
-
---- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
+local function predictNextObject()
+ 
+ local probabilityVector = PlacementPredictionModel:predict(objectPlacementFeatureMatrixToTrain, true) -- This consists of all objects available to the player for predicting object placement, which can be arranged based on ID.
+ 
+ local maximumValueDimensionIndexArray = TensorL2D:findMaximumValueDimensionIndexArray(probabilityVector)
+ 
+ local topID = maximumValueDimensionIndexArray[1] -- We only need the maximum from rows since there is only one column generated here.
+ 
+ recommend(topID)
 
 end
 
@@ -186,6 +170,6 @@ end
 
 ## Conclusion
 
-This tutorial showed you on how to create "probability to Placement" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
+This tutorial showed you on how to create object placement prediction model that allows you to aid your players' construction process. All you need is some data, some models and a bit of practice to get this right!
 
 That's all for today and see you later!

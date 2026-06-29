@@ -33,7 +33,7 @@ local objectPlacementFeatureMatrix = {
         positionYPlacement,
         positionZPlacement,
 
-        changeInPositionX, -- This is calculated based on previous object placement position and the target placement position.
+        changeInPositionX, -- This is calculated based on previous object placement position and the target placement position. In other words, targetPositionX - positionXPlacement
         changeInPositionY,
         changeInPositionZ,
 

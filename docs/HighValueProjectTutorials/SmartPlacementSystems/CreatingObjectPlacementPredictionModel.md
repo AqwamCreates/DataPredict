@@ -39,12 +39,13 @@ local objectPlacementFeatureMatrix = {
 
         objectRarityValue,
         objectCost,
-        isAWallPart, -- This only accepts 1 and 0. Additionally, you can also use 1 and -1.
-        isInteractable, -- Same as above.
-        isLivingRoomObject, -- Same as above.
-        isKitchenObject, -- Same as above.
-        isBathroomObject, -- Same as above.
-        isBedroomObject -- Same as above.
+        isInteractable, -- This only accepts 1 and 0. Additionally, you can also use 1 and -1.
+        isAWallObject, -- Same as above.
+        isALivingRoomObject, -- Same as above.
+        isAKitchenObject, -- Same as above.
+        isABathroomObject, -- Same as above.
+        isABedroomObject, -- Same as above.
+        isAGardenObject, -- Same as above.
         
         currentPlayerCashAmount, -- The mount of cash that the player is currently holding.
         consecutiveNumberOfTimesPlayerPlacedThisObject, -- The number of time that the player have placed this object in a row. Not to be confused with total number of this object placed by the player.
@@ -65,6 +66,8 @@ local objectPlacementLabelVectorToTrain = {}
 
 local function onPlacement(Player, ...) -- All the features from the previous feature matrix.
 
+ -- In here, we fetch the object's attributes that was placed by the player.
+
  local objectPlacementUnwrappedFeatureVector = {
 
   1, -- We're just adding 1 here to add "bias".
@@ -78,12 +81,13 @@ local function onPlacement(Player, ...) -- All the features from the previous fe
 
   objectRarityValue,
   objectCost,
-  isAWallPart, -- This only accepts 1 and 0. Additionally, you can also use 1 and -1.
-  isInteractable, -- Same as above.
-  isLivingRoomObject,
-  isKitchenObject,
-  isBathroomObject,
-  isBedroomObject,
+  isInteractable,
+  isAWallObject,
+  isALivingRoomObject,
+  isAKitchenObject,
+  isABathroomObject,
+  isABedroomObject,
+  isAGardenObject,
 
   currentPlayerCashAmount,
   consecutiveNumberOfTimesPlayerPlacedThisObject,
@@ -155,7 +159,9 @@ In order to produce recommendations from our model, we must perform this operati
 ```lua
 
 local function displayPredictedObject(Player, ...)
- 
+
+ -- In here, we fetch all the objects' attributes that can be placed by the player.
+
  local probabilityVector = PlacementPredictionModel:predict(objectPlacementFeatureMatrixToTrain, true) -- This consists of all objects available to the player for predicting object placement, which can be arranged based on ID.
  
  local maximumValueDimensionIndexArray = TensorL2D:findMaximumValueDimensionIndexArray(probabilityVector)

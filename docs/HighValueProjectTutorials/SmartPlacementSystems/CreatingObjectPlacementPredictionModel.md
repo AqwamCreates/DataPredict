@@ -94,6 +94,8 @@ local function onPlacement(Player, ...) -- All the features from the previous fe
 
  table.insert(objectPlacementLabelVectorToTrain, {1}) -- This tells the model that the probability of placing this object is 100% for the given feature matrix.
 
+ PlacementPredictionModel:train(objectPlacementFeatureMatrixToTrain, objectPlacementLabelVectorToTrain) -- Theoretically, you can use single data points per train() function call instead of accumulating data points. However, factorization machines works best in batches of data in order to handle sparsity better.
+
 end
 
 ```

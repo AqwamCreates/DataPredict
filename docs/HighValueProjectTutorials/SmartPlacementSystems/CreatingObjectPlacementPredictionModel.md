@@ -8,7 +8,7 @@ Hello guys! Today, I will be showing you on how to create a placement-based mode
 
 local DataPredict = require(DataPredict)
 
---[[
+ --[[
 
   For incremental learning purposes, set the maximumNumberOfIterations to 1 to avoid fully train on the current data.
 

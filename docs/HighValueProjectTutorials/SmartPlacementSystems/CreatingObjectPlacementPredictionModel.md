@@ -47,7 +47,7 @@ local objectPlacementFeatureMatrix = {
         isBedroomObject -- Same as above.
         
         currentPlayerCashAmount, -- The mount of cash that the player is current holding.
-        consecutiveNumberOfTimesPlayerPlacedThisObject, -- The number of time that the player have placed this object without choosing another object in between. Not to be confused with total number of this object placed by the player.
+        consecutiveNumberOfTimesPlayerPlacedThisObject, -- The number of time that the player have placed this object in a row. Not to be confused with total number of this object placed by the player.
     }
 }
 

@@ -46,7 +46,7 @@ local objectPlacementFeatureMatrix = {
         isBathroomObject, -- Same as above.
         isBedroomObject -- Same as above.
         
-        currentPlayerCashAmount, -- The mount of cash that the player is current holding.
+        currentPlayerCashAmount, -- The mount of cash that the player is currently holding.
         consecutiveNumberOfTimesPlayerPlacedThisObject, -- The number of time that the player have placed this object in a row. Not to be confused with total number of this object placed by the player.
     }
 }
@@ -55,7 +55,7 @@ local objectPlacementFeatureMatrix = {
 
 ## Upon Player Placement
 
-By the time the player Placements, it is time for us to train the model. But first, we need to calculate the difference.
+By the time the player places an object, it is time for us to train the model. But first, we need to calculate the difference.
 
 ```lua
 
@@ -90,9 +90,9 @@ local function onPlacement(Player, ...) -- All the features from the previous fe
 
 }
 
- table.insert(objectPlacementFeatureMatrixToTrain, objectPlacementFeatureMatrixToTrain)
+ table.insert(objectPlacementFeatureMatrixToTrain, objectPlacementUnwrappedFeatureVector)
 
- table.insert(objectPlacementLabelVectorToTrain, {1}) -- This tells the model that the probability of placing this object is 100%.
+ table.insert(objectPlacementLabelVectorToTrain, {1}) -- This tells the model that the probability of placing this object is 100% for the given feature matrix.
 
 end
 

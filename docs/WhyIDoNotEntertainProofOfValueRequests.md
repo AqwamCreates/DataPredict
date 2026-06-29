@@ -58,7 +58,7 @@ Additionally, I also have provided high-value project tutorials that I learnt fr
 
 ## Lots Of Free Revenue-Generating Tutorials
 
-As you can see in the [high value project tutorials](HighValueProjectTutorials.md), I have provided a lot of revenue-generating tutorials for free. If that doesn't convince you that this library is valuable despite these tutorials showed otherwise, then you are free to ignore the whole DataPredict™ ecosystem. I will not waste your time any further if you are seriously not convinced by DataPredict™'s value.
+As you can see in the [high-value project tutorials](HighValueProjectTutorials.md), I have provided a lot of revenue-generating tutorials for free. If that doesn't convince you that this library is valuable despite these tutorials showed otherwise, then you are free to ignore the whole DataPredict™ ecosystem. I will not waste your time any further if you are seriously not convinced by DataPredict™'s value.
 
 ## Value Is Also Dependent On How You Use It
 

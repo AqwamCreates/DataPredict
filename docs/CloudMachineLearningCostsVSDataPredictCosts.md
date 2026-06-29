@@ -48,7 +48,7 @@ Note: Not to be confused with concurrent users.
 
 * Note: At the $5,000/year revenue mark, the licensing fee is approximately $8/month for "Standard" license. Collecting micro-payments of this size creates administrative overhead that exceeds the revenue itself. Therefore, we subsidize 100% of costs for organizations under this threshold. We only begin billing when your success generates a fee large enough to be meaningful for both parties.
 
-## Full Cost & Profitability Comparison (Per Player)
+## Full Cost & Profitability Comparison Per Player
 
 The table assumes that:
 

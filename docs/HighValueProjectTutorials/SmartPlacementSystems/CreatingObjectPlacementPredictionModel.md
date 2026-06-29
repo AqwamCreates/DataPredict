@@ -92,7 +92,7 @@ local function onPlacement(Player, ...) -- All the features from the previous fe
 
  table.insert(objectPlacementFeatureMatrixToTrain, objectPlacementFeatureMatrixToTrain)
 
- table.insert(objectPlacementLabelVectorToTrain, {1})
+ table.insert(objectPlacementLabelVectorToTrain, {1}) -- This tells the model that the probability of placing this object is 100%.
 
 end
 

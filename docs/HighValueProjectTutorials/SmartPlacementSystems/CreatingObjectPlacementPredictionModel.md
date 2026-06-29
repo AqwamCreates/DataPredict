@@ -1,6 +1,6 @@
 # [Smart Placement Systems](../SmartPlacementSystems.md) - Creating Object Placement Prediction Model
 
-Hello guys! Today, I will be showing you on how to create a placemebt-based model that could predict the next best 
+Hello guys! Today, I will be showing you on how to create a placememt-based model that could predict the next object to place.
 
 ## Setting Up
 
@@ -18,7 +18,7 @@ local DataPredict = require(DataPredict)
 
 --]]
 
-local PlacementPredictionModel = DataPredict.Models.FactorizationMachine.new({maximumNumberOfIterations = 1, learningRate = 0.3, latentFactorCount = 3, binaryFunction = "Logistic"})
+local PlacementPredictionModel = DataPredict.Models.FactorizationMachine.new({maximumNumberOfIterations = 1, learningRate = 0.3, latentFactorCount = 5, binaryFunction = "Logistic"})
 
 ```
 

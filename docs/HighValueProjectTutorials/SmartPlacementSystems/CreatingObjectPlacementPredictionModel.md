@@ -4,8 +4,6 @@ Hello guys! Today, I will be showing you on how to create a placemebt-based mode
 
 ## Setting Up
 
-  * If you’re modeling the probability that a player Placements over time, Complementary Log–Log is often a better choice as a binary function output because it naturally models time-to-event processes where the probability of leaving increases asymmetrically as time passes.
-
 ```lua
 
 local DataPredict = require(DataPredict)

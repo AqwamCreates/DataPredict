@@ -24,7 +24,7 @@ The table assumes that:
 
 * The game has an average play time of 10 minutes.
 
-* A machine learning model is required to perform constant training and predictions.
+* A single machine learning model is required to perform constant training and predictions.
 
 * Single CPU only.
 
@@ -54,7 +54,7 @@ The table assumes that:
 
 * The game has an average play time of 10 minutes.
 
-* A machine learning model is required to perform constant training and predictions.
+* A single machine learning model is required to perform constant training and predictions.
 
 * Single CPU only.
 

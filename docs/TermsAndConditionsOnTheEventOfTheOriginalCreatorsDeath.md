@@ -54,9 +54,9 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
  
   * Others.
 
-### Original Identity Conditions
+### Valid Identity Conditions
 
-* For the Original Creator to satisfy having an "Original Identity", it must satisfy these conditions:
+* For the Original Creator to satisfy having an "Valid Identity", it must satisfy these conditions:
 
   * The revived Original Creator must have at least 10% of the Original Creator's memories of any form, including:
 
@@ -83,49 +83,35 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
     * Others.
 
   * The revived Original Creator must have the ability to think and interact with the environment in any form (including physical and non-physical) without any external interference, except in cases for support.
-
-  * All countries must have laws involving no replicates of "Original Identity". In the absence of such laws for a specific country, the majority of that country's population agreeing to no replicates of "Original Identity" or neutral to replicates of "Original Identity" overall can be a placeholder to that country's law.
 
 * If all of the conditions under this section are met, then the Agreement will be terminated immediately upon the Original Creator's revival.
 
-### Cloned Identity
+### Original Identity Conditions
 
-* For the Original Creator to satisfy having an "Cloned Identity", it must satisfy these conditions:
+* For the Original Creator to satisfy having an "Main Identity", it must satisfy all of these conditions:
 
-  * The revived Original Creator must have at least 10% of the Original Creator's memories of any form, including:
+  * Satisfies "Valid Identity" Conditions.
 
-    * Personal information.
-   
-    * Private information.
-   
-    * Public information.
-   
-    * Sensitive information.
-    
-    * Life history.
+  * Only one revived Original Creator exists at the time of revival in the entire world.
 
-    * Academic knowledge.
+  * Satisfies "Non-Concurrent Existence" Conditions, which must satisfy one of these conditions:
 
-    * Creative knowledge.
+    * All countries must have laws involving no replicates of “Original Identity”. In the absence of such laws for a specific country, the majority of that country’s population agreeing to no replicates of “Original Identity” or neutral to replicates of “Original Identity” overall can be a placeholder to that country’s law.
 
-    * Hobby knowledge.
+## Shell Identity Conditions
 
-    * Significant knowledge.
+* For the Original Creator to satisfy having an "Identity Copy", it must satisfy all of these conditions:
 
-    * Non-significant knowledge.
-
-    * Others.
-
-  * The revived Original Creator must match 100% genetically if the revived Original Creator does not satisfy of having at least 10% of Original Creator's memories.
+  * Satisfies "Valid Identity" Conditions, or must match 100% genetically.
  
-  * The revived Original Creator must have the ability to think and interact with the environment in any form (including physical and non-physical) without any external interference, except in cases for support.
+  * Satisfies "Concurrent Existence" Conditions, which must satisfy one of these conditions:
 
-  * One of the countries have any laws that are favourable towards replicates of "Original Identity". In the absence of such laws for a specific country, the majority of that country's population agreeing to replicates of "Original Identity" can be a placeholder to that country's law. This condition can be superseded if there is more than one replicates of "Original Identity" exists in the entire world, regardless of difference in forms and memories. 
+    * One of the countries have any laws that are favourable towards replicates of "Original Identity". In the absence of such laws for a specific country, the majority of that country's population agreeing to replicates of "Original Identity" can be a placeholder to that country's law. This condition can be superseded if there is more than one replicates of "Original Identity" exists in the entire world, regardless of difference in forms and memories. 
 
-* If all of the conditions under this section are met, then the Cloned Identity are given the same rights and conditions as the "Beneficiary".
+    * More than one revived Original Creator exists at the time of revival in the entire world.
 
 ### Handling Of Specific Scenarios
 
-* Should the first replication of the Original Creator results having an "Original Identity" status, the subsequent replications of the Original Creator results in having an "Cloned Identity" status.
+* Should the first replication of the Original Creator results having an "Original Identity" status, the subsequent replications of the Original Creator results in having an "Shell Identity" status.
 
-* Each replication of Original Creator is assumed to have an "Original Identity" status, provided that there are no other replicates of Original Creator exists in the entire world during the time of replication.
+* Each replication of Original Creator is assumed to have an "Original Identity" status unless it fails one of the conditions, provided that there are no other replicates of Original Creator exists in the entire world during the time of replication.

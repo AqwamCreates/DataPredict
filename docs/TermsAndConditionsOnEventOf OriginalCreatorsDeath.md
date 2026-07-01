@@ -6,15 +6,15 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 ## Defintions
 
-* The definition of "Beneficiary" are non-profit human health company or organization. The company or the organization must be involved in either human physical health, human mental health or both.
+* The definition of "Beneficiary" are registered non-profit human health company or organization. The company or the organization must be involved in either human physical health, human mental health or both.
 
 * The definition of "Third Party" are any individual, company or organization who are not the Creator.
 
 * The definition of "Corrupted Entity" are any individual, company or organization that satisfies any of these conditions:
 
-  * Have an ongoing criminal or civil court case involving corruption.
+  * Have an ongoing criminal or civil court case involving corruption confirmed by a court of law.
   
-  * Have a confirmed corruption criminal or civil court case involving corruption for the last 1825 days (equivalent to 5 years).
+  * Have a corruption criminal or civil court case involving corruption for the last 1825 days (equivalent to 5 years) confirmed by a court of law.
 
 ## Grant Of Rights For The Beneficiary
 

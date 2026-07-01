@@ -39,3 +39,32 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 ## Grant Of Rights By The Third Party
 
 * Upon the Third Party's contributions to the Library, the Third Party agrees that all the rights are transferred to given to the Creator. The Third Party also agrees that these rights will not be revoked permanently, regardless of the time, cost, conditions and so on.
+
+## Upon The Revival Of Original Creator's Life
+
+In the extremely unlikely event of Original Creator's revival, the Agreement will be handled based on individual situations.
+
+### Original Identity
+
+* For the Original Creator to satisfy having an "Original Identity", it must satisfy these conditions:
+
+ * The revived Original Creator must have at least 10% of memories of any form, including:
+
+  * Personal Information.
+
+  * Life history.
+
+  * Academic knowledge.
+
+  * Creative knowledge.
+
+  * Hobby knowledge.
+
+  * Significant knowledge.
+
+  * Non-significant knowledge.
+
+ * All countries have laws involving no replicates of "Original Identity". In the absence of laws for a specific country, the majority of population agreeing to no replicates "Original Identity" can be a placeholder to that country's law.
+
+### Cloned Identity
+

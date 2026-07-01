@@ -98,7 +98,7 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
     * All countries must have laws involving no replicates of “Original Identity”. In the absence of such laws for a specific country, the majority of that country’s population agreeing to no replicates of “Original Identity” or neutral to replicates of “Original Identity” overall can be a placeholder to that country’s law.
 
-## Shell Identity Conditions
+### Shell Identity Conditions
 
 * For the Original Creator to satisfy having an "Identity Copy", it must satisfy all of these conditions:
 

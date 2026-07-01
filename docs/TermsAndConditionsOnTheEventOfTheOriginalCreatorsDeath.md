@@ -84,7 +84,7 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
   * The revived Original Creator must have the ability to think and interact with the environment without any external interference, except in cases for support.
 
-  * All countries must have laws involving no replicates of "Original Identity". In the absence of such laws for a specific country, the majority of population agreeing to no replicates of "Original Identity" or neutral to replicates of "Original Identity" overall can be a placeholder to that country's law.
+  * All countries must have laws involving no replicates of "Original Identity". In the absence of such laws for a specific country, the majority of the country's population agreeing to no replicates of "Original Identity" or neutral to replicates of "Original Identity" overall can be a placeholder to that country's law.
 
 * If all conditions are met under this section, then the Agreement will be terminated immediately upon the Original Creator's revival.
 
@@ -120,6 +120,6 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
  
   * The revived Original Creator must have the ability to think and interact with the environment without any external interference, except in cases for support.
 
-  * One of the countries have any laws that are favourable towards replicates of "Original Identity". In the absence of such laws for a specific country, the majority of population agreeing to replicates of "Original Identity" can be a placeholder to that country's law.
+  * One of the countries have any laws that are favourable towards replicates of "Original Identity". In the absence of such laws for a specific country, the majority of of the country's population agreeing to replicates of "Original Identity" can be a placeholder to that country's law.
 
 * If all conditions are met under this section, then the Cloned Identity are given the same rights and conditions as the "Beneficiary".

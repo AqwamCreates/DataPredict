@@ -44,11 +44,11 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 In the extremely unlikely event of Original Creator's revival, the Agreement will be handled based on individual situations.
 
-### Original Identity
+### Original Identity Conditions
 
 * For the Original Creator to satisfy having an "Original Identity", it must satisfy these conditions:
 
- * The revived Original Creator must have at least 10% of memories of any form, including:
+ * The revived Original Creator must have at least 10% of Original Creator's memories of any form, including:
 
   * Personal Information.
 
@@ -70,3 +70,26 @@ In the extremely unlikely event of Original Creator's revival, the Agreement wil
 
 ### Cloned Identity
 
+* For the Original Creator to satisfy having an "Original Identity", it must satisfy these conditions:
+
+ * The revived Original Creator must have at least 10% of Original Creator's memories of any form, including:
+
+  * Personal Information.
+
+  * Life history.
+
+  * Academic knowledge.
+
+  * Creative knowledge.
+
+  * Hobby knowledge.
+
+  * Significant knowledge.
+
+  * Non-significant knowledge.
+
+ * The revived Original Creator must match 100% genetically if the revived Original Creator does not satisfy of having at least 10% of Original Creator's memories.
+
+ * One of the countries have laws involving replicates of "Original Identity". In the absence of laws for a specific country, the majority of population agreeing to replicates "Original Identity" can be a placeholder to that country's law.
+
+* If all conditions are met under this section, then the Cloned Identity are given the same rights and conditions as "Beneficiary".

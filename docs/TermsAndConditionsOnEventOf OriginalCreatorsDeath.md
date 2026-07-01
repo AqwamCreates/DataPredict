@@ -18,6 +18,8 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 ## Grant Of Rights For The Beneficiary
 
+* The rights granted below are not exclusive to a single Beneficiary and is granted to all Beneficiaries if certain conditions are met.
+
 ### Grant Of Rights Conditions For The Beneficiary
 
 * The Beneficiary must not be a Corrupted Entity.

@@ -114,6 +114,6 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 ### Handling Of Specific Scenarios
 
-* Should the first replication of the Original Creator results having an "Original Identity" status, the subsequent replications of the Original Creator results in having an "Secondary Identity" status.
+* Should the first replication of the Original Creator results having an "Original Identity" status, the subsequent replications of the Original Creator results in having an "Secondary Identity" status. This means that the first revived Original Creator will always keep the "Original Identity" status due to lack of replications of Original Creator at the time of revival.
 
-* Each replication of Original Creator is assumed to have an "Original Identity" status unless it fails one of the conditions, provided that there are no other replicates of Original Creator exists in the entire world during the time of replication.
+* Each replication of Original Creator is assumed to have an "Original Identity" status unless it fails one of the conditions, provided that there are no other replicates of Original Creator exists in the entire world during the time of replication. 

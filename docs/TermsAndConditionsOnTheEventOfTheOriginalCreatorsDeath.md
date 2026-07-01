@@ -84,8 +84,6 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
   * The revived Original Creator must have the ability to think and interact with the environment in any form (including physical and non-physical) without any external interference, except in cases for support.
 
-* If all of the conditions under this section are met, then the Agreement will be terminated immediately upon the Original Creator's revival.
-
 ### Original Identity Conditions
 
 * For the Original Creator to satisfy having an "Main Identity", it must satisfy all of these conditions:
@@ -98,9 +96,11 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
     * All countries must have laws involving no replicates of “Original Identity”. In the absence of such laws for a specific country, the majority of that country’s population agreeing to no replicates of “Original Identity” or neutral to replicates of “Original Identity” overall can be a placeholder to that country’s law.
 
-### Shell Identity Conditions
+* If all of the conditions under this section are met, then the Agreement will be terminated immediately upon the Original Creator's revival.
 
-* For the Original Creator to satisfy having an "Identity Copy", it must satisfy all of these conditions:
+### Secondary Identity Conditions
+
+* For the Original Creator to satisfy having an "Secondary Identity", it must satisfy all of these conditions:
 
   * Satisfies "Valid Identity" Conditions, or must match 100% genetically.
  
@@ -110,8 +110,10 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
     * More than one revived Original Creator exists at the time of revival in the entire world.
 
+* If all of the conditions under this section are met, then the Cloned Identity are given the same rights and conditions as the “Beneficiary”.
+
 ### Handling Of Specific Scenarios
 
-* Should the first replication of the Original Creator results having an "Original Identity" status, the subsequent replications of the Original Creator results in having an "Shell Identity" status.
+* Should the first replication of the Original Creator results having an "Original Identity" status, the subsequent replications of the Original Creator results in having an "Secondary Identity" status.
 
 * Each replication of Original Creator is assumed to have an "Original Identity" status unless it fails one of the conditions, provided that there are no other replicates of Original Creator exists in the entire world during the time of replication.

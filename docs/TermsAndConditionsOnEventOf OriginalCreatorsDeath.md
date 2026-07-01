@@ -102,4 +102,4 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
   * One of the countries have laws involving replicates of "Original Identity". In the absence of laws for a specific country, the majority of population agreeing to replicates "Original Identity" can be a placeholder to that country's law.
 
-* If all conditions are met under this section, then the Cloned Identity are given the same rights and conditions as "Beneficiary".
+* If all conditions are met under this section, then the Cloned Identity are given the same rights and conditions as the "Beneficiary".

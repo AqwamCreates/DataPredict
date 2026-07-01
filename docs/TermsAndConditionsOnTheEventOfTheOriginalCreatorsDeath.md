@@ -128,4 +128,4 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 * Should the first replication of the Original Creator results having an "Original Identity" status, the subsequent replications of the Original Creator results in having an "Cloned Identity" status.
 
-* Each replication of Original Creator is assumed to have an "Original Identity" status, provived that there are no other replicates of Original Creator exists in the entire world.
+* Each replication of Original Creator is assumed to have an "Original Identity" status, provided that there are no other replicates of Original Creator exists in the entire world during the time of replication.

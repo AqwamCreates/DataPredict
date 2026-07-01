@@ -99,6 +99,8 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
     * Non-significant knowledge.
 
   * The revived Original Creator must match 100% genetically if the revived Original Creator does not satisfy of having at least 10% of Original Creator's memories.
+ 
+  * The revived Original Creator must have the ability to think and interact with the environment without any external interference, except in cases for support.
 
   * One of the countries have laws involving replicates of "Original Identity". In the absence of laws for a specific country, the majority of population agreeing to replicates "Original Identity" can be a placeholder to that country's law.
 

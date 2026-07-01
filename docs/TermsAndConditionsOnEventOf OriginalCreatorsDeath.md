@@ -60,7 +60,13 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
   * The revived Original Creator must have at least 10% of the Original Creator's memories of any form, including:
 
-    * Personal Information.
+    * Personal information.
+   
+    * Private information.
+   
+    * Public information.
+   
+    * Sensitive information.
 
     * Life history.
 
@@ -73,6 +79,8 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
     * Significant knowledge.
 
     * Non-significant knowledge.
+   
+    * Others.
 
   * The revived Original Creator must have the ability to think and interact with the environment without any external interference, except in cases for support.
 
@@ -86,8 +94,14 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
   * The revived Original Creator must have at least 10% of the Original Creator's memories of any form, including:
 
-    * Personal Information.
-
+    * Personal information.
+   
+    * Private information.
+   
+    * Public information.
+   
+    * Sensitive information.
+    
     * Life history.
 
     * Academic knowledge.
@@ -99,6 +113,8 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
     * Significant knowledge.
 
     * Non-significant knowledge.
+
+    * Others.
 
   * The revived Original Creator must match 100% genetically if the revived Original Creator does not satisfy of having at least 10% of Original Creator's memories.
  

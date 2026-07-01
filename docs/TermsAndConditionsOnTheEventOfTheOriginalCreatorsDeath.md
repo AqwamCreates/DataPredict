@@ -1,4 +1,4 @@
-# Terms And Conditions On The Event Of The Original Creator's Death 
+# Terms And Conditions On The Event Of The Original Creators Death
 
 ## License
 

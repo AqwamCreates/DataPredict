@@ -46,13 +46,13 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 * The revival of Original Creator can be from any cause or form, including:
 
-  * Technological
+  * Technological.
  
-  * Spiritual
+  * Spiritual.
   
-  * Divine
+  * Divine.
  
-  * Others
+  * Others.
 
 ### Original Identity Conditions
 

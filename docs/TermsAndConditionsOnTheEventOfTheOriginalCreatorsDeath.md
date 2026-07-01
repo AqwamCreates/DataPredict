@@ -90,11 +90,11 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
   * Satisfies "Valid Identity" Conditions.
 
-  * Only one revived Original Creator exists at the time of revival in the entire world.
-
   * Satisfies "Non-Concurrent Existence" Conditions, which must satisfy one of these conditions:
 
     * All countries must have laws involving no replicates of “Original Identity”. In the absence of such laws for a specific country, the majority of that country’s population agreeing to no replicates of “Original Identity” or neutral to replicates of “Original Identity” overall can be a placeholder to that country’s law.
+   
+    * Only one revived Original Creator exists at the time of revival in the entire world.
 
 * If all of the conditions under this section are met, then the Agreement will be terminated immediately upon the Original Creator's revival.
 

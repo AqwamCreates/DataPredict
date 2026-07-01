@@ -2,7 +2,7 @@
 
 ## License
 
-These terms and conditions (“Agreement”) is a legal agreement between Aqwam Harish Aiman recognised as “Creator” and everyone for the limited rights of DataPredict Library (or formerly known as Aqwam’s Machine, Deep And Reinforcement Learning Library) (“Library”) within this terms and conditions.
+These terms and conditions (“Agreement”) is a legal agreement between Aqwam Harish Aiman recognised as “Creator” and everyone involving the DataPredict Library (or formerly known as Aqwam’s Machine, Deep And Reinforcement Learning Library) (“Library”) within this terms and conditions.
 
 ## Defintions
 

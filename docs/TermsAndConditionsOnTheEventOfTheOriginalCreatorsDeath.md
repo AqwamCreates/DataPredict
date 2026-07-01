@@ -30,7 +30,7 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 #### Enforcement Rights
 
-* The Beneficiary have all the rights to enforce "Terms And Conditions" violations on behalf of the Creator. All forms of compensations that are received by the Beneficiary as a result of enforcing this license must be used by the Beneficiary's operations. 
+* The Beneficiary have all the rights to enforce this Agreement's and other "Terms And Conditions" violations on behalf of the Creator. All forms of compensations that are received by the Beneficiary as a result of enforcing this license must be used by the Beneficiary's operations. 
 
 #### Commercial Rights
 

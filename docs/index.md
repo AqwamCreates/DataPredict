@@ -102,3 +102,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 * [Beta](VersionHistory/BetaVersionHistory.md)
 
 * [All](VersionHistory/AllVersionsHistory.md)
+
+## Just In Case
+
+[Terms And Conditions On The Event Of Original Creator's Death](TermsAndConditionsOnTheEventOfOriginalCreatorsDeath.md)

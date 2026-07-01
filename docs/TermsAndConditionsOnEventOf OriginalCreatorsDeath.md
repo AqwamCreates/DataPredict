@@ -58,7 +58,7 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 * For the Original Creator to satisfy having an "Original Identity", it must satisfy these conditions:
 
-  * The revived Original Creator must have at least 10% of Original Creator's memories of any form, including:
+  * The revived Original Creator must have at least 10% of the Original Creator's memories of any form, including:
 
     * Personal Information.
 
@@ -84,7 +84,7 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 * For the Original Creator to satisfy having an "Original Identity", it must satisfy these conditions:
 
-  * The revived Original Creator must have at least 10% of Original Creator's memories of any form, including:
+  * The revived Original Creator must have at least 10% of the Original Creator's memories of any form, including:
 
     * Personal Information.
 

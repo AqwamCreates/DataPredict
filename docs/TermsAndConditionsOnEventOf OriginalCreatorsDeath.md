@@ -6,7 +6,7 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 ## Defintions
 
-* The definition of "Beneficiary" are non-profit human health companies or organizations.
+* The definition of "Beneficiary" are non-profit human health company or organization. The company or the organization must be involved in either human physical health, human mental health or both.
 
 * The definition of "Third Party" are any individual, company or organization who are not the Creator.
 
@@ -24,7 +24,7 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 * The Beneficiary must not be a Corrupted Entity.
 
-* The Beneficiary must not have a Corrupted Entity individual at any of the top-level leader status such as Chief Executive Officer, Chief Financial Officer, Chief Safety Officer, Chief Technology Officer and etc.
+* The Beneficiary must not have a Corrupted Entity individual at any of the top-level leader status such as Chief Executive Officer, Chief Financial Officer, Chief Safety Officer, Chief Technology Officer and so on.
 
 ### List Of Rights Granted To The Beneficiary By The Creator
 
@@ -34,7 +34,7 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 #### Commercial Rights
 
-* The Beneficiary have the
+* The Beneficiary have the right to sublicense the Library, provided that the amount of compensation must strongly benefit human individuals that are inflicted with physical health or mental health illnesses.
 
 ## Grant Of Rights By The Third Party
 

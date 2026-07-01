@@ -42,7 +42,17 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 ## Upon The Revival Of Original Creator's Life
 
-In the extremely unlikely event of Original Creator's revival, the Agreement will be handled based on individual situations.
+* In the extremely unlikely event of Original Creator's revival in any form, the Agreement will be handled based on individual situations.
+
+* The revival of Original Creator can be from any cause or form, including:
+
+  * Technological
+ 
+  * Spiritual
+  
+  * Divine
+ 
+  * Others
 
 ### Original Identity Conditions
 

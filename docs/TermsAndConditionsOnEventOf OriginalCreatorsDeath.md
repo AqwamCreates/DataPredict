@@ -66,5 +66,7 @@ In the extremely unlikely event of Original Creator's revival, the Agreement wil
 
  * All countries have laws involving no replicates of "Original Identity". In the absence of laws for a specific country, the majority of population agreeing to no replicates "Original Identity" can be a placeholder to that country's law.
 
+* If all conditions are met under this section, then the Agreement will be terminated immediately upon the Original Creator's revival.
+
 ### Cloned Identity
 

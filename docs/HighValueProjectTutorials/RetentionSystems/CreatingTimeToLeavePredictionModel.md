@@ -220,7 +220,7 @@ local function onPredict(Player, timeToLeavePrediction)
 
     task.wait(timeToLeavePrediction)
 
-     isDelayActive = false
+    isDelayActive = false
 
     createEvent(Player) --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
 

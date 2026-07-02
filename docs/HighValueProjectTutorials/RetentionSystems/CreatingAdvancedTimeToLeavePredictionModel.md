@@ -200,13 +200,51 @@ local timeToLeavePrediction = math.exp(logTimeToLeavePrediction) -- Since we use
 
 ```
 
-We can do this for every 10 seconds and use this to extend the players' playtime by doing something like this:
+## Prediction Handling
+
+In other to produce predictions from our model, we must perform this operation:
 
 ```lua
 
-if (timeToLeavePrediction <= 60) then -- Can be changed instead of less than 60 seconds.
+local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
 
---- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
+local predictedLabelVector = LeavePredictionModel:predict(currentPlayerDataVector)
+
+```
+
+## Ideas On How To Handle Prediction
+
+### "Intervene Now" Method
+
+```lua
+
+local function onPredict(Player, timeToLeavePrediction)
+
+    if (timeToLeavePrediction > 60) then return end -- Can be changed instead of less than 60 seconds.
+
+    createEvent(Player) --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
+
+end
+
+```
+
+### "Intervene Later" Method
+
+```lua
+
+local isDelayActive = false
+
+local function onPredict(Player, timeToLeavePrediction)
+
+    if (isDelayActive) then return end
+
+    isDelayActive = true
+
+    task.wait(timeToLeavePrediction)
+
+    isDelayActive = false
+
+    createEvent(Player) --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
 
 end
 

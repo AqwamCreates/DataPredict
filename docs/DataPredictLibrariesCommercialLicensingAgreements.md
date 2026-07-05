@@ -12,7 +12,7 @@
  
    * The 500 USD upfront cost would begin on March-April.
 
-* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
+* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md) and [Terms And Conditions Enforcement Information](TermsAndConditionsEnforcementInformation.md).
 
 ### Definitions
 

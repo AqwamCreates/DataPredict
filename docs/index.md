@@ -106,3 +106,5 @@ To know what this library is all about from scratch, let's have a look at the qu
 ## Just In Case
 
 * [Terms And Conditions On The Event Of The Original Creator's Death](TermsAndConditionsOnTheEventOfTheOriginalCreatorsDeath.md)
+
+* [Why Did This Codebase Was Created In The First Place](WhyDidThisCodebaseWasCreatedInTheFirstPlace.md)

@@ -44,7 +44,7 @@ I continued begging for the mental illness treatment to my parents. Eventually..
 
 Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it wass filled with teachers and classes.
 
-Eventually, I got into a breaking point that I want to jump off from the fourth-level of the apartment hostel. Now, my damn parents took action. However, they only sent me to the IISM's school counselor. For Wednesday to Thursday, I always go there... But he didn't really do anything to my untreated mental illnesses as this counselor didn't do anything on diagnosing my mental illnesses. I was so confused by this, and I asked my parents for medication instead because my problem was already severe. My parents ignores my plea for medication treatment.
+Eventually, I got into a breaking point that I want to jump off from the fourth-level of the apartment hostel. Now, my damn parents took action. However, they only sent me to the IISM's school counselor. For Wednesday to Thursday, I always go there... But he didn't really do anything to my untreated mental illnesses as this counselor didn't do anything on diagnosing my mental illnesses. I was so confused by this, and I asked my parents for medication instead because my problem was already severe. My parents ignores my plea for treatment through medication.
 
 
 

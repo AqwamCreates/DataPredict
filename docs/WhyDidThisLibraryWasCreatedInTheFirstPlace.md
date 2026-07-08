@@ -78,6 +78,8 @@ To do:
 
 * First crack in lies: The bachelor university offers exam and assignment extensions if you had a valid mental illness diagnosis.
 
+* The reveal on the cost Malaysia's public healthcare treatment for each consultation (including medication) is RM 5. Needing to wait for one month is irrelevant as I can wait for that long.
+
 ### The Great Betrayal
 
 To do:

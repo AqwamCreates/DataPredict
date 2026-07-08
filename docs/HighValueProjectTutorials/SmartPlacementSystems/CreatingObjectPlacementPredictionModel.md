@@ -50,6 +50,20 @@ local objectPlacementFeatureMatrix = {
         objectLength,
         objectWidth,
         objectHeight,
+
+        previousObjectRarityValue,
+        previousObjectCost,
+        previousIsInteractable, -- This only accepts 1 and 0. Additionally, you can also use 1 and -1.
+        previousIsAWallObject, -- Same as above.
+        previousIsALivingRoomObject, -- Same as above.
+        previousIsAKitchenObject, -- Same as above.
+        previousIsABathroomObject, -- Same as above.
+        previousIsABedroomObject, -- Same as above.
+        previousIsAGardenObject, -- Same as above.
+
+        previousObjectLength,
+        previousObjectWidth,
+        previousObjectHeight,
         
         currentPlayerCashAmount, -- The mount of cash that the player is currently holding.
         consecutiveNumberOfTimesPlayerPlacedThisObject, -- The number of time that the player have placed this object in a row. Not to be confused with total number of this object placed by the player.
@@ -68,11 +82,13 @@ local objectPlacementFeatureMatrixToTrain = {}
 
 local objectPlacementLabelVectorToTrain = {}
 
-local function appendPlacementData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, objectID, hasPlacedBoolean)
+local function appendPlacementData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, objectID, previousObjectID, hasPlacedBoolean)
 
  local currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject = getPlayerPlacementData(Player)
 
- local objectRarityValue, objectCost, isInteractable, isAWallObject, isALivingRoomObject, isAKitchenObject, isABathroomObject, isABedroomObject, isAGardenObject, objectLength, objectWidth, objectHeight, = getObjectDataFromID(objectID)
+ local objectRarityValue, objectCost, isInteractable, isAWallObject, isALivingRoomObject, isAKitchenObject, isABathroomObject, isABedroomObject, isAGardenObject, objectLength, objectWidth, objectHeight = getObjectDataFromID(objectID)
+
+ local previousObjectRarityValue, previousObjectCost, previousIsInteractable, previousIsAWallObject, previousIsALivingRoomObject, previousIsAKitchenObject, previousIsABathroomObject, previousIsABedroomObject, previousIsAGardenObject, previousObjectLength, previousObjectWidth, previousObjectHeight = getObjectDataFromID(previousObjectID)
 
  local objectPlacementUnwrappedFeatureVector = {
 
@@ -99,6 +115,20 @@ local function appendPlacementData(Player, positionXPlacement, positionYPlacemen
   objectWidth,
   objectHeight,
 
+  previousObjectRarityValue,
+  previousObjectCost,
+  previousIsInteractable, -- This only accepts 1 and 0. Additionally, you can also use 1 and -1.
+  previousIsAWallObject, -- Same as above.
+  previousIsALivingRoomObject, -- Same as above.
+  previousIsAKitchenObject, -- Same as above.
+  previousIsABathroomObject, -- Same as above.
+  previousIsABedroomObject, -- Same as above.
+  previousIsAGardenObject, -- Same as above.
+
+  previousObjectLength,
+  previousObjectWidth,
+  previousObjectHeight,
+
   currentPlayerCashAmount,
   consecutiveNumberOfTimesPlayerPlacedThisObject,
 
@@ -112,9 +142,9 @@ local function appendPlacementData(Player, positionXPlacement, positionYPlacemen
 
 end
 
-local function onPlacement(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, suggestedObjectID, placedObjectID) -- All the features from the previous feature matrix.
+local function onPlacement(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, suggestedObjectID, placedObjectID, previousObjectID) -- All the features from the previous feature matrix.
 
- appendPlacementData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, placedObjectID, true)
+ appendPlacementData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, placedObjectID, previousObjectID, true)
 
  if (suggestedObjectID ~= placedObjectID) then appendPlacementData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, suggestedObjectID, false) end
 
@@ -176,11 +206,13 @@ In order to produce recommendations from our model, we must perform this operati
 
 ```lua
 
-local function displayPredictedObject(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ)
+local function displayPredictedObject(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, previousObjectID)
 
  local currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject = getPlayerPlacementData(Player)
 
- local objectPlacementFeatureMatrixToPredict = createFeatureMatrixByConcatenatingWithObjectData(positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject)
+ local previousObjectRarityValue, previousObjectCost, previousIsInteractable, previousIsAWallObject, previousIsALivingRoomObject, previousIsAKitchenObject, previousIsABathroomObject, previousIsABedroomObject, previousIsAGardenObject, previousObjectLength, previousObjectWidth, previousObjectHeight = getObjectDataFromID(previousObjectID)
+
+ local objectPlacementFeatureMatrixToPredict = createFeatureMatrixByConcatenatingWithObjectData(positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, previousObjectRarityValue, previousObjectCost, previousIsInteractable, previousIsAWallObject, previousIsALivingRoomObject, previousIsAKitchenObject, previousIsABathroomObject, previousIsABedroomObject, previousIsAGardenObject, previousObjectLength, previousObjectWidth, previousObjectHeight, currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject)
 
  local probabilityVector = PlacementPredictionModel:predict(objectPlacementFeatureMatrixToPredict, true) -- This consists of all objects available to the player for predicting object placement, which can be arranged based on ID.
  

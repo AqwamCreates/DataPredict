@@ -46,6 +46,10 @@ local objectPlacementFeatureMatrix = {
         isABathroomObject, -- Same as above.
         isABedroomObject, -- Same as above.
         isAGardenObject, -- Same as above.
+
+        objectLength,
+        objectWidth,
+        objectHeight,
         
         currentPlayerCashAmount, -- The mount of cash that the player is currently holding.
         consecutiveNumberOfTimesPlayerPlacedThisObject, -- The number of time that the player have placed this object in a row. Not to be confused with total number of this object placed by the player.
@@ -68,7 +72,7 @@ local function appendPlacementData(Player, positionXPlacement, positionYPlacemen
 
  local currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject = getPlayerPlacementData(Player)
 
- local objectRarityValue, objectCost, isInteractable, isAWallObject, isALivingRoomObject, isAKitchenObject, isABathroomObject, isABedroomObject, isAGardenObject = getObjectDataFromID(objectID)
+ local objectRarityValue, objectCost, isInteractable, isAWallObject, isALivingRoomObject, isAKitchenObject, isABathroomObject, isABedroomObject, isAGardenObject, objectLength, objectWidth, objectHeight, = getObjectDataFromID(objectID)
 
  local objectPlacementUnwrappedFeatureVector = {
 
@@ -90,6 +94,10 @@ local function appendPlacementData(Player, positionXPlacement, positionYPlacemen
   isABathroomObject,
   isABedroomObject,
   isAGardenObject,
+
+  objectLength,
+  objectWidth,
+  objectHeight,
 
   currentPlayerCashAmount,
   consecutiveNumberOfTimesPlayerPlacedThisObject,

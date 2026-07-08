@@ -66,7 +66,7 @@ Eventually, I still had suicidal thoughts due to my still untreated mental illne
 
 ### Bachelor's Mental Illness History
 
-I studied my Computer Science With Artificial Intelligence in University Of Nottingham Malaysia (UNM), where the school is located in Selangor, Malaysia. It has three-years worth of study with 2 semesters per year.
+I studied my Computer Science With Artificial Intelligence in University Of Nottingham Malaysia (UNM), where the school is located in Selangor, Malaysia. It has three-years worth of study with 2 semesters per year. Enrolled around 2020.
 
 I was aware of the counselling services here, but I expected nothing productive would come out from here due to my A-levels counselor experience. I regretted this so much because in later years, they had an actual psychologist during my initial years of study before the psychologist left prior I went to the university counselor's for the first time in my third year.
 

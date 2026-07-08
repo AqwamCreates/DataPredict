@@ -18,7 +18,9 @@ I studied my A-levels in International Islamic School Of Malaysia (IISM), where 
 
 When I moved back to Malaysia and away from my family to study A-levels in a boarding school, this is where my maladaptive daydreaming get worsened.
 
-Within a 2-3 months from starting A-level classes, I started to notice that my maladaptive daydreaming ritual would lead to me getting only 2 to 3 hours of sleep between the school days. I was completely addicted to daydreaming to this point, and have started to impact my A-level's class performance. As a result, I have different sources of stress compounding with each other:
+Within a 2-3 months from starting A-level classes, I started to notice that my maladaptive daydreaming ritual would lead to me getting only 2 to 3 hours of sleep between the school days. My parents are unaware of this.
+
+At that point, I was completely addicted to daydreaming and have started to impact my A-level's class performance. As a result, I have different sources of stress compounding with each other:
 
 * The stress from procrastinating of my A-level study as a result of maladaptive daydreaming.
 

@@ -31,3 +31,7 @@ The second one is just straight up wrong. I literaly walk back and forth between
 The third one will just makes it hard for me to sleep.
 
 The fourth one is ironic because my father is diagnosing the issue without being a psychologist or a psychiatrist himself.
+
+## The Writing On The Wall
+
+## The Great Betrayal

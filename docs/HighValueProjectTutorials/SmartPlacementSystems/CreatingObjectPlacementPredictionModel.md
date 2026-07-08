@@ -178,8 +178,6 @@ In order to produce recommendations from our model, we must perform this operati
 
 local function displayPredictedObject(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ)
 
- -- In here, we fetch all the objects' attributes that can be placed by the player.
-
  local currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject = getPlayerPlacementData(Player)
 
  local objectPlacementFeatureMatrixToPredict = createFeatureMatrixByConcatenatingWithObjectData(positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject)

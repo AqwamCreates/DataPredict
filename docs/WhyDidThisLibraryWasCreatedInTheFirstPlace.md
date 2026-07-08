@@ -88,6 +88,8 @@ If anyone fucking asking me why I don't go there myself when I am already an adu
 
 * Doing mental illness treatment with a private mental healthcare professional and buying unsubsidized medication exceeds my non-existent budget unless I want to go into debt.
 
+To be honest, I wanted to delay the joining of my university because my mental illness being that severe and given my parents are literally not being cooperative on getting me mental health treatment in Malaysia. If I can't fucking get a mental illness treatment in Malayia because of my parents, at least let me take a rest for some months. I was unaware that my father literally immediately admit me to a university, when I was just exploring the options that the UNM have. I just found a course that I liked, and pointed to my parents that I want to register for this course. However, I made no mention that I wanted the course immediately. Not to fucking mention, I wasn't told if I wanted to apply it myself, so I didn't expect my father would literally do it for me. What makes it even more ridiculous is that my first younger brother would have to do the registering himself, confusing me further.
+
 ### The Great Betrayal
 
 To do:

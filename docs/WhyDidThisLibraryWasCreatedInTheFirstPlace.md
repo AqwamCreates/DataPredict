@@ -82,9 +82,9 @@ If anyone fucking asking me why I don't go there myself when I am already an adu
 
 * I need to physically present at the public mental healthcare hospital, which either requires me:
 
-  * Good at driving - Impossible due to severity of untreated mental illness. My mind would literally have sensory overload, making it difficult for me to focus on the road. This led to me having extreme anxiety and panic while driving on the road. I already told you all about me failing the driving exam twice, so that should be very self-explanatory on how bad I am in driving.
+  * Good at driving, which is impossible due to severity of untreated mental illnesses. My mind would literally have sensory overload, making it difficult for me to focus on the road. This led to me having extreme anxiety and panic while driving on the road. I already told you all about me failing the driving exam twice, so that should be very self-explanatory on how bad I am in driving.
  
-  * I need money to go to the hospital if I were to use e-hailing services. However, I can't because I literally don't have money for it sicne I was focused on my studies in university. Not to mention, active blockage by my parents with their stigma excuses. If I was told by my parents "I give you money to go by yourself," I would have.
+  * I need money to go to the hospital if I were to use e-hailing services. However, I can't because I literally don't have money for it sicne I was focused on my studies full-time in university. Not to mention, active blockage by my parents with their stigma excuses. If I was told by my parents "I give you money to go by yourself," I would have.
 
 * Doing mental illness treatment with a private mental healthcare professional and buying unsubsidized medication exceeds my non-existent budget unless I want to go into debt.
 

@@ -40,9 +40,9 @@ It ranges from "You're homesick", "You don't exercise enough", "You need white-n
 
 4. The fourth one is ironic because my father is diagnosing the issue without being a psychologist or a psychiatrist himself.
 
-I continued begging for the mental illness treatment to my parents. Eventually... The maladaptive daydreaming got so bad that I began looking ways for self-harming myself, so we now have a new mental illness to deal with: severe depression. I was a little too coward for direct self-harm, but I ended up self-harming through Samyang 2x Spicy Ramen often. I often bought these ramen from the university's shop.
+I continued begging for the mental illness treatment to my parents. Eventually... The maladaptive daydreaming got so bad that I began looking ways for self-harming myself, so we now have a new mental illness to deal with: severe depression. I was a little too coward for direct self-harm, but I ended up self-harming through Samyang 2x Spicy Ramen often. I often bought these ramen from the university's shop. My parents are unaware of this.
 
-Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it wass filled with teachers and classes. Multiple classes actually.
+Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it wass filled with teachers and classes. Multiple classes actually. My parents are unaware of this.
 
 Eventually, I got into a breaking point that I want to jump off from the fourth-level of the apartment hostel. Now, my damn parents took action. However, they only sent me to the IISM's school counselor. For Wednesday to Thursday, I always go there... But he didn't really do anything to my untreated mental illnesses as this counselor didn't do anything on diagnosing my mental illnesses and I wasn't aware if he has any qualifications for handling mental illnesses. I was so confused by this, and I asked my parents for medication instead because my problem was already severe. My parents continued to ignore my begging for treatment through medication.
 

@@ -64,6 +64,14 @@ Eventually, I still had suicidal thoughts due to my still untreated mental illne
 
 ### Bachelor's Mental Illness History
 
+I studied my Computer Science With Artificial Intelligence in University Of Nottingham Malaysia (UNM), where the school is located in Selangor, Malaysia.
+
+To do:
+
+* Failed my driving test twice during my first year of bachelor, but the examiner just gave me a pass after the second try. I already know the reason why: I had issues looking at the mirrors while looking at the road due to sensory-overload.
+
+* First crack in lies: The bachelor university offers exam and assignment extensions if you had a valid mental illness diagnosis.
+
 ### The Great Betrayal
 
 To do:

@@ -74,7 +74,7 @@ To do:
 
 * Due to certain interpersonal issues happened leading to campus security officer meeting as a result of the untreated mental illnesses where my parents had to get involved. My parents didn't link this interpersonal issues on my worsening untreated mental illnesses.
 
-* My university counselor literally recommended me to get treatment, and when I relay this to my parents, my parents just let me since it was coming from a university counselor. However, this was a little too late because I was already in my final year of my second semester, where my poor grades are set in stone. Generally, the university does not count the first year grades to the overall grades for your bachelor degree.
+* My university counselor literally recommended me to get treatment. I told this to my parents and my parents finally let me get treatment without resistance since it was coming from a university counselor. However, this was a little too late because I was already in my final year of my second semester, where my poor grades are set in stone. Generally, the university does not count the first year grades to the overall grades for your bachelor degree.
 
 * First crack in lies: The bachelor university offers exam and assignment extensions if you had a valid mental illness diagnosis.
 

@@ -1,6 +1,6 @@
 # Smart Placement Systems
 
-* [Creating Object Placement Prediction Model](SmartPlacementSystems/CreatingObjectPlacementPredictionModel.md)
+* [Creating Personalized Object Placement Prediction Model](SmartPlacementSystems/CreatingPersonalizedObjectPlacementPredictionModel.md)
 
   * Uses the previous placement position, change in position for target placement, objects' attributes and so on.
 

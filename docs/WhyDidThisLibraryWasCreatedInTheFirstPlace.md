@@ -88,7 +88,7 @@ To do:
 
   * Potential confusion that your driving license would be revoked either way regardless of health conditions.
 
-* Hypocrisy that my 2nd youngest brother gets immediate treatment in Malaysia. He got treatement after being warned by the German government to continue studying in Germany's university, where my younger brother was studying before he got schizophrenia. It even made more confusing since treating in Malaysia means he would have the same job issues due to stigma and driving license revocation issue in Malaysia.
+* Hypocrisy that my 2nd youngest brother gets immediate treatment in Malaysia. He got treatement after being warned by the German government to continue studying in Germany's university, where my younger brother was studying before he got schizophrenia. It even made more confusing since treating in Malaysia means he would have the same job issues due to stigma and driving license revocation issue in Malaysia. This was like around 2 years after I had graduated from my unversity.
 
 ### Corrobating Evidence Due To My Mental Illness Treatment Delay By My Parents
 

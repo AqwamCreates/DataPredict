@@ -26,35 +26,50 @@ Within a 2-3 months from starting A-level classes, I started to notice that my m
 
 * The stress from unable to pay attention in my A-level classes due to sleep deprivation.
 
-* The stress from my poor A-level performance.
+* The stress from worrying due to my poor A-level performance.
 
 I was pretty early to notice this snowballing effect of stress, and so I told my parents that I needed medication for mental illness treatment for the first time. Guess what I get from my father's answer?
 
 It ranges from "You're homesick", "You don't exercise enough", "You need white-noise" and "Don't diagnose yourself". You know what are the issues with each of these statement?
 
-The first one assumes that I miss my parents. I don't even miss them since I didn't talk about I want to go home. At all.
+1. The first one assumes that I miss my parents. I don't even miss them since I didn't talk about I want to go home. At all.
 
-The second one is just straight up wrong. I literaly walk back and forth between my apartment hostel, the A-level international school and shops inside the university compound that my hostel was in.
+2. The second one is just straight up wrong. I literaly walk back and forth between my apartment hostel, the A-level international school and shops inside the university compound that my hostel was in.
 
-The third one will just makes it hard for me to sleep.
+3. The third one will just makes it hard for me to sleep.
 
-The fourth one is ironic because my father is diagnosing the issue without being a psychologist or a psychiatrist himself.
+4. The fourth one is ironic because my father is diagnosing the issue without being a psychologist or a psychiatrist himself.
 
 I continued begging for the mental illness treatment to my parents. Eventually... The maladaptive daydreaming got so bad that I began looking ways for self-harming myself. I was a little too coward for direct self-harm, but I ended up self-harming through Samyang 2x Spicy Ramen often. I often bought these ramen from the university's shop.
 
 Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it wass filled with teachers and classes. Multiple classes actually.
 
-Eventually, I got into a breaking point that I want to jump off from the fourth-level of the apartment hostel. Now, my damn parents took action. However, they only sent me to the IISM's school counselor. For Wednesday to Thursday, I always go there... But he didn't really do anything to my untreated mental illnesses as this counselor didn't do anything on diagnosing my mental illnesses. I was so confused by this, and I asked my parents for medication instead because my problem was already severe. My parents continued to ignore my begging for treatment through medication.
+Eventually, I got into a breaking point that I want to jump off from the fourth-level of the apartment hostel. Now, my damn parents took action. However, they only sent me to the IISM's school counselor. For Wednesday to Thursday, I always go there... But he didn't really do anything to my untreated mental illnesses as this counselor didn't do anything on diagnosing my mental illnesses and I wasn't aware if he has any qualifications for handling mental illnesses. I was so confused by this, and I asked my parents for medication instead because my problem was already severe. My parents continued to ignore my begging for treatment through medication.
 
-One day, my
+One day, I began crying at the end of my A-level mathematic class, where the students are about to leave the class along with the teacher. In here, I was seated in the near back, next to a wall, I think. At that point, I was trying my hard not to cry as I looked at my A-level math examination papers book as I watch myself unable to solve it because my mind feel blocked and hazy. As my tears began to fall, my mathematic teacher immediately hugged me from my back once I noticed. Once hugged, I began crying it all out, trying to figure out how to fix this.
 
 My father did met my school counselor after the year 1 mark of A-levels programme, where my school counselor stated things that further influenced my father on not treating my mental illnesses. Due to how severe my untreated mental illnesses got, I had to extend my A-levels to two years, but I did the remaining 0.5 years back at Oman. 
 
-Then, my parents dropped this stupid bombshell to as why my begging was ignored
+Then, my father dropped this stupid bombshell to as why they didn't sent me for a proper treatment:
+
+* I will have hard time to get a job. This statement was given even more weight due to my school counselor said this without any supporting evidence held by the counselor himself.
+
+* The government will revoke driving license on getting a mental illness diagnosis.
+
+* They did not want to make me worry for the points stated above. It was pretty ironic given that I was already worried from my declining grades!
 
 ### Bachelor's Mental Illness History
 
 ### The Great Betrayal
+
+To do:
+
+* Include that my father added details that the "Chinese and Indians abuse mental OKU to get out of severe punishment for car accidents, and hence the Malaysian government have a general rule on to revoke driving license on diagnosis." This is countered by:
+
+  * JPJ official policy regarding mental illnesses on the government websites that existed since 2011.
+
+  * Potential confusion that your driving license would be revoked either way regardless of health conditions.
+
 
 ### Corrobating Evidence Due To My Mental Illness Treatment Delay By My Parents
 

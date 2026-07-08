@@ -68,7 +68,7 @@ local function appendPlacementData(Player, positionXPlacement, positionYPlacemen
 
  local currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject = getPlayerPlacementData(Player)
 
- local objectRarityValue, objectCost, isInteractable, isAWallObject, isALivingRoomObject, isAKitchenObject, isABathroomObject, isABedroomObject, isAGardenObject, currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject = getObjectDataFromID(objectID)
+ local objectRarityValue, objectCost, isInteractable, isAWallObject, isALivingRoomObject, isAKitchenObject, isABathroomObject, isABedroomObject, isAGardenObject = getObjectDataFromID(objectID)
 
  local objectPlacementUnwrappedFeatureVector = {
 

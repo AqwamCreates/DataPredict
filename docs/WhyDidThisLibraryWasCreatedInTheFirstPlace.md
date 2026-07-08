@@ -82,7 +82,7 @@ Eventually, it was revealed that the cost Malaysia's public healthcare treatment
 
 To do:
 
-* Include that my father added details that the "Chinese and Indians abuse mental OKU to get out of severe punishment for car accidents, and hence the Malaysian government have a general rule on to revoke driving license on diagnosis." This is countered by:
+* Include that my father added details that the "Chinese and Indians abuse mental OKU to get out of severe punishment for car accidents by bribing people for diagnosis, and hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". This is countered by:
 
   * JPJ official policy regarding mental illnesses on the government websites that existed since 2011.
 

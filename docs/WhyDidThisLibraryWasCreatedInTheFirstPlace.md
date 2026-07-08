@@ -38,7 +38,7 @@ It ranges from "You're homesick", "You don't exercise enough", "You need white-n
 
 2. The second one is just straight up wrong. I literaly walk back and forth between my apartment hostel, the A-level international school and shops inside the university compound that my hostel was in.
 
-3. The third one will just makes it hard for me to sleep.
+3. The third one will just makes it harder for me to sleep on top of my maladaptive daydreaming forcing me to do "listening to music" rituals.
 
 4. The fourth one is ironic because my father is diagnosing the issue without being a psychologist or a psychiatrist himself.
 

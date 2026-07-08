@@ -72,11 +72,9 @@ In the first year, I had failed my driving test twice, but the examiner just gav
 
 In the early third year, I jad to meet campus security officer due to certain interpersonal issues as a result of the untreated mental illnesses where my parents had to get involved. My parents didn't link this interpersonal issues to my worsening untreated mental illnesses.
 
-My university counselor then literally recommended me to get treatment and said there's no such thing about driving license revocation on diagnosis. I then told this to my parents and my parents finally let me get treatment without resistance since I said it was coming from a university counselor. However, this was a little too late because I was already in my final year of my second semester, where my poor grades are set in stone. Generally, the university does not count the first year grades to the overall grades for your bachelor degree.
+My university counselor then literally recommended me to get treatment for extensions for assignments and exams. He also said there's no such thing about driving license revocation on diagnosis. I then told this to my parents and my parents finally let me get treatment without resistance since I said it was coming from a university counselor. However, this was a little too late because I was already in my final year of my second semester, where my poor grades are set in stone. Generally, the university does not count the first year grades to the overall grades for your bachelor degree. In here, there's one information that contradicted how bad the stigma was: the bachelor university willingly offers exam and assignment extensions if you had a valid mental illness diagnosis.
 
-* First crack in lies: The bachelor university offers exam and assignment extensions if you had a valid mental illness diagnosis.
-
-* The reveal on the cost Malaysia's public healthcare treatment for each consultation (including medication) is RM 5. Needing to wait for one month is irrelevant as I can wait for that long.
+Eventually, it was revealed that the cost Malaysia's public healthcare treatment for each consultation (including medication) is RM 5. Needing to wait for one month is irrelevant as I can wait for that long.
 
 ### The Great Betrayal
 

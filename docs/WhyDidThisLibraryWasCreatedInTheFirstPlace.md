@@ -14,7 +14,7 @@ My maladaptive daydreaming wasn't that intrusive back then and didn't really imp
 
 ### A-Levels Mental Illness History
 
-I studied my A-levels in International Islamic School Of Malaysia (IISM), where the school is located in Selangor, Malaysia. The hostel I was staying in was a part of International Islamic University Of Malaysia (IIUM).
+I studied my A-levels in International Islamic School Of Malaysia (IISM), where the school is located in Selangor, Malaysia. The hostel I was staying in was a part of International Islamic University Of Malaysia (IIUM). The school was offering 1.5 years A-levels program instead of the usual 2 years program.
 
 When I moved back to Malaysia and away from my family to study A-levels in a boarding school, this is where my maladaptive daydreaming get worsened.
 
@@ -42,15 +42,21 @@ The fourth one is ironic because my father is diagnosing the issue without being
 
 I continued begging for the mental illness treatment to my parents. Eventually... The maladaptive daydreaming got so bad that I began looking ways for self-harming myself. I was a little too coward for direct self-harm, but I ended up self-harming through Samyang 2x Spicy Ramen often. I often bought these ramen from the university's shop.
 
-Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it wass filled with teachers and classes.
+Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it wass filled with teachers and classes. Multiple classes actually.
 
-Eventually, I got into a breaking point that I want to jump off from the fourth-level of the apartment hostel. Now, my damn parents took action. However, they only sent me to the IISM's school counselor. For Wednesday to Thursday, I always go there... But he didn't really do anything to my untreated mental illnesses as this counselor didn't do anything on diagnosing my mental illnesses. I was so confused by this, and I asked my parents for medication instead because my problem was already severe. My parents ignores my plea for treatment through medication.
+Eventually, I got into a breaking point that I want to jump off from the fourth-level of the apartment hostel. Now, my damn parents took action. However, they only sent me to the IISM's school counselor. For Wednesday to Thursday, I always go there... But he didn't really do anything to my untreated mental illnesses as this counselor didn't do anything on diagnosing my mental illnesses. I was so confused by this, and I asked my parents for medication instead because my problem was already severe. My parents continued to ignore my begging for treatment through medication.
 
+One day, my
 
+My father did met my school counselor after the year 1 mark of A-levels programme, where my school counselor stated things that further influenced my father on not treating my mental illnesses. Due to how severe my untreated mental illnesses got, I had to extend my A-levels to two years, but I did the remaining 0.5 years back at Oman. 
+
+Then, my parents dropped this stupid bombshell to as why my begging was ignored
 
 ### Bachelor's Mental Illness History
 
-### Corrobating Evidence Due To My Mental Illness Treatment Delay
+### The Great Betrayal
 
-## The Writing On The Wall
-## The Great Betrayal
+### Corrobating Evidence Due To My Mental Illness Treatment Delay By My Parents
+
+## DataPredict - The Backup Plan When Everything Falls Into Shit.
+

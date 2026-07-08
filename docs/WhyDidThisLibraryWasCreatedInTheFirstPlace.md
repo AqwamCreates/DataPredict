@@ -76,7 +76,17 @@ In the early third year, I jad to meet campus security officer due to certain in
 
 My university counselor then literally recommended me to get treatment for extensions for assignments and exams. He also said there's no such thing about driving license revocation on diagnosis. I then told this to my parents and my parents finally let me get treatment without resistance since I said it was coming from a university counselor. However, this was a little too late because I was already in my final year of my second semester, where my poor grades are set in stone. Generally, the university does not count the first year grades to the overall grades for your bachelor degree. In here, there's one information that contradicted how bad the stigma was: the bachelor university willingly offers exam and assignment extensions if you had a valid mental illness diagnosis.
 
-Eventually, it was revealed that the cost Malaysia's public healthcare treatment for each consultation (including medication) is RM 5. Needing to wait for one month is irrelevant as I can wait for that long.
+Eventually, it was revealed that the cost Malaysia's public healthcare treatment for each consultation (including medication) is RM 5. Needing to wait for one month is irrelevant as I can wait for that long. It was discovered after my parents kept complaining about the cost of private mental illness treatment which costed RM 200 per counseling session and RM 200 for my medication.
+
+If anyone fucking asking me why I don't go there myself when I am already an adult, you clearly haven't put this into mind:
+
+* I need to physically present at the public mental healthcare hospital, which either requires me:
+
+  * Good at driving - Impossible due to severity of untreated mental illness. I would literally panic while driving on the road.
+ 
+  * I need money to go to the hospital if I were to use E-hailing services. I can't because I literally don't have money for it, plus active blockage by my parents. If I was told by my parents "I give you money to go by yourself," I would have.
+
+* Doing mental illness treatment with a private mental healthcare professional and buying unsubsidized medication exceeds my non-existent budget unless I want to go into debt.
 
 ### The Great Betrayal
 

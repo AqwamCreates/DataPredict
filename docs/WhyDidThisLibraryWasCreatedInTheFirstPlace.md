@@ -66,15 +66,13 @@ Eventually, I still had suicidal thoughts due to my still untreated mental illne
 
 I studied my Computer Science With Artificial Intelligence in University Of Nottingham Malaysia (UNM), where the school is located in Selangor, Malaysia. It has three-years worth of study with 2 semesters per year.
 
-To do:
+I was aware of the counselling services here, but I expected nothing productive would come out from here due to my A-levels counselor experience. I regretted this so much because in later years, they had an actual psychologist during my initial years of study before the psychologist left prior I went to the university counselor's for the first time in my third year.
 
-* Failed my driving test twice during my first year of bachelor, but the examiner just gave me a pass after the second try. I already know the reason why: I had issues looking at the mirrors while looking at the road due to sensory-overload. Even in here, I kept begging for my mental illness treatment prior and after failing the test twice. My parents continued to dismiss as normal driving anxiety despite that I stated to them that I failed the driving test twice.
+In the first year, I had failed my driving test twice, but the examiner just gave me a pass after the second fail. I already knew the reason why: I had issues looking at the mirrors while looking at the road due to sensory-overload. Even in here, I kept begging for my mental illness treatment prior and after failing the test twice. My parents continued to dismiss as normal driving anxiety despite that I stated to them that I failed the driving test twice.
 
-* I was aware of the counselling services here, but I expected nothing productive would come out from here due to my A-levels counselor experience. I regretted this so much because in later years, they had an actual psychologist during my initial years of study before the psychologist left prior I went to the university counselor's for the first time in my third year.
+In the early third year, I jad to meet campus security officer due to certain interpersonal issues as a result of the untreated mental illnesses where my parents had to get involved. My parents didn't link this interpersonal issues to my worsening untreated mental illnesses.
 
-* Due to certain interpersonal issues happened leading to campus security officer meeting as a result of the untreated mental illnesses where my parents had to get involved. My parents didn't link this interpersonal issues on my worsening untreated mental illnesses.
-
-* My university counselor literally recommended me to get treatment and said there's no such thing about driving license revocation on diagnosis. I then told this to my parents and my parents finally let me get treatment without resistance since I said it was coming from a university counselor. However, this was a little too late because I was already in my final year of my second semester, where my poor grades are set in stone. Generally, the university does not count the first year grades to the overall grades for your bachelor degree.
+My university counselor then literally recommended me to get treatment and said there's no such thing about driving license revocation on diagnosis. I then told this to my parents and my parents finally let me get treatment without resistance since I said it was coming from a university counselor. However, this was a little too late because I was already in my final year of my second semester, where my poor grades are set in stone. Generally, the university does not count the first year grades to the overall grades for your bachelor degree.
 
 * First crack in lies: The bachelor university offers exam and assignment extensions if you had a valid mental illness diagnosis.
 

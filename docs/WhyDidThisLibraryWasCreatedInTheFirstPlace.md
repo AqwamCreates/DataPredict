@@ -34,7 +34,7 @@ I was pretty early to notice this snowballing effect of stress, and so I told my
 
 It ranges from "You're homesick", "You don't exercise enough", "You need white-noise" and "Don't diagnose yourself". You know what are the issues with each of these statement?
 
-1. The first one assumes that I miss my parents. I don't even miss them since I didn't talk about I want to go home. At all.
+1. The first one assumes that I miss my parents. I don't even miss them since I didn't talk nor hint about that I want to go home at all.
 
 2. The second one is just straight up wrong. I literaly walk back and forth between my apartment hostel, the A-level international school and shops inside the university compound that my hostel was in.
 

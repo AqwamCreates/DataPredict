@@ -14,7 +14,7 @@ My maladaptive daydreaming wasn't that intrusive back then and didn't really imp
 
 ### A-Levels Mental Illness History
 
-I studied my A-levels in International Islamic School Of Malaysia (IISM), where the school is located in Selangor, Malaysia. The hostel I was staying in was a part of International Islamic University Of Malaysia (IIUM). The school was offering 1.5 years A-levels program instead of the usual 2 years program.
+I studied my A-levels in International Islamic School Of Malaysia (IISM), where the school is located in Selangor, Malaysia. The hostel I was staying in was a part of International Islamic University Of Malaysia (IIUM). The school was offering 1.5 years A-levels program instead of the usual 2 years program. I had enrolled to this school around 2018.
 
 When I moved back to Malaysia and away from my family to study A-levels in a boarding school, this is where my maladaptive daydreaming get worsened.
 
@@ -66,7 +66,7 @@ Eventually, I still had suicidal thoughts due to my still untreated mental illne
 
 ### Bachelor's Mental Illness History
 
-I studied my Computer Science With Artificial Intelligence in University Of Nottingham Malaysia (UNM), where the school is located in Selangor, Malaysia. It has three-years worth of study with 2 semesters per year. Enrolled around 2020.
+I studied my Computer Science With Artificial Intelligence in University Of Nottingham Malaysia (UNM), where the school is located in Selangor, Malaysia. It has three-years worth of study with 2 semesters per year. I had enrolled to this university around 2020.
 
 I was aware of the counselling services here, but I expected nothing productive would come out from here due to my A-levels counselor experience. I regretted this so much because in later years, they had an actual psychologist during my initial years of study before the psychologist left prior I went to the university counselor's for the first time in my third year.
 

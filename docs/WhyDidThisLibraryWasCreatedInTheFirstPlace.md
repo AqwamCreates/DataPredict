@@ -62,7 +62,7 @@ Then, my father revealed and genuinely believed in the reasons they stated below
 
 From this point on, I began balding at a very young age around 17-18 due to extreme stress of my untreated mental illnesses, where my father literally bought a shampoo in preventing hair loss. He wants to blame it on eating instant noodles too much, but the thing is, my hair loss isn't stopping despite my instant noodles consumption got restricted in Oman. So, instant noodles aren't the issue here.
 
-Eventually, I still had suicidal thoughts due to my still untreated mental illness in Oman. I had began trying to place my head inside plastic bags because I couldn't take it anymore. Then my parents fucking got met a proper psychologist in Oman, but the problem is that my father kept bringing up money part and said that the company paid some of it. Like dude... You could have done this in Malaysia if money is an issue. Nevertheless, I continued my sessions but got eventually I stopped due to COVID-17 and wanting to do it in Malaysia for cheaper treatment.
+Eventually, I still had suicidal thoughts due to my still untreated mental illness in Oman. I had began trying to place my head inside plastic bags because I couldn't take it anymore. Then my parents fucking got met a proper psychologist in Oman, but the problem is that my father kept bringing up money part and said that the company paid some of it due to mental health care being rare in Oman and therefore it would be expensive. Like dude... You could have done this in Malaysia if money is an issue. Nevertheless, I continued my sessions but got eventually I stopped due to COVID-17 and wanting to do it in Malaysia for cheaper treatment.
 
 ### Bachelor's Mental Illness History
 

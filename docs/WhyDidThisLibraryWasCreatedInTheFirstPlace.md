@@ -68,7 +68,7 @@ I studied my Computer Science With Artificial Intelligence in University Of Nott
 
 To do:
 
-* Failed my driving test twice during my first year of bachelor, but the examiner just gave me a pass after the second try. I already know the reason why: I had issues looking at the mirrors while looking at the road due to sensory-overload. Even in here, I kept complaining about my untreated mental illness treatment prior and after failing the test twice. My parents continued to dismiss as normal driving anxiety despite that I stated to them that I failed the driving test twice.
+* Failed my driving test twice during my first year of bachelor, but the examiner just gave me a pass after the second try. I already know the reason why: I had issues looking at the mirrors while looking at the road due to sensory-overload. Even in here, I kept begging for my mental illness treatment prior and after failing the test twice. My parents continued to dismiss as normal driving anxiety despite that I stated to them that I failed the driving test twice.
 
 * I was aware of the counselling services here, but I expected nothing productive would come out from here due to my A-levels counselor experience. I regretted this so much because in later years, they had an actual psychologist during my initial years of study before the psychologist left prior I went to the university counselor's for the first time in my third year.
 

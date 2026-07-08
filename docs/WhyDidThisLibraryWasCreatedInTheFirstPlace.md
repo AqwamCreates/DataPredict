@@ -50,8 +50,7 @@ Eventually, I got into a breaking point that I want to jump off from the fourth-
 
 ### Bachelor's Mental Illness History
 
-
+### Corrobating Evidence Due To My Mental Illness Treatment Delay
 
 ## The Writing On The Wall
-
 ## The Great Betrayal

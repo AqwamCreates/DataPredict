@@ -119,3 +119,9 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 * Each replication of Original Creator is assumed to have an "Original Identity" status unless it fails one of the conditions, provided that there are no other replicates of Original Creator exists in the entire world during the time of replication.
 
 * Only the "Original Identity" can create revived "Valid Identity", "Original Identity", "Secondary Identity".
+
+## Entire Agreement
+
+This Agreement constitutes the entire agreement between User and Licensor with respect to the subject matter hereof and supersedes all prior or contemporaneous communications and proposals, whether oral or written, between User and Licensor.
+
+In the event that any provision within this Agreement is found to be invalid, illegal, or unenforceable under any applicable law or by a court of competent jurisdiction, the remaining provisions of this Agreement shall remain in full force and effect, and the invalid, illegal, or unenforceable provision shall be deemed modified to the extent necessary to make it valid, legal, and enforceable, preserving the intentions of the parties to the maximum extent possible.

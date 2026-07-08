@@ -82,11 +82,11 @@ Eventually, it was revealed that the cost Malaysia's public healthcare treatment
 
 To do:
 
-* Include that my father added details that the "Chinese and Indians abuse mental OKU to get out of severe punishment for car accidents by bribing people for diagnosis, and hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". This is countered by:
+* Include that my father added details that the "Chinese and Indians abuse mental OKU to get out of severe punishments for severe car accidents by bribing psychologists or psychiatrists for diagnosis, hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". This is countered by:
 
   * JPJ official policy regarding mental illnesses on the government websites that existed since 2011.
 
-  * Potential confusion that your driving license would be revoked either way regardless of health conditions.
+  * Potential confusion that the driving license would be revoked either way regardless of health conditions.
 
 * Then there's a hypocrisy where that my 2nd youngest brother gets immediate treatment in Malaysia after developing schizophrenia while studying in a German university overseas. The German governmen had warned my parents that he needs to get treated to continue studying in Germany's university. It even made more confusing since treating in Malaysia means he would have the same job issues due to stigma and driving license revocation issue in Malaysia. This was like around 2 years after I had graduated from my unversity. Even better yet for him, he was treated early during his first year of overseas study in the Germany's university, giving him a good chance of getting good grades upon graduation.
 

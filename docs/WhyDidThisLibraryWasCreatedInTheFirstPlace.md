@@ -92,4 +92,20 @@ To do:
 
 ### Corroborating Evidence Due To My Mental Illness Treatment Delay By My Parents
 
+### Evidence That Disproves The Severity Of Stigma
+
+#### JPJ Policy On Mental Illnesses For Driving License
+
+##### Official Policies
+
+* [Medical Examination Standard For Vocational Driving License (2011)](https://www.jpj.gov.my/wp-content/uploads/2022/11/MED-EXAMINATION-STANDARDS.pdf)
+
+Note: Notice that these are for vocational driving license, not a personal one. Hence, the rules are likely more relaxed for personal driving license
+
+##### News
+
+* ["Pesakit mental masih boleh dibenarkan memandu - MMHA"](https://www.astroawani.com/berita-malaysia/pesakit-mental-masih-boleh-dibenarkan-memandu-mmha-491435)
+
+* ["JPJ perlu batal lesen pemandu OKU mental jika disahkan KKM"](https://www.bharian.com.my/berita/nasional/2025/01/1352448/jpj-perlu-batal-lesen-pemandu-oku-mental-jika-disahkan-kkm)
+
 ## DataPredict - The Backup Plan When Everything Falls To Shit

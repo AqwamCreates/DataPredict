@@ -88,7 +88,7 @@ To do:
 
   * Potential confusion that your driving license would be revoked either way regardless of health conditions.
 
-* Hypocrisy that my 2nd youngest brother gets immediate treatment in Malaysia after being told by the German government, despite having the same job issues due to stigma and driving license revocation issue in Malaysia.
+* Hypocrisy that my 2nd youngest brother gets immediate treatment in Malaysia after being warned by the German government, despite having the same job issues due to stigma and driving license revocation issue in Malaysia.
 
 ### Corrobating Evidence Due To My Mental Illness Treatment Delay By My Parents
 

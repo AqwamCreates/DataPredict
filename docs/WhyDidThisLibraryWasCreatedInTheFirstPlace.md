@@ -50,7 +50,7 @@ One day, I began crying at the end of my A-level mathematic class, where the stu
 
 My father did met my school counselor after the year 1 mark of A-levels programme, where my school counselor stated things that further influenced my father on not treating my mental illnesses. Due to how severe my untreated mental illnesses got, I had to extend my A-levels to two years, but I did the remaining 0.5 years back at Oman. 
 
-Then, my father dropped this stupid bombshell to as why they didn't sent me for a proper treatment:
+Then, my father revealed and genuinely believed in the reasons they stated below that led them not sending me for a proper treatment:
 
 * I will have hard time to get a job due to stigma. This statement was given even more weight due to my school counselor said this without any supporting evidence held by the counselor himself.
 

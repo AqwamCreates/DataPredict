@@ -64,9 +64,11 @@ local objectPlacementFeatureMatrixToTrain = {}
 
 local objectPlacementLabelVectorToTrain = {}
 
-local function onPlacement(Player, ...) -- All the features from the previous feature matrix.
+local function appendData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, objectID, hasPlacedBoolean)
 
- -- In here, we fetch the object's attributes that was placed by the player.
+ local currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject = getPlayerPlacementData(Player)
+
+ local objectRarityValue, objectCost, isInteractable, isAWallObject, isALivingRoomObject, isAKitchenObject, isABathroomObject, isABedroomObject, isAGardenObject, currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject = getObjectDataFromID(objectID)
 
  local objectPlacementUnwrappedFeatureVector = {
 
@@ -96,7 +98,17 @@ local function onPlacement(Player, ...) -- All the features from the previous fe
 
  table.insert(objectPlacementFeatureMatrixToTrain, objectPlacementUnwrappedFeatureVector)
 
- table.insert(objectPlacementLabelVectorToTrain, {1}) -- This tells the model that the probability of placing this object is 100% for the given feature matrix.
+ local hasPlacedInteger = (hasPlacedBoolean and 1) or 0
+
+ table.insert(objectPlacementLabelVectorToTrain, {hasPlacedInteger})
+
+end
+
+local function onPlacement(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, suggestedObjectID, placedObjectID) -- All the features from the previous feature matrix.
+
+ appendData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, placedObjectID, true)
+
+ if (suggestedObjectID ~= placedObjectID) then appendData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, suggestedObjectID, false) end
 
  PlacementPredictionModel:train(objectPlacementFeatureMatrixToTrain, objectPlacementLabelVectorToTrain) -- Theoretically, you can use single data points per train() function call instead of accumulating data points. However, factorization machines works best in batches of data in order to handle sparsity better.
 
@@ -104,9 +116,7 @@ end
 
 ```
 
-This should give you a model that predicts a rough estimate when they'll Placement.
-
-Then, you must save the model parameters to Roblox's DataStores for future use.
+To save the model parameters to Roblox's DataStores for future use, you must do:
 
 ```lua
 

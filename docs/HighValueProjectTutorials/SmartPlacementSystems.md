@@ -4,7 +4,9 @@
 
   * Uses the previous placement position, change in position for target placement, objects' attributes and so on.
  
-  * Uses Factorization Machine Model
+  * Uses a Factorization Machine model.
+ 
+  * Best for creative tycoons and personalized object placements.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
@@ -12,6 +14,8 @@
 
   * Uses the previous placement position, change in position for target placement, objects' attributes and so on.
  
-  * Uses Deep Reinforcement Learning Model
+  * Uses a Deep Reinforcement Learning model.
+
+  * Best for grindy tycoons and placements that maximizes the tycoon's goal achievement.
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.

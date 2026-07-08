@@ -176,11 +176,15 @@ In order to produce recommendations from our model, we must perform this operati
 
 ```lua
 
-local function displayPredictedObject(Player, ...)
+local function displayPredictedObject(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ)
 
  -- In here, we fetch all the objects' attributes that can be placed by the player.
 
- local probabilityVector = PlacementPredictionModel:predict(objectPlacementFeatureMatrixToTrain, true) -- This consists of all objects available to the player for predicting object placement, which can be arranged based on ID.
+ local currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject = getPlayerPlacementData(Player)
+
+ local objectPlacementFeatureMatrixToPredict = createFeatureMatrixByConcatenatingWithObjectData(positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject)
+
+ local probabilityVector = PlacementPredictionModel:predict(objectPlacementFeatureMatrixToPredict, true) -- This consists of all objects available to the player for predicting object placement, which can be arranged based on ID.
  
  local maximumValueDimensionIndexArray = TensorL2D:findMaximumValueDimensionIndexArray(probabilityVector)
  

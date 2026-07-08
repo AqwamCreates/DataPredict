@@ -120,6 +120,10 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 * Only the "Original Identity" can create revived "Valid Identity", "Original Identity", "Secondary Identity".
 
+## Governing Law
+
+This Agreement shall be governed by and construed in accordance with the laws of a jurisdiction selected at the sole discretion of the Licensor. In the absence of a choice by the Licensor, the laws of Malaysia shall apply.
+
 ## Entire Agreement
 
 This Agreement constitutes the entire agreement between User and Licensor with respect to the subject matter hereof and supersedes all prior or contemporaneous communications and proposals, whether oral or written, between User and Licensor.

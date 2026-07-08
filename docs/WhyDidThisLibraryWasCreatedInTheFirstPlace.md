@@ -64,11 +64,17 @@ Eventually, I still had suicidal thoughts due to my still untreated mental illne
 
 ### Bachelor's Mental Illness History
 
-I studied my Computer Science With Artificial Intelligence in University Of Nottingham Malaysia (UNM), where the school is located in Selangor, Malaysia.
+I studied my Computer Science With Artificial Intelligence in University Of Nottingham Malaysia (UNM), where the school is located in Selangor, Malaysia. It has three-years worth of study with 2 semesters per year.
 
 To do:
 
 * Failed my driving test twice during my first year of bachelor, but the examiner just gave me a pass after the second try. I already know the reason why: I had issues looking at the mirrors while looking at the road due to sensory-overload.
+
+* I was aware of the counselling services here, but I expected nothing productive would come out from here due to my A-levels counselor experience. I regretted this so much because in later years, they had an actual psychologist during my initial years of study in that 
+
+* Due to certain interpersonal issues happened as a result of the untreated mental illnesses where my parents had to get involved.
+
+* My university counselor literally recommended me to get treatment, and when I relay this to my parents, my parents just let me since it was coming from a university counselor. However, this was a little too late because I was already in my final year of my second semester, where my poor grades are set in stone. Generally, the university does not count the first year grades to the overall grades for your bachelor degree.
 
 * First crack in lies: The bachelor university offers exam and assignment extensions if you had a valid mental illness diagnosis.
 

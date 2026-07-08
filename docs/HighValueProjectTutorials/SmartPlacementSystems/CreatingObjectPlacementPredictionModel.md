@@ -64,7 +64,7 @@ local objectPlacementFeatureMatrixToTrain = {}
 
 local objectPlacementLabelVectorToTrain = {}
 
-local function appendData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, objectID, hasPlacedBoolean)
+local function appendPlacementData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, objectID, hasPlacedBoolean)
 
  local currentPlayerCashAmount, consecutiveNumberOfTimesPlayerPlacedThisObject = getPlayerPlacementData(Player)
 
@@ -106,9 +106,9 @@ end
 
 local function onPlacement(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, suggestedObjectID, placedObjectID) -- All the features from the previous feature matrix.
 
- appendData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, placedObjectID, true)
+ appendPlacementData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, placedObjectID, true)
 
- if (suggestedObjectID ~= placedObjectID) then appendData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, suggestedObjectID, false) end
+ if (suggestedObjectID ~= placedObjectID) then appendPlacementData(Player, positionXPlacement, positionYPlacement, positionZPlacement, changeInPositionX, changeInPositionY, changeInPositionZ, suggestedObjectID, false) end
 
  PlacementPredictionModel:train(objectPlacementFeatureMatrixToTrain, objectPlacementLabelVectorToTrain) -- Theoretically, you can use single data points per train() function call instead of accumulating data points. However, factorization machines works best in batches of data in order to handle sparsity better.
 

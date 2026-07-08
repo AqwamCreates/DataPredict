@@ -42,7 +42,7 @@ Generally, the models can be split into two categories:
 
 ## Data-To-Action-To-Reaction Optimization Players (Counter Optimization)
 
-* [Creating Simple Reward-Maximization-Based Reactionary AI Player Model](CreatingSimpleRewardMaximizationBasedReactionaryAIPlayerModel)
+* [Creating Simple Reward-Maximization-Based Reactionary AI Player Model](CreatingSimpleRewardMaximizationBasedReactionaryAIPlayerModel.md)
 
   * Breaks mathematical theoretical guarantees due to interference from game designers' control instead of model's own actions. Therefore, it is risky to use.
 

@@ -16,7 +16,7 @@ local PlacementModel = DataPredict.Models.ExpectationMaximization.new({numberOfC
 
 ```
 
-## Collecting The Players' Locations
+## Collecting The NPC' Locations
 
 In order to find the center of the clusters, we first need all the NPCs' location data and put them into a matrix.
 

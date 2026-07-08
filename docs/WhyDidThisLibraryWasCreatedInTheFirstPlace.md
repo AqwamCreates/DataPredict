@@ -100,7 +100,7 @@ To do:
 
 * [Medical Examination Standard For Vocational Driving License (2011)](https://www.jpj.gov.my/wp-content/uploads/2022/11/MED-EXAMINATION-STANDARDS.pdf)
 
-Note: Notice that these are for vocational driving license, not a personal one. Hence, the rules are likely more relaxed for personal driving license
+Note: Notice that these are for vocational driving license, not a personal one. Hence, the rules are likely more relaxed for personal driving license. If you read the policies further, you will notice that the revocation is limited to a subset of mental illnesses, but even then it can be restored if the person is receiving treatment.
 
 ##### News
 

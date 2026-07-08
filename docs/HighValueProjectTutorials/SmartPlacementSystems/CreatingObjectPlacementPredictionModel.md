@@ -10,6 +10,8 @@ local DataPredict = require(DataPredict)
 
  --[[
 
+  We are choosing Factorization Machine models due to sparsity from placing a number of objects that could be selected from hundreds of potential objects to be placed.
+
   For incremental learning purposes, set the maximumNumberOfIterations to 1 to avoid fully train on the current data.
 
   Additionally, the more number of maximumNumberOfIterations you have, the lower the learningRate it should be to avoid "inf" and "nan" issues.

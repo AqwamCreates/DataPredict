@@ -84,7 +84,7 @@ My university counselor then literally recommended me to get treatment for exten
 
 Eventually, it was revealed that the cost Malaysia's public healthcare treatment for each consultation (including medication) is RM 5. Needing to wait for one month is irrelevant as I can wait for that long. It was discovered after my parents kept complaining about the cost of private mental illness treatment which costed RM 200 per counseling session and RM 200 for my medication. The reason why we did private treatment was because of my parents wanting to avoid stigma in jobs as a result of getting diagnosed in a public healthcare system. I didn't choose this and I was fine with a public healthcare one, even if we have to wait for like one month per consultation.
 
-If anyone fucking asking me why I don't go there myself when I am already an adult, you clearly haven't put this into mind:
+If anyone is fucking asking me why I don't go there myself when I am already an adult, you clearly haven't put this into mind:
 
 * I need to physically present at the public mental healthcare hospital, which either requires me:
 

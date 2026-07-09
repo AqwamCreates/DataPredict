@@ -152,7 +152,7 @@ My worldview slowly collided with the reality of what I saw as I climb down the 
 
 My first instinct was... to shove the fucking policy to my father's face and on the WhatsApp message. I began laughing hysterically and started mocking to my father about his statement of "Chinese and Indians abuse mental OKU diagnosis to get out of severe punishments for severe car accidents by bribing psychologists or psychiatrists for diagnosis, hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". It ranged from me saying these in a mocking tone:
 
-* "Oh no! Chinese and Indians abuse mental OKU diagnosis
+* "Oh no! Chinese and Indians abuse mental OKU diagnosis!"
 
 * "Oh no! I am going to lose my license!"
 
@@ -162,7 +162,31 @@ My father was so pissed off at this and told me to calm down with his angry voic
 
 I don't believe one bit that my 2nd youngest brother would be scared of my act. Feels like it was more of an ego-saving attempt that he does not want me to talk about this.
 
-Five years. Gone. What was I suffering for then? On top of my parents rapidly responded to my 2nd youngest brother's schizophrenia all while me begging for treatment for over five years.
+Five years. Gone. What was I suffering for then? On top of my parents rapidly responded to my 2nd youngest brother's schizophrenia all while me begging for treatment for over five years. 
+
+My 2nd youngest brother and I also had the same problems if we get treatment in Malaysia's public healthcare: stigma from job and the driving license revocation.
+
+And my parents just... ignored those problems for my 2nd youngest brother, but not for me.
+
+Haha....
+
+Hahaha..
+
+HAHAHAHA!
+
+Liar.
+
+Pretty dirty liar.
+
+Liar.
+
+Liar.
+
+Liar.
+
+Liar.
+
+My father is a LIAR!
 
 My father is a liar. Liar! I'm telling you he is a liar on the greatest proportions! Liar. Liar. Liar. A pathethic fucking liar.
 

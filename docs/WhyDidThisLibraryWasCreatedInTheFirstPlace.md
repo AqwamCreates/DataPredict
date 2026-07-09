@@ -176,6 +176,6 @@ Then the introduction of deep reinforcement learning library in the second year.
 
 Then the introduction of statistical models and tabular reinforcement learning that got mixed inside DataPredict™. This is where I literally understood the use cases for machine learning models and ended up building a huge list of tutorials. I will literally write a tutorial by the time an idea pops up into my head, provided that it was a genuine use case.
 
-During my first year of DataPredict™ development, it ended up boosting my chances of getting non-existent Roblox game developer job in Malaysia. Although it wasn't quite high, at least I know my trajectory isn't that quite fucked.
+During my first year of DataPredict™'s development, it ended up boosting my chances of getting non-existent Roblox game developer job in Malaysia. Although it wasn't quite high, at least I know my trajectory isn't that quite fucked.
 
 Except... I severely underestimated the impact of my untreated mental could impact my work performance... I may or may not have broken several codebases as a result of stiffness and haziness from my brain while working.

@@ -154,7 +154,7 @@ Note: Notice that these are for vocational driving license, not a personal one. 
 
 ## DataPredict™ - The Backup Plan When Everything Falls To Shit
 
-With the writing on the wall regarding to my future career prospects on my final year of second semester, I needed anything to fix my trajectory.
+With the writing on the wall regarding to my future career prospects on my final year of the second semester, I needed anything to fix my trajectory.
 
 Anything.
 
@@ -162,7 +162,7 @@ Luckily enough, during my second year of university, I had a group software proj
 
 Now... As I scroll through the Roblox DevForum, I noticed that there was a gap in machine learning resources. At best, there was a guy called Kironte who created a library for simple neural network. It's nice for beginners who want to just run neural networks on Roblox, but it isn't quite optimized for live Roblox games. Not to mention, where are the other machine learning models?
 
-This has become a basis for my prototype project: Machine And Deep Learning Library (MDLL). It had like linear regression, logistic regression and K-Means models only. But, I published the post for this and look for demand.
+This has become a basis for my prototype project during my final year of the second semester: Machine And Deep Learning Library (MDLL). It had like linear regression, logistic regression and K-Means models only. But, I published the post for this and look for demand.
 
 Apparently, there was. A small amount of people struggling to use it and wanting to apply it to their games. So, I ended up developing the beginning of a true machine learning library in pure Lua.
 

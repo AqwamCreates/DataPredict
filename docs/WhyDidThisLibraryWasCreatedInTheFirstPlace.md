@@ -146,7 +146,7 @@ Until... I looked into the JPJ and KKM official websites.
 
 There was no such policy.
 
-At best, this is what I got: JPJ official policy regarding mental illnesses on the government websites that existed since 2011 showed that the license is revoked based on strict criteria. Not to mention, even if revoked, JPJ would restore them. This is also for vocational driving license, and I couldn't find the version for personal driving license. In addition, I had also considered the potential confusion that the driving license would be revoked either way regardless of health conditions.
+At best, this is what I got: JPJ official policy regarding mental illnesses on the government websites that existed since 2011 showed that the license is revoked based on strict criteria. Not to mention, even if revoked, JPJ would restore them. This is also for vocational driving license, and I couldn't find the version for personal driving license. It is extremely likely that the driving license would be far more lenient. In addition, I had also considered the potential confusion that the driving license would be revoked either way regardless of health conditions.
 
 My worldview slowly collided with the reality of what I saw as I climb down the stairs.
 
@@ -157,6 +157,16 @@ My first instinct was... to shove the fucking policy to my father's face and on 
 * "Oh no! I am going to lose my license!"
 
 * "Oh no!"
+
+My father was so pissed off at this and told me to calm down with his angry voice. He stated that I am scaring my 2nd youngest brother when I acted hysterically and mockingly.
+
+I don't believe one bit that my 2nd youngest brother would be scared of my act. Feels like it was more of an ego-saving attempt that he does not want me to talk about this.
+
+Five years. Gone. What was I suffering for then? On top of my parents rapidly responded to my 2nd youngest brother's schizophrenia all while me begging for treatment for over five years.
+
+My father is a liar. Liar! I'm telling you he is a liar on the greatest proportions! Liar. Liar. Liar. A pathethic fucking liar.
+
+Liar. So fucking liar.
 
 At this point, I fucking rejected the offer to watch my schizophrenic younger brother in midnight out of anger. I then told my parents that is their problem since they did not fix my mental illness problem early hence I have no interest in helping them out. They can go fuck themselves taking care of my younger brother and stress about it.
 

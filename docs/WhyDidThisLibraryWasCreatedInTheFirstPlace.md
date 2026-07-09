@@ -112,7 +112,11 @@ To do:
 
 ### Evidence That Disproves The Severity Of Stigma
 
-#### Whatsapp Messages For Initial
+#### First Diary Record Of Maladaptive Daydreaming During A-Levels
+
+* The diary name is Lily.
+
+#### Whatsapp Messages For Initial Delay In A-Levels
 
 #### The School Counselor Business Card
 

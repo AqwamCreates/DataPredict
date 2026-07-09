@@ -4,7 +4,7 @@
 
 * [Mental Illness History](#mental-illness-history)
 
-* [DataPredict - The Backup Plan When Everything Falls To Shit](#datapredict---the-backup-plan-when-everything-falls-to-shit)
+* [DataPredict™ - The Backup Plan When Everything Falls To Shit](#datapredict™---the-backup-plan-when-everything-falls-to-shit)
 
 ## Mental Illness History
 
@@ -152,4 +152,30 @@ Note: Notice that these are for vocational driving license, not a personal one. 
 
 * ["JPJ perlu batal lesen pemandu OKU mental jika disahkan KKM (2025)"](https://www.bharian.com.my/berita/nasional/2025/01/1352448/jpj-perlu-batal-lesen-pemandu-oku-mental-jika-disahkan-kkm)
 
-## DataPredict - The Backup Plan When Everything Falls To Shit
+## DataPredict™ - The Backup Plan When Everything Falls To Shit
+
+With the writing on the wall regarding to my future career prospects on my final year of second semester, I needed anything to fix my trajectory.
+
+Anything.
+
+Luckily enough, during my second year of university, I had a group software project that relates to Roblox Game Development. Technically, I took up the leadership position after our previous leader tend to underestimate and procrastinate on this group project to the point that we left with one week for prototyping despite me pointing out repatedly. That girl cried when the deadline is near and I ended up irritated, before taking up the leadership position given that I had very casual Roblox game development experience. Somehow, we ended up completing the game development in a year. I then wanted to commercialize this game, so I ended up working alone on this on the final year given that my grades were failing anyways.
+
+Now... As I scroll through the Roblox DevForum, I noticed that there was a gap in machine learning resources. At best, there was a guy called Kironte who created a library for simple neural network. It's nice for beginners who want to just run neural networks on Roblox, but it isn't quite optimized for live Roblox games. Not to mention, where are the other machine learning models?
+
+This has become a basis for my prototype project: Machine And Deep Learning Library (MDLL). It had like linear regression, logistic regression and K-Means models only. But, I published the post for this and look for demand.
+
+Apparently, there was. A small amount of people struggling to use it and wanting to apply it to their games. So, I ended up developing the beginning of a true machine learning library in pure Lua.
+
+I had multiple names for my library as my previous library's name was too raw and crude. I looked at them online and made sure nobody already took it, regardless if it was a machine learning product or not. I ended up settling with DataPredict™, which isn't quite a bad name actually.
+
+Now, this is where my software engineering knowledge becomes useful. Inheritance, composition, SOLID and DRY. This forms the basis of my DataPredict™ library and a first release made to the public through Roblox DevForum. At the same time, I also asked the moderators to delete the MDLL's Roblox DevForum post so that they don't go to the outdated resources. Frankly, I should have actually link it to DataPredict™'s Roblox DevForum post instead.
+
+It started off with a normal machine learning library in the first year. People don't really understand the use cases. Me neither. All I know is that I want to be the first one to have a comprehensive machine learning library for Roblox.
+
+Then the introduction of deep reinforcement learning library in the second year. This came from people asking for self-learning AIs. I ended up accepting it and built it.
+
+Then the introduction of statistical models and tabular reinforcement learning that got mixed inside DataPredict™. This is where I literally understood the use cases for machine learning models and ended up building a huge list of tutorials. I will literally write a tutorial by the time an idea pops up into my head, provided that it was a genuine use case.
+
+During my first year of DataPredict™ development, it ended up boosting my chances of getting non-existent Roblox game developer job in Malaysia. Although it wasn't quite high, at least I know my trajectory isn't that quite fucked.
+
+Except... I severely underestimated the impact of my untreated mental could impact my work performance... I may or may not have broken several codebases as a result of stiffness and haziness from my brain while working.

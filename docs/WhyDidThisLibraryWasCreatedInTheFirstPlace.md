@@ -178,7 +178,7 @@ Then the introduction of statistical models and tabular reinforcement learning t
 
 During my first year of DataPredict™'s development, it ended up boosting my chances of getting non-existent Roblox game developer job in Malaysia. Although it wasn't quite high, at least I know my trajectory isn't that quite fucked.
 
-Except... I severely underestimated the impact of my untreated mental could impact my work performance... I may or may not have broken several codebases as a result of stiffness and haziness from my brain while working.
+Except... I severely underestimated the impact of my untreated mental could impact my work performance... I may or may not have broken several codebases as a result of stiffness and haziness from my brain while working, as well as hallucinating some codes and some instructions.
 
 At the very least, let me try one last time in succeeding. 
 

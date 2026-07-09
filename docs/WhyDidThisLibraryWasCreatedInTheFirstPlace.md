@@ -138,9 +138,9 @@ My father... is... using... newspaper... as... evidence...
 
 And... he... can't... find.. it... for... something... that... he... had... justified... using... it... on... me...
 
-I was... beginning to snap.
+I was... beginning... to snap...
 
-I tried to give VERY charitable reasonable of doubt. VERY reasonable of doubt.
+I tried to give VERY charitable reasonable of doubt. VERY reasonable of doubt. VERY CHARITABLE INDEED.
 
 Until... I looked into the JPJ and KKM official websites.
 

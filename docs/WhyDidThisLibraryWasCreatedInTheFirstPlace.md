@@ -164,7 +164,7 @@ Now... As I scroll through the Roblox DevForum, I noticed that there was a gap i
 
 This has become a basis for my prototype project during my final year of the second semester: Machine And Deep Learning Library (MDLL). It had like linear regression, logistic regression and K-Means models only. But, I published the post for this and look for demand.
 
-Apparently, there was. A small amount of people struggling to use it and wanting to apply it to their games. So, I ended up developing the beginning of a true machine learning library in pure Lua.
+Apparently, there was. A small amount of people struggling to use it and wanting to apply it to their games. So, I ended up developing the beginning of a true machine learning library written in pure Lua.
 
 I had multiple names for my library as my previous library's name was too raw and crude. I looked at them online and made sure nobody already took it, regardless if it was a machine learning product or not. I ended up settling with DataPredict™, which isn't quite a bad name actually.
 
@@ -182,7 +182,7 @@ Except... I severely underestimated the impact of my untreated mental could impa
 
 At the very least, let me try one last time in succeeding. 
 
-I mean... DataPredict™ having over 136K views and 268 likes for over three years is something. Being top 40 in terms of most viewed community resource is also something. Almost thousands of replies is also something. My direct competitors not being able to outcompete me and falls into obscurity due to DataPredict™ being so visible is also something. People demanding for free stuff for DataPredict™ without paying for any commercial license is also something. Having a monopoly position in machine learning library for pure Lua is also something.
+I mean... DataPredict™ having over 136K views and 268 likes for over three years is something. Being top 40 in terms of most viewed community resource is also something. Almost thousands of replies is also something. My direct competitors not being able to outcompete me and falls into obscurity due to DataPredict™ being so visible is also something. People demanding for free stuff for DataPredict™ without paying for any commercial license is also something. Having a monopoly position for a machine learning library written in pure Lua is also something.
 
 At the very least, I now know that I can build something valuable in the midst of my parents' stupidity and hypocrisies, as well as lacking owning up to their mistakes and hypocrisies.
 

@@ -104,9 +104,11 @@ To do:
 
   * Potential confusion that the driving license would be revoked either way regardless of health conditions.
 
-* Then there's a hypocrisy where that my 2nd youngest brother gets immediate treatment in Malaysia after developing schizophrenia while studying in a German university overseas. The German governmen had warned my parents that he needs to get treated to continue studying in Germany's university. It even made more confusing since treating in Malaysia means he would have the same job issues due to stigma and driving license revocation issue in Malaysia. This was like around 2 years after I had graduated from my unversity. Even better yet for him, he was treated early during his first year of overseas study in the Germany's university, giving him a good chance of getting good grades upon graduation.
+* Then there's a hypocrisy where that my 2nd youngest brother gets immediate treatment in Malaysia after developing schizophrenia while studying in a German university overseas. The German government had warned my parents that he needs to get treated to continue studying in Germany's university. It even made more confusing since treating in Malaysia means he would have the same job issues due to stigma and driving license revocation issue in Malaysia. This was like around 2 years after I had graduated from my unversity. Even better yet for him, he was treated early during his first year of overseas study in the Germany's university, giving him a good chance of getting good grades upon graduation.
 
 * Suddenly, after my younger's brother mental health treatment, they now suddenly care about my mental illnesses. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months. It is extremely likely that my parents got spooked by the German's government after my parents realized that actions can be taken against them.
+
+* Even more ironic that my father asked me to watch my 2nd youngest brother at midnight and offered to pay some money... This is because my 2nd youngest brother had the tendency of wanting to go outside in the middle of the night. Frankly, I fucking rejected it and told my parents that is their problem since they did not fix my mental illness problem early hence I have no interest in helping them out. They can go fuck themselves taking care of my younger brother and stress about it.
 
 ### Evidence Due To My Mental Illness Treatment Delay By My Parents
 

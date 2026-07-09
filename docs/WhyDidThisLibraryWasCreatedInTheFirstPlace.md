@@ -108,7 +108,7 @@ To do:
 
 * Suddenly, after my younger's brother mental health treatment, they now suddenly care about my mental illnesses. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months. It is extremely likely that my parents got spooked by the German's government after my parents realized that actions can be taken against them.
 
-### Corroborating Evidence Due To My Mental Illness Treatment Delay By My Parents
+### Evidence Due To My Mental Illness Treatment Delay By My Parents
 
 ### Evidence That Disproves The Severity Of Stigma
 

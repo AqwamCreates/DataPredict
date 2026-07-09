@@ -124,7 +124,7 @@ To do:
 
 * Notice how the grades gets worse over the years.
 
-#### Medical Card For First Time Mental Illness Treatment In Malaysia
+#### Public Healthcare Medical Card For First Time Mental Illness Treatment In Malaysia
 
 * Notice that this is years since I was first sent to the school university counselor. This means that my parents have ample time to re-evaluate their decision as everything about my life goes to shit.
 

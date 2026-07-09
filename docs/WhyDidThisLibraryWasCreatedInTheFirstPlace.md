@@ -170,7 +170,7 @@ I had multiple names for my library as my previous library's name was too raw an
 
 Now, this is where my software engineering knowledge becomes useful. Inheritance, composition, SOLID and DRY. This forms the basis of my DataPredict™ library and a first release made to the public through Roblox DevForum. At the same time, I also asked the moderators to delete the MDLL's Roblox DevForum post so that they don't go to the outdated resources. Frankly, I should have actually link it to DataPredict™'s Roblox DevForum post instead.
 
-It started off with a normal machine learning library in the first year. People don't really understand the use cases. Me neither. All I know is that I want to be the first one to have a comprehensive machine learning library for Roblox.
+It started off with a normal machine learning library in the first year. People don't really understand the use cases. Me neither. All I know is that I want to be the first one to have a comprehensive machine learning library for Roblox. Someone criticized the poor documentation back then and I realized he was correct as I was too excited in releasing the DataPredict™ library. So I ended up doing a better job in documentation, which ended up helping DataPredict™'s reputation and ended up paying off in the long term.
 
 Then the introduction of deep reinforcement learning library in the second year. This came from people asking for self-learning AIs. I ended up accepting it and built it.
 

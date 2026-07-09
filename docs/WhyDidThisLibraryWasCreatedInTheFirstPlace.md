@@ -1,8 +1,14 @@
 # Why Did This Library Was Created In The First Place
 
-To give you context, I will talk about my history from start to finish and then lead on with the reasons why.
+Table Of Content
+
+* [Mental Illness History](#mental-illness-history)
+
+* [DataPredict - The Backup Plan When Everything Falls To Shit](#dataPredict-the-backup-plan-when-everything-falls-to-shit)
 
 ## Mental Illness History
+
+To give you context, I will talk about my history from start to finish and then lead on with the reasons why.
 
 ### IGCSE Mental Illness History
 

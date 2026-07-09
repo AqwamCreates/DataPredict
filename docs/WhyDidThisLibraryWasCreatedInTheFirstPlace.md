@@ -68,9 +68,13 @@ Eventually, I still had suicidal thoughts due to my still untreated mental illne
 
 I studied my Computer Science With Artificial Intelligence in University Of Nottingham Malaysia (UNM), where the school is located in Selangor, Malaysia. It has three-years worth of study with 2 semesters per year. I had enrolled to this university around 2020.
 
+To be honest, I wanted to delay the joining of my university because my mental illness being that severe and given my parents are literally not being cooperative on getting me mental health treatment in Malaysia. If I can't fucking get a mental illness treatment in Malayia because of my parents, at least let me take a rest for some months. I was unaware that my father literally immediately admit me to a university, when I was just exploring the options that the UNM have. I just found a course that I liked, and pointed to my parents that I want to register for this course. However, I made no mention that I wanted the course immediately. Not to fucking mention, I wasn't told if I wanted to apply it myself, so I didn't expect my father would literally do it for me. What makes it even more ridiculous is that my first younger brother would have to do the registering himself, confusing me further.
+
 I was aware of the counselling services here, but I expected nothing productive would come out from here due to my A-levels counselor experience. I regretted this so much because in later years, they had an actual psychologist during my initial years of study before the psychologist left prior I went to the university counselor's for the first time in my third year.
 
 In the first year, I had failed my driving test twice, but the examiner just gave me a pass after the second fail. I already knew the reason why: I had issues looking at the mirrors while looking at the road due to sensory-overload. Even in here, I kept begging for my mental illness treatment prior and after failing the test twice. My parents continued to dismiss as normal driving anxiety despite that I stated to them that I failed the driving test twice.
+
+In the second year of my second semester, I felt like I want to drop out from the university given how much I literally can't process lessons and I was barely hanging on a thread when it comes to my grades. My brain would feel stiff and hazy whenever I try to process the lessons.
 
 In the early third year, I jad to meet campus security officer due to certain interpersonal issues as a result of the untreated mental illnesses where my parents had to get involved. My parents didn't link this interpersonal issues to my worsening untreated mental illnesses. Apparently, I was requested to seek the university counselor at this point given people who are involved in my interpersonal conflict are aware of something is off.
 
@@ -87,8 +91,6 @@ If anyone fucking asking me why I don't go there myself when I am already an adu
   * I need money to go to the hospital if I were to use e-hailing services. However, I can't because I literally don't have money for it sicne I was focused on my studies full-time in university. Not to mention, active blockage by my parents with their stigma excuses. If I was told by my parents "I give you money to go by yourself," I would have.
 
 * Doing mental illness treatment with a private mental healthcare professional and buying unsubsidized medication exceeds my non-existent budget unless I want to go into debt.
-
-To be honest, I wanted to delay the joining of my university because my mental illness being that severe and given my parents are literally not being cooperative on getting me mental health treatment in Malaysia. If I can't fucking get a mental illness treatment in Malayia because of my parents, at least let me take a rest for some months. I was unaware that my father literally immediately admit me to a university, when I was just exploring the options that the UNM have. I just found a course that I liked, and pointed to my parents that I want to register for this course. However, I made no mention that I wanted the course immediately. Not to fucking mention, I wasn't told if I wanted to apply it myself, so I didn't expect my father would literally do it for me. What makes it even more ridiculous is that my first younger brother would have to do the registering himself, confusing me further.
 
 ### The Great Betrayal
 

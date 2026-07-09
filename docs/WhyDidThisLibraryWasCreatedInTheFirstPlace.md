@@ -110,8 +110,6 @@ To do:
 
 ### Evidence Due To My Mental Illness Treatment Delay By My Parents
 
-### Evidence That Disproves The Severity Of Stigma
-
 #### First Diary Record Of Maladaptive Daydreaming During A-Levels
 
 * The diary name is Lily.
@@ -125,6 +123,12 @@ To do:
 #### Grades Over The Years (IGCSE, A-Levels, Bachelor Degree)
 
 * Notice how the grades gets worse over the years.
+
+#### Medical Card For First Time Mental Illness Treatment In Malaysia
+
+* Notice that this is years since I was first sent to the school university counselor. This means that my parents have ample time to re-evaluate their decision as everything about my life goes to shit.
+
+### Evidence That Disproves The Severity Of Stigma
 
 #### JPJ Policy On Mental Illnesses For Driving License
 

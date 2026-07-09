@@ -96,11 +96,13 @@ First off... they're the fucking one who complained about the money. It's not th
 
 Eventually, we did switch to the public healthcare for my mental illness treatment after my father kept dragging his foot on stigma from jobs and driving license revocation.
 
-Surprise, surprise. What did I found once I get the mental illness treatment in the public healthcare for over couple of months. From here, I got these diagnosis: GAD, OCD and high-functioning autism. I got Brintellix for my medication. Later, I suspected ADHD, and so I got diagnosed by the public healthcare psychiatrist. I got that ADHD diagnosis too. The only problem is that getting ADHD medication was difficult, so I ended up using an alternative: drinking coffee more than or equal to two times a day. Not healthy, but who cares. I need it that badly for my functioning.
+Surprise, surprise. What did I found once I get the mental illness treatment in the public healthcare for over couple of months. From here, I got these diagnosis: GAD, OCD and high-functioning autism. I got Brintellix for my medication. The counselling was on a monthly basis at first, but sometime it can stretch to two months once I am stable with the medication that I was given with.
 
 Then, I realized something. There was no mention from the public healthcare that my driving license is revoked when I got my diagnosis. So, I brought this up to my father.
 
 He... well... ended up elaborating that the JPJ (the one responsible for giving the driving license to me) and KKM (the one responsible for my mental illness treatment in public healthcare) were using two separate systems and so that is why JPJ never immediately revoked my driving license... I was already raising one of my eyebrows in suspicion and I had suspected that he has now began shifting the goalpost.
+
+Few months later, I suspected ADHD, and so I got diagnosed by a public healthcare psychiatrist. I got that ADHD diagnosis too. The only problem is that getting ADHD medication was difficult, so I ended up using an alternative: drinking coffee more than or equal to two times a day. Not healthy, but who cares. I need it that badly for my functioning.
 
 If anyone is fucking asking me why I don't go there myself when I am already an adult, you clearly haven't put this into mind:
 

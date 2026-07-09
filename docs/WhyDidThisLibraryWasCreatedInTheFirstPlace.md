@@ -114,9 +114,13 @@ To do:
 
 #### Whatsapp Messages For Initial
 
-#### The School Counselor Card
+#### The School Business Counselor Card
+
+* You can verify age based on how worn out the card is. It is quite suprising why I still have this in my wallet for over all these years. I thank my younger selves for this!
 
 #### Grades Over The Years (IGCSE, A-Levels, Bachelor Degree)
+
+* Notice how the grades gets worse over the years.
 
 #### JPJ Policy On Mental Illnesses For Driving License
 

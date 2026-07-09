@@ -184,4 +184,4 @@ At the very least, let me try one last time in succeeding.
 
 I mean... DataPredict™ having over 136K views and 268 likes for over three years is something. Being top 40 in terms of most viewed community resource is also something. Almost thousands of replies is also something. My direct competitors not being able to outcompete me and falls into obscurity due to DataPredict™ being so visible is also something. People demanding for free stuff for DataPredict™ without paying for commercial license is something. Having a monopoly position in machine learning library for pure Lua is also something.
 
-At the very least, I now know that I can build something valuable in the midst of my parents' stupidity and hypocrisy, as well as lacking owning up to their mistakes and hypocrisy.
+At the very least, I now know that I can build something valuable in the midst of my parents' stupidity and hypocrisies, as well as lacking owning up to their mistakes and hypocrisies.

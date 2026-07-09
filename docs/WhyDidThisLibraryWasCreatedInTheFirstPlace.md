@@ -196,4 +196,4 @@ Once DataPredict™ is done, I'm going back to:
 
 * Binge watch anime since I never had any throughout A-levels to the development of DataPredict™.
 
-* Go play games and try out the games' skin mods for the first time. This is probably the reason why the recent releases of DataPredict™'s updates are so slow.
+* Go play games and try out the games' skin mods for the first time. This is probably the reason why the recent releases of DataPredict™'s updates are so slow. I literally need to collect characters I like in terms personality and appreance so that I can use the games' skin mods on them.

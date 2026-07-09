@@ -114,7 +114,7 @@ To do:
 
 #### Whatsapp Messages For Initial
 
-#### The School Business Counselor Card
+#### The School Counselor Business Card
 
 * You can verify age based on how worn out the card is. It is quite suprising why I still have this in my wallet for over all these years. I thank my younger selves for this!
 

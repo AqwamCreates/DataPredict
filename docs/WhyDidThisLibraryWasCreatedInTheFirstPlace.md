@@ -1,10 +1,10 @@
 # Why Did This Library Was Created In The First Place
 
-Table Of Content
+## Table Of Content
 
 * [Mental Illness History](#mental-illness-history)
 
-* [DataPredict - The Backup Plan When Everything Falls To Shit](#dataPredict-the-backup-plan-when-everything-falls-to-shit)
+* [DataPredict - The Backup Plan When Everything Falls To Shit](#datapredict---the-backup-plan-when-everything-falls-to-shit)
 
 ## Mental Illness History
 

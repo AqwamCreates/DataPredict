@@ -187,3 +187,13 @@ I mean... DataPredict™ having over 136K views and 268 likes for over three yea
 At the very least, I now know that I can build something valuable in the midst of my parents' stupidity and hypocrisies, as well as lacking owning up to their mistakes and hypocrisies.
 
 That being said... DataPredict™ is almost being close to done after all these years. I might eventually put this into a perpetual maintenance mode until people demand me to add new stuff. What a great journey, DataPredict™.
+
+Once DataPredict™ is done, I'm going back to:
+
+* Drawing lewd anime girl characters and improve it. I had like 2-3 years worth of casual drawing experience here. Mostly sketches, but I did get into digital drawing with a digital tablet.
+
+* Learn piano again as a beginner.
+
+* Binge watch anime since I never had any throughout A-levels to the development of DataPredict™.
+
+* Go play games and try out skin mods for the first time. This is probably the reason why the recent releases of DataPredict™'s updates are so slow.

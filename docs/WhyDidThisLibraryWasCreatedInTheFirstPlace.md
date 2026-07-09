@@ -90,6 +90,18 @@ My university counselor then literally recommended me to get treatment for exten
 
 Eventually, it was revealed that the cost Malaysia's public healthcare treatment for each consultation (including medication) is RM 5. Needing to wait for one month is irrelevant as I can wait for that long. It was discovered after my parents kept complaining about the cost of private mental illness treatment which costed RM 200 per counseling session and RM 200 for my medication. The reason why we did private treatment was because of my parents wanting to avoid stigma in jobs as a result of getting diagnosed in a public healthcare system. I didn't choose this and I was fine with a public healthcare one, even if we have to wait for like one month per consultation.
 
+Eventually, I switched to public healthcare for my mental illness treatment after they kept talking about how expensive it was to do private counselling on top of paying medications. I told them they can switch to public healthcare for treatment, but even then they ask me why I needed it so badly.
+
+First off... they're the fucking one who complained about the money. It's not that we're that broke given that my father literally worked in Oman for an oil & gas company for like over 8 years. Secondly, either they fucking shut up about the money or the stigma. You can't have both. Not to mention, I am literally helping my parents to lower their expenses by wanting to go for public healthcare for my mental illness treatment since I was annoyed by their money complaints.
+
+Eventually, we did switch to the public healthcare for my mental illness treatment after my father kept dragging his foot on stigma from jobs and driving license revocation.
+
+Surprise, surprise. What did I found once I get the mental illness treatment in the public healthcare for over couple of months. From here, I got these diagnosis: GAD, OCD and high-functioning autism. I got Brintellix for my medication. Later, I suspected ADHD, and so I got diagnosed by the public healthcare psychiatrist. I got that ADHD diagnosis too. The only problem is that getting ADHD medication was difficult, so I ended up using an alternative: drinking coffee more than or equal to two times a day. Not healthy, but who cares. I need it that badly for my functioning.
+
+Then, I realized something. There was no mention from the public healthcare that my driving license is revoked when I got my diagnosis. So, I brought this up to my father.
+
+He... well... ended up elaborating that the JPJ (the one responsible for driving license) and KKM (the one responsible for my mental illness treatment in public healthcare) were using two separate systems and so that is why JPJ never immediately revoked my driving license... I was already raising one of my eyebrows in suspicion and I had suspected that he has now began shifting the goalpost.
+
 If anyone is fucking asking me why I don't go there myself when I am already an adult, you clearly haven't put this into mind:
 
 * I need to physically present at the public mental healthcare hospital, which either requires me:

@@ -179,3 +179,7 @@ Then the introduction of statistical models and tabular reinforcement learning t
 During my first year of DataPredict™'s development, it ended up boosting my chances of getting non-existent Roblox game developer job in Malaysia. Although it wasn't quite high, at least I know my trajectory isn't that quite fucked.
 
 Except... I severely underestimated the impact of my untreated mental could impact my work performance... I may or may not have broken several codebases as a result of stiffness and haziness from my brain while working.
+
+At the very least, let me try one last time in succeeding. DataPredict™ having over 136K views and 268 likes is something. Being top 40 in terms of most viewed community resource is also something. Almost thousands of replies is also something. My direct competitors not being able to outcompete me and falls into obscurity due to DataPredict™ being so visible is also something. People demanding for free stuff for DataPredict™ without paying for commercial license is something.
+
+At the very least, I know I can build something valuable in the midst of my parents' stupidity and hypocrisy, as well as lacking owning up to their mistakes and hypocrisy.

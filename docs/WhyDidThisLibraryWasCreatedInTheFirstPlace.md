@@ -110,25 +110,63 @@ If anyone is fucking asking me why I don't go there myself when I am already an 
 
   * Good at driving, which is impossible due to severity of untreated mental illnesses. My mind would literally have sensory overload, making it difficult for me to focus on the road. This led to me having extreme anxiety and panic while driving on the road. I already told you all about me failing the driving exam twice, so that should be very self-explanatory on how bad I am in driving.
  
-  * I need money to go to the hospital if I were to use e-hailing services. However, I can't because I literally don't have money for it sicne I was focused on my studies full-time in university. Not to mention, active blockage by my parents with their stigma excuses. If I was told by my parents "I give you money to go by yourself," I would have.
+  * I need money to go to the hospital if I were to use e-hailing services. However, I can't because I literally don't have money for it since I was focused on my studies full-time in university. Not to mention, active blockage by my parents with their stigma excuses. If I was told by my parents "I give you money to go by yourself," I would have.
 
 * Doing mental illness treatment with a private mental healthcare professional and buying unsubsidized medication exceeds my non-existent budget unless I want to go into debt.
 
 ### The Great Betrayal
 
-To do:
+Two years after I graduated from my university, my 2nd youngest brother suddenly developed schizophrenia while studying in a an oversea German university. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months.
 
-* Include that my father added details that the "Chinese and Indians abuse mental OKU to get out of severe punishments for severe car accidents by bribing psychologists or psychiatrists for diagnosis, hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". This is countered by:
+Then, the German government had warned my parents that he needs to get treated to continue studying in Germany's university. So, my parents did, despite having the same job issues due to stigma and driving license revocation issue in Malaysia like me. Without resistance. 
 
-  * JPJ official policy regarding mental illnesses on the government websites that existed since 2011.
+Even better yet for him, he was treated early during his first year of overseas study in the Germany's university, giving him a good chance of getting good grades upon graduation.
 
-  * Potential confusion that the driving license would be revoked either way regardless of health conditions.
+Suddenly, after my younger's brother mental health treatment, they now suddenly care about my mental illnesses.
 
-* Then there's a hypocrisy where that my 2nd youngest brother gets immediate treatment in Malaysia after developing schizophrenia while studying in a German university overseas. The German government had warned my parents that he needs to get treated to continue studying in Germany's university. It even made more confusing since treating in Malaysia means he would have the same job issues due to stigma and driving license revocation issue in Malaysia. This was like around 2 years after I had graduated from my unversity. Even better yet for him, he was treated early during his first year of overseas study in the Germany's university, giving him a good chance of getting good grades upon graduation.
+Then, my father asked me to watch my 2nd youngest brother at midnight and offered to pay some money... This is because my 2nd youngest brother had the tendency of wanting to go outside in the middle of the night.
 
-* Suddenly, after my younger's brother mental health treatment, they now suddenly care about my mental illnesses. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months. It is extremely likely that my parents got spooked by the German's government after my parents realized that actions can be taken against them.
+One day, my father received a call from my mother that my 2nd youngest brother was missing as they both went to shopping.
 
-* Even more ironic that my father asked me to watch my 2nd youngest brother at midnight and offered to pay some money... This is because my 2nd youngest brother had the tendency of wanting to go outside in the middle of the night. Frankly, I fucking rejected it and told my parents that is their problem since they did not fix my mental illness problem early hence I have no interest in helping them out. They can go fuck themselves taking care of my younger brother and stress about it.
+I don't remember what I said, but something like my father delayed treatment for me, but not for him.
+
+My father tried to justify with "Chinese and Indians abuse mental OKU diagnosis to get out of severe punishments for severe car accidents by bribing psychologists or psychiatrists for diagnosis, hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". My father attempted to use... newspapers as evidence.
+
+This is where my brain just... snapped.
+
+My father... is... using... newspaper... as... evidence...
+
+And... he... can't... find.. it... for... something... that... he... had... justified... using... it... on... me...
+
+I was... beginning to snap.
+
+I tried to give VERY charitable reasonable of doubt. VERY reasonable of doubt.
+
+Until... I looked into the JPJ and KKM official websites.
+
+There was no such policy.
+
+At best, this is what I got: JPJ official policy regarding mental illnesses on the government websites that existed since 2011 showed that the license is revoked based on strict criteria. Not to mention, even if revoked, JPJ would restore them. This is also for vocational driving license, and I couldn't find the version for personal driving license. In addition, I had also considered the potential confusion that the driving license would be revoked either way regardless of health conditions.
+
+My worldview slowly collided with the reality of what I saw as I climb down the stairs.
+
+My first instinct was... to shove the fucking policy to my father's face and on the WhatsApp message. I began laughing hysterically and started mocking to my father about his statement of "Chinese and Indians abuse mental OKU diagnosis to get out of severe punishments for severe car accidents by bribing psychologists or psychiatrists for diagnosis, hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". It ranged from me saying these in a mocking tone:
+
+* "Oh no! Chinese and Indians abuse mental OKU diagnosis
+
+* "Oh no! I am going to lose my license!"
+
+* "Oh no!"
+
+At this point, I fucking rejected the offer to watch my schizophrenic younger brother in midnight out of anger. I then told my parents that is their problem since they did not fix my mental illness problem early hence I have no interest in helping them out. They can go fuck themselves taking care of my younger brother and stress about it.
+
+### The Aftermath
+
+* I still occassionaly hear the knocking on my bathroom walls when I am inside, which only stops when I leave to my bedroom attached to it.
+
+* I also ocassionaly feel things climbing on my feet as I work and play using my laptop on my desk.
+
+* I also occasionaly hear voices calling my name.
 
 ### Evidence Due To My Mental Illness Treatment Delay By My Parents
 

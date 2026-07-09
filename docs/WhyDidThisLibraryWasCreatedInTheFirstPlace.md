@@ -182,7 +182,7 @@ Except... I severely underestimated the impact of my untreated mental could impa
 
 At the very least, let me try one last time in succeeding. 
 
-I mean... DataPredict™ having over 136K views and 268 likes for over three years is something. Being top 40 in terms of most viewed community resource is also something. Over hundreds of replies is also something. My direct competitors not being able to outcompete me and falls into obscurity due to DataPredict™ being so visible is also something. People demanding for DataPredict™ to be free forever without paying for any commercial license is also something. Having a monopoly position for a machine learning library written in pure Lua is also something.
+I mean... DataPredict™ having over 136K views and 268 likes for over three years is something. Being top 40 in terms of most viewed community resource is also something. Over hundreds of replies is also something. My direct competitors not being able to outcompete me and falls into obscurity due to DataPredict™ being so visible is also something. People demanding for DataPredict™ to be free for them while DataPredict™ explicitly have commercial licenses is also something. Having a monopoly position for a machine learning library written in pure Lua is also something.
 
 At the very least, I now know that I can build something valuable in the midst of my parents' stupidity and hypocrisies, as well as lacking owning up to their mistakes and hypocrisies.
 

@@ -122,8 +122,8 @@ Note: Notice that these are for vocational driving license, not a personal one. 
 
 ##### News
 
-* ["Pesakit mental masih boleh dibenarkan memandu - MMHA"](https://www.astroawani.com/berita-malaysia/pesakit-mental-masih-boleh-dibenarkan-memandu-mmha-491435)
+* ["Pesakit mental masih boleh dibenarkan memandu - MMHA (2024)"](https://www.astroawani.com/berita-malaysia/pesakit-mental-masih-boleh-dibenarkan-memandu-mmha-491435)
 
-* ["JPJ perlu batal lesen pemandu OKU mental jika disahkan KKM"](https://www.bharian.com.my/berita/nasional/2025/01/1352448/jpj-perlu-batal-lesen-pemandu-oku-mental-jika-disahkan-kkm)
+* ["JPJ perlu batal lesen pemandu OKU mental jika disahkan KKM (2025)"](https://www.bharian.com.my/berita/nasional/2025/01/1352448/jpj-perlu-batal-lesen-pemandu-oku-mental-jika-disahkan-kkm)
 
 ## DataPredict - The Backup Plan When Everything Falls To Shit

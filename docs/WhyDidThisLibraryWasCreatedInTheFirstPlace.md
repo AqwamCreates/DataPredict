@@ -100,7 +100,7 @@ Surprise, surprise. What did I found once I get the mental illness treatment in 
 
 Then, I realized something. There was no mention from the public healthcare that my driving license is revoked when I got my diagnosis. So, I brought this up to my father.
 
-He... well... ended up elaborating that the JPJ (the one responsible for driving license) and KKM (the one responsible for my mental illness treatment in public healthcare) were using two separate systems and so that is why JPJ never immediately revoked my driving license... I was already raising one of my eyebrows in suspicion and I had suspected that he has now began shifting the goalpost.
+He... well... ended up elaborating that the JPJ (the one responsible for giving the driving license to me) and KKM (the one responsible for my mental illness treatment in public healthcare) were using two separate systems and so that is why JPJ never immediately revoked my driving license... I was already raising one of my eyebrows in suspicion and I had suspected that he has now began shifting the goalpost.
 
 If anyone is fucking asking me why I don't go there myself when I am already an adult, you clearly haven't put this into mind:
 

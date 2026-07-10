@@ -196,6 +196,22 @@ Liar. So fucking liar.
 
 At this point, I fucking rejected the offer to watch my schizophrenic younger brother in midnight out of anger. I then told my parents that is their problem since they did not fix my mental illness problem early hence I have no interest in helping them out. They can go fuck themselves taking care of my younger brother and stress about it.
 
+Not to mention, between the two year gap between after I graduated and before my 2nd youngest brother caught schizophrenia, there was instances of my father wanting to kick me out because I couldn't shut up about the contradiction between his statements and the reality. 
+
+I couldn't shut up about how my driving license was not revoked. I also couldn't shut up about the job stigma wasn't even an issue. Especially after I got employed as a junior Roblox game developer for 9 months at RM 2000 per month as gross salary. Even in here, my parents said that the more higher paying jobs would discriminate me, which is way different than their original claim of "you will not be able to get job due to diagnosis".
+
+Once he couldn't take my complaints anymore, he ordered me to get out and prepare luggages for the train station. I KEPT EVERYTHING IN MY BEDROOM WITH ME EXCEPT FOR SOME BOOKS.
+
+Suddenly, my father immediately changed his decision to put me to my parents' unoccupied second house in a condominium that my parents recently bought in Cyberjaya. In here, I wasn't aware that the German government might have played a role in this, but I eventually figured it out after receiving the news that my 2nd youngest brother got schizophrenia.
+
+My father wanted a camera watching at me in the kitchen so he can observe me so that I don't go kill myself. I decided not care about fixing it when it broke, because I couldn't care shit about his "care" when he never fucking owns up to it.
+
+To be honest, when I stayed in that second house of theirs, it was so quiet and peaceful. I would often ignore my parents' text messages or calls unless I wanted something from them, which is quite rare for me to do. I couldn't care jackshit about their worries because they never worried about my untreated mental illnesses! My mother would panic if I don't actually don't contact her at all. Even more weirder, my parents have this weird push-and-pull dynamic regarding wanting to kick me out to the second house and bringing me back to the main house for short visits. 
+
+Holy shit. Make up their fucking mind already! Do they want to kick me out or not?!
+
+Shame that I had to move back to the main house eventually since that second house got rented by someone.
+
 ### The Aftermath
 
 * I still occassionaly hear the knocking on my bathroom walls when I am inside, which only stops when I leave to my bedroom attached to it.

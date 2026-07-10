@@ -2,8 +2,6 @@
 
 > Section 1: Mental Illnesses History
 
-To give you context, I will talk about my history from start to finish and then lead on with the reasons why.
-
 ## IGCSE Mental Illness History
 
 I studied my IGCSE in Muscat International School (MIS), where the school is located in Muscat, Oman.

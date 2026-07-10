@@ -318,4 +318,6 @@ Despite DataPredict™ being so heavy in mathematics and computer science, I som
 
 I just... didn't realized that I had internalized his signal to something like this to myself: Keep going. Even if you feel like everything is going to shit, just keep going.
 
-This is probably the reason why I ended up being comfortable receiving criticisms. This also probably made me comfortable with implementing mathematics that I never learnt in my A-levels of the university at all to DataPredict™.
+This is probably the reason why I ended up being comfortable receiving criticisms. This also probably made me comfortable with implementing mathematics that I never learnt in my A-levels of the university at all to DataPredict™. This also probably made me comfortable to fail, knowing it is just a setback in life like everything in life.
+
+I still hate my parents though. I will never forgive them at all. Not even in their deathbeds.

@@ -130,7 +130,7 @@ One day, my father received a call from my mother that my 2nd youngest brother w
 
 I don't remember what I said, but something like my father delayed treatment for me, but not for him.
 
-My father tried to justify with "Chinese and Indians abuse mental OKU diagnosis to get out of severe punishments for severe car accidents by bribing psychologists or psychiatrists for diagnosis, hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". My father attempted to use... newspapers as evidence.
+My father tried to justify with "Chinese and Indians abuse mental OKU diagnosis to get out of severe punishments for severe car accidents by bribing psychologists or psychiatrists for diagnosis, hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". My father attempted to use... online newspapers as evidence.
 
 This is where my brain just... snapped.
 

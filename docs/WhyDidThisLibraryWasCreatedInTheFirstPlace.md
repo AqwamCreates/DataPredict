@@ -280,7 +280,7 @@ That being said... DataPredict™ is almost being close to done after all these 
 
 Once DataPredict™ is done, I'm going back to:
 
-* Drawing lewd anime girl characters and improve it. I had like 2-3 years worth of casual drawing experience here. Mostly sketches, but I did get into digital drawing with a digital tablet. I just want my drawing skills back after years of hell I fucking endured by my father's LIES. I was this fucking close in being able to draw sketches perfectly on paper. I even managed to get the basics down for my digital drawing using my drawing tablet. I can't believe that I lost my ability to draw because of my father's LIES. I just want my drawing skills back after dealing with my father's LIES.
+* Drawing lewd anime girl characters and improve it. I had like 2-3 years worth of casual drawing experience here. Mostly sketches, but I did get into digital drawing with a digital tablet. I just want my drawing skills back after years of hell I fucking endured by my father's LIES. I was this fucking close in being able to draw sketches perfectly on paper. I even managed to get the basics down for my digital drawing using my drawing tablet. I can't believe that I lost my ability to draw because of my father's LIES. I just want my drawing skills back after dealing with my father's LIES. I just want to go back to drawing digitally on the Krita software after dealing with my father's LIES.
 
 * Learn piano again as a beginner.
 

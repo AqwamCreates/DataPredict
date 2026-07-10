@@ -122,7 +122,11 @@ If anyone is fucking asking me why I don't go there myself when I am already an 
 
 For over two years after I graduated from university with second class lower division, I couldn't shut up about how my driving license was not revoked. I also couldn't shut up about the job stigma wasn't even an issue. Especially after I got employed as a junior Roblox game developer for 9 months at RM 2000 per month as gross salary. Even in here, my parents said that the more higher paying jobs would discriminate me, which is way different than their original claim of "you will not be able to get job due to diagnosis".
 
-Once he couldn't take my complaints anymore, he ordered me to get out and prepare luggages for the train station. I KEPT EVERYTHING IN MY BEDROOM WITH ME EXCEPT FOR SOME BOOKS.
+I also shoved one of the Malaysia's criminal law: Act 611, Child Act 2001, Section 31(4). It stated: 
+
+"a parent or guardian or other person legally liable to maintain a child shall be deemed to have neglected him in a manner likely to cause him physical or emotional injury if, being able to so provide from his own resources, he fails to provide adequate food, clothing, medical or dental treatment, lodging or care for the child" 
+
+My parents just laughed at my face and dared me to sue them. Eventually, he couldn't take my complaints anymore, he ordered me to get out and prepare luggages for the train station. I KEPT EVERYTHING IN MY BEDROOM WITH ME EXCEPT FOR SOME BOOKS.
 
 Then, my 2nd youngest brother suddenly developed schizophrenia while studying in a an oversea German university. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months.
 

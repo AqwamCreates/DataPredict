@@ -54,7 +54,7 @@ Then the rare instances of voices calling my name without any unidentified sourc
 
 Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it wass filled with teachers and classes. Multiple classes actually. My parents are unaware of this.
 
-I remembered one of the instance of me crying was in a Physics practial class, where the physics teacher looked particularly moody today. That being said, that doesn't stop me from crying there, which ended up prompting her to help me with the practical stuff that I was trying to do. I could see it was done out of annoyance and probably a hint of guilt.
+I remembered one of the instance of me crying was in a Physics practial class, where the physics teacher looked particularly moody today. That being said, that doesn't stop me from crying there, which ended up prompting her to help me with the practical stuff that I was trying to do. I could see her helping me out of annoyance and probably a hint of guilt.
 
 Eventually, I got into a breaking point that I want to jump off from the fourth-level of the apartment hostel. Now, my damn parents took action. However, they only sent me to the IISM's school counselor. For Wednesday to Thursday, I always go there... But he didn't really do anything to my untreated mental illnesses as this counselor didn't do anything on diagnosing my mental illnesses and I wasn't aware if he has any qualifications for handling mental illnesses. I was so confused by this, and I asked my parents for medication instead because my problem was already severe. My parents continued to ignore my begging for treatment through medication.
 

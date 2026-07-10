@@ -2,11 +2,9 @@
 
 > Section 1: Mental Illnesses History
 
-## Mental Illness History
-
 To give you context, I will talk about my history from start to finish and then lead on with the reasons why.
 
-### IGCSE Mental Illness History
+## IGCSE Mental Illness History
 
 I studied my IGCSE in Muscat International School (MIS), where the school is located in Muscat, Oman.
 
@@ -14,7 +12,7 @@ During IGCSE, I had developed what people called as maladaptive daydreaming. You
 
 My maladaptive daydreaming wasn't that intrusive back then and didn't really impact my grades, so I thought this would go away on its own. In here, I would listen to my music through my headphones, pace around inside my bedroom and jump on my bed for hours. Nevertheless, I still had high grades where I mostly get A except for English (where the teacher did a poor job of doing her job in teaching).
 
-### A-Levels Mental Illness History
+## A-Levels Mental Illness History
 
 I studied my A-levels in International Islamic School Of Malaysia (IISM), where the school is located in Selangor, Malaysia. The hostel I was staying in was a part of International Islamic University Of Malaysia (IIUM). The school was offering 1.5 years A-levels program instead of the usual 2 years program. I had enrolled to this school around 2018.
 
@@ -114,7 +112,7 @@ If anyone is fucking asking me why I don't go there myself when I am already an 
 
 * Doing mental illness treatment with a private mental healthcare professional and buying unsubsidized medication exceeds my non-existent budget unless I want to go into debt.
 
-### The Great Betrayal
+## The Great Betrayal
 
 For over two years after I graduated from university with second class lower division, I couldn't shut up about how my driving license was not revoked. I also couldn't shut up about the job stigma wasn't even an issue. Especially after I got employed as a junior Roblox game developer for 9 months at RM 2000 per month as gross salary. Even in here, my parents said that the more higher paying jobs would discriminate me, which is way different than their original claim of "you will not be able to get job due to diagnosis".
 
@@ -218,43 +216,43 @@ Holy shit. Make up their fucking mind already! Do they want to kick me out or no
 
 Shame that I had to move back to the main house eventually since that second house got rented by someone.
 
-### The Aftermath
+## The Aftermath
 
 I still occassionaly hear the knocking on my bathroom walls when I am inside, which only stops when I leave to my bedroom attached to it. I also ocassionaly feel things climbing on my feet as I work and play using my laptop on my desk. I also occasionaly hear voices calling my name. In very rare cases, I thought I ordered something I wanted in restaurants, just to end up noticing that I received a different order. When I looked at my receipts, I had ordered something that I did not order. In common cases, I wouldn't even notice mispellings that I made as I type on keyboards. In addition, I wouldn't notice that a sentence wouldn't even formatted properly or make any sense, despite me being exposed to English like for over 10 years.
 
 I also quit from all of my family's WhatsApp group. I had also attempts of them trying to bring me back to the family's WhatsApp group, which I ended up leaving again. I had one instance that my father formed a group between my father, my mother and me, before he posted a link to an online certification course. I also left that group immediately as well.
 
-### Evidence Due To My Mental Illness Treatment Delay By My Parents
+## Evidence Due To My Mental Illness Treatment Delay By My Parents
 
-#### First Diary Record Of Maladaptive Daydreaming During A-Levels
+### First Diary Record Of Maladaptive Daydreaming During A-Levels
 
 * The diary name is Lily.
 
-#### Whatsapp Messages For Initial Delay In A-Levels
+### Whatsapp Messages For Initial Delay In A-Levels
 
-#### The School Counselor Business Card
+### The School Counselor Business Card
 
 * You can verify age based on how worn out the card is. It is quite suprising why I still have this in my wallet for over all these years. I thank my younger selves for this!
 
-#### Grades Over The Years (IGCSE, A-Levels, Bachelor Degree)
+### Grades Over The Years (IGCSE, A-Levels, Bachelor Degree)
 
 * Notice how the grades gets worse over the years.
 
-#### Public Healthcare Medical Card For First Time Mental Illness Treatment In Malaysia
+### Public Healthcare Medical Card For First Time Mental Illness Treatment In Malaysia
 
 * Notice that this is years since I was first sent to the school university counselor. This means that my parents have ample time to re-evaluate their decision as everything about my life goes to shit.
 
-### Evidence That Disproves The Severity Of Stigma
+## Evidence That Disproves The Severity Of Stigma
 
-#### JPJ Policy On Mental Illnesses For Driving License
+### JPJ Policy On Mental Illnesses For Driving License
 
-##### Official Policies
+#### Official Policies
 
 * [Medical Examination Standard For Vocational Driving License (2011)](https://www.jpj.gov.my/wp-content/uploads/2022/11/MED-EXAMINATION-STANDARDS.pdf)
 
 Note: Notice that these are for vocational driving license, not a personal one. Hence, the rules are likely more relaxed for personal driving license. If you read the policies further, you will notice that the revocation is limited to a subset of mental illnesses, but even then it can be restored if the person is receiving treatment.
 
-##### News
+#### News
 
 * ["Pesakit mental masih boleh dibenarkan memandu - MMHA (2024)"](https://www.astroawani.com/berita-malaysia/pesakit-mental-masih-boleh-dibenarkan-memandu-mmha-491435)
 

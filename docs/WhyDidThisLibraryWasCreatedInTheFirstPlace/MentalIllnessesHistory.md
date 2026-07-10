@@ -1,6 +1,6 @@
 # Why Did This Library Was Created In The First Place
 
-> Section 1: Mental Illnesses History
+> Section 2: Mental Illnesses History
 
 ## IGCSE Mental Illness History
 

@@ -212,7 +212,7 @@ I also amped my complaints about my father's statements of driving license revoc
 
 Eventually, father immediately enforced his kicking out decision. However, They would put me to my parents' unoccupied second house in a condominium that my parents recently bought in Cyberjaya instead the train station that they previously offered to me. 
 
-When I moved there with my luggages, my father wanted a surveillance camera watching at me in the kitchen so he can observe me so that I don't go kill myself. I decided not care about fixing it when it broke, because I couldn't care shit about his "care" when he never fucking owns up to it.
+When I moved there with my luggages, my father wanted a surveillance camera watching at me in the kitchen so he can observe me so that I don't go kill myself. The camera broked and I decided not care about fixing it, because I couldn't care shit about his "care" when he never fucking owns up to it. My father noticed that the camera is broken because they could not get any feeds from that camera and ended up asking me to fix it multiple times. I just ignored his requests.
 
 I'M FUCKING SURE THIS IS FOR MY PARENTS TO SAVE THEIR OWN FUCKING ASSES IF I DO DECIDE TO KILL MYSELF. NOT TO MENTION, WHEN THAT SURVEILLANCE CAMERA BROKE, THEY MAKE NO REPLACEMENT SINCE I WOULDN'T EVEN BOTHER TO FIX IT. THIS MEANT THAT THEIR "CARING" ABOUT ME WAS ACTUALLY SHORT-LIVED AND REACTIVE. THERE'S NO FUCKING WAY I COULD CARE ABOUT MY PARENTS NOW ONCE I REALIZED THIS. I COULDN'T CARE LESS IF I HAD KILLED MYSELF AND MAKE MY PARENTS LOOK BAD. IN FACT, I PREFER IT IF MY PARENTS LOOK BAD BECAUSE THEY FUCKING ARE!
 

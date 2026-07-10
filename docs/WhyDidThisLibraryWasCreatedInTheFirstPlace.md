@@ -120,7 +120,7 @@ If anyone is fucking asking me why I don't go there myself when I am already an 
 
 ### The Great Betrayal
 
-For over two years after I graduated, I couldn't shut up about how my driving license was not revoked. I also couldn't shut up about the job stigma wasn't even an issue. Especially after I got employed as a junior Roblox game developer for 9 months at RM 2000 per month as gross salary. Even in here, my parents said that the more higher paying jobs would discriminate me, which is way different than their original claim of "you will not be able to get job due to diagnosis".
+For over two years after I graduated from university with second class lower division, I couldn't shut up about how my driving license was not revoked. I also couldn't shut up about the job stigma wasn't even an issue. Especially after I got employed as a junior Roblox game developer for 9 months at RM 2000 per month as gross salary. Even in here, my parents said that the more higher paying jobs would discriminate me, which is way different than their original claim of "you will not be able to get job due to diagnosis".
 
 Once he couldn't take my complaints anymore, he ordered me to get out and prepare luggages for the train station. I KEPT EVERYTHING IN MY BEDROOM WITH ME EXCEPT FOR SOME BOOKS.
 
@@ -311,3 +311,11 @@ Once DataPredict™ is done, I'm going back to:
 * Binge watch anime since I never had any throughout A-levels to the development of DataPredict™.
 
 * Go play games and try out the games' skin mods for the first time. This is probably the reason why the recent releases of DataPredict™'s updates are so slow. I literally need to collect characters I like in terms personality and appearance so that I can use the games' skin mods on them.
+
+Also, I just realized the irony of all this...
+
+Despite DataPredict™ being so heavy in mathematics and computer science, I somehow managed to be able to develop DataPredict™ despite my low grades in mathematics and computer science overall. I guess that my A-levels mathematics teacher's hug and that after-school classes of his signalled to me: I am willing to put effort in you even if I know you're crying from thinking that you're about to fail.
+
+I just... didn't realized that I had internalized his signal to something like this to myself: Keep going. Even if you feel like everything is going to shit, just keep going.
+
+This is probably the reason why I ended up being comfortable receiving criticisms. This also probably made me comfortable with implementing mathematics that I never learnt in my A-levels of the university at all to DataPredict™.

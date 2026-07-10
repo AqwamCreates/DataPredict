@@ -206,6 +206,8 @@ At this point, I fucking rejected the offer to watch my schizophrenic younger br
 
 * In very rare cases, I thought I ordered something I wanted in restaurants, just to end up noticing that I received a different order. When I looked at my receipts, I had ordered something that I did not order.
 
+* In common cases, I wouldn't even notice mispellings that I made as I type on keyboards. In addition, I wouldn't notice that a sentence wouldn't even formatted properly or make any sense, despite me being exposed to English like for over 10 years.
+
 ### Evidence Due To My Mental Illness Treatment Delay By My Parents
 
 #### First Diary Record Of Maladaptive Daydreaming During A-Levels

@@ -18,7 +18,7 @@
 
 * You can verify age based on how worn out the card is. It is quite suprising why I still have this in my wallet for over all these years. I thank my younger selves for this!
 
-<img src="Evidence/Photographs/ZomboDroid_11072026051930.jpg" alt="My school counselor's business card." width="300"/>
+<img src="Evidence/Photographs/ZomboDroid_11072026051930.jpg" alt="Both sides of my worn out school counselor's business card." width="300"/>
 
 ### Grades Over The Years (IGCSE, A-Levels, Bachelor Degree)
 

@@ -1,3 +1,7 @@
+# [Why Did This Library Was Created In The First Place](../WhyDidThisLibraryWasCreatedInTheFirstPlace.md)
+
+> Section 3: Evidence
+ 
 ## Evidence Due To My Mental Illness Treatment Delay By My Parents
 
 ### First Diary Record Of Maladaptive Daydreaming During A-Levels

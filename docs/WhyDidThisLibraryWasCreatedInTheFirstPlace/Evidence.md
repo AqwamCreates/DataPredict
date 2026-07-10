@@ -6,7 +6,7 @@
 
 ### Admission Of Guilt By My Parents
 
-<img src="Evidence/WhatsAppMessages/Screenshot_2026-07-11-04-44-48-253_com.whatsapp.jpg" alt="My father's addmision of guilt on WhatsApp" width="200"/>
+<img src="Evidence/WhatsAppMessages/Screenshot_2026-07-11-04-44-48-253_com.whatsapp.jpg" alt="My father's addmision of guilt on WhatsApp" width="300"/>
 
 ### First Diary Record Of Maladaptive Daydreaming During A-Levels
 

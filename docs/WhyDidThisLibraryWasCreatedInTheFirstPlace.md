@@ -202,6 +202,8 @@ At this point, I fucking rejected the offer to watch my schizophrenic younger br
 
 * I also occasionaly hear voices calling my name.
 
+* In very rare cases, I thought I ordered something I wanted in restaurants, just to end up noticing that I received a different order. When I looked at my receipts, I had ordered something that I did not order.
+
 ### Evidence Due To My Mental Illness Treatment Delay By My Parents
 
 #### First Diary Record Of Maladaptive Daydreaming During A-Levels

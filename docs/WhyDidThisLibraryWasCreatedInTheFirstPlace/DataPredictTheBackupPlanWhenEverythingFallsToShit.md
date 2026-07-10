@@ -1,4 +1,4 @@
-# Why Did This Library Was Created In The First Place
+# [Why Did This Library Was Created In The First Place](../WhyDidThisLibraryWasCreatedInTheFirstPlace.md)
 
 > Section 1: Datapredict - The Backup Plan When Everything Falls To Shit
 

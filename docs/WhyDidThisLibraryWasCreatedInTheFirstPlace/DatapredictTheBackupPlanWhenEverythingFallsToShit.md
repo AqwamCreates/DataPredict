@@ -1,6 +1,6 @@
 # Why Did This Library Was Created In The First Place
 
-> Datapredict - The Backup Plan When Everything Falls To Shit
+> Section 1: Datapredict - The Backup Plan When Everything Falls To Shit
 
 With the writing on the wall regarding to my future career prospects on my final year of the second semester, I needed anything to fix my trajectory.
 

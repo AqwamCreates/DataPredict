@@ -2,7 +2,7 @@
 
 ## Table Of Content
 
-* [Mental Illnesses History](#mental-illnesses-history)
+* [Mental Illnesses History](WhyDidThisLibraryWasCreatedInTheFirstPlace/MentalIllnessesHistory.md)
 
 * [DataPredict™ - The Backup Plan When Everything Falls To Shit](#datapredict---the-backup-plan-when-everything-falls-to-shit)
 

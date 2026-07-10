@@ -118,11 +118,17 @@ If anyone is fucking asking me why I don't go there myself when I am already an 
 
 ### The Great Betrayal
 
-Two years after I graduated from my university, my 2nd youngest brother suddenly developed schizophrenia while studying in a an oversea German university. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months.
+For over two years after I graduated, I couldn't shut up about how my driving license was not revoked. I also couldn't shut up about the job stigma wasn't even an issue. Especially after I got employed as a junior Roblox game developer for 9 months at RM 2000 per month as gross salary. Even in here, my parents said that the more higher paying jobs would discriminate me, which is way different than their original claim of "you will not be able to get job due to diagnosis".
+
+Once he couldn't take my complaints anymore, he ordered me to get out and prepare luggages for the train station. I KEPT EVERYTHING IN MY BEDROOM WITH ME EXCEPT FOR SOME BOOKS.
+
+Then, my 2nd youngest brother suddenly developed schizophrenia while studying in a an oversea German university. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months.
 
 Then, the German government had warned my parents that he needs to get treated to continue studying in Germany's university. So, my parents did, despite having the same job issues due to stigma and driving license revocation issue in Malaysia like me. Without resistance. 
 
 Even better yet for him, he was treated early during his first year of overseas study in the Germany's university, giving him a good chance of getting good grades upon graduation.
+
+Suddenly, my mother gave me a good news that I wouldn't get kicked out of the house. In here, I wasn't aware that the German government might have played a role in this, but I eventually figured it out after receiving the news that my 2nd youngest brother got schizophrenia.
 
 Suddenly, after my younger's brother mental health treatment, they now suddenly care about my mental illnesses.
 
@@ -196,15 +202,13 @@ Liar. So fucking liar.
 
 At this point, I fucking rejected the offer to watch my schizophrenic younger brother in midnight out of anger. I then told my parents that is their problem since they did not fix my mental illness problem early hence I have no interest in helping them out. They can go fuck themselves taking care of my younger brother and stress about it.
 
-Not to mention, between the two year gap between after I graduated and before my 2nd youngest brother caught schizophrenia, there was instances of my father wanting to kick me out because I couldn't shut up about the contradiction between his statements and the reality. 
+I also amped my complaints about my father's statements of driving license revocation and stigmatization in jobs on top of this hypocritical treatment to my 2nd youngest brother.
 
-I couldn't shut up about how my driving license was not revoked. I also couldn't shut up about the job stigma wasn't even an issue. Especially after I got employed as a junior Roblox game developer for 9 months at RM 2000 per month as gross salary. Even in here, my parents said that the more higher paying jobs would discriminate me, which is way different than their original claim of "you will not be able to get job due to diagnosis".
+Eventually, father immediately enforced his kicking out decision. However, They would put me to my parents' unoccupied second house in a condominium that my parents recently bought in Cyberjaya instead the train station that they previously offered to me. 
 
-Once he couldn't take my complaints anymore, he ordered me to get out and prepare luggages for the train station. I KEPT EVERYTHING IN MY BEDROOM WITH ME EXCEPT FOR SOME BOOKS.
+When I moved there with my luggages, my father wanted a surveillance camera watching at me in the kitchen so he can observe me so that I don't go kill myself. I decided not care about fixing it when it broke, because I couldn't care shit about his "care" when he never fucking owns up to it.
 
-Suddenly, my father immediately changed his decision to put me to my parents' unoccupied second house in a condominium that my parents recently bought in Cyberjaya. In here, I wasn't aware that the German government might have played a role in this, but I eventually figured it out after receiving the news that my 2nd youngest brother got schizophrenia.
-
-My father wanted a camera watching at me in the kitchen so he can observe me so that I don't go kill myself. I decided not care about fixing it when it broke, because I couldn't care shit about his "care" when he never fucking owns up to it.
+I'M FUCKING SURE THIS IS FOR MY PARENTS TO SAVE THEIR OWN FUCKING ASSES IF I DO DECIDE TO KILL MYSELF. NOT TO MENTION, WHEN THAT SURVEILLANCE CAMERA BROKE, THEY MAKE NO REPLACEMENT SINCE I WOULDN'T EVEN BOTHER TO FIX IT. THIS MEANT THAT THEIR "CARING" ABOUT ME WAS ACTUALLY SHORT-LIVED AND REACTIVE.
 
 To be honest, when I stayed in that second house of theirs, it was so quiet and peaceful. I would often ignore my parents' text messages or calls unless I wanted something from them, which is quite rare for me to do. I couldn't care jackshit about their worries because they never worried about my untreated mental illnesses! My mother would panic if I don't actually don't contact her at all. Even more weirder, my parents have this weird push-and-pull dynamic regarding wanting to kick me out to the second house and bringing me back to the main house for short visits. 
 

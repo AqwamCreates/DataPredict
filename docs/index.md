@@ -107,7 +107,7 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 * [Terms And Conditions On The Event Of The Original Creator's Death](TermsAndConditionsOnTheEventOfTheOriginalCreatorsDeath.md)
 
-  * Mainly covers the DataPredict™'s governance upon the original creators's death if DataPredict™ got popular.
+  * Mainly covers the DataPredict™'s governance upon the original creator's death if DataPredict™ got popular.
 
 * [Why Did This Library Was Created In The First Place](WhyDidThisLibraryWasCreatedInTheFirstPlace.md)
 

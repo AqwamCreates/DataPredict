@@ -112,7 +112,7 @@ If anyone is fucking asking me why I don't go there myself when I am already an 
 
 ## The Great Betrayal
 
-For over two years after I graduated from university with second class lower division, I couldn't shut up about how my driving license was not revoked. I also couldn't shut up about the job stigma wasn't even an issue. Especially after I got employed as a junior Roblox game developer for 9 months at RM 2000 per month as gross salary. Even in here, my parents said that the more higher paying jobs would discriminate me, which is way different than their original claim of "you will not be able to get job due to diagnosis".
+For over two years after I graduated from university with second class lower division, I couldn't shut up about how my driving license was not revoked. I also couldn't shut up about the job stigma wasn't even an issue. Especially after I got employed remotely as a junior Roblox game developer for 9 months at RM 2000 per month as gross salary. Even in here, my parents said that the more higher paying jobs would discriminate me, which is way different than their original claim of "you will not be able to get job due to diagnosis".
 
 I also shoved one of the Malaysia's criminal law: Act 611, Child Act 2001, Section 31(4). It stated: 
 

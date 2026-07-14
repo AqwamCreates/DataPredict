@@ -24,4 +24,8 @@ The list of items shown below are likely to be implemented due to their mainstre
 
 The list of items shown below may not necessarily be implemented in the future. However, they could be prioritized with external demand, collaboration, or funding.
 
-* None
+* Non-Negative Least Squares
+
+* Least Angle Least Squares
+
+* Total Least Squares

@@ -28,7 +28,7 @@
 
     * Also known as the "Nuclear Apache 2.0 Limited-Commercial-Use" license.
 
-    * It is applied automatically on usage of DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict Evolution. If you have one of the commercial licenses as shown below, then you are exempted from this condition.
+    * It is applied automatically on usage of DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict™ Zero. If you have one of the commercial licenses as shown below, then you are exempted from this condition.
 
     * For organizations that creates more than 5K USD of gross revenue within 365 days (not per 365 days) or business-to-business, you agree that you will allow me to release your assets interacting with these libraries under the Apache 2.0 license.
 
@@ -40,7 +40,7 @@
 
 * [Standard License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
 
-    * Includes DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict Evolution.
+    * Includes DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict™ Zero.
 
     * ~2% of gross revenue per month for projects using DataPredict™. The percentage decreases as gross revenue increases.
 
@@ -56,7 +56,7 @@
 
 * [White-Label License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement%20-%20White%20Label.docx)
 
-    * Includes DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict Evolution.
+    * Includes DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict™ Zero.
     
     * 5% of gross revenue per month for projects using DataPredict™.
 
@@ -72,7 +72,7 @@
 
 * Tooling License (Roblox Plugins Are Not Included)
 
-  * Includes DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict Evolution.
+  * Includes DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict™ Zero.
 
   * A maximum of 30% with a minimum of 10% of gross revenue per user for plans or products that uses DataPredict™, DataPredict™ Neural and DataPredict™ Axon. If subscription-based, then it will be charged monthly.
 
@@ -92,7 +92,7 @@
 
 * [Childhood-Appreciation License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/) (Incomplete)
 
-    * Includes DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict Evolution.
+    * Includes DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict™ Zero.
  
     * No cost and no limit for all current existing (non-B2B) projects. This deal ends on my next birthday, 23 January 2026.
  

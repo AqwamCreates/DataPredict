@@ -36,6 +36,12 @@ The table assumes that only one person is working on each library at machine lea
 | DataPredict™ Axon   | 4000+ Hours (~6 Months) | 50,000              |
 | All                 | 43800+ Hours (~5 Years) | 550,000             |
 
+This assumes that the machine learning engineer work at these timing:
+
+* Weekdays: 7 pm to 3 am. Roughly 8 hours of work.
+
+* Weekends: 9 am to 3am. Roughly 18 hours of work.
+
 ## Factors That Led To These Pricing Strategies
 
 * DataPredict was initially built from passion as a fresh graduate, but eventually went to commercial licensing to allow it to be capable for production-grade use. Hence, the first year of development costs are considered "subsidized" due to it being more of a learning experience more than building a serious project.

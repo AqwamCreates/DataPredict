@@ -83,6 +83,8 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 * [DataPredict Axon Library](https://github.com/AqwamCreates/DataPredict-Axon)
 
+* [DataPredict Zero Library](https://github.com/AqwamCreates/DataPredict-Zero)
+
 * [TensorL-2D Library](https://github.com/AqwamCreates/TensorL-2D)
 
 * [MatrixL Library](https://github.com/AqwamCreates/MatrixL)

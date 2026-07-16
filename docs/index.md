@@ -2,7 +2,7 @@
 
 > Torch7 lit the flame. DataPredict carries it forward.
 
-> Machine Learning returns to Lua - for game engines.
+> Machine learning returns to Lua - for game engines.
 
 > What once ended in deep learning returns as the full spectrum of machine learning.
 

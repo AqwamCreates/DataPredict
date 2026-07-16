@@ -43,6 +43,8 @@ This assumes that the machine learning engineer work at these timing:
 
 * Weekends: 9 am to 3am. Roughly 18 hours of work.
 
+* Weekly Total: Roughly 76 hours of work.
+
 ## Factors That Led To These Pricing Strategies
 
 * DataPredict was initially built from passion as a fresh graduate, but eventually went to commercial licensing to allow it to be capable for production-grade use. Hence, the first year of development costs are considered "subsidized" due to it being more of a learning experience more than building a serious project.

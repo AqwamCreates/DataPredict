@@ -38,7 +38,7 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 ## Grant Of Third Party's Protection Upon Licensing From A Beneficiary
 
-* If a Third Party is licensed from one of the Beneficiaries, the non-licensing Beneficiaries cannot enforce licensing violation as a result of not licensing from non-licensing Beneficiary. This holds true provided that the Third Party's license from the licensing Beneficiary is active and valid.
+* A Third Party who is validly licensed by one Beneficiary is not subject to enforcement actions by the other Beneficiaries for failing to also hold licenses from them.
 
 ## Grant Of Rights By The Third Party
 

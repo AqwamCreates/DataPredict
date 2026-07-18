@@ -40,6 +40,8 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 * A Third Party who is validly licensed by one Beneficiary is not subject to enforcement actions by the other Beneficiaries for failing to also hold licenses from them.
 
+* If the licensing Beneficiary is determined to be a Corrupt Entity, the license agreement shall be assigned from the corrupt Beneficiary to an alternative Beneficiary. The Third Party shall have 90 days to designate this alternative Beneficiary, on substantially similar terms. Failure to designate one within the 90-day period will result in automatic termination of the license.
+
 ## Grant Of Rights By The Third Party
 
 * Upon the Third Party's contributions to the Library, the Third Party agrees that all the rights are transferred to given to the Creator. The Third Party also agrees that these rights will not be revoked permanently, regardless of the time, cost, conditions and so on.

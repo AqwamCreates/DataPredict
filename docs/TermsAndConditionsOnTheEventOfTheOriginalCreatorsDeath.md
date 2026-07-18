@@ -36,7 +36,7 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 * The Beneficiary have the right to sublicense the Library, provided that the amount of compensation must strongly benefit human individuals that are inflicted with physical health or mental health illnesses. The Beneficiary can use the Library's existing commercial licenses made by the Creator as its own or for creating derivatives of these licenses. The compensation is confirmed to be strongly beneficial if the compensation leads to one of these conditions:
 
-  * It leads to everyone's medical costs subsidized by at least 5%.
+  * It leads to everyone's medical costs subsidized by at least 5%, provided that the costs are similar to the market rates.
 
   * It leads to a large amount of patients having their medical costs subsdized by at least 10%, provided that the costs are similar to the market rates.
 

@@ -38,13 +38,13 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
   * It leads to everyone's medical costs subsidized by at least 5%.
 
-  * It leads to a large amount of patients having their medical costs subsdized by at least 10%, provided that the costs is similar to the market rate.
+  * It leads to a large amount of patients having their medical costs subsdized by at least 10%, provided that the costs are similar to the market rate.
 
-  * It leads to a medium amount of patients having their medical costs subsdized by at least 30%, provided that the costs is similar to the market rate.
+  * It leads to a medium amount of patients having their medical costs subsdized by at least 30%, provided that the costs are similar to the market rate.
 
-  * It leads to a small amount of patients having their medical costs subsdized by at least 50%, provided that the costs is similar to the market rate.
+  * It leads to a small amount of patients having their medical costs subsdized by at least 50%, provided that the costs are similar to the market rate.
 
-  * It leads to a very large subsidy of a single patient that have very high medical costs throughout the patient's treatment duration that could not be realistically paid by the patient, provided that the costs is similar to the market rate.
+  * It leads to a very large subsidy of a single patient that have very high medical costs throughout the patient's treatment duration that could not be realistically paid by the patient, provided that the costs are similar to the market rate.
 
 ## Grant Of Third Party's Protection Upon Licensing From A Beneficiary
 

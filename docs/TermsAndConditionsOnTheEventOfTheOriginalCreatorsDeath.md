@@ -36,6 +36,10 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 * The Beneficiary have the right to sublicense the Library, provided that the amount of compensation must strongly benefit human individuals that are inflicted with physical health or mental health illnesses. The Beneficiary can use the Library's existing commercial licenses made by the Creator as its own or for creating derivatives of these licenses.
 
+### Grant Of Third Party's Protection Upon Licensing From A Beneficiary
+
+* If a Third Party is licensed from one of the Beneficiaries, the non-licensing Beneficiaries cannot enforce licensing violation as a result of not licensing from non-licensing Beneficiary. This hold true provided that the Third Party's license from the licensing Beneficiary is active and valid.
+
 ## Grant Of Rights By The Third Party
 
 * Upon the Third Party's contributions to the Library, the Third Party agrees that all the rights are transferred to given to the Creator. The Third Party also agrees that these rights will not be revoked permanently, regardless of the time, cost, conditions and so on.

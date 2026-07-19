@@ -43,6 +43,8 @@ local playerDataVector = {
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
+        actionsPerMinute,
+        effectiveActionsPerMinute,
         healthAmount
     }
 }
@@ -69,6 +71,8 @@ local function snapshotData()
     numberOfItemsAmount,
     timePlayedInCurrentSession,
     timePlayedInAllSessions,
+    actionsPerMinute,
+    effectiveActionsPerMinute,
     healthAmount
 
   }
@@ -87,7 +91,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 5}, -100, 100) -- 100 random data with 5 features.
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 7}, -100, 100) -- 100 random data with 7 features.
 
 local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, 0) -- Making sure that at all values, it predicts zero probability of leaving.
 

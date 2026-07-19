@@ -78,7 +78,7 @@ LinearRegression:setSolver(Solver: SolverObject)
 Train the model.
 
 ```
-LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+LinearRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
@@ -96,7 +96,7 @@ LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the value for a given data.
 
 ```
-LinearRegression:predict(featureMatrix: Matrix): Matrix
+LinearRegression:predict(featureMatrix: matrix): Matrix
 ```
 
 #### Parameters:

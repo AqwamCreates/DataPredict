@@ -32,6 +32,12 @@ Markov.new(learningRate: number, isHidden: boolean, StatesList: {any}, Observati
 Markov:train(previousStateVector, currentStateVector, observationStateVector)
 ```
 
+#### Parameters:
+
+* previousStateMatrix: A matrix containing all previous state data.
+
+* currentStateMatrix: A matrix containing all current state data.
+
 ### predict()
 
 ```

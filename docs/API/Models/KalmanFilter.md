@@ -55,12 +55,12 @@ KalmanFilter.new(stateTransitionModelMatrix: matrix, observationModelMatrix: mat
 Train the model.
 
 ```
-KalmanFilter:train(featureMatrix: matrix, labelVector: matrix): number[]
+KalmanFilter:train(stateMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* stateMatrix: Matrix containing data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -73,12 +73,12 @@ KalmanFilter:train(featureMatrix: matrix, labelVector: matrix): number[]
 Predict the value for a given data.
 
 ```
-KalmanFilter:predict(featureMatrix: matrix): matrix
+KalmanFilter:predict(stateMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* stateMatrix: Matrix containing data.
 
 #### Returns:
 

@@ -1,7 +1,5 @@
 # Stress Systems
 
-## Disclaimer
-
 * While stress is hard to measure through biological means, the resulting behaviour from stress can be measured based on:
 
   * Accuracy - The more stressed you are, the more harder it is for you to focus.

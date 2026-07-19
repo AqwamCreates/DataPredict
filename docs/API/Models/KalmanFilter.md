@@ -60,9 +60,9 @@ KalmanFilter:train(previousStateMatrix: matrix, labelVector: matrix): number[]
 
 #### Parameters:
 
-* previousStateMatrix: Matrix containing data.
+* previousStateMatrix: A matrix containing all previous state data.
 
-* currentStateMatrix: A (n x 1) matrix containing values related to featureMatrix.
+* currentStateMatrix: A matrix containing all current state data.
 
 #### Returns:
 

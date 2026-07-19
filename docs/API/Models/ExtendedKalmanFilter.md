@@ -40,11 +40,11 @@ ExtendedKalmanFilter.new(stateTransitionModelMatrix: matrix, processNoiseCovaria
 
 * lossFunction: The function to calculate the cost of each training. Available options are:
 
-  * L1
-
-  * L2 (Default)
-
-  * Mahalanobis
+| Function      | Input Range (From Predicted Label Vector And Label Vector) | Output Range | Characteristics                                                                      | Use Cases                                                                                             |
+|---------------|------------------------------------------------------------|--------------|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| L2  (Default) | (-∞, ∞)                                                    | (0, ∞)       | Quadratic penalty, sensitive to outliers                                             | Regression with normally distributed errors, when outliers are minimal                                |
+| L1            | (-∞, ∞)                                                    | (0, ∞)       | Linear penalty, robust to outliers                                                   | Robust regression, when dataset contains outliers, median prediction                                  |
+| Mahalanobis   | (-∞, ∞)                                                    | (0, ∞)       | Accounts for correlations between variables, scale-invariant, uses covariance matrix | Regression with correlated features, multivariate outlier detection, when feature dependencies matter |
 
 * useJosephForm: Set whether or not to use a more numerically accurate representation in exchange for lower performance [Default: true]
 

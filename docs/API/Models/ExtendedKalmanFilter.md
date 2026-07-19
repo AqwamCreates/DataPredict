@@ -32,13 +32,13 @@ ExtendedKalmanFilter.new(stateTransitionModelMatrix: matrix, observationModelMat
 
 * noiseValue: The noise value to be used by observationNoiseCovarianceMatrix and processNoiseCovarianceMatrix. [Default: 1]
 
-* stateFunction:
+* stateFunction: The nonlinear state transition function that predicts the next state given current state and control vector. This is used when the state transition is nonlinear.
 
-* observationStateFunction:
+* observationStateFunction: The nonlinear observation function that maps the state space to the observation space. This is used when the observation model is nonlinear.
 
-* stateTransitionJacobianFunction:
+* stateTransitionJacobianFunction: The Jacobian matrix function of the state transition function with respect to the state. Used for linearizing the state transition during the prediction step.
 
-* observationJacobianFunction:
+* observationJacobianFunction: The Jacobian matrix function of the observation function with respect to the state. Used for linearizing the observation model during the update step.
 
 * lossFunction: The function to calculate the cost of each training. Available options are:
 

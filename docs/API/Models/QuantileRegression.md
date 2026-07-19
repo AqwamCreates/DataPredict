@@ -73,7 +73,7 @@ QuantileRegression:setSolver(Solver: SolverObject)
 Train the model.
 
 ```
-QuantileRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+QuantileRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
@@ -91,7 +91,7 @@ QuantileRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the value for a given data.
 
 ```
-QuantileRegression:predict(featureMatrix: Matrix): Matrix
+QuantileRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:

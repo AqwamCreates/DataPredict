@@ -82,7 +82,7 @@ KalmanFilter:predict(previousStateMatrix: matrix): matrix
 
 #### Returns:
 
-* predictedVector: A vector containing values that are predicted by the model.
+* predictedNextStateMatrix: A vector containing next state data that are predicted by the model.
 
 ## Inherited From
 

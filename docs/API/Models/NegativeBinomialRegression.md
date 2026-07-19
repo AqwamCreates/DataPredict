@@ -77,12 +77,12 @@ NegativeBinomialRegression:setSolver(Solver: SolverObject)
 Train the model.
 
 ```
-NegativeBinomialRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+NegativeBinomialRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -95,12 +95,12 @@ NegativeBinomialRegression:train(featureMatrix: Matrix, labelVector: Matrix): nu
 Predict the value for a given data.
 
 ```
-NegativeBinomialRegression:predict(featureMatrix: Matrix): Matrix
+NegativeBinomialRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

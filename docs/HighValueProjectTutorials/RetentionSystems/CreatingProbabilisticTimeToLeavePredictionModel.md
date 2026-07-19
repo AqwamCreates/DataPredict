@@ -34,6 +34,10 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
+```lua
+
+-- We're just adding 1 here to add "bias".
+
 local playerDataVector = {
     {
         1,
@@ -41,6 +45,8 @@ local playerDataVector = {
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
+        actionPerMinute,
+        effectiveActionPerMinute,
         healthAmount
     }
 }
@@ -49,7 +55,7 @@ local recordedTime = os.time()
 
 ```
 
-If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 30 seconds, you store a new entry. Below, I will show how it is done.
+If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 10 seconds, you store a new entry. Below, I will show how it is done.
 
 ```lua
 
@@ -68,6 +74,8 @@ local function snapshotData()
     numberOfItemsAmount,
     timePlayedInCurrentSession,
     timePlayedInAllSessions,
+    actionPerMinute,
+    effectiveActionPerMinute,
     healthAmount
 
   }

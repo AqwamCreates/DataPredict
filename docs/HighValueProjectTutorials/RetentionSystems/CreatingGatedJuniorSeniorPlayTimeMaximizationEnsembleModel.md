@@ -50,6 +50,8 @@ local function getPlayerDataVector(Player)
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
+        actionsPerMinute,
+        effectiveActionsPerMinute,
         healthAmount
     }
   }

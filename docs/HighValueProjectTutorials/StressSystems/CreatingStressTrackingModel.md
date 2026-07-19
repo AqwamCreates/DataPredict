@@ -16,19 +16,11 @@ Before we train our model, we will first need to construct a regression model as
 
 local DataPredict = require(DataPredict)
 
-local StressTrac = DataPredict.Models.GammaRegression.new({maximumNumberOfIterations = 1, learningRate = 0.3})
+local StressTrackingModel = DataPredict.Models.KalmanFilter.new({})
 
 ```
 
-## Upon Player Join
-
-In here, what you need to do is:
-
-* Store initial player data as a vector of numbers.
-
-* Store the initial time that the player joined.
-
-Below, we will show you how to create this:
+## The Feature Matrix
 
 ```lua
 
@@ -37,17 +29,10 @@ Below, we will show you how to create this:
 local playerDataVector = {
     {
         1,
-        numberOfCurrencyAmount,
-        numberOfItemsAmount,
-        timePlayedInCurrentSession,
-        timePlayedInAllSessions,
         actionsPerMinute,
         effectiveActionsPerMinute,
-        healthAmount
     }
 }
-
-local recordedTime = os.time()
 
 ```
 

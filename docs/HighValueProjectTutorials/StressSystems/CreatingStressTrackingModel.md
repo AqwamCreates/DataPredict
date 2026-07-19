@@ -82,7 +82,7 @@ local function onPlayerConnect(Player: Player)
 
 	InputRemoteEvent.OnClientEvent:Connect(function(delta)
 		
-		currentStateVector = getStateVector(Character, previousStateVector, delta)
+		currentStateVector = getStateVector(previousStateVector, delta)
 		
 		isIdle = checkIfIsIdle(previousStateVector, currentStateVector)
 

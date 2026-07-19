@@ -74,7 +74,7 @@ SupportVectorRegressionCovariancePreconditionedVariant:predict(featureMatrix: ma
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 #### Returns:
 

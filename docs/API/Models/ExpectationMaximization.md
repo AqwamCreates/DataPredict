@@ -79,7 +79,7 @@ ExpectationMaximization:predict(featureMatrix: matrix, returnOriginalOutput: boo
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 * returnOriginalOutput: Set whether or not to return probabilityMatrix matrix instead of clusterNumberVector and closestDistanceVector.
 

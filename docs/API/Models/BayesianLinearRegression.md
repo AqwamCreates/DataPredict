@@ -58,7 +58,7 @@ BayesianLinearRegression:predict(featureMatrix: matrix, thresholdMatrix: matrix)
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 * thresholdMatrix: A matrix of threshold values for computing predicted probabilities. If provided, the model returns both predicted values and the probability that the prediction exceeds the threshold(s).
 

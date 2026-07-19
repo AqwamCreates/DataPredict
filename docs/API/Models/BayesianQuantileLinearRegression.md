@@ -56,7 +56,7 @@ BayesianQuantileLinearRegression:predict(featureMatrix: matrix, quantileMatrix: 
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 * quantileMatrix: A matrix of quantile values to predict for each data point. Must be between 0 and 1.
 

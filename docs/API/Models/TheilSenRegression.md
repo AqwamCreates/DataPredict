@@ -50,7 +50,7 @@ TheilSenRegression:predict(featureMatrix: matrix): matrix
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 #### Returns:
 

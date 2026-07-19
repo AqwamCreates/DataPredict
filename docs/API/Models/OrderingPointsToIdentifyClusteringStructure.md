@@ -82,7 +82,7 @@ OrderingPointsToIdentifyClusteringStructure:predict(featureMatrix: matrix): matr
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 #### Returns:
 

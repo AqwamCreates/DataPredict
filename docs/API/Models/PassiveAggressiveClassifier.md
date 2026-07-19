@@ -66,7 +66,7 @@ PassiveAggressiveClasifier:predict(featureMatrix: matrix, returnOriginalOutput: 
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 * returnOriginalOutput: Set whether or not to return original output.
 

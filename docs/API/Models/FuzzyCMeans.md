@@ -80,7 +80,7 @@ KMeans:predict(featureMatrix: matrix, returnMode: string/boolean/nil): matrix, M
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 * returnMode: Set whether or not to return distance matrix instead of clusterNumberVector and closestDistanceVector. Available options are:
 

@@ -64,7 +64,7 @@ IsotonicRegression:predict(featureMatrix: matrix): matrix
 
 #### Parameters:
 
-* featureMatrix: matrix containing data. It must only have one column.
+* featureMatrix: Matrix containing data. It must only have one column.
 
 #### Returns:
 

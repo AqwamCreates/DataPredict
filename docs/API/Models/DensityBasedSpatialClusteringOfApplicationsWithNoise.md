@@ -66,7 +66,7 @@ DensityBasedSpatialClusteringOfApplicationsWithNoise:predict(featureMatrix: matr
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 #### Returns:
 

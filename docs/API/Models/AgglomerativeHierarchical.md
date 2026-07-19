@@ -102,7 +102,7 @@ AgglomerativeHierarchical:predict(featureMatrix: matrix, returnOriginalOutput: b
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 * returnOriginalOutput: Set whether or not to return distance matrix instead of clusterNumberVector and closestDistanceVector.
 

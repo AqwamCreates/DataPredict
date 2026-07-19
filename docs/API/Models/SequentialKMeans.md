@@ -96,7 +96,7 @@ SequentialKMeans:predict(featureMatrix: matrix): integer, number
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 #### Returns:
 

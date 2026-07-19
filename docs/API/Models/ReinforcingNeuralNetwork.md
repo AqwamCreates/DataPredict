@@ -58,7 +58,7 @@ ReinforcingNeuralNetwork:reinforce(featureVector: matrix, label: integer, reward
 
 #### Parameters:
 
-* featureVector: matrix containing data.
+* featureVector: Matrix containing data.
 
 * label: Actual label.
 

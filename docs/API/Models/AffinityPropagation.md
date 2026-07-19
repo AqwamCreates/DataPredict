@@ -120,7 +120,7 @@ AffinityPropagation:predict(featureMatrix: matrix): matrix, Matrix
 
 #### Parameters:
 
-* featureMatrix: matrix containing data.
+* featureMatrix: Matrix containing data.
 
 #### Returns:
 

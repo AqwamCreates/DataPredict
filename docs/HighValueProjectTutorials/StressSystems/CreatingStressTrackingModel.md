@@ -161,4 +161,6 @@ local function onPlayerConnect(Player: Player)
 	
 end
 
+InputRemoteEvent.OnClientEvent:Connect()
+
 ```

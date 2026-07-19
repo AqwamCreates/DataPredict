@@ -10,7 +10,7 @@
 
 ## Stress Tracking Models
 
-* [Creating Erratic Tracking Model](StressSystems/CreatingErraticTrackingModel.md)
+* [Creating Stress Tracking Model](StressSystems/CreatingStressTrackingModel.md)
 
     * Uses KalmanFilter.
  

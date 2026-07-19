@@ -29,6 +29,7 @@ local StressTrackingModel = DataPredict.Models.KalmanFilter.new({})
 local playerDataVector = {
     {
         1,
+		timeSinceLastInput,
         actionsPerMinute,
         effectiveActionsPerMinute,
     }

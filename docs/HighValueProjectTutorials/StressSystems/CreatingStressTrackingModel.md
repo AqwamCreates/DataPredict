@@ -80,24 +80,6 @@ local function onPlayerConnect(Player: Player)
 	
 	local deviationValue
 	
-	Player.CharacterAdded:Connect(function(NewCharacter)
-		
-		hasMovedForTheFirstTime = false
-		
-		stressScore = 0
-		
-		rollingCost = 0
-		
-		cost = 0
-		
-		isStressDetected = false
-		
-		Character = NewCharacter
-		
-		previousStateVector = getStateVector(Character)
-		
-	end)
-	
 	RunService.Heartbeat:Connect(function(delta)
 		
 		if (not Character) then return end

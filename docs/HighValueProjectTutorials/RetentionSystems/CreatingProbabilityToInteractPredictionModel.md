@@ -92,7 +92,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerContextDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 11}, -100, 100) -- 100 random data with 11 features (including one "bias").
+local randomPlayerContextDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 8}, -100, 100) -- 100 random data with 8 features (including one "bias").
 
 local labelContextDataMatrix = TensorL:createTensor({numberOfData, 1}, 1) -- Making sure that at all values, it predicts 100% probability of interacting.
 

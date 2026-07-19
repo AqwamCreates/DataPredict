@@ -73,12 +73,12 @@ KalmanFilter:train(previousStateMatrix: matrix, labelVector: matrix): number[]
 Predict the value for a given data.
 
 ```
-KalmanFilter:predict(stateMatrix: matrix): matrix
+KalmanFilter:predict(previousStateMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* stateMatrix: Matrix containing data.
+* previousStateMatrix: A matrix containing all previous state data.
 
 #### Returns:
 

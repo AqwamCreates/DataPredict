@@ -42,13 +42,11 @@ local playerDataVector = {
 
 local function onPlayerConnect(Player: Player)
 	
-	local warmUpTime = maximumWarmUpTime
-	
 	local hasMovedForTheFirstTime = false
 	
 	local isSuspiciousActivityDetected = false
 	
-	local suspicionScore = 0
+	local stressScore = 0
 
 	local rollingCost = 0
 
@@ -59,10 +57,6 @@ local function onPlayerConnect(Player: Player)
 	local adaptiveRate = 0.01 -- How fast thresholds adapt (lower = more stable).
 
 	local timeSinceLastWarned = 0
-	
-	local Character: Model
-	
-	local Humanoid: Humanoid
 	
 	local previousStateVector
 
@@ -88,11 +82,9 @@ local function onPlayerConnect(Player: Player)
 	
 	Player.CharacterAdded:Connect(function(NewCharacter)
 		
-		warmUpTime = maximumWarmUpTime
-		
 		hasMovedForTheFirstTime = false
 		
-		suspicionScore = 0
+		stressScore = 0
 		
 		rollingCost = 0
 		
@@ -103,16 +95,6 @@ local function onPlayerConnect(Player: Player)
 		Character = NewCharacter
 		
 		previousStateVector = getStateVector(Character)
-		
-		Humanoid = Character.Humanoid
-		
-		Humanoid.StateChanged:Connect(function(oldHumanoidEnum, newHumanoidEnum)
-			
-			if (newHumanoidEnum ~= humanoidRunningEnum) or (hasMovedForTheFirstTime) then return end
-			
-			hasMovedForTheFirstTime = true
-			
-		end)
 		
 	end)
 	
@@ -128,13 +110,7 @@ local function onPlayerConnect(Player: Player)
 		
 		previousStateVector = currentStateVector
 		
-		if (warmUpTime > 0) and (hasMovedForTheFirstTime) then
-			
-			warmUpTime = warmUpTime - delta
-			
-			return
-				
-		elseif (not hasMovedForTheFirstTime) then
+		if (not hasMovedForTheFirstTime) then
 			
 			return
 			
@@ -160,7 +136,7 @@ local function onPlayerConnect(Player: Player)
 		
 		if (isIdle) then
 			
-			suspicionScore = math.max(0, suspicionScore - 1)
+			stressScore = math.max(0, stressScore - 1)
 		
 		elseif (rollingCost < lowerBoundRollingCostThreshold) then
 			
@@ -172,23 +148,23 @@ local function onPlayerConnect(Player: Player)
 
 		else
 
-			suspicionScore = math.max(0, suspicionScore - 1)
+			stressScore = math.max(0, stressScore - 1)
 
 		end
 		
-		suspicionScore = suspicionScore + (deviationValue * 0.1)
+		stressScore = stressScore + (deviationValue * 0.1)
 		
-		suspicionScore = math.max(0, suspicionScore - (0.05 * (1 - math.abs(deviationValue))))
+		stressScore = math.max(0, stressScore - (0.05 * (1 - math.abs(deviationValue))))
 		
-		isSuspiciousActivityDetected = (suspicionScore >= maximumSuspicionScore)
+		isSuspiciousActivityDetected = (stressScore >= maximumstressScore)
 		
-		SendDataRemoteEvent:FireClient(Player, isSuspiciousActivityDetected, suspicionScore, rollingCost, cost)
+		SendDataRemoteEvent:FireClient(Player, isSuspiciousActivityDetected, stressScore, rollingCost, cost)
 		
 		if (isSuspiciousActivityDetected) and (timeSinceLastWarned <= 0) then
 			
 			timeSinceLastWarned = numberOfSecondsToResetCheatWarning
 			
-			warn(warningString:format(Player.Name, suspicionScore, rollingCost, cost))
+			warn(warningString:format(Player.Name, stressScore, rollingCost, cost))
 			
 		else
 			

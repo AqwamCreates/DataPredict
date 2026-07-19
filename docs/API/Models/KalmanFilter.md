@@ -32,7 +32,7 @@ KalmanFilter.new(stateTransitionModelMatrix: matrix, observationModelMatrix: mat
 
 * controlVector: The control vector representing external inputs applied to the system. [Default: zero vector]
 
-* noiseValue: The noise value to be used by observationNoiseCovarianceMatrix and processNoiseCovarianceMatrix.  [Default: 1]
+* noiseValue: The noise value to be used by observationNoiseCovarianceMatrix and processNoiseCovarianceMatrix. [Default: 1]
 
 * lossFunction: The function to calculate the cost of each training. Available options are:
 

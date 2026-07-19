@@ -109,9 +109,9 @@ local function onPlayerConnect(Player: Player)
 
 		standardDeviationValue = math.sqrt(adaptiveVariance)
 		
-		lowerBoundRollingCostThreshold = adaptiveMean - 3 * standardDeviationValue
+		lowerBoundRollingCostThreshold = adaptiveMean - (3 * standardDeviationValue)
 		
-		upperBoundRollingCostThreshold = adaptiveMean + 3 * standardDeviationValue
+		upperBoundRollingCostThreshold = adaptiveMean + (3 * standardDeviationValue)
 		
 		deviationValue = 0
 		

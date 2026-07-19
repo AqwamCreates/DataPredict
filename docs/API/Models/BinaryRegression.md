@@ -99,7 +99,7 @@ BinaryRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 #### Parameters:
 
-* featureMatrix: matrix containing all data.
+* featureMatrix: Matrix containing data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -117,7 +117,7 @@ BinaryRegression:predict(featureMatrix: matrix, returnOriginalOutput: boolean): 
 
 #### Parameters:
 
-* featureMatrix: matrix containing all data.
+* featureMatrix: Matrix containing data.
 
 * returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest value. 
 

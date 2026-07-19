@@ -271,7 +271,7 @@ NeuralNetwork:train(featureMatrix: matrix, labelVector / labelMatrix: matrix): n
 ```
 #### Parameters:
 
-* featureMatrix: matrix containing all data.
+* featureMatrix: Matrix containing data.
 
 * labelVector / labelMatrix: A (n x 1) / (n x o) matrix containing values related to featureMatrix. When using the label matrix, the number of columns must be equal to number of classes.
 
@@ -289,7 +289,7 @@ NeuralNetwork:predict(featureMatrix: matrix, returnOriginalOutput: boolean): mat
 
 #### Parameters:
 
-* featureMatrix: matrix containing all data.
+* featureMatrix: Matrix containing data.
 
 * returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
 
@@ -333,7 +333,7 @@ NeuralNetwork:forwardPropagate(featureMatrix: matrix, saveAllArrays: boolean, do
 
 ### Parameters:
 
-* featureMatrix: matrix containing all data.
+* featureMatrix: Matrix containing data.
 
 * saveAllArrays: Set whether or not the forward propagation array and z array is stored in the model.
 

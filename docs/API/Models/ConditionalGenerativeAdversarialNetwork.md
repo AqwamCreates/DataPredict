@@ -60,7 +60,7 @@ ConditionalGenerativeAdversarialNetwork:evaluate(featureMatrix: matrix, labelMat
 
 #### Parameters:
 
-* featureMatrix: The matrix containing all data.
+* featureMatrix: The Matrix containing data.
 
 * labelMatrix: The matrix containing the class labels corresponding to the feature matrix.
 

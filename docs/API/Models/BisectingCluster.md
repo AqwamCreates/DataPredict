@@ -54,7 +54,7 @@ BisectingCluster:train(featureMatrix: matrix): {number}
 
 #### Parameters:
 
-* featureMatrix: matrix containing all data.
+* featureMatrix: Matrix containing data.
 
 #### Returns:
 

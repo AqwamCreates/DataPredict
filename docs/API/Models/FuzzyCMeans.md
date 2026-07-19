@@ -64,7 +64,7 @@ FuzzyCMeans:train(featureMatrix: matrix)
 
 #### Parameters:
 
-* featureMatrix: matrix containing all data.
+* featureMatrix: Matrix containing data.
 
 #### Returns:
 

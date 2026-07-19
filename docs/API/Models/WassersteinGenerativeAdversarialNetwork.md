@@ -62,7 +62,7 @@ WassersteinGenerativeAdversarialNetwork:evaluate(featureMatrix: matrix): matrix
 
 #### Parameters:
 
-* featureMatrix: The matrix containing all data.
+* featureMatrix: The Matrix containing data.
 
 #### Returns:
 

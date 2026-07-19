@@ -50,7 +50,7 @@ OneClassPassiveAggressiveClassifier:train(featureMatrix: matrix, labelVector: ma
 
 #### Parameters:
 
-* featureMatrix: matrix containing all data.
+* featureMatrix: Matrix containing data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix. (Optional)
 

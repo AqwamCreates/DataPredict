@@ -46,7 +46,7 @@ IsotonicRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 
 #### Parameters:
 
-* featureMatrix: matrix containing all data. It must only have one column.
+* featureMatrix: Matrix containing data. It must only have one column.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix. It must only have one column.
 

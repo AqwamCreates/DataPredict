@@ -12,7 +12,7 @@
 
 * [Creating Erratic Tracking Model](StressSystems/CreatingErraticTrackingModel.md)
 
-    * Uses Kalman Filter to use cost as "erratic" score.
+    * Uses OneClassSVM.
  
     * Uses "actions per minute" and "effective actions per minute".
 

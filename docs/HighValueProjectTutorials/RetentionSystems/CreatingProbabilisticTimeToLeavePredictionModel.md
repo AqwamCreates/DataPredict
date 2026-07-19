@@ -45,8 +45,8 @@ local playerDataVector = {
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
-        actionPerMinute,
-        effectiveActionPerMinute,
+        actionsPerMinute,
+        effectiveActionsPerMinute,
         healthAmount
     }
 }
@@ -74,8 +74,8 @@ local function snapshotData()
     numberOfItemsAmount,
     timePlayedInCurrentSession,
     timePlayedInAllSessions,
-    actionPerMinute,
-    effectiveActionPerMinute,
+    actionsPerMinute,
+    effectiveActionsPerMinute,
     healthAmount
 
   }

@@ -43,9 +43,9 @@ local playerDataVector = {
 
 local maximumStressScore
 
+local adaptiveRate = 0.01 -- How fast thresholds adapt (lower = more stable).
+
 local function onPlayerConnect(Player: Player)
-	
-	local hasMovedForTheFirstTime = false
 	
 	local isStressDetected = false
 	
@@ -56,8 +56,6 @@ local function onPlayerConnect(Player: Player)
 	local adaptiveMean = 0
 
 	local adaptiveVariance = 0
-
-	local adaptiveRate = 0.01 -- How fast thresholds adapt (lower = more stable).
 
 	local timeSinceLastWarned = 0
 	
@@ -90,12 +88,6 @@ local function onPlayerConnect(Player: Player)
 		costArray = AnomalyDetectionModel:train(previousStateVector, currentStateVector)
 		
 		previousStateVector = currentStateVector
-		
-		if (not hasMovedForTheFirstTime) then
-			
-			return
-			
-		end
 
 		cost = costArray[1]
 		

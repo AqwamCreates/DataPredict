@@ -20,19 +20,19 @@ KalmanFilter.new(stateTransitionModelMatrix: matrix, observationModelMatrix: mat
 
 #### Parameters:
 
-* stateTransitionModelMatrix: How many times should the model needed to be trained.
+* stateTransitionModelMatrix: The state transition matrix that describes how the state evolves from one time step to the next without controls or noise. [Default: identity matrix]
 
-* observationModelMatrix: The speed at which the model learns. Recommended that the value is set between 0 to 1.
+* observationModelMatrix: The observation matrix that maps the true state space into the observed space. [Default: identity matrix]
 
-* processNoiseCovarianceMatrix: The function to calculate the cost of each training. Available options are:
+* processNoiseCovarianceMatrix: The process noise covariance matrix representing the uncertainty in the state transition model. [Default: identity matrix]
 
-* observationNoiseCovarianceMatrix:
+* observationNoiseCovarianceMatrix: The observation noise covariance matrix representing the uncertainty in the observation model. [Default: identity matrix]
 
-* controlInputMatrix
+* controlInputMatrix: The control-input matrix that maps control vectors to state space. [Default: zero matrix]
 
-* controlVector
+* controlVector: The control vector representing external inputs applied to the system. [Default: zero vector]
 
-* noiseValue: [Default: 1]
+* noiseValue: The noise value to be used by observationNoiseCovarianceMatrix and processNoiseCovarianceMatrix.  [Default: 1]
 
 * lossFunction: The function to calculate the cost of each training. Available options are:
 
@@ -55,7 +55,7 @@ KalmanFilter.new(stateTransitionModelMatrix: matrix, observationModelMatrix: mat
 Train the model.
 
 ```
-KalmanFilter:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+KalmanFilter:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
@@ -73,7 +73,7 @@ KalmanFilter:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the value for a given data.
 
 ```
-KalmanFilter:predict(featureMatrix: Matrix): Matrix
+KalmanFilter:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:

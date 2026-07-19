@@ -20,11 +20,11 @@ UnscentedKalmanFilter.new(alpha: number, beta: number: kappa: number, noiseValue
 
 #### Parameters:
 
-* alpha:
+* alpha: The spread of the sigma points around the mean state. Typically set to a small positive value. Controls the distribution of the sigma points. [Default: 1e-3]
 
-* beta:
+* beta: Used to incorporate prior knowledge of the distribution. For Gaussian distributions, beta = 2 is optimal. [Default: 2]
 
-* kappa:
+* kappa: A secondary scaling parameter that determines the distance of the sigma points from the mean. Usually set to 0 or 3 - n, where n is the state dimension. [Default: 0]
 
 * noiseValue: The noise value to be used by observationNoiseCovarianceMatrix and processNoiseCovarianceMatrix. [Default: 1]
 
@@ -40,9 +40,9 @@ UnscentedKalmanFilter.new(alpha: number, beta: number: kappa: number, noiseValue
 
 * epsilon: Used for Jacobian approximation. [Default: 1e-5]
 
-* stateTransitionFunction:
+* stateTransitionFunction: The non-linear state transition function that predicts the next state given current state and control vector. This function defines how the system evolves over time without noise. [Default: linear state transition]
 
-* observationFunction:
+* observationFunction: The nonlinear observation function that maps the state space to the observation space. This function defines how measurements relate to the state. [Default: linear observation]
 
 * processNoiseCovarianceMatrix: The process noise covariance matrix representing the uncertainty in the state transition model. [Default: identity matrix]
 

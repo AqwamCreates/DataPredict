@@ -75,7 +75,7 @@ local function snapshotData()
     numberOfItemsAmount,
     timePlayedInCurrentSession,
     timePlayedInAllSessions,
-    actionPerMinute,
+    actionsPerMinute,
     effectiveActionPerMinute,
     healthAmount
 

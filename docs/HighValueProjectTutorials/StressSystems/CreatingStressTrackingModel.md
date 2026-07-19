@@ -40,6 +40,8 @@ local playerDataVector = {
 
 ```lua
 
+local maximumStressScore
+
 local function onPlayerConnect(Player: Player)
 	
 	local hasMovedForTheFirstTime = false
@@ -138,7 +140,7 @@ local function onPlayerConnect(Player: Player)
 		
 		stressScore = math.max(0, stressScore - (0.05 * (1 - math.abs(deviationValue))))
 		
-		isStressDetected = (stressScore >= maximumstressScore)
+		isStressDetected = (stressScore >= maximumStressScore)
 		
 		SendDataRemoteEvent:FireClient(Player, isStressDetected, stressScore, rollingCost, cost)
 		

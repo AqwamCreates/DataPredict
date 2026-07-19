@@ -87,6 +87,8 @@ local playerDataVector = {
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
+        actionsPerMinute,
+        effectiveActionsPerMinute,
         healthAmount
     }
 }
@@ -114,6 +116,8 @@ local function snapshotData()
     numberOfItemsAmount,
     timePlayedInCurrentSession,
     timePlayedInAllSessions,
+    actionsPerMinute,
+    effectiveActionsPerMinute,
     healthAmount
 
   }
@@ -132,7 +136,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 6}, -100, 100) -- 100 random data with 6 features (including one "bias").
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 8}, -100, 100) -- 100 random data with 8 features (including one "bias").
 
 local labelDataMatrix = TensorL:createTensor({numberOfData, 1}, 9999) -- Making sure that at all values, it predicts very high time-to-leave value. Do not use math.huge here.
 

@@ -51,12 +51,12 @@ GaussianNaiveBayes:setParameters(useLogProbabilities: boolean)
 Train the model.
 
 ```
-GaussianNaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
+GaussianNaiveBayes:train(featureMatrix: matrix, labelVector: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -69,12 +69,12 @@ GaussianNaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-GaussianNaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+GaussianNaiveBayes:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
 

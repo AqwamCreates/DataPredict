@@ -71,11 +71,11 @@ RankingSupportVectorMachine:setSolver(Solver: SolverObject)
 Train the model.
 
 ```
-RankingSupportVectorMachine:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+RankingSupportVectorMachine:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -88,12 +88,12 @@ RankingSupportVectorMachine:train(featureMatrix: Matrix, labelVector: Matrix): n
 Predict the values for given data.
 
 ```
-RankingSupportVectorMachine:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): matrix -OR- matrix
+RankingSupportVectorMachine:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix -OR- matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 

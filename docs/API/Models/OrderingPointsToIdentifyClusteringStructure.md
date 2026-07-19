@@ -61,12 +61,12 @@ OrderingPointsToIdentifyClusteringStructure.new(epsilon: number, epsilonPrime: n
 Train the model.
 
 ```
-OrderingPointsToIdentifyClusteringStructure:train(featureMatrix: Matrix)
+OrderingPointsToIdentifyClusteringStructure:train(featureMatrix: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 
@@ -77,12 +77,12 @@ OrderingPointsToIdentifyClusteringStructure:train(featureMatrix: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-OrderingPointsToIdentifyClusteringStructure:predict(featureMatrix: Matrix): Matrix, Matrix
+OrderingPointsToIdentifyClusteringStructure:predict(featureMatrix: matrix): matrix, Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

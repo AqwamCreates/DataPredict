@@ -88,7 +88,7 @@ ConditionalWassersteinGenerativeAdversarialNetwork:generate(noiseFeatureMatrix: 
 
 #### Returns:
 
-* outputMatrix: Matrix containing all the output values.
+* outputMatrix: matrix containing all the output values.
 
 ## Inherited From
 

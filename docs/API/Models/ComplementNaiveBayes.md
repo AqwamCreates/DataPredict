@@ -47,12 +47,12 @@ ComplementNaiveBayes:setParameters(useLogProbabilities: boolean)
 Train the model.
 
 ```
-ComplementNaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
+ComplementNaiveBayes:train(featureMatrix: matrix, labelVector: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -65,12 +65,12 @@ ComplementNaiveBayes:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-ComplementNaiveBayes:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+ComplementNaiveBayes:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
 

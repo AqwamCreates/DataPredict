@@ -6,7 +6,7 @@ NeuralNetwork is a supervised machine learning model that predicts any positive 
 
 Contains a table of matrices.  
 
-* ModelParameters[L][I][J]: Matrix at layer L and L + 1. Value of matrix at row I and column J. The row I indicates the number of neurons in the previous layer, while column J indicates the number of neurons in the next layer.
+* ModelParameters[L][I][J]: matrix at layer L and L + 1. Value of matrix at row I and column J. The row I indicates the number of neurons in the previous layer, while column J indicates the number of neurons in the next layer.
 
 ## Notes
 
@@ -267,11 +267,11 @@ NeuralNetwork:evolveLayerSize(layerNumber: number, initialNeuronIndex: number, s
 Train the model.
 
 ```
-NeuralNetwork:train(featureMatrix: Matrix, labelVector / labelMatrix: Matrix): number[]
+NeuralNetwork:train(featureMatrix: matrix, labelVector / labelMatrix: matrix): number[]
 ```
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector / labelMatrix: A (n x 1) / (n x o) matrix containing values related to featureMatrix. When using the label matrix, the number of columns must be equal to number of classes.
 
@@ -284,12 +284,12 @@ NeuralNetwork:train(featureMatrix: Matrix, labelVector / labelMatrix: Matrix): n
 Predict the values for given data.
 
 ```
-NeuralNetwork:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+NeuralNetwork:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
 
@@ -328,12 +328,12 @@ NeuralNetwork:setClassesList(ClassesList: [])
 ### forwardPropagate()
 
 ```
-NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveAllArrays: boolean, doNotDropoutNeurons: boolean): predictedLabelMatrix, forwardPropagateTable, zTable
+NeuralNetwork:forwardPropagate(featureMatrix: matrix, saveAllArrays: boolean, doNotDropoutNeurons: boolean): predictedLabelMatrix, forwardPropagateTable, zTable
 ```
 
 ### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * saveAllArrays: Set whether or not the forward propagation array and z array is stored in the model.
 
@@ -350,12 +350,12 @@ NeuralNetwork:forwardPropagate(featureMatrix: Matrix, saveAllArrays: boolean, do
 ### update()
 
 ```
-NeuralNetwork:update(lossMatrix: Matrix, clearAllArrays: boolean): []
+NeuralNetwork:update(lossMatrix: matrix, clearAllArrays: boolean): []
 ```
 
 ### Parameters:
 
-* lossMatrix: Matrix containing the loss.
+* lossMatrix: matrix containing the loss.
 
 * clearAllArrays: Set whether or not to clear forward propagation array and z array is stored in the model after backpropagation is done.
 

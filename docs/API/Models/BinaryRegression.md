@@ -95,11 +95,11 @@ BinaryRegression:setSolver(Solver: SolverObject)
 Train the model.
 
 ```
-BinaryRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+BinaryRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -112,12 +112,12 @@ BinaryRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the values for given data.
 
 ```
-BinaryRegression:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+BinaryRegression:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest value. 
 

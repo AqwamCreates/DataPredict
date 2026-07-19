@@ -37,12 +37,12 @@ BayesianQuantileLinearRegression.new(priorPrecision: number, likelihoodPrecision
 Train the model.
 
 ```
-BayesianQuantileLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+BayesianQuantileLinearRegression:train(featureMatrix: matrix, labelVector: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -51,12 +51,12 @@ BayesianQuantileLinearRegression:train(featureMatrix: Matrix, labelVector: Matri
 Predict the value for a given data.
 
 ```
-BayesianQuantileLinearRegression:predict(featureMatrix: Matrix, quantileMatrix: Matrix): Matrix -OR- Matrix, Matrix
+BayesianQuantileLinearRegression:predict(featureMatrix: matrix, quantileMatrix: matrix): matrix -OR- Matrix, Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 * quantileMatrix: A matrix of quantile values to predict for each data point. Must be between 0 and 1.
 

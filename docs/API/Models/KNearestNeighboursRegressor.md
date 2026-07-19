@@ -48,7 +48,7 @@ KNearestNeighboursRegressor:train(featureMatrix: matrix, labelVector: matrix): n
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -66,7 +66,7 @@ KNearestNeighboursRegressor:predict(featureMatrix: matrix, returnOriginalOutput:
 
 #### Parameters
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability.
 

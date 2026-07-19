@@ -6,7 +6,7 @@ DeepDoubleExpectedStateActionRewardStateActionV1 is a neural network with reinfo
 
 Contains a table of matrices.  
 
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
+* ModelParameters[L][I][J]: matrix at layer L. Value of matrix at row I and column J.
 
 ## Constructors
 

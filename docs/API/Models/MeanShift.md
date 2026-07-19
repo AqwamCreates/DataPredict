@@ -87,12 +87,12 @@ MeanShift:setParameters(maximumNumberOfIterations: integer, bandwidth: number, d
 Train the model.
 
 ```
-MeanShift:train(featureMatrix: Matrix)
+MeanShift:train(featureMatrix: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 
@@ -103,12 +103,12 @@ MeanShift:train(featureMatrix: Matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-Meanshift:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+Meanshift:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 * returnOriginalOutput: Set whether or not to return distance matrix instead of clusterNumberVector and closestDistanceVector.
 

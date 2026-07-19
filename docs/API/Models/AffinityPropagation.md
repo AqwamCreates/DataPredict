@@ -99,12 +99,12 @@ AffinityPropagation:setParameters(maximumNumberOfIterations: integer, distanceFu
 Train the model.
 
 ```
-AffinityPropagation:train(featureMatrix: Matrix)
+AffinityPropagation:train(featureMatrix: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 
@@ -115,12 +115,12 @@ AffinityPropagation:train(featureMatrix: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-AffinityPropagation:predict(featureMatrix: Matrix): Matrix, Matrix
+AffinityPropagation:predict(featureMatrix: matrix): matrix, Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

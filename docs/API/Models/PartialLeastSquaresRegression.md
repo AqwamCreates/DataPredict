@@ -35,12 +35,12 @@ PartialLeastSquaresRegression.new(latentFactorCount: number): ModelObject
 Train the model.
 
 ```
-PartialLeastSquaresRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+PartialLeastSquaresRegression:train(featureMatrix: matrix, labelVector: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -49,12 +49,12 @@ PartialLeastSquaresRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-PartialLeastSquaresRegression:predict(featureMatrix: Matrix): Matrix
+PartialLeastSquaresRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

@@ -136,7 +136,7 @@ AsynchronousAdvantageCritic:reinforce(currentFeatureVector: matrix, actionStanda
 
 #### Parameters:
 
-* currentFeatureVector: Matrix containing data from the current state.
+* currentFeatureVector: matrix containing data from the current state.
 
 * actionStandardDeviationVector: The vector containing values of action's standard deviations. The number of columns must match the number of actions.
 

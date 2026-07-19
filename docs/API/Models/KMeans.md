@@ -62,7 +62,7 @@ KMeans:train(featureMatrix: matrix): {number}
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 
@@ -78,7 +78,7 @@ KMeans:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, ma
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 * returnOriginalOutput: Set whether or not to return distance matrix instead of clusterNumberVector and closestDistanceVector. 
 

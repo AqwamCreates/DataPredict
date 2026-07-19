@@ -59,12 +59,12 @@ FuzzyCMeans.new(maximumNumberOfIterations: integer, numberOfClusters: integer, f
 Train the model.
 
 ```
-FuzzyCMeans:train(featureMatrix: Matrix)
+FuzzyCMeans:train(featureMatrix: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 
@@ -75,12 +75,12 @@ FuzzyCMeans:train(featureMatrix: Matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-KMeans:predict(featureMatrix: Matrix, returnMode: string/boolean/nil): Matrix, Matrix -OR- Matrix
+KMeans:predict(featureMatrix: matrix, returnMode: string/boolean/nil): matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 * returnMode: Set whether or not to return distance matrix instead of clusterNumberVector and closestDistanceVector. Available options are:
 

@@ -75,12 +75,12 @@ SequentialKMeans:setParameters(maximumNumberOfIterations: integer, numberOfClust
 Train the model.
 
 ```
-SequentialKMeans:train(featureMatrix: Matrix)
+SequentialKMeans:train(featureMatrix: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 
@@ -91,12 +91,12 @@ SequentialKMeans:train(featureMatrix: Matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-SequentialKMeans:predict(featureMatrix: Matrix): integer, number
+SequentialKMeans:predict(featureMatrix: matrix): integer, number
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

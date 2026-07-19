@@ -83,7 +83,7 @@ LinearRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -96,12 +96,12 @@ LinearRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 Predict the value for a given data.
 
 ```
-LinearRegression:predict(featureMatrix: matrix): Matrix
+LinearRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

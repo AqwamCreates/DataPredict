@@ -81,12 +81,12 @@ AgglomerativeHierarchical:setParameters(numberOfClusters: integer, distanceFunct
 Train the model.
 
 ```
-AgglomerativeHierarchical:train(featureMatrix: Matrix)
+AgglomerativeHierarchical:train(featureMatrix: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 
@@ -97,12 +97,12 @@ AgglomerativeHierarchical:train(featureMatrix: Matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-AgglomerativeHierarchical:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+AgglomerativeHierarchical:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 * returnOriginalOutput: Set whether or not to return distance matrix instead of clusterNumberVector and closestDistanceVector.
 

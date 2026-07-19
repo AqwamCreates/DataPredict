@@ -77,11 +77,11 @@ SupportVectorRegression:setSolver(Solver: SolverObject)
 Train the model.
 
 ```
-SupportVectorRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+SupportVectorRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -94,12 +94,12 @@ SupportVectorRegression:train(featureMatrix: Matrix, labelVector: Matrix): numbe
 Predict the values for given data.
 
 ```
-SupportVectorRegression:predict(featureMatrix: Matrix): Matrix
+SupportVectorRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 

@@ -6,7 +6,7 @@ ReinforcingNeuralNetwork is a model inherited from NeuralNetwork with extra func
 
 Contains a table of matrices.  
 
-* ModelParameters[L][I][J]: Matrix at layer L. Value of matrix at row I and column J.
+* ModelParameters[L][I][J]: matrix at layer L. Value of matrix at row I and column J.
 
 ## Constructors
 
@@ -53,12 +53,12 @@ ReinforcingNeuralNetwork:setParameters(maxNumberOfIterations: integer, learningR
 Reward or punish model based on the predicted output.
 
 ```
-ReinforcingNeuralNetwork:reinforce(featureVector: Matrix, label: integer, rewardValue: number, punishValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
+ReinforcingNeuralNetwork:reinforce(featureVector: matrix, label: integer, rewardValue: number, punishValue: number, returnOriginalOutput: boolean): integer, number -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureVector: Matrix containing data.
+* featureVector: matrix containing data.
 
 * label: Actual label.
 

@@ -61,7 +61,7 @@ LogisticRegression:setRegularizer(Regularizer: RegularizerObject)
 Train the model.
 
 ```
-ConditionalRandomField:train(previousStateMatrix: Matrix, currentStateMatrix: Matrix): number[]
+ConditionalRandomField:train(previousStateMatrix: matrix, currentStateMatrix: matrix): number[]
 ```
 #### Parameters:
 
@@ -78,7 +78,7 @@ ConditionalRandomField:train(previousStateMatrix: Matrix, currentStateMatrix: Ma
 Predict the values for given data.
 
 ```
-ConditionalRandomField:predict(previousStateMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+ConditionalRandomField:predict(previousStateMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:

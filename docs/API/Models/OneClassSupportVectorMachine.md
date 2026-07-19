@@ -73,11 +73,11 @@ OneClassSupportVectorMachine:setSolver(Solver: SolverObject)
 Train the model.
 
 ```
-OneClassSupportVectorMachine:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+OneClassSupportVectorMachine:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix. Optional.
 
@@ -90,12 +90,12 @@ OneClassSupportVectorMachine:train(featureMatrix: Matrix, labelVector: Matrix): 
 Predict the values for given data.
 
 ```
-OneClassSupportVectorMachine:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix -OR- Matrix
+OneClassSupportVectorMachine:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 

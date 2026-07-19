@@ -73,11 +73,11 @@ SupportVectorMachine:setCValue(cValue: number)
 Train the model.
 
 ```
-SupportVectorMachineOneVsAll:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+SupportVectorMachineOneVsAll:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -90,12 +90,12 @@ SupportVectorMachineOneVsAll:train(featureMatrix: Matrix, labelVector: Matrix): 
 Predict the values for given data.
 
 ```
-SupportVectorMachineOneVsAll:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+SupportVectorMachineOneVsAll:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest distance. 
 

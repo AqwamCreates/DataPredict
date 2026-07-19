@@ -41,12 +41,12 @@ IsotonicRegression.new(isIncreasing: boolean, onOutOfBounds: string): ModelObjec
 Train the model.
 
 ```
-IsotonicRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+IsotonicRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data. It must only have one column.
+* featureMatrix: matrix containing all data. It must only have one column.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix. It must only have one column.
 
@@ -59,12 +59,12 @@ IsotonicRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the value for a given data.
 
 ```
-IsotonicRegression:predict(featureMatrix: Matrix): Matrix
+IsotonicRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data. It must only have one column.
+* featureMatrix: matrix containing data. It must only have one column.
 
 #### Returns:
 

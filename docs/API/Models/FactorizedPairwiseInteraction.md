@@ -84,12 +84,12 @@ FactorizedPairwiseInteraction:setRegularizer(Regularizer: RegularizerObject)
 Train the model.
 
 ```
-FactorizedPairwiseInteraction:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+FactorizedPairwiseInteraction:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -102,12 +102,12 @@ FactorizedPairwiseInteraction:train(featureMatrix: Matrix, labelVector: Matrix):
 Predict the value for a given data.
 
 ```
-FactorizedPairwiseInteraction:predict(featureMatrix: Matrix): Matrix
+FactorizedPairwiseInteraction:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

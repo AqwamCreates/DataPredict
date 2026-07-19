@@ -82,7 +82,7 @@ WassersteinGenerativeAdversarialNetwork:generate(noiseFeatureMatrix: matrix): ma
 
 #### Returns:
 
-* outputMatrix: Matrix containing all the output values.
+* outputMatrix: matrix containing all the output values.
 
 ## Inherited From
 

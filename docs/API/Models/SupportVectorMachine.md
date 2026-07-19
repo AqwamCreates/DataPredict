@@ -71,11 +71,11 @@ SupportVectorMachine:setSolver(Solver: SolverObject)
 Train the model.
 
 ```
-SupportVectorMachine:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+SupportVectorMachine:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -88,12 +88,12 @@ SupportVectorMachine:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the values for given data.
 
 ```
-SupportVectorMachine:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): matrix -OR- matrix
+SupportVectorMachine:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix -OR- matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 

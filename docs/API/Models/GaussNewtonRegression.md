@@ -35,12 +35,12 @@ GaussNewtonRegression.new(maximumNumberOfIterations: integer, learningRate: numb
 Train the model.
 
 ```
-GaussNewtonRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+GaussNewtonRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -53,12 +53,12 @@ GaussNewtonRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[
 Predict the value for a given data.
 
 ```
-GaussNewtonRegression:predict(featureMatrix: Matrix): Matrix
+GaussNewtonRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

@@ -84,7 +84,7 @@ ConditionalGenerativeAdversarialNetwork:generate(noiseFeatureMatrix: matrix, lab
 
 #### Returns:
 
-* outputMatrix: Matrix containing all the output values.
+* outputMatrix: matrix containing all the output values.
 
 ## Inherited From
 

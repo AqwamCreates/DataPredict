@@ -100,7 +100,7 @@ NegativeBinomialRegression:predict(featureMatrix: matrix): matrix
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

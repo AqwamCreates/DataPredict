@@ -39,12 +39,12 @@ BayesianLinearRegression.new(priorPrecision: number, likelihoodPrecision: number
 Train the model.
 
 ```
-BayesianLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+BayesianLinearRegression:train(featureMatrix: matrix, labelVector: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -53,12 +53,12 @@ BayesianLinearRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-BayesianLinearRegression:predict(featureMatrix: Matrix, thresholdMatrix: Matrix): Matrix -OR- Matrix, Matrix
+BayesianLinearRegression:predict(featureMatrix: matrix, thresholdMatrix: matrix): matrix -OR- Matrix, Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 * thresholdMatrix: A matrix of threshold values for computing predicted probabilities. If provided, the model returns both predicted values and the probability that the prediction exceeds the threshold(s).
 

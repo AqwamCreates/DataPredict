@@ -69,11 +69,11 @@ LogisticRegressionOneVsAll:setRegularization(Regularization: RegularizationObjec
 Train the model.
 
 ```
-LogisticRegressionOneVsAll:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+LogisticRegressionOneVsAll:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -86,12 +86,12 @@ LogisticRegressionOneVsAll:train(featureMatrix: Matrix, labelVector: Matrix): nu
 Predict the values for given data.
 
 ```
-LogisticRegressionOneVsAll:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix, Matrix -OR- Matrix
+LogisticRegressionOneVsAll:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * returnOriginalOutput: Set whether or not to return predicted matrix instead of value with highest probability. 
 

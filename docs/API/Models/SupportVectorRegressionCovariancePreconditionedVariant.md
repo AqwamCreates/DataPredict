@@ -51,12 +51,12 @@ SupportVectorRegressionCovariancePreconditionedVariant:setRegularizer(Regularize
 Train the model.
 
 ```
-SupportVectorRegressionCovariancePreconditionedVariant:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+SupportVectorRegressionCovariancePreconditionedVariant:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -69,12 +69,12 @@ SupportVectorRegressionCovariancePreconditionedVariant:train(featureMatrix: Matr
 Predict the value for a given data.
 
 ```
-SupportVectorRegressionCovariancePreconditionedVariant:predict(featureMatrix: Matrix): Matrix
+SupportVectorRegressionCovariancePreconditionedVariant:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

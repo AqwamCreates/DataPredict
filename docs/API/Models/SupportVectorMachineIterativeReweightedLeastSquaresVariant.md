@@ -66,7 +66,7 @@ SupportVectorMachineIterativeReweightedLeastSquaresVariant:train(featureMatrix: 
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -79,12 +79,12 @@ SupportVectorMachineIterativeReweightedLeastSquaresVariant:train(featureMatrix: 
 Predict the values for given data.
 
 ```
-SupportVectorMachineIterativeReweightedLeastSquaresVariant:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): matrix -OR- matrix
+SupportVectorMachineIterativeReweightedLeastSquaresVariant:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix -OR- matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 

@@ -84,7 +84,7 @@ SupportVectorMachineGradientVariant:train(featureMatrix: matrix, labelVector: ma
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -97,12 +97,12 @@ SupportVectorMachineGradientVariant:train(featureMatrix: matrix, labelVector: ma
 Predict the values for given data.
 
 ```
-SupportVectorMachineGradientVariant:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): matrix -OR- matrix
+SupportVectorMachineGradientVariant:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix -OR- matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 

@@ -33,12 +33,12 @@ RidgeRegression.new(lambda: number): ModelObject
 Train the model.
 
 ```
-RidgeRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+RidgeRegression:train(featureMatrix: matrix, labelVector: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -47,12 +47,12 @@ RidgeRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-RidgeRegression:predict(featureMatrix: Matrix): Matrix
+RidgeRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

@@ -43,12 +43,12 @@ PassiveAggressiveClassifier.new(maximumNumberOfIterations: integer, variant: str
 Train the model.
 
 ```
-PassiveAggressiveClassifier:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+PassiveAggressiveClassifier:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -61,12 +61,12 @@ PassiveAggressiveClassifier:train(featureMatrix: Matrix, labelVector: Matrix): n
 Predict the values for given data.
 
 ```
-PassiveAggressiveClasifier:predict(featureMatrix: Matrix, returnOriginalOutput: boolean): Matrix -OR- Matrix
+PassiveAggressiveClasifier:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix -OR- Matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 * returnOriginalOutput: Set whether or not to return original output.
 

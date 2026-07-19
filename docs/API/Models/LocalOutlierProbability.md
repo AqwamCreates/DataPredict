@@ -44,7 +44,7 @@ LocalOutlierProbability:train(featureMatrix: matrix): number[]
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 ### score()
 

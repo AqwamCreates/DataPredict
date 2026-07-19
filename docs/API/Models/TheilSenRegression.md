@@ -31,12 +31,12 @@ TheilSenRegression.new(): ModelObject
 Train the model.
 
 ```
-TheilSenRegression:train(featureMatrix: Matrix, labelVector: Matrix)
+TheilSenRegression:train(featureMatrix: matrix, labelVector: matrix)
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -45,12 +45,12 @@ TheilSenRegression:train(featureMatrix: Matrix, labelVector: Matrix)
 Predict the value for a given data.
 
 ```
-TheilSenRegression:predict(featureMatrix: Matrix): Matrix
+TheilSenRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

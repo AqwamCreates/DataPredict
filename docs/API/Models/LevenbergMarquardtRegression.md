@@ -37,12 +37,12 @@ LevenbergMarquardtRegression.new(maximumNumberOfIterations: integer, learningRat
 Train the model.
 
 ```
-LevenbergMarquardtRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+LevenbergMarquardtRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -55,12 +55,12 @@ LevenbergMarquardtRegression:train(featureMatrix: Matrix, labelVector: Matrix): 
 Predict the value for a given data.
 
 ```
-LevenbergMarquardtRegression:predict(featureMatrix: Matrix): Matrix
+LevenbergMarquardtRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

@@ -78,7 +78,7 @@ GenerativeAdversarialNetwork:generate(noiseFeatureMatrix: matrix): matrix
 
 #### Returns:
 
-* outputMatrix: Matrix containing all the output values.
+* outputMatrix: matrix containing all the output values.
 
 ## Inherited From
 

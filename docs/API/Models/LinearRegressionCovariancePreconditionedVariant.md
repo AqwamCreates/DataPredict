@@ -54,12 +54,12 @@ LinearRegressionCovariancePreconditionedVariant:setRegularizer(Regularizer: Regu
 Train the model.
 
 ```
-LinearRegressionCovariancePreconditionedVariant:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+LinearRegressionCovariancePreconditionedVariant:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -72,12 +72,12 @@ LinearRegressionCovariancePreconditionedVariant:train(featureMatrix: Matrix, lab
 Predict the value for a given data.
 
 ```
-LinearRegressionCovariancePreconditionedVariant:predict(featureMatrix: Matrix): Matrix
+LinearRegressionCovariancePreconditionedVariant:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 #### Returns:
 

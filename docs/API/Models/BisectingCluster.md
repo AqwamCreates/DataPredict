@@ -54,7 +54,7 @@ BisectingCluster:train(featureMatrix: matrix): {number}
 
 #### Parameters:
 
-* featureMatrix: Matrix containing all data.
+* featureMatrix: matrix containing all data.
 
 #### Returns:
 
@@ -70,7 +70,7 @@ BisectingCluster:predict(featureMatrix: matrix, returnOriginalOutput: boolean): 
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* featureMatrix: matrix containing data.
 
 * returnOriginalOutput: Set whether or not to return distance matrix instead of clusterNumberVector and closestDistanceVector. 
 

@@ -15,14 +15,12 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ExtendedKalmanFilter.new(stateTransitionModelMatrix: matrix, observationModelMatrix: matrix, processNoiseCovarianceMatrix: matrix, observationNoiseCovarianceMatrix: matrix, controlVector: matrix, noiseValue: number, stateFunction: function, observationStateFunction: function, stateTransitionJacobianFunction: function, observationJacobianFunction: function, lossFunction: string, useJosephForm: boolean): ModelObject
+ExtendedKalmanFilter.new(stateTransitionModelMatrix: matrix, processNoiseCovarianceMatrix: matrix, observationNoiseCovarianceMatrix: matrix, controlVector: matrix, noiseValue: number, stateFunction: function, observationStateFunction: function, stateTransitionJacobianFunction: function, observationJacobianFunction: function, lossFunction: string, useJosephForm: boolean): ModelObject
 ```
 
 #### Parameters:
 
 * stateTransitionModelMatrix: The state transition matrix that describes how the state evolves from one time step to the next without controls or noise. [Default: identity matrix]
-
-* observationModelMatrix: The observation matrix that maps the true state space into the observed space. [Default: identity matrix]
 
 * processNoiseCovarianceMatrix: The process noise covariance matrix representing the uncertainty in the state transition model. [Default: identity matrix]
 

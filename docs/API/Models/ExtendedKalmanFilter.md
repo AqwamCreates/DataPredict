@@ -77,16 +77,16 @@ ExtendedKalmanFilter:train(stateMatrix: matrix, currentStateMatrix: matrix): num
 Predict the value for a given data.
 
 ```
-ExtendedKalmanFilter:predict(stateMatrix: matrix): matrix
+ExtendedKalmanFilter:predict(previousStateMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* stateMatrix: Matrix containing data.
+* previousStateMatrix: A matrix containing all previous state data.
 
 #### Returns:
 
-* predictedVector: A vector containing values that are predicted by the model.
+* predictedNextStateMatrix: A vector containing next state data that are predicted by the model.
 
 ## Inherited From
 

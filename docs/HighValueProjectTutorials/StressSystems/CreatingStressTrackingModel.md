@@ -65,8 +65,6 @@ local function onPlayerConnect(Player: Player)
 
 	local currentStateVector
 	
-	local previousOrientationY
-	
 	local isIdle
 
 	local costArray

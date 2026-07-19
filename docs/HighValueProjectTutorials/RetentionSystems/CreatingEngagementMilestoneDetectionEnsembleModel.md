@@ -95,6 +95,8 @@ local function getPlayerDataArrays()
       numberOfItemsAmount,
       timePlayedInCurrentSession,
       timePlayedInAllSessions,
+      actionsPerMinute,
+      effectiveActionsPerMinute,
       healthAmount
 
   }
@@ -105,6 +107,8 @@ local function getPlayerDataArrays()
       numberOfItemsAmount,
       timePlayedInCurrentSession,
       timePlayedInAllSessions,
+      actionsPerMinute,
+      effectiveActionsPerMinute,
       healthAmount
 
   }

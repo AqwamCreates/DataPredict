@@ -27,6 +27,8 @@ local function getPlayerDataVectors(Player)
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
+        actionsPerMinute,
+        effectiveActionsPerMinute,
         healthAmount
     }
   }
@@ -38,6 +40,8 @@ local function getPlayerDataVectors(Player)
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
+        actionsPerMinute,
+        effectiveActionsPerMinute,
         healthAmount
     }
   }

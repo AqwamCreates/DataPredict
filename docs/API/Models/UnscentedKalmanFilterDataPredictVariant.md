@@ -77,16 +77,16 @@ UnscentedKalmanFilterDataPredictVariant:train(previousStateMatrix: matrix, curre
 Predict the value for a given data.
 
 ```
-UnscentedKalmanFilterDataPredictVariant:predict(stateMatrix: matrix): matrix
+UnscentedKalmanFilterDataPredictVariant:predict(previousStateMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* stateMatrix: Matrix containing data.
+* previousStateMatrix: A matrix containing all previous state data.
 
 #### Returns:
 
-* predictedVector: A vector containing values that are predicted by the model.
+* predictedNextStateMatrix: A vector containing all next state data that are predicted by the model.
 
 ## Inherited From
 

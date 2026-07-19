@@ -42,7 +42,7 @@ local playerDataVector = {
 
 ```lua
 
-local maximumStressScore
+local maximumStressScore = 100 -- This must be adjusted based on your data and your environment.
 
 local adaptiveRate = 0.01 -- How fast thresholds adapt (lower = more stable).
 
@@ -80,9 +80,9 @@ local function onPlayerConnect(Player: Player)
 	
 	local deviationValue
 
-	InputRemoteEvent.OnClientEvent:Connect(function(delta)
+	InputRemoteEvent.OnClientEvent:Connect(function(Player)
 		
-		currentStateVector = getStateVector(previousStateVector, delta)
+		currentStateVector = getStateVector(Player, previousStateVector)
 		
 		isIdle = checkIfIsIdle(previousStateVector, currentStateVector)
 

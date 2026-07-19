@@ -12,7 +12,7 @@
 
 * [Creating Erratic Tracking Model](StressSystems/CreatingErraticTrackingModel.md)
 
-    * Uses OneClassSVM.
+    * Uses KalmanFilter.
  
     * Uses "actions per minute" and "effective actions per minute".
 

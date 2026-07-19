@@ -86,7 +86,7 @@ UnscentedKalmanFilter:predict(previousStateMatrix: matrix): matrix
 
 #### Returns:
 
-* predictedNextStateMatrix: A vector containing all next state data that are predicted by the model.
+* predictedNextStateMatrix: A matrix containing all next state data that are predicted by the model.
 
 ## Inherited From
 

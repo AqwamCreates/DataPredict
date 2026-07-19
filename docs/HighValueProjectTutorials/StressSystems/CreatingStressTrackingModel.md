@@ -139,8 +139,6 @@ local function onPlayerConnect(Player: Player)
 		
 		isStressDetected = (stressScore >= maximumStressScore)
 		
-		SendDataRemoteEvent:FireClient(Player, isStressDetected, stressScore, rollingCost, cost)
-		
 		if (isStressDetected) and (timeSinceLastWarned <= 0) then
 			
 			timeSinceLastWarned = numberOfSecondsToResetCheatWarning

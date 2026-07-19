@@ -86,4 +86,4 @@ KalmanFilter:predict(featureMatrix: Matrix): Matrix
 
 ## Inherited From
 
-* [GradientMethodBaseModel](GradientMethodBaseModel.md)
+* [BaseModel](BaseModel.md)

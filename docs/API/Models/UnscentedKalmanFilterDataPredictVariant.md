@@ -59,14 +59,14 @@ UnscentedKalmanFilterDataPredictVariant.new(alpha: number, beta: number: kappa: 
 Train the model.
 
 ```
-UnscentedKalmanFilterDataPredictVariant:train(stateMatrix: matrix, labelVector: matrix): number[]
+UnscentedKalmanFilterDataPredictVariant:train(previousStateMatrix: matrix, currentStateMatrix: matrix): number[]
 ```
 
 #### Parameters:
 
-* stateMatrix: Matrix containing data.
+* previousStateMatrix: A matrix containing all previous state data.
 
-* labelVector: A (n x 1) matrix containing values related to featureMatrix.
+* currentStateMatrix: A matrix containing all current state data.
 
 #### Returns:
 

@@ -44,7 +44,7 @@ local function onPlayerConnect(Player: Player)
 	
 	local hasMovedForTheFirstTime = false
 	
-	local isSuspiciousActivityDetected = false
+	local isStressDetected = false
 	
 	local stressScore = 0
 
@@ -90,7 +90,7 @@ local function onPlayerConnect(Player: Player)
 		
 		cost = 0
 		
-		isSuspiciousActivityDetected = false
+		isStressDetected = false
 		
 		Character = NewCharacter
 		
@@ -156,11 +156,11 @@ local function onPlayerConnect(Player: Player)
 		
 		stressScore = math.max(0, stressScore - (0.05 * (1 - math.abs(deviationValue))))
 		
-		isSuspiciousActivityDetected = (stressScore >= maximumstressScore)
+		isStressDetected = (stressScore >= maximumstressScore)
 		
-		SendDataRemoteEvent:FireClient(Player, isSuspiciousActivityDetected, stressScore, rollingCost, cost)
+		SendDataRemoteEvent:FireClient(Player, isStressDetected, stressScore, rollingCost, cost)
 		
-		if (isSuspiciousActivityDetected) and (timeSinceLastWarned <= 0) then
+		if (isStressDetected) and (timeSinceLastWarned <= 0) then
 			
 			timeSinceLastWarned = numberOfSecondsToResetCheatWarning
 			

@@ -6,11 +6,11 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 Before we train our model, we will first need to construct a model. Currently we have two approaches:
 
-| Approach | Model                            | Properties                     | Notes                                                                                                                                         |
-| -------- | -------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1        | Expectation-Maximization         | Incremental, Probabilistic | Good for anomaly detection; cannot be updated once trained, can produce multiple "normal" clusters (e.g. different player playstyles).        |
-| 2        | Gaussian Naive Bayes             | Incremental, Generative        | Not commonly used in anomaly detection; fast, can be updated with partial data, requries features are independent (rare in real player data). |
-| 3        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based  | Good for anomaly detection; cannot be updated once trained, heavier to run, best with best with "radial basis function" kernel.               |
+| Approach | Model                            | Properties                    | Notes                                                                                                                                         |
+| -------- | -------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1        | Expectation-Maximization         | Incremental, Probabilistic    | Good for anomaly detection; cannot be updated once trained, can produce multiple "normal" clusters (e.g. different player playstyles).        |
+| 2        | Gaussian Naive Bayes             | Incremental, Generative       | Not commonly used in anomaly detection; fast, can be updated with partial data, requries features are independent (rare in real player data). |
+| 3        | One-Class Support Vector Machine | Non-Incremental, Kernel-Based | Good for anomaly detection; cannot be updated once trained, heavier to run, best with best with "radial basis function" kernel.               |
 
 ## Approach 1: Expectation-Maximization
 
@@ -70,6 +70,8 @@ local function snapshotData()
     numberOfItemsAmount,
     timePlayedInCurrentSession,
     timePlayedInAllSessions,
+    actionsPerMinute,
+    effectiveActionsPerMinute,
     healthAmount
 
   }
@@ -86,7 +88,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 5}, -100, 100) -- 100 random data with 5 features.
+local randomPlayerDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 7}, -100, 100) -- 100 random data with 7 features.
 
 ```
 

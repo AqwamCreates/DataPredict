@@ -43,8 +43,8 @@ local playerDataVector = {
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
-        actionPerMinute,
-        effectiveActionPerMinute,
+        actionsPerMinute,
+        effectiveActionsPerMinute,
         healthAmount
     }
 }

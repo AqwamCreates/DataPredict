@@ -65,7 +65,7 @@ CategoricalNaiveBayes:train(featureMatrix: matrix, labelVector: matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-CategoricalNaiveBayes:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+CategoricalNaiveBayes:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

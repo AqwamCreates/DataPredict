@@ -86,7 +86,7 @@ LogisticRegressionOneVsAll:train(featureMatrix: matrix, labelVector: matrix): nu
 Predict the values for given data.
 
 ```
-LogisticRegressionOneVsAll:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+LogisticRegressionOneVsAll:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

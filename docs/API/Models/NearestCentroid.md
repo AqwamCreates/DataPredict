@@ -57,7 +57,7 @@ NearestCentroid:train(featureMatrix: matrix, labelVector: matrix): number[]
 Predict the values for given data.
 
 ```
-NearestCentroid:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+NearestCentroid:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters

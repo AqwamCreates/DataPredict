@@ -61,7 +61,7 @@ KMedoids:train(featureMatrix: matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-KMedoids:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+KMedoids:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

@@ -67,7 +67,7 @@ OrdinalRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 Predict the values for given data.
 
 ```
-OrdinalRegression:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+OrdinalRegression:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters

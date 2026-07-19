@@ -74,7 +74,7 @@ ExpectationMaximization:train(featureMatrix: matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-ExpectationMaximization:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+ExpectationMaximization:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

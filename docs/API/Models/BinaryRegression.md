@@ -112,7 +112,7 @@ BinaryRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 Predict the values for given data.
 
 ```
-BinaryRegression:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+BinaryRegression:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

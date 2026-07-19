@@ -78,7 +78,7 @@ ConditionalRandomField:train(previousStateMatrix: matrix, currentStateMatrix: ma
 Predict the values for given data.
 
 ```
-ConditionalRandomField:predict(previousStateMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+ConditionalRandomField:predict(previousStateMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

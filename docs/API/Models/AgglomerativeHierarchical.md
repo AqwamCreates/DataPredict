@@ -97,7 +97,7 @@ AgglomerativeHierarchical:train(featureMatrix: matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-AgglomerativeHierarchical:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+AgglomerativeHierarchical:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

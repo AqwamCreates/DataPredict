@@ -75,7 +75,7 @@ FuzzyCMeans:train(featureMatrix: matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-KMeans:predict(featureMatrix: matrix, returnMode: string/boolean/nil): matrix, Matrix -OR- Matrix
+KMeans:predict(featureMatrix: matrix, returnMode: string/boolean/nil): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

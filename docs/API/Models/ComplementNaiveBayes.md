@@ -65,7 +65,7 @@ ComplementNaiveBayes:train(featureMatrix: matrix, labelVector: matrix)
 Predict which cluster does it belong to for a given data.
 
 ```
-ComplementNaiveBayes:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+ComplementNaiveBayes:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

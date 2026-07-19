@@ -103,7 +103,7 @@ MeanShift:train(featureMatrix: matrix)
 Predict which clusters does it belong to for a given data.
 
 ```
-Meanshift:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+Meanshift:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

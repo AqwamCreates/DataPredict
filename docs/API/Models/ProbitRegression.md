@@ -76,7 +76,7 @@ ProbitRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 Predict the values for given data.
 
 ```
-ProbitRegression:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, Matrix -OR- Matrix
+ProbitRegression:predict(featureMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
 
 #### Parameters:

@@ -1,6 +1,6 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - LinearRegression
+# [API Reference](../../API.md) - [Models](../Models.md) - KalmanFilter
 
-LinearRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses iterative calculations to find the best model parameters.
+KalmanFilter is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc.). It uses iterative calculations to find the best model parameters.
 
 ## Stored Model Parameters
 
@@ -15,7 +15,7 @@ Contains a matrix.
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-LinearRegression.new(maximumNumberOfIterations: integer, learningRate: number, costFunction: string): ModelObject
+KalmanFilter.new(stateTransitionModelMatrix: matrix, observationModelMatrix: matrix, processNoiseCovarianceMatrix: matrix, observationNoiseCovarianceMatrix: matrix, controlInputMatrix: matrix, controlVector: matrix, noiseValue: number, lossFunction: string, useJosephForm: boolean): ModelObject
 ```
 
 #### Parameters:
@@ -34,15 +34,15 @@ LinearRegression.new(maximumNumberOfIterations: integer, learningRate: number, c
 
 * noiseValue: [Default: 1]
 
-* lossFunction
+* lossFunction: The function to calculate the cost of each training. Available options are:
 
   * L1
 
-  * L2
+  * L2 (Default)
 
   * Mahalanobis
 
-* useJosephForm 
+* useJosephForm: Set whether or not to use a more numerically accurate representation in exchange for lower performance [Default: true]
 
 #### Returns:
 
@@ -50,48 +50,12 @@ LinearRegression.new(maximumNumberOfIterations: integer, learningRate: number, c
 
 ## Functions
 
-### setOptimizer()
-
-Set optimizer for the model by inputting the optimizer object.
-
-```
-LinearRegression:setOptimizer(Optimizer: OptimizerObject)
-```
-
-#### Parameters:
-
-* Optimizer: The optimizer object to be used.
-
-### setRegularizer()
-
-Set a regularization for the model by inputting the optimizer object.
-
-```
-LinearRegression:setRegularizer(Regularizer: RegularizerObject)
-```
-
-#### Parameters:
-
-* Regularizer: The regularizer to be used.
-
-### setSolver()
-
-Set a solver for the model by inputting the optimizer object.
-
-```
-LinearRegression:setSolver(Solver: SolverObject)
-```
-
-#### Parameters:
-
-* Solver: The solver to be used.
-
 ### train()
 
 Train the model.
 
 ```
-LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+KalmanFilter:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 ```
 
 #### Parameters:
@@ -109,7 +73,7 @@ LinearRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the value for a given data.
 
 ```
-LinearRegression:predict(featureMatrix: Matrix): Matrix
+KalmanFilter:predict(featureMatrix: Matrix): Matrix
 ```
 
 #### Parameters:

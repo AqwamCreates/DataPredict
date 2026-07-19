@@ -71,7 +71,7 @@ PoissonRegression:setSolver(Solver: SolverObject)
 Train the model.
 
 ```
-PoissonRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+PoissonRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
@@ -89,7 +89,7 @@ PoissonRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the value for a given data.
 
 ```
-PoissonRegression:predict(featureMatrix: Matrix): Matrix
+PoissonRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:

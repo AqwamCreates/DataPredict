@@ -20,7 +20,7 @@
 
 ## Stress Minimization Models
 
-* [Creating Stress Minimization Model](StressSystems/CreatingStressMinimizationModel.md)
+* [Creating Stress Minimization Model](StressSystems/CreatingStressMinimizationModel.md) (Incomplete)
 
     * Uses diagonal gaussian deep reinforcement learning to minimize the stress score.
  

@@ -59,12 +59,12 @@ ExtendedKalmanFilter.new(stateTransitionModelMatrix: matrix, processNoiseCovaria
 Train the model.
 
 ```
-ExtendedKalmanFilter:train(featureMatrix: matrix, labelVector: matrix): number[]
+ExtendedKalmanFilter:train(stateMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* stateMatrix: Matrix containing data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -77,12 +77,12 @@ ExtendedKalmanFilter:train(featureMatrix: matrix, labelVector: matrix): number[]
 Predict the value for a given data.
 
 ```
-ExtendedKalmanFilter:predict(featureMatrix: matrix): matrix
+ExtendedKalmanFilter:predict(stateMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* stateMatrix: Matrix containing data.
 
 #### Returns:
 

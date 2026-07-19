@@ -40,9 +40,27 @@ Markov:train(previousStateVector, currentStateVector, observationStateVector)
 
 ### predict()
 
+Predict the values for given data.
+
 ```
-Markov:predict(stateVector, returnOriginalOutput)
+Markov:predict(previousStateMatrix: matrix, returnOriginalOutput: boolean): matrix, matrix -OR- matrix
 ```
+
+#### Parameters:
+
+* previousStateMatrix: A matrix containing all previous state data.
+
+* returnOriginalOutput: Set whether or not to return predicted current state matrix instead of value with highest probability. 
+
+#### Returns:
+
+* predictedVector: A vector that is predicted by the model.
+
+* probabilityVector: A vector that contains the probability of predicted values in predictedVector.
+
+-OR-
+
+* predictedCurrentStateMatrix: A matrix containing all predicted values from all classes.
 
 ## Inherited From
 

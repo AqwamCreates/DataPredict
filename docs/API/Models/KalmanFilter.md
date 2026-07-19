@@ -55,14 +55,14 @@ KalmanFilter.new(stateTransitionModelMatrix: matrix, observationModelMatrix: mat
 Train the model.
 
 ```
-KalmanFilter:train(stateMatrix: matrix, labelVector: matrix): number[]
+KalmanFilter:train(previousStateMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* stateMatrix: Matrix containing data.
+* previousStateMatrix: Matrix containing data.
 
-* labelVector: A (n x 1) matrix containing values related to featureMatrix.
+* currentStateMatrix: A (n x 1) matrix containing values related to featureMatrix.
 
 #### Returns:
 

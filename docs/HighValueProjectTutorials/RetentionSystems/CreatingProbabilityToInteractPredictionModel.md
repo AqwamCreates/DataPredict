@@ -36,19 +36,16 @@ Below, we will show you how to create this:
 
 -- We're just adding 1 here to add "bias".
 
-local playerContextDataVector = {
+local playerDataVector = {
     {
         1,
         numberOfCurrencyAmount,
         numberOfItemsAmount,
         timePlayedInCurrentSession,
         timePlayedInAllSessions,
-        healthAmount,
-
-        enemyMaximumHealthAmount,
-        enemyMaximumDamageAmount,
-        enemyCurrencyAmount,
-
+        actionPerMinute,
+        effectiveActionPerMinute,
+        healthAmount
     }
 }
 
@@ -60,7 +57,7 @@ If you want to add more data instead of relying on the initial data point, you a
 
 ```lua
 
-local playerContextDataMatrix = {}
+local playerDataMatrix = {}
   
 local recordedTimeArray = {}
   
@@ -68,18 +65,16 @@ local snapshotIndex = 1
   
 local function snapshotData()
   
- playerContextDataMatrix[snapshotIndex] = {
+ playerDataMatrix[snapshotIndex] = {
 
     1,
     numberOfCurrencyAmount,
     numberOfItemsAmount,
     timePlayedInCurrentSession,
     timePlayedInAllSessions,
-    healthAmount,
-
-    enemyMaximumHealthAmount,
-    enemyMaximumDamageAmount,
-    enemyCurrencyAmount,
+    actionPerMinute,
+    effectiveActionPerMinute,
+    healthAmount
 
   }
   
@@ -97,7 +92,7 @@ If you're concerned about that the model may produce wrong result heavily upon f
 
 local numberOfData = 100
 
-local randomPlayerContextDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 9}, -100, 100) -- 100 random data with 9 features (including one "bias").
+local randomPlayerContextDataMatrix = TensorL:createRandomUniformTensor({numberOfData, 11}, -100, 100) -- 100 random data with 11 features (including one "bias").
 
 local labelContextDataMatrix = TensorL:createTensor({numberOfData, 1}, 1) -- Making sure that at all values, it predicts 100% probability of interacting.
 

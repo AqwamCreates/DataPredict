@@ -82,8 +82,8 @@ local function onPlayerConnect(Player: Player)
 	local upperBoundRollingCostThreshold
 	
 	local deviationValue
-	
-	RunService.Heartbeat:Connect(function(delta)
+
+	InputRemoteEvent.OnClientEvent:Connect(function(delta)
 		
 		if (not Character) then return end
 		
@@ -160,7 +160,5 @@ local function onPlayerConnect(Player: Player)
 	end)
 	
 end
-
-InputRemoteEvent.OnClientEvent:Connect()
 
 ```

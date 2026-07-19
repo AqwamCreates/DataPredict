@@ -73,7 +73,7 @@ HuberRegression:setSolver(Solver: SolverObject)
 Train the model.
 
 ```
-HuberRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
+HuberRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
@@ -91,7 +91,7 @@ HuberRegression:train(featureMatrix: Matrix, labelVector: Matrix): number[]
 Predict the value for a given data.
 
 ```
-HuberRegression:predict(featureMatrix: Matrix): Matrix
+HuberRegression:predict(featureMatrix: matrix): matrix
 ```
 
 #### Parameters:

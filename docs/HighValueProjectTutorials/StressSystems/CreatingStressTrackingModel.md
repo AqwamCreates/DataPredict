@@ -30,6 +30,7 @@ local playerDataVector = {
     {
         1,
 		timeSinceLastInput,
+		numberOfConsecutiveInputs,
         actionsPerMinute,
         effectiveActionsPerMinute,
     }

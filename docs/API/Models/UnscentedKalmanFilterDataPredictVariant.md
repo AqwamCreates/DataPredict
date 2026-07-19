@@ -59,12 +59,12 @@ UnscentedKalmanFilterDataPredictVariant.new(alpha: number, beta: number: kappa: 
 Train the model.
 
 ```
-UnscentedKalmanFilterDataPredictVariant:train(featureMatrix: matrix, labelVector: matrix): number[]
+UnscentedKalmanFilterDataPredictVariant:train(stateMatrix: matrix, labelVector: matrix): number[]
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* stateMatrix: Matrix containing data.
 
 * labelVector: A (n x 1) matrix containing values related to featureMatrix.
 
@@ -77,12 +77,12 @@ UnscentedKalmanFilterDataPredictVariant:train(featureMatrix: matrix, labelVector
 Predict the value for a given data.
 
 ```
-UnscentedKalmanFilterDataPredictVariant:predict(featureMatrix: matrix): matrix
+UnscentedKalmanFilterDataPredictVariant:predict(stateMatrix: matrix): matrix
 ```
 
 #### Parameters:
 
-* featureMatrix: Matrix containing data.
+* stateMatrix: Matrix containing data.
 
 #### Returns:
 

@@ -1,7 +1,12 @@
 # Engagement-Based Reward Function Formula For Reinforcement Learning
 
-## 
+## Component Requirements For Reward Function
 
+| Reward Function Component                            | Reason                                                                            | How It Produces Human-Like Behaviours                                                                                                                                                                                                                   |
+|------------------------------------------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Current Engagement Score                             | To evaluate the players' flow state.                                              | Acts as a baseline for the reward function. Helps the AI to make accurate decisions based on the players' engagement.                                                                                                                                   |                             
+| Overall Accuracy Complement Score / Inaccuracy Score | The more accurate the AI overall, the more frustrating the AI is for the players. | As a beginner, the AI have a lot of things to learn from the player leads to high reward. Eventually, the AI will be at professional level relative to the player, where the AI will no longer learn much from the player.                              |
+| Cumulative Incorrect Action Prediction Count         | To make AI adaptive.                                                              | The AI will first think that the first few wrongs as coincidence, but eventually realizes the current strategy will not work. After realizing the strategy does not work, the punishment becomes less negative as the AI is expected to lose from here. |
 
 ## Source Code
 
@@ -10,6 +15,10 @@
 local optimalZoneMinimum = 0.5  -- Minimum reasonable thinking time.
 
 local optimalZoneMaximum = 3.0  -- Maximum before likely distraction.
+
+local meanDurationFromThinkingToAction = 5 -- Dependent on your game.
+
+local varietyPenaltyScale = 1 -- Dependent on your model.
 
 local cumulativeIncorrectActionPredictionCount = 0
 
@@ -31,9 +40,9 @@ local function calculateEngagementFromTiming(timeSinceLastAction)
 
 	else
 
-		-- Exponential decay for long delays
+		-- Exponential decay for long delays.
 
-		return math.exp(-(timeSinceLastAction - optimalZoneMaximum) / 5)
+		return math.exp(-(timeSinceLastAction - optimalZoneMaximum) / meanDurationFromThinkingToAction)
 
 	end
 
@@ -73,7 +82,7 @@ local function learnFromPlayer(playerAction, durationBetweenAction)
 	
 	if (cumulativeIncorrectActionPredictionCount > 1) then
 		
-		varietyPenalty = math.log(cumulativeIncorrectActionPredictionCount) -- The more it gets wrong, the more it gets punished.
+		varietyPenalty = varietyPenaltyScale * math.log(cumulativeIncorrectActionPredictionCount) -- The more it gets wrong, the more it gets punished.
 		
 	end
 

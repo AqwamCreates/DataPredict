@@ -26,20 +26,6 @@ Note: This documentation is still under construction. There will be links that g
 
 * [Data Noise, Correlation And Causation](GameDesignMeetsMachineLearningTutorials/DataNoiseCorrelationAndCausation.md)
 
-
-
-
-## Measurement Of Fun And Its Relation To Engagement
-
-| Measurement Of Fun                   | Relationship To Engagement                                                                                                 |
-|--------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| Session Length                       | The more the player is engaged, the longer the player stays.                                                               |
-| Map Coverage                         | The more the player is engaged, the more the player explores.                                                              |
-| Variety Of Items Collected           | The more the player is engaged, the more the player collect different items.                                               |
-| Amount Of Resources Spent            | The more the player is engaged, the more the player spends on resources.                                                   |
-| Quest Completion                     | The more the player is engaged, the more the player spends time on completing quests.                                      |
-| Number Of Online Players In A Server | It is related To players' individual session length, where more players overlap means very high session length per player. |
-
 ## What's Your Goal?
 
 * Goal Maximization -> Use "measurement of fun" metrics as rewards and combine it with reinforcement learning models.

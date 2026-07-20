@@ -13,11 +13,11 @@
 
 ```lua
 
-local optimalZoneMinimum = 0.5  -- Minimum reasonable thinking time.
+local optimalZoneMinimumInSeconds = 0.5  -- Minimum reasonable thinking time.
 
-local optimalZoneMaximum = 3.0  -- Maximum before likely distraction.
+local optimalZoneMaximumInSeconds = 3.0  -- Maximum before likely distraction.
 
-local meanDurationFromThinkingToAction = 5 -- Dependent on your game.
+local meanDurationFromThinkingToActionInSeconds = 5 -- Dependent on your game.
 
 local varietyPenaltyScale = 1 -- Dependent on your model.
 
@@ -31,11 +31,11 @@ local function calculateEngagementFromTiming(timeSinceLastAction)
 
 	-- Shorter times = more engaged (bounded to prevent spam)
 
-	if (timeSinceLastAction < optimalZoneMinimum) then
+	if (timeSinceLastAction < optimalZoneMinimumInSeconds) then
 
 		return 0.8  -- Very engaged but possibly spammy
 
-	elseif (timeSinceLastAction <= optimalZoneMaximum) then
+	elseif (timeSinceLastAction <= optimalZoneMaximumInSeconds) then
 
 		return 1.0  -- Perfect engagement (thinking but not distracted)
 
@@ -43,7 +43,7 @@ local function calculateEngagementFromTiming(timeSinceLastAction)
 
 		-- Exponential decay for long delays.
 
-		return math.exp(-(timeSinceLastAction - optimalZoneMaximum) / meanDurationFromThinkingToAction)
+		return math.exp(-(timeSinceLastAction - optimalZoneMinimumInSeconds) / meanDurationFromThinkingToActionInSeconds)
 
 	end
 

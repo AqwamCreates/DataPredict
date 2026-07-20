@@ -10,4 +10,4 @@ Note: Almost all of these involves some form of psychological bias called the "s
 | Amount Of Resources Spent            | The more the player is engaged, the more the player spends on resources.                                                                                                    |
 | Quest Completion                     | The more the player is engaged, the more the player spends time on completing quests.                                                                                       |
 | Effective Actions Per Minute         | The more the player is engaged, the more intentional the player performs their actions.                                                                                     |
-| Number Of Online Players In A Server | It is related To players' individual session length, where more players overlap means very high session length per player due to potential player-to-player interations.    |
+| Number Of Online Players In A Server | It is related To players' individual session length, where more players overlap means very high session length per player due to potential player-to-player interactions.   |

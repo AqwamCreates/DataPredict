@@ -1,5 +1,15 @@
 # Engagement-Based Reward Function Formula For Reinforcement Learning
 
+## Priority List For Retention
+
+* Priority 1: Don't let the player die (Retention)
+
+* Priority 2: Be fair (Accuracy Cap)
+
+* Priority 3: Be adaptable (Variety)
+
+* Priority 4: Predict correctly (Base Reward)
+
 ## Component Requirements For Reward Function
 
 | Reward Function Component                            | Reason                                                                            | How It Produces Human-Like Behaviours                                                                                                                                                                                                      |

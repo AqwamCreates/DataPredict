@@ -1,4 +1,4 @@
-# Game Design Meets Machine Learning Tutorials
+# [Documentation](index.md) - Game Design Meets Machine Learning Tutorials
 
 ## Goal
 

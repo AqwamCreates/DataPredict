@@ -1,10 +1,10 @@
 # Engagement-Based Reward Function Formula For Reinforcement Learning
 
-## Priority List For Retention
+## Priority List For Engagement
 
 * Priority 1: Don't let the player die (Retention)
 
-* Priority 2: Be fair (Accuracy Cap)
+* Priority 2: Be fair (Accuracy Limit)
 
 * Priority 3: Be adaptable (Variety)
 

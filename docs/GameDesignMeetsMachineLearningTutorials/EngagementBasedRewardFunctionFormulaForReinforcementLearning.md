@@ -91,7 +91,7 @@ local function learnFromPlayer(playerAction, durationBetweenAction)
 
 	reward *= engagementScore
 
-	if (isPlayerLosing) then reward -= reward end
+	if (isPlayerLosing) then reward = -reward end -- When the player is losing, the reward is negative because players generally have high chance of leaving. Hence, we need to prioritize the retention over the accuracy.
 
 	if (not isPlayerLosing) then reward -= varietyPenalty end -- Since we want the player to win, we must ignore the lack of variety in predictions.
 

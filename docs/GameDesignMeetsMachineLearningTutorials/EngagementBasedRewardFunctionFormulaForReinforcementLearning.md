@@ -7,6 +7,7 @@
 | Current Engagement Score                             | To evaluate the players' flow state.                                              | Acts as a baseline for the reward function. Helps the AI to make accurate decisions based on the players' engagement.                                                                                                                      |
 | Overall Accuracy Complement Score / Inaccuracy Score | The more accurate the AI overall, the more frustrating the AI is for the players. | As a beginner, the AI have a lot of things to learn from the player leads to high reward. Eventually, the AI will be at professional level relative to the player, where the AI will no longer learn much from the player.                 |
 | Cumulative Incorrect Action Prediction Count         | To make AI adaptive.                                                              | The AI will first think that the first few wrongs as coincidence, but eventually realizes the current strategy will not work. After realizing the strategy does not work, the punishment plateaus as the AI is expected to lose from here. |
+| Survival Override (Loss State)                       | To prioritize player retention over prediction accuracy.                          | If the player is about to lose, the reward flips negative immediately. This teaches the AI that saving the player is more important than being right. This is because players generally have high chance of leaving when the player loses. |
 
 ## Source Code
 

@@ -46,8 +46,6 @@
 
 * [Tips For Online Training With Limited Dataset](HighValueProjectTutorials/TipsForOnlineTrainingWithLimitedDataset.md)
 
-* [Game Design Meets Machine Learning](HighValueProjectTutorials/GameDesignMeetsMachineLearning.md) (Incomplete)
-
 * [Roblox's Experiment API](https://create.roblox.com/docs/production/experiments)
 
   * For A/B testing when deploying machine learning systems in live projects to measure its impact.

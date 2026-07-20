@@ -90,7 +90,9 @@ local function learnFromPlayer(playerAction, durationBetweenAction)
 	end
 
 	reward *= engagementScore
-	
+
+	if (isPlayerLosing) then reward -= reward end
+
 	if (not isPlayerLosing) then reward -= varietyPenalty end -- Since we want the player to win, we must ignore the lack of variety in predictions.
 
 	local predictedAction = EventModel:reinforce(stateVector, reward)

@@ -33,7 +33,7 @@ local function calculateEngagementFromTiming(timeSinceLastAction)
 
 	if (timeSinceLastAction < optimalZoneMinimumInSeconds) then
 
-		return 0.8  -- Very engaged but possibly spammy.
+		return 0.8  -- Very engaged but possibly spamming.
 
 	elseif (timeSinceLastAction <= optimalZoneMaximumInSeconds) then
 

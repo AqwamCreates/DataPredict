@@ -29,15 +29,15 @@ local totalActionPrediction = 0
 
 local function calculateEngagementFromTiming(timeSinceLastAction)
 
-	-- Shorter times = more engaged (bounded to prevent spam)
+	-- Shorter times = more engaged (bounded to prevent spam).
 
 	if (timeSinceLastAction < optimalZoneMinimumInSeconds) then
 
-		return 0.8  -- Very engaged but possibly spammy
+		return 0.8  -- Very engaged but possibly spammy.
 
 	elseif (timeSinceLastAction <= optimalZoneMaximumInSeconds) then
 
-		return 1.0  -- Perfect engagement (thinking but not distracted)
+		return 1.0  -- Perfect engagement (thinking but not distracted).
 
 	else
 

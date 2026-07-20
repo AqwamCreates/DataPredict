@@ -1,5 +1,15 @@
 # [Documentation](index.md) - Game Design Meets Machine Learning Tutorials
 
+## Disclaimer
+
+* The content of this page and its links are licensed under the DataPredict™ library's [Terms And Conditions](TermsAndConditions.md). This includes the codes shown in the links below.
+
+  * Therefore, creating or redistributing copies or its derivatives of this page and its links' contents are not allowed.
+
+  * Commercial use is also limited unless you have a separate license from me.
+  
+* You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
+
 ## The Basics
 
 * [Choosing The Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheGoalForTheModel.md) (Incomplete)

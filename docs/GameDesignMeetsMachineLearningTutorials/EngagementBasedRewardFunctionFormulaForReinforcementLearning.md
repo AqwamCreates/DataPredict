@@ -43,7 +43,7 @@ local function calculateEngagementFromTiming(timeSinceLastAction)
 
 		-- Exponential decay for long delays.
 
-		return math.exp(-(timeSinceLastAction - optimalZoneMinimumInSeconds) / meanDurationFromThinkingToActionInSeconds)
+		return math.exp(-(timeSinceLastAction - optimalZoneMaximumInSeconds) / meanDurationFromThinkingToActionInSeconds)
 
 	end
 

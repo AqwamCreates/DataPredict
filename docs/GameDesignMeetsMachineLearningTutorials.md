@@ -10,6 +10,8 @@
   
 * You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 
+* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md) and [Terms And Conditions Enforcement Information](TermsAndConditionsEnforcementInformation.md).
+
 ## The Basics
 
 * [Choosing The Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheGoalForTheModel.md) (Incomplete)

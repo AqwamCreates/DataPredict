@@ -4,7 +4,7 @@
 
 * [Choosing The Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheGoalForTheModel.md) (Incomplete)
 
-* [All About Optimum](GameDesignMeetsMachineLearningTutorials/AllAboutOptimum.md)
+* [All About Optimum](GameDesignMeetsMachineLearningTutorials/AllAboutOptimum.md) (Incomplete)
 
 ## Engagement
 

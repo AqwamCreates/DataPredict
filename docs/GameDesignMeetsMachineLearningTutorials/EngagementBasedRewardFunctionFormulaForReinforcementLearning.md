@@ -133,4 +133,3 @@ end
 | The Lucky Recovery     | Healthy      | Low         | 0 (Reset)       | Medium     | Medium Positive     | "Good Adaptation." <br> After a streak of errors, the AI finally guessed right. The streak reset removes the penalty, reinforcing the new strategy.           |
 | The Noise Filter       | Healthy      | Medium      | 1               | High       | Positive            | "Ignore Glitches." <br> One wrong guess is treated as noise. No penalty applied, preventing the AI from overreacting to random player quirks.                 |
 | The Flow State         | Healthy      | Medium      | 0               | High (1.0) | High Positive       | "Maintain Status Quo." <br> The player is happy, the AI is fair. The system stabilizes here, making minimal changes to keep the player in the zone.           |
-

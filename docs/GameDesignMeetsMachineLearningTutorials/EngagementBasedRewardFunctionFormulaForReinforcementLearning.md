@@ -8,7 +8,7 @@
 
 * Priority 3: Be adaptable (Variety)
 
-* Priority 4: Be Accurate (Base Reward)
+* Priority 4: Be accurate (Base Reward)
 
 ## Component Requirements For Reward Function
 

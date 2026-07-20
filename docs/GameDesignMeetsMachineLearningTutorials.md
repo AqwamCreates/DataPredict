@@ -24,14 +24,6 @@
 
 * [Data Noise, Correlation And Causation](GameDesignMeetsMachineLearningTutorials/DataNoiseCorrelationAndCausation.md) (Incomplete)
 
-## Game Environment Data Is Far More Cleaner Than Real World Data
-
-* Noise usually comes from overlapping interactions.
- 
-* Your model's global optimum might be a real global optimum.
-
-* Game environment states are just a series of physics calculations. Your model may accidentally associate certain things with certain states!
-
 ## Intepreting Local And Global Optima In Game Design
 
 * Local Optima -> The best solution for anything related to the current game session.

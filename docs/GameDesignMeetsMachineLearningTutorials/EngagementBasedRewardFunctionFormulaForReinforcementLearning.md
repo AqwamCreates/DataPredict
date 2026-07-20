@@ -76,6 +76,8 @@ local function learnFromPlayer(playerAction, durationBetweenAction)
 	
 	local predictionAccuracyPercentage = correctActionPrediction / totalActionPrediction
 
+	local predictionAccuracyPercentageComplement = 1 - predictionAccuracyPercentage
+
 	local reward = baseReward * predictionAccuracyPercentageComplement -- If it is getting too accurate, make the reward signal weaker.
 	
 	local varietyPenalty = 0

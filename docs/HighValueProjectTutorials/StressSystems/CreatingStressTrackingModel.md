@@ -98,7 +98,7 @@ local function onPlayerConnect(Player: Player)
 		
 		adaptiveMean = adaptiveMean + (adaptiveRate * valueDifference)
 		
-		adaptiveVariance = (1 - adaptiveRate) * (adaptiveVariance + adaptiveRate * math.pow(valueDifference, 2))
+		adaptiveVariance = (1 - adaptiveRate) * (adaptiveVariance + (adaptiveRate * math.pow(valueDifference, 2)))
 
 		standardDeviationValue = math.sqrt(adaptiveVariance)
 		

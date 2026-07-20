@@ -22,17 +22,9 @@ Note: This documentation is still under construction. There will be links that g
 
 ## Performance
 
-* [Game Frames VS Model Training](GameDesignMeetsMachineLearningTutorials/GameFramesVSModelTraining.md) (Incomplete)
+* [Model Training Under The Limited Game Frames](GameDesignMeetsMachineLearningTutorials/ModelTrainingUnderTheLimitedGameFrames.md) (Incomplete)
 
 * [Data Noise, Correlation And Causation](GameDesignMeetsMachineLearningTutorials/DataNoiseCorrelationAndCausation.md) (Incomplete)
-
-## Model Calculation Speed Vs The Game Engine
-
-* Per Frame (Physics / Render) -> Model must be fast. Ideally use single datapoints or online models here.
-
-* Per Interval -> Model calculation time must not exceed the interval. Ideally use mini-batch training here.
-
-* Per Session End -> Batch training is allowed.
 
 ## Game Environment Data Is Far More Cleaner Than Real World Data
 

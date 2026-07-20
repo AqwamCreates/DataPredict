@@ -20,6 +20,8 @@
 
 ## Engagement
 
+* [Engagement VS Fun](GameDesignMeetsMachineLearningTutorials/EngagementVSFun.md)
+
 * [Making Games Engaging Instead Of Accurate](GameDesignMeetsMachineLearningTutorials/MakingEngagingFunInsteadOfAccurate.md) (Incomplete)
 
 * [Measurement Of Engagement](GameDesignMeetsMachineLearningTutorials/MeasurementOfEngagement.md)

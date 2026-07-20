@@ -1,5 +1,7 @@
 # Measurement Of Engagement
 
+Note: Almost all of these involves some form of psychological bias called the "sunk cost fallacy".
+
 | Measurement Of Engagement            | Relationship To Engagement                                                                                                                                               |
 |--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Session Length                       | The more the player is engaged, the longer the player stays.                                                                                                             |

@@ -1,6 +1,6 @@
 # Measurement Of Engagement
 
-| Measurement Of Fun                   | Relationship To Engagement                                                                                                 |
+| Measurement Of Engagement            | Relationship To Engagement                                                                                                 |
 |--------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | Session Length                       | The more the player is engaged, the longer the player stays.                                                               |
 | Map Coverage                         | The more the player is engaged, the more the player explores.                                                              |

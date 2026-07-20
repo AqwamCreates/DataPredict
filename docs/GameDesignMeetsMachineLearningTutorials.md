@@ -4,7 +4,7 @@ Note: This documentation is still under construction. There will be links that g
 
 ## Goal
 
-* [Choosing The Correct Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheCorrectGoalForTheModel.md) (Incomplete)
+* [Choosing The Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheGoalForTheModel.md) (Incomplete)
 
 ## Engagement
 
@@ -25,14 +25,6 @@ Note: This documentation is still under construction. There will be links that g
 * [Game Frames VS Model Training](GameDesignMeetsMachineLearningTutorials/GameFramesVSModelTraining.md) (Incomplete)
 
 * [Data Noise, Correlation And Causation](GameDesignMeetsMachineLearningTutorials/DataNoiseCorrelationAndCausation.md) (Incomplete)
-
-## What's Your Goal?
-
-* Goal Maximization -> Use "measurement of fun" metrics as rewards and combine it with reinforcement learning models.
-
-* Prediction -> Use regression and classification models.
-
-* Best Middle Values -> Use clustering models.
 
 ## Model Calculation Speed Vs The Game Engine
 

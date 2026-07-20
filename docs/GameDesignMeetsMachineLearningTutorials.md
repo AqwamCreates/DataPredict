@@ -1,7 +1,5 @@
 # Game Design Meets Machine Learning Tutorials
 
-Note: This documentation is still under construction. There will be links that go more in depth.
-
 ## Goal
 
 * [Choosing The Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheGoalForTheModel.md) (Incomplete)

@@ -4,11 +4,11 @@ Note: This documentation is still under construction. There will be links that g
 
 ## Goal
 
-* [Choosing The Correct Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheCorrectGoalForTheModel.md)
+* [Choosing The Correct Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheCorrectGoalForTheModel.md) (Incomplete)
 
 ## Engagement
 
-* [Making Games Engaging Instead Of Accurate](GameDesignMeetsMachineLearningTutorials/MakingEngagingFunInsteadOfAccurate.md)
+* [Making Games Engaging Instead Of Accurate](GameDesignMeetsMachineLearningTutorials/MakingEngagingFunInsteadOfAccurate.md) (Incomplete)
 
 * [Measurement Of Engagement](GameDesignMeetsMachineLearningTutorials/MeasurementOfEngagement.md)
 
@@ -16,15 +16,15 @@ Note: This documentation is still under construction. There will be links that g
 
 ## Personalization
 
-* [Personal VS Global Model Training](GameDesignMeetsMachineLearningTutorials/PersonalVSGlobalModelTraining.md)
+* [Personal VS Global Model Training](GameDesignMeetsMachineLearningTutorials/PersonalVSGlobalModelTraining.md) (Incomplete)
 
-* [Session-Based Vs Cumulative-Based Model Training](GameDesignMeetsMachineLearningTutorials/SessionBasedVsCumulativeBasedModelTraining.md)
+* [Session-Based Vs Cumulative-Based Model Training](GameDesignMeetsMachineLearningTutorials/SessionBasedVsCumulativeBasedModelTraining.md) (Incomplete)
 
 ## Performance
 
-* [Game Frames VS Model Training](GameDesignMeetsMachineLearningTutorials/GameFramesVSModelTraining.md)
+* [Game Frames VS Model Training](GameDesignMeetsMachineLearningTutorials/GameFramesVSModelTraining.md) (Incomplete)
 
-* [Data Noise, Correlation And Causation](GameDesignMeetsMachineLearningTutorials/DataNoiseCorrelationAndCausation.md)
+* [Data Noise, Correlation And Causation](GameDesignMeetsMachineLearningTutorials/DataNoiseCorrelationAndCausation.md) (Incomplete)
 
 ## What's Your Goal?
 

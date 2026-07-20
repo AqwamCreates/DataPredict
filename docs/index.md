@@ -47,9 +47,9 @@ To know what this library is all about from scratch, let's have a look at the qu
 
 * [High-Value Project Tutorials](HighValueProjectTutorials.md) - Revenue, Retention And More!
 
-* [Basic Tutorials](BasicTutorials.md)
+* [Game Design Meets Machine Learning Tutorials](GameDesignMeetsMachineLearningTutorials.md)
 
-* [Game Design Meets Machine Learning](HighValueProjectTutorials/GameDesignMeetsMachineLearning.md)
+* [Basic Tutorials](BasicTutorials.md)
 
 ## The API
 

@@ -1,8 +1,10 @@
 # [Documentation](index.md) - Game Design Meets Machine Learning Tutorials
 
-## Goal
+## The Basics
 
 * [Choosing The Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheGoalForTheModel.md) (Incomplete)
+
+* [All About Optimum](GameDesignMeetsMachineLearningTutorials/AllAboutOptimum.md)
 
 ## Engagement
 
@@ -13,8 +15,6 @@
 * [Engagement-Based Reward Function Formula For Reinforcement Learning](GameDesignMeetsMachineLearningTutorials/EngagementBasedRewardFunctionFormulaForReinforcementLearning.md)
 
 ## Personalization
-
-* [All About Optimum](GameDesignMeetsMachineLearningTutorials/AllAboutOptimum.md)
 
 * [Personal VS Global Model Training](GameDesignMeetsMachineLearningTutorials/PersonalVSGlobalModelTraining.md) (Incomplete)
 

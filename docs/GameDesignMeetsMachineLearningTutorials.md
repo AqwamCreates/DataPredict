@@ -1,6 +1,33 @@
-# Game Design Meets Machine Learning
+# Game Design Meets Machine Learning Tutorials
 
 Note: This documentation is still under construction. There will be links that go more in depth.
+
+## Goal
+
+* [Choosing The Correct Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheCorrectGoalForTheModel.md)
+
+## Engagement
+
+* [Making Games Engaging Instead Of Accurate](GameDesignMeetsMachineLearningTutorials/MakingEngagingFunInsteadOfAccurate.md)
+
+* [Measurement Of Engagement](GameDesignMeetsMachineLearningTutorials/MeasurementOfEngagement.md)
+
+* [Engagement-Based Reward Function Formula For Reinforcement Learning](GameDesignMeetsMachineLearningTutorials/EngagementBasedRewardFunctionFormulaForReinforcementLearning.md)
+
+## Personalization
+
+* [Personal VS Global Model Training](GameDesignMeetsMachineLearningTutorials/PersonalVSGlobalModelTraining.md)
+
+* [Session-Based Vs Cumulative-Based Model Training](GameDesignMeetsMachineLearningTutorials/SessionBasedVsCumulativeBasedModelTraining.md)
+
+## Performance
+
+* [Game Frames VS Model Training](GameDesignMeetsMachineLearningTutorials/GameFramesVSModelTraining.md)
+
+* [Data Noise, Correlation And Causation](GameDesignMeetsMachineLearningTutorials/DataNoiseCorrelationAndCausation.md)
+
+
+
 
 ## Measurement Of Fun And Its Relation To Engagement
 

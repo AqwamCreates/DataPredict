@@ -18,7 +18,7 @@ Note: This documentation is still under construction. There will be links that g
 
 * [Personal VS Global Model Training](GameDesignMeetsMachineLearningTutorials/PersonalVSGlobalModelTraining.md) (Incomplete)
 
-* [Session-Based Vs Cumulative-Based Model Training](GameDesignMeetsMachineLearningTutorials/SessionBasedVsCumulativeBasedModelTraining.md) (Incomplete)
+* [Session-Based VS Cumulative-Based Model Training](GameDesignMeetsMachineLearningTutorials/SessionBasedVSCumulativeBasedModelTraining.md) (Incomplete)
 
 ## Performance
 

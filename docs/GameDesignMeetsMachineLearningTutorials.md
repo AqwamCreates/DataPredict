@@ -20,7 +20,7 @@
 
 ## Engagement
 
-* [The Difference Between Engagement And Fun](GameDesignMeetsMachineLearningTutorials/TheDifferenceBetweenEngagementAndFun.md)
+* [The Difference Between Engagement And Fun](GameDesignMeetsMachineLearningTutorials/TheDifferenceBetweenEngagementAndFun.md) (Incomplete)
 
 * [Making Games Engaging Instead Of Accurate](GameDesignMeetsMachineLearningTutorials/MakingEngagingFunInsteadOfAccurate.md) (Incomplete)
 

@@ -65,9 +65,9 @@ local function learnFromPlayer(playerAction, durationBetweenAction)
 	
 	local engagementScore = calculateEngagementFromTiming(durationBetweenAction)
 	
-	local isPlayerLosing = getIsPlayerLosing()
+	local isPlayerLosing = getIsPlayerLosing() -- This is a general function for grabbing the player's losing status.
 	
-	local baseReward = getBaseReward() -- Generic function for grabbing base reward relating to the game mechanic
+	local baseReward = getBaseReward() -- This is a general function for grabbing base reward relating to the game's mechanics.
 
 	local correctActionPredictionValue = (isCorrectPredictedAction and 1) or 0
 	

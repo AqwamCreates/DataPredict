@@ -41,7 +41,7 @@ This assumes that the machine learning engineer work at these timing:
 
 * Weekdays: 7 pm to 3 am. Roughly 8 hours of work.
 
-* Weekends: 9 am to 3am. Roughly 18 hours of work.
+* Weekends: 9 am to 3 am. Roughly 18 hours of work.
 
 * Weekly Total: Roughly 76 hours of work.
 

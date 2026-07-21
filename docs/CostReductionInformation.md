@@ -29,13 +29,13 @@
 
 The table assumes that only one person is working on each library at machine learning engineer average salary rate in the United States.
 
-| Library             | Time Cost               | Work Hours Time Cost (40 Hours Per Week) | Monetary Cost (USD) | Work Hours Monetary Cost (USD) |
-|---------------------|-------------------------|------------------------------------------|---------------------|--------------------------------|
-| DataPredict™        | 25000+ Hours (~3 Years) | 625 Weeks (~12 Years)                    | ~300,000            | ~1,260,000                     |
-| DataPredict™ Neural | 17000+ Hours (~2 Years) | 425 Weeks (~8.2 Years)                   | ~200,000            | ~839,999                       |
-| DataPredict™ Axon   | 4000+ Hours (~6 Months) | 100 Weeks (~2 Years)                     | ~50,000             | ~210,000                       |
-| DataPredict™ Zero   | 2000+ Hours (~3 Months) | 50 Weeks (~1 Year)                       | ~25,000             | ~105,000                       |
-| All                 | 43800+ Hours (~5 Years) | 1095 Weeks (~21 years)                   | ~575,000            | ~2,414,999                     |
+| Library             | Personal Time Cost      | Work Hours Time Cost (40 Hours Per Week) | PersonalMonetary Cost (USD) | Work Hours Monetary Cost (USD) |
+|---------------------|-------------------------|------------------------------------------|-----------------------------|--------------------------------|
+| DataPredict™        | 25000+ Hours (~3 Years) | 625 Weeks (~12 Years)                    | ~300,000                    | ~1,260,000                     |
+| DataPredict™ Neural | 17000+ Hours (~2 Years) | 425 Weeks (~8.2 Years)                   | ~200,000                    | ~839,999                       |
+| DataPredict™ Axon   | 4000+ Hours (~6 Months) | 100 Weeks (~2 Years)                     | ~50,000                     | ~210,000                       |
+| DataPredict™ Zero   | 2000+ Hours (~3 Months) | 50 Weeks (~1 Year)                       | ~25,000                     | ~105,000                       |
+| All                 | 43800+ Hours (~5 Years) | 1095 Weeks (~21 years)                   | ~575,000                    | ~2,414,999                     |
 
 This assumes that the machine learning engineer work at these timing:
 

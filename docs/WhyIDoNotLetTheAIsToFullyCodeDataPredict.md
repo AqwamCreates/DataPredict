@@ -30,7 +30,7 @@ Below, I will list what I kept encountering despite me using the latest AI techn
 
 ## Common Issues Encountered With AI-Generated Codes
 
-* Even if I had given them research papers directly, they would still hallucinate for some reason.
+* Even if I had given them research papers directly, they would still hallucinate for some reason. This can be seen with Proximal Policy Optimization, where the AI insists on saying my implementation of PPO is wrong due to lack of clipped objective or the entropy terms. However, as seen in OpenAI's [Spinning Up](https://spinningup.openai.com/en/latest/algorithms/ppo.html) website, those are two different variants separate from the original PPO.
 
 * Since they are trained on existing data, the more complex first derivatives tend to be incorrect as they are not present in the wild. For example, the derivatives for the Factorization Machines kept changing despite the same prompt and can be made worse if I made it to show steps. At that point, I gave up having the AI doing the first derivative maths and use WolframAlpha or I do the derivation myself. Granted, I would make a mistake once in a while, but it wasn't that common compared to AI-generated codes.
 
@@ -50,4 +50,12 @@ I then asked the AI to show steps. Somehow, the first derivatives kept changing 
 
 From here, I pay very close attention whenever they do derivations and convert those derivations to code.
 
-Even the process of translation from mathematics to code is problematic for the AIs.
+Even the process of translation from mathematics to code is problematic for the AIs. It kept mixing up these derivatives if you don't ask them to separate different parts of gradient calculations:
+
+* The derivative in respect of inputs.
+
+* The deruvatuve in respect of activation functions.
+
+* The derivative in respect of the loss.
+
+As a result, I have became paranoid about my first derivatives and made sure the terms are verbose so that I can understand which calculations are for which part of the gradients.

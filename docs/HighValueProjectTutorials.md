@@ -14,6 +14,8 @@
 
 * [Cloud Machine Learning Costs VS DataPredict Costs](https://github.com/AqwamCreates/DataPredict/blob/main/docs/CloudMachineLearningCostsVSDataPredictCosts.md)
 
+* [Why I Do Not Let The AI Fully Code My Library]()
+
 ## Disclaimer
 
 * The "minimal implementation time" assumes that a junior gameplay machine learning engineer is handling the implementation.

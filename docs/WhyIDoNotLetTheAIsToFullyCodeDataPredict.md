@@ -30,7 +30,9 @@ Below, I will list what I kept encountering despite me using the latest AI techn
 
 ## Common Issues Encountered With AI-Generated Codes
 
-* Even if I had given them research papers directly, they would hallucinate On top of that, because they are trained on existing data, the more complex first derivatives tend to be incorrect as they are not present in the wild. Case in point, Factorization Machine. One time, it was this first derivative formula, then that first derivative formula. It kept changing despite the same prompt. I even asked about showing the steps, and it made it even more worse. At that point, I gave up having the AI doing the first derivative maths.
+* Even if I had given them research papers directly, they would still hallucinate for some reason.
+
+* Since they are trained on existing data, the more complex first derivatives tend to be incorrect as they are not present in the wild. For example, the derivatives for the Factorization Machines kept changing despite the same prompt and can be made worse if I made it to show steps. At that point, I gave up having the AI doing the first derivative maths.
 
 * Even for things that are well known like Neural Networks, they will get it wrong. This is especially noticeable if you have hand-crafted the neural network codes that have all the optimizations. The AI seem to be very strict about how you code these mathematical models, making them inflexible against codes that are clearly optimized. Deviate, and some how, you get a code for first derivative quite wrong.
 

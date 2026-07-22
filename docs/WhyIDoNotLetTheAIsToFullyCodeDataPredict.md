@@ -58,4 +58,4 @@ Even the process of translation from mathematics to code is problematic for the 
 
 * The derivative in respect of the loss.
 
-As a result, I have became paranoid about my first derivatives and made sure the terms are verbose so that I can understand which calculations are for which part of the gradients.
+As a result, I have became paranoid about my first derivatives and made sure the variable names are verbose so that I can understand which variables are for which part of the gradient calculations.

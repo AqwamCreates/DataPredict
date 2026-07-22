@@ -50,4 +50,4 @@ I then asked the AI to show steps. Somehow, the first derivatives kept changing 
 
 From here, I pay very close attention whenever they do derivations and convert those derivations to code.
 
-Even the process of translation from mathematics to code is problematic for the AI.
+Even the process of translation from mathematics to code is problematic for the AIs.

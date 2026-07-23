@@ -54,7 +54,7 @@ Below, I will list what I kept encountering despite me using the latest AI techn
 
 ## History Of Building DataPredict™ With AIs
 
-Do you want to know why DataPredict™ was overly verbose? 
+Do you want to know why DataPredict™ is overly verbose? 
 
 During the first three months of DataPredict™'s development, I used the AI too excessively but never checked the correctness. I then get complaints that the library doesn't work. This is where I began doing first derivative by hand and realized how wrong the AI was...
 

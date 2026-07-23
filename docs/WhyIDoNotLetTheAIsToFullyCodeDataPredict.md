@@ -14,7 +14,7 @@ DataPredict™ has existed since around February 2023, where that is where ChatG
 
 Some people want to argue that AI models back then wasn't that good back then, and tell me that I should use latest models.
 
-I did, including the day that you are reading this document right now. This includes using ChatGPT, LLama, Gemini, Mistral, Qwen, DeepSeek, Kimi and many others. I have tested them all under a lot of different configurations like setting between high and low thinking modes, personalizing my prompts and so on.
+I did, including the day that you are reading this document right now. This includes using ChatGPT, LLama, Gemini, Mistral, Qwen, DeepSeek, Kimi and many others. I have tested them all under a lot of different configurations like choosing between high and low thinking modes, personalizing my prompts and so on.
 
 The AIs still had glaring problems. The AIs will always have them.
 

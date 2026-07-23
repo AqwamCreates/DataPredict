@@ -28,7 +28,7 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local GradientMethodBaseModel = require("Core_GradientMethodBaseModel")
+local GradientMethodBaseModel = require("Model_GradientMethodBaseModel")
 
 local ZTableFunction = require("Core_ZTableFunction")
 
@@ -333,11 +333,11 @@ local elementWiseActivationFunctionDerivativeList = {
 	["ProbitInverseLink"] = function (a, z) return calculateProbabilityDensityFunctionValue(z) end,
 
 	["LogLogLink"] = function (a, z)
-		
+
 		local x = math.clamp(z, epsilon, 1)
-		
-		return x / (x * math.log(x)) 
-		
+
+		return 1 / (x * math.log(x)) 
+
 	end,
 
 	["LogLogInverseLink"] = function (a, z) return -math.exp(z) * math.exp(-math.exp(z)) end,
@@ -360,7 +360,7 @@ local elementWiseActivationFunctionDerivativeList = {
 	
 	["InverseInverseLink"] = function (a, z) return 1 end,
 	
-	["SquareRootLink"] = function (a, z) return (0.5 / (1.5 * math.sqrt(z))) end,
+	["SquareRootLink"] = function (a, z) return (1 / (2 * math.sqrt(z))) end,
 	
 	["SquareRootInverseLink"] = function (a, z) return (-0.5 / math.pow(z, 1.5)) end,
 
@@ -452,7 +452,7 @@ local activationFunctionDerivativeList = {
 
 	end,
 
-	["None"] = function (unwrappedAVector, unwrappedZVector) return table.create(#unwrappedZVector, 0) end,
+	["None"] = function (unwrappedAVector, unwrappedZVector) return table.create(#unwrappedZVector, 1) end,
 
 }
 
@@ -475,8 +475,6 @@ local lossFunctionList = {
 	["HingeLoss"] = function(generatedLabelValue, labelValue) return math.max(0, (1 - (generatedLabelValue * labelValue))) end,
 
 	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
-	
-	["PerceptronLoss"] = function (h, y) return math.max(0, -(h * y)) end,
 
 	["BinaryCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end,
 
@@ -509,16 +507,6 @@ local lossFunctionGradientList = {
 		local scale = ((margin > 0) and margin) or 0
 
 		return -(2 * y * scale)
-
-	end,
-	
-	["PerceptronLoss"] = function (h, y) 
-
-		local value = (h * y)
-
-		if (value > 0) then return 0 end
-
-		return -value
 
 	end,
 
@@ -950,13 +938,13 @@ function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 	
 	local derivativeMatrix = deriveLayer(forwardPropagateArray[numberOfLayers], zMatrixArray[numberOfLayers], hasBiasNeuronArray[numberOfLayers], activationFunctionArray[numberOfLayers])
 
-	local layerCostMatrix = AqwamTensorLibrary:multiply(derivativeMatrix, lossGradientMatrix)
+	local layerCostMatrix = AqwamTensorLibrary:multiply(lossGradientMatrix, derivativeMatrix)
 	
 	local weightMatrix = ModelParameters[numberOfLayersMinusOne]
 	
 	local Solver = SolverArray[numberOfLayers]
 	
-	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = Solver:calculate(weightMatrix, forwardPropagateArray[numberOfLayersMinusOne], derivativeMatrix, lossGradientMatrix) 
+	costFunctionDerivativeMatrixArray[numberOfLayersMinusOne] = Solver:calculate(weightMatrix, forwardPropagateArray[numberOfLayersMinusOne], layerCostMatrix) 
 
 	for layerNumber = numberOfLayersMinusOne, 2, -1 do
 		
@@ -971,10 +959,10 @@ function NeuralNetworkModel:backwardPropagate(lossGradientMatrix)
 		local partialErrorMatrix = AqwamTensorLibrary:dotProduct(layerCostMatrix, transposedWeightMatrix)
 
 		derivativeMatrix = deriveLayer(forwardPropagateArray[layerNumber], zMatrixArray[layerNumber], hasBiasNeuronArray[layerNumber], activationFunctionArray[layerNumber])
+
+		layerCostMatrix = AqwamTensorLibrary:multiply(partialErrorMatrix, derivativeMatrix)
 		
-		layerCostMatrix = AqwamTensorLibrary:multiply(derivativeMatrix, partialErrorMatrix)
-		
-		costFunctionDerivativeMatrixArray[weightNumber] = Solver:calculate(weightMatrix, forwardPropagateArray[weightNumber], derivativeMatrix, partialErrorMatrix) 
+		costFunctionDerivativeMatrixArray[weightNumber] = Solver:calculate(weightMatrix, forwardPropagateArray[weightNumber], layerCostMatrix) 
 
 		self:sequenceWait()
 
@@ -1344,7 +1332,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		
 		--[[
 		
-			Do not set isLinear to true for the second layer due to common usage of this library for deep reinforcement learning.
+			Do not set isNonLinearInput to false for the second layer due to common usage of this library for deep reinforcement learning.
 		
 			This is because deep reinforcement learning often uses storchastic or mini-batch training.
 		
@@ -1352,7 +1340,7 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 		
 		--]]
 		
-		SolverArray[layer] = ((layer >= 2) and AbstractSolver.new())
+		SolverArray[layer] = ((layer >= 2) and AbstractSolver.new({isNonLinearInput = true}))
 
 	end
 	
@@ -1408,7 +1396,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 	
 	--[[
 		
-		Do not set isLinear to true for the second layer due to common usage of this library for deep reinforcement learning.
+		Do not set isNonLinearInput to false for the second layer due to common usage of this library for deep reinforcement learning.
 	
 		This is because deep reinforcement learning often uses storchastic or mini-batch training.
 		
@@ -1416,7 +1404,7 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 		
 	--]]
 	
-	Solver = Solver or (not isFirstLayer and require(Solvers[defaultSolver]).new())
+	Solver = Solver or (not isFirstLayer and require(Solvers[defaultSolver]).new({isNonLinearInput = true}))
 
 	table.insert(numberOfNeuronsArray, numberOfNeurons)
 

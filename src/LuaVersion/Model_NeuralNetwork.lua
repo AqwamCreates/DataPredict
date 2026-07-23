@@ -144,7 +144,7 @@ local elementWiseActivationFunctionList = {
 
 	["ArcTangent"] = function (z) return (2 / math.pi) * math.atan(z) end,
 	
-	["LogitLink"] = function (z) 
+	["LogitLink"] = function (z)
 
 		local x = math.clamp(z, epsilon, epsilonComplement)
 
@@ -1254,7 +1254,7 @@ function NeuralNetworkModel:generateLayers()
 
 		local numberOfCurrentLayerNeurons = numberOfNeuronsArray[layer]
 
-		if (hasBiasNeuronArray[layer] == 1) then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias
+		if (hasBiasNeuronArray[layer] == 1) then numberOfCurrentLayerNeurons += 1 end -- 1 is added for bias.
 
 		local numberOfNextLayerNeurons = numberOfNeuronsArray[layer + 1]
 
@@ -2049,7 +2049,7 @@ function NeuralNetworkModel:showDetails()
 	
 	local SolverArray = self.SolverArray
 	
-	-- Calculate the maximum length for each column
+	-- Calculate the maximum length for each column.
 	
 	local maxLayerLength = string.len("Layer")
 	
@@ -2119,7 +2119,7 @@ function NeuralNetworkModel:showDetails()
 
 	end
 
-	-- Print the array header
+	-- Print the array header.
 
 	local stringToPrint = ""
 
@@ -2159,7 +2159,8 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maximumSolverLength) .. "-+" .. 
 		"\n"
 
-	-- Print the layer details
+	-- Print the layer details.
+	
 	for i = 1, #numberOfNeuronsArray, 1 do
 		
 		hasBias = (hasBiasNeuronArray[i] == 1)

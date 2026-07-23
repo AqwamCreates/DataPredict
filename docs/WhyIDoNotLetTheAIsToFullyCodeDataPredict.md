@@ -26,7 +26,7 @@ I don't remember how many times that I kept encountering mathematical issues gen
 
 There's a good reason why despite the claims of AI having PhD intelligence, the newest AI models are still built by PhD people and not the older AI models themselves.
 
-Below, I will list what I kept encountering despite me using the latest AI technology.
+Below, I will list what I kept encountering despite me using the latest AI technologies.
 
 ## Common Issues Encountered With AI-Generated Codes
 

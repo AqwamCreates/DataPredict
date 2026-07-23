@@ -34,7 +34,9 @@ I mean... DataPredict™ having over 137K views and 270 likes for over three yea
 
 At the very least, I now know that I can build something valuable in the midst of my parents' stupidity and hypocrisies, as well as lacking owning up to their mistakes and hypocrisies.
 
-That being said... DataPredict™ is almost being close to done after all these years. I might eventually put this into a perpetual maintenance mode until people demand me to add new stuff. What a great journey, DataPredict™.
+That being said... DataPredict™ is almost being close to done after all these years. I might eventually put this into a perpetual maintenance mode until people demand me to add new stuff. All algorithms that have use cases in games are implemented, while niche ones will only be implemented based on demand. There's no point in adding complex algorithms for niche use cases given that nobody will use them for most of the time.
+
+What a great journey, DataPredict™.
 
 Once DataPredict™ is done, I'm going back to:
 

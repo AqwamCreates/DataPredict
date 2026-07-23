@@ -10,7 +10,7 @@ I already know how this would go.
 
 In fact, I have seen fully AI-generated competitors died immediately (in terms of popularity and maintainance) after being released to the public.
 
-DataPredict has existed since around February 2023, where that is where ChatGPT is around. So I had every opportunities to let the AI do the work for me.
+DataPredict™ has existed since around February 2023, where that is where ChatGPT is around. So I had every opportunities to let the AI do the work for me.
 
 Some people want to argue that AI models back then wasn't that good back then, and tell me that I should use latest models.
 
@@ -32,7 +32,7 @@ Below, I will list what I kept encountering despite me using the latest AI techn
 
 * Unlike the general software engineering projects where functionality errors are easy to visualize and to fix by the AIs, the mathematical errors tend to be silent and not raise any errors. This means that if the AIs misses the bugs related to mathematics and the AI receives no errors, the AIs will assume it is working without checking the individual first derivative values.
 
-* Even if I had given them research papers directly, they would still hallucinate for some reason. This can be seen with Proximal Policy Optimization, where the AI insists on saying my implementation of PPO is wrong due to lack of clipped objective or the entropy terms. However, as seen in OpenAI's [Spinning Up](https://spinningup.openai.com/en/latest/algorithms/ppo.html) website (where OpenAI is literally this algorithm's developer), those are two different variants separate from the original PPO.
+* Even if I had given them research papers directly, they would still hallucinate for some reason. This can be seen with Proximal Policy Optimization, where the AI insists on saying my implementation of PPO is wrong due to lack of clipped objective or the entropy terms. However, as seen in OpenAI's [Spinning Up](https://spinningup.openai.com/en/latest/algorithms/ppo.html) website, those are two different variants separate from the original PPO. What made even worse, OpenAI is the original developer for Proximal Policy Optimization and acknowledged the fact there are two variants of Proximal Policy Optimization, where the clipped objective and the entropy terms are just extensions to this algorithm.
 
 * Since they are trained on existing data, the more complex first derivatives tend to be incorrect as they are not present in the wild. For example, the derivatives for the Factorization Machines kept changing despite the same prompt and can be made worse if I made it to show steps. At that point, I gave up having the AI doing the first derivative maths and use WolframAlpha or I do the derivation myself. Granted, I would make a mistake once in a while, but it wasn't that common compared to AI-generated codes.
 
@@ -46,7 +46,7 @@ Below, I will list what I kept encountering despite me using the latest AI techn
 
 Do you want to know why DataPredict was overly verbose? 
 
-During the first three months of development, I used the AI too excessively but never checked the correctness. I then get complaints that the library doesn't work. This is where I began doing first derivative by hand and realized how wrong the AI was...
+During the first three months of DataPredict™'s development, I used the AI too excessively but never checked the correctness. I then get complaints that the library doesn't work. This is where I began doing first derivative by hand and realized how wrong the AI was...
 
 I then asked the AI to show steps. Somehow, the first derivatives kept changing whenever I regenerate the AI texts with the same prompt.
 

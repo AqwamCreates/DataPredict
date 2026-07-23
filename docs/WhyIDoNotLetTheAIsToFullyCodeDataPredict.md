@@ -14,9 +14,9 @@ DataPredict has existed since around February 2023, where that is where ChatGPT 
 
 Some people want to argue that AI models back then wasn't that good back then, and tell me that I should use latest models.
 
-I did, including the day that you are reading this document right now.
+I did, including the day that you are reading this document right now. This includes using ChatGPT, LLama, Gemini, Mistral, Qwen, DeepSeek, Kimi and many others. I have tested them all under a lot of different configurations like setting between high and low thinking modes, personalizing my prompts and so on.
 
-It still had glaring problems. It always will.
+The AIs still had glaring problems. The AIs will always have them.
 
 The AIs are good in general software engineering, I'm not going to deny that.
 
@@ -29,6 +29,8 @@ There's a good reason why despite the claims of AI having PhD intelligence, the 
 Below, I will list what I kept encountering despite me using the latest AI technology.
 
 ## Common Issues Encountered With AI-Generated Codes
+
+* Unlike the general software engineering projects where functionality errors are easy to visualize and to fix by the AIs, the mathematical errors tend to be silent and not raise any errors. This means that if the AIs misses the bugs related to mathematics and the AI receives no errors, the AIs will assume it is working without checking the individual first derivative values.
 
 * Even if I had given them research papers directly, they would still hallucinate for some reason. This can be seen with Proximal Policy Optimization, where the AI insists on saying my implementation of PPO is wrong due to lack of clipped objective or the entropy terms. However, as seen in OpenAI's [Spinning Up](https://spinningup.openai.com/en/latest/algorithms/ppo.html) website, those are two different variants separate from the original PPO.
 
@@ -58,4 +60,4 @@ Even the process of translation from mathematics to code is problematic for the 
 
 * The derivative in respect of the loss.
 
-As a result, I have became paranoid about my first derivatives and made sure the variable names are verbose so that I can understand which variables are for which part of the gradient calculations.
+As a result, I have became paranoid about my first derivatives and made sure the variable names are verbose so that I can understand which variables are for which part of the first derivative calculations. The once that does not use first derivatives eventually follow suit for their variable names just to keep track on the correctness of the mathemaically-heavy codes.

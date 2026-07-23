@@ -44,6 +44,12 @@ Below, I will list what I kept encountering despite me using the latest AI techn
 
 * My codes are already interacting with each other in the most very strange way, with a very strange external API. Because of this strangeness (which is required for my machine learning library), a single API code change breaks every other interacting codes.
 
+* The AI can be easily confused if the algorithm has these two conditions:
+
+  * The AI has a general assumption of doing gradient descent and not gradient ascent when it comes to first derivative formulation.
+ 
+  * Switch the ```predictedLabelBalue - labelValue``` to ```labelValue - predictedLabelBalue``` in mean squared error cost function.
+
 ## History Of Building DataPredict With AIs
 
 Do you want to know why DataPredict was overly verbose? 

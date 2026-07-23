@@ -64,7 +64,7 @@ Even the process of translation from mathematics to code is problematic for the 
 
 * The derivative in respect of inputs.
 
-* The deruvatuve in respect of activation functions.
+* The derivative in respect of activation functions.
 
 * The derivative in respect of the loss.
 

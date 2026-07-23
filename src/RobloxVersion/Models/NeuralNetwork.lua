@@ -140,7 +140,7 @@ local elementWiseActivationFunctionList = {
 
 	["SoftSign"] = function (z) return (z / (1 + math.abs(z))) end,
 	
-	["SoftPlus"] = function (z) return (1 + math.exp(z)) end,
+	["SoftPlus"] = function (z) return math.log(1 + math.exp(z)) end,
 
 	["ArcTangent"] = function (z) return (2 / math.pi) * math.atan(z) end,
 	

@@ -264,7 +264,7 @@ end
 
 function OnlineLearning:stop()
 
-	self.IsOnlineLearningRunning = false
+	self.isOnlineLearningRunning = false
 
 end
 

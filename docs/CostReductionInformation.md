@@ -59,7 +59,7 @@ To understand why I don't use AIs to let the AI to do full code generation to fu
 
 ## Comparison To The Solution Of Other Game Engines
 
-| ML For Games Solution           | Description                                                                               | Features                         -          | First Development Date | First Release Date          | Development Duration For Production Release |
+| ML For Games Solution           | Description                                                                               | Features                                    | First Development Date | First Release Date          | Development Duration For Production Release |
 |---------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------------|------------------------|-----------------------------|---------------------------------------------|
 | Unity's ML-Agents               | Uses Unity SDK, PyTorch And External Communicator To Train AI Agents.                     | PPO, SAC And Imitation Learning.            | 19 September 2017      | 1 May 2020                  | 955 days (2.7 Years)                        |
 | Unreal Engine's Learning Agents | Uses Unreal Engine's Blueprint System And C++ library To Train AI Agents.                 | PPO And Behavior Cloning.                   | September 2023         | Still At Experimental Phase | N/A                                         |

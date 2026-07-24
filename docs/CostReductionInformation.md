@@ -55,4 +55,4 @@ This assumes that the machine learning engineer work at these timing:
 
 * I rely on the community to search for potential bugs in addition of my own bug hunting, keeping the costs low by not hiring a dedicated tester.
 
-To understand to as why I don't use AIs to let the AI to do full code generation to lower the costs further, you can have a look [here](WhyIDoNotLetTheAIsToFullyCodeDataPredict.md).
+To understand why I don't use AIs to let the AI to do full code generation to further lower the costs, you can have a look [here](WhyIDoNotLetTheAIsToFullyCodeDataPredict.md).

@@ -56,3 +56,10 @@ This assumes that the machine learning engineer work at these timing:
 * I rely on the community to search for potential bugs in addition of my own bug hunting, keeping the costs low by not hiring a dedicated tester.
 
 To understand why I don't use AIs to let the AI to do full code generation to further lower the costs, you can have a look [here](WhyIDoNotLetTheAIsToFullyCodeDataPredict.md).
+
+## Comparison To The Solution Of Other Game Engines
+
+| ML For Games Solution           | Description                                                                | Features                         | First Development Date | First Release Date | Time-To-Market       |
+|---------------------------------|----------------------------------------------------------------------------|----------------------------------|------------------------|--------------------|----------------------|
+| Unity's ML-Agents               | Uses Unity SDK, PyTorch and External Communicator To Train AI Agents.      | PPO, SAC and Imitation Learning. | 19 September 2017      | 1 May 2020         | 955 days (2.7 Years) |
+| Unreal Engine's Learning Agents | Uses, Unreal Engine's Blueprint System and C++ library To Train AI Agents. | PPO and Imitation Learning.      | September 2023         | N/A                | N/A                  |

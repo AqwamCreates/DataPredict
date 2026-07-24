@@ -54,3 +54,5 @@ This assumes that the machine learning engineer work at these timing:
 * Being a solo developer means that there is no overhead from managing people, keeping the costs low.
 
 * I rely on the community to search for potential bugs in addition of my own bug hunting, keeping the costs low by not hiring a dedicated tester.
+
+To understand to as why I don't use AIs to let the AI to do full code generation to lower the costs further, you can have a look [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/WhyIDoNotLetTheAIsToFullyCodeDataPredict.md).

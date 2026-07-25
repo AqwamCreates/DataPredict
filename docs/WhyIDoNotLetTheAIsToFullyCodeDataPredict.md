@@ -68,7 +68,7 @@ Even the process of translation from mathematics to code is problematic for the 
 
 * The derivative in respect of activation functions.
 
-* The derivative in respect of the loss.
+* The derivative in respect of the cost functions.
 
 As a result, I have became paranoid about my first derivatives and made sure the variable names are verbose so that I can understand which variables are for which part of the first derivative calculations. The once that does not use first derivatives eventually follow suit for their variable names just to keep track on the correctness of the mathemaically-heavy codes.
 

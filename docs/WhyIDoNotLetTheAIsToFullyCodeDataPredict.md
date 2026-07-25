@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Some people want to argue that they don't have to pay for a comprehensive machine learning library and they'll just ask the AIs to fully code a DataPredict™ competitor.
+Some people want to argue that they don't have to pay for a comprehensive pure Lua machine learning library and they'll just ask the AIs to fully code a DataPredict™ competitor.
 
 My reaction? Indifference. 
 

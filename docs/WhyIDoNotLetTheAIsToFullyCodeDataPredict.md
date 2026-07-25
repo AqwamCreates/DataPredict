@@ -6,7 +6,7 @@ Some people want to argue that they don't have to pay for a comprehensive machin
 
 My reaction? Indifference. 
 
-I already know how this would go. 
+I already know on how this would go. 
 
 In fact, I have seen fully AI-generated competitors died immediately (in terms of popularity and maintainance) after being released to the public.
 

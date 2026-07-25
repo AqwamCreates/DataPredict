@@ -74,7 +74,7 @@ As a result, I have became paranoid about my first derivatives and made sure the
 
 ## Conclusion
 
-If anyone thinking they can simply let the AI to fully generate a library like DataPredict™, I would tell them to spend their AIs' tokens somewhere else.
+If anyone thinking they can simply let the AI to fully code a library like DataPredict™, I would tell them to spend their AIs' tokens somewhere else.
 
 This is why I am unconcerned about about open-source AI-generated competitors to DataPredict™. I am already aware that if someone to do that, they will get the mathematics wrong, which in turns lead to wrong predictions and lead to loss of revenue. In addition, the game developers tend to be sensitive to risks since games don't generate a lot of revenue. As a result, if an algorithm's prediction is off even for a sligthest margin and that leads to loses in revenue, the game developers will remove the library eventually. I have seen this repeated for over like for over three years now.
 

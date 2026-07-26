@@ -72,6 +72,36 @@ Even the process of translation from mathematics to code is problematic for the 
 
 As a result, I have became paranoid about my first derivatives and made sure the variable names are verbose so that I can understand which variables are for which part of the first derivative calculations. The once that does not use first derivatives eventually follow suit for their variable names just to keep track on the correctness of the mathemaically-heavy codes.
 
+## The Absurd Requirements For Building DataPredict™
+
+While I told everyone that building DataPredict™ requires a near-PhD knowledge, I never really covered in depth what it actually entails. Below, I will tell you what knowledge I had used when applying DataPredict.
+
+### Formal Knowledge
+
+* A-Levels Mathematics: This subject allows me to do first derivatives which is one of the A-Levels mathematics' topics. However, these don't generally cover derivatives involving tensors and matrices.
+
+* Bachelor Algorithm Correctness And Efficiency: This subject allows me to understand what redudant calculations can be removed or cached during all of the algorithms' optimization. This enables all of these algorithms to train between game frames.
+
+* Bachelor Software Maintenance: This subject allows me to be efficient in adding and extending algoritms since this subject has trained me to be more disciplined while coding a large codebase.
+
+* Bachelor Human Computer Interaction: This subject allowed me to create DataPredict™'s API designs that are comfortable for those who are not used to apply machine learning to their projects. If the users feel that the API design is uncomfortable to use, they are likely to think that the overall machine learning stuff is complicated to apply for their projects.
+
+* Bachelor Machine Learning: This subject acted as more of a suplement to my online courses. However, I did extract some of the useful machine learning algorithms that I had not learn from my online courses and implemented it directly to DataPredict™ library.
+
+* Computer Vision: This subject Again, this subject acted as more of a suplement to my online courses. But this time around, there's not much useful knowledge I can extract from other than refreshing my existing knowledge.
+
+### Online Course Knowledge
+
+After the completion of my A-Levels and before my enrollment to the university, I had taken up several online knowledge
+
+* Machine Learning: This subject is where I become comfortable to extend my A-Levels first derivative knowledge to 
+
+* Deep Learning:
+
+### Experience Knowledge
+
+
+
 ## Conclusion
 
 If anyone thinking they can simply let the AI to fully code a library like DataPredict™, I would tell them to spend their AIs' tokens somewhere else.

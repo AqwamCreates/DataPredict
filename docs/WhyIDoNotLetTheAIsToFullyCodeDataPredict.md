@@ -108,7 +108,7 @@ After the completion of my A-Levels and before my enrollment to the university, 
 
 ### Experience Knowledge
 
-* Whenever I encounter gradient-based optimization algorithms, I would look into multiple websites for first derivatives and eventually do gradient descent or ascent formulation. Eventually, this makes my brain automatically create the first derivatives formulation without needing to visit any websites except in hard cases.
+* Whenever I encounter gradient-based optimization algorithms, I would look into multiple websites for first derivatives and eventually do gradient descent or ascent formulation. Eventually, this makes my brain automatically create the first derivatives formulation without needing to visit any websites except in hard cases or purely to save time.
 
 * For algorithms I never implemented in DataPredict™, I generally looked into multiple websites to see all the optimization formulation and see the individual steps before translating into code. I tend to skip algorithms that has mathematical notations that are hard to read and converted to code. From there, I take on the more easier ones first, which sometimes ends uo leading me to converting harder algorithms to code.
 

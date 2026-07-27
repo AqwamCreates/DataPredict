@@ -4,11 +4,11 @@
 
 * [Common Issues Encountered With AI-Generated Codes](#common-issues-encountered-with-ai-generated-codes)
 
-* [History Of Building DataPredict™ With AIs]()
+* [History Of Building DataPredict™ With AIs](#history-of-building-datapredict-with-ais)
 
-* [The Absurd Requirements For Building DataPredict™]
+* [The Absurd Requirements For Building DataPredict™](#the-absurd-requirements-for-building-datapredict)
 
-* [Conclusion]()
+* [Conclusion](#conclusion)
 
 ## Introduction
 

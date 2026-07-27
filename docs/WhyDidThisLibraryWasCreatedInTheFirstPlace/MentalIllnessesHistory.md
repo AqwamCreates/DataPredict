@@ -98,7 +98,7 @@ Then, I realized something. There was no mention from the public healthcare that
 
 He... well... ended up elaborating that the JPJ (the one responsible for giving the driving license to me) and KKM (the one responsible for my mental illness treatment in public healthcare) were using two separate systems and so that is why JPJ never immediately revoked my driving license... I was already raising one of my eyebrows in suspicion and I had suspected that he has now began shifting the goalpost.
 
-Few months later, I suspected ADHD, and so I got diagnosed by a public healthcare psychiatrist. I got that ADHD diagnosis too. The only problem is that getting ADHD medication was difficult, so I ended up using an alternative: drinking coffee more than or equal to two times a day. Not healthy, but who cares. I need it that badly for my functioning.
+Few months later, I suspected ADHD, and so I got diagnosed by a public healthcare psychiatrist. I got that ADHD diagnosis too. The only problem is that getting ADHD medication was difficult, so I ended up using an alternative: drinking coffee more than or equal to two times a day. Not healthy, but who cares. I need it that badly for me to function in my daily life.
 
 If anyone is fucking asking me why I don't go there myself when I am already an adult, you clearly haven't put this into mind:
 

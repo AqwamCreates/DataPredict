@@ -104,7 +104,7 @@ After the completion of my A-Levels and before my enrollment to the university, 
  
   * Gradient descent.
 
-* Deep Learning: This is where I build upon my existing machine learning knowledge where I deal first derivatives from matrices to tensors. This is where I really learn on how broadcasted tensors leads to collapsed first derivative tensors and accumulate the gradients along the broadcasted axis. In addition, I also learnt how algorithms can learn from images, texts and audio from this subject. While it looked complicated when I first started this course, I eventually get it once I write these algorithms by hand many times in the DataPredict™ library.
+* Deep Learning: This is where I build upon my existing machine learning knowledge where I deal first derivatives from matrices to tensors. This is where I learn on how broadcasted tensors leads to collapsed first derivative tensors and accumulate the gradients along the broadcasted axes. In addition, I also learnt how algorithms can learn from images, texts and audio from this subject. While it looked complicated when I first started this course, I eventually get it once I write these algorithms by hand many times in the DataPredict™ library.
 
 ### Experience Knowledge
 

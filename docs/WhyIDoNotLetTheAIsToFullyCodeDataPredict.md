@@ -50,7 +50,7 @@ Below, I will list what I kept encountering despite me using the latest AI techn
 
   * The AI has a general assumption of doing gradient descent and not gradient ascent when it comes to first derivative formulation.
  
-  * Switch the ```predictedLabelBalue - labelValue``` to ```labelValue - predictedLabelBalue``` in mean squared error cost function.
+  * Switch the ```predictedLabelBalue - labelValue``` to ```labelValue - predictedLabelBalue``` in mean squared error cost function and its first derivatives.
 
 ## History Of Building DataPredict™ With AIs
 

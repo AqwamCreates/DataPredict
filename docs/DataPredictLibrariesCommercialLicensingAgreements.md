@@ -38,7 +38,7 @@
 
    * Includes access to future updates and fixes.
 
-* [Standard License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement.docx)
+* [Standard License](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements/DataPredict%20Libraries%20Licensing%20Agreement%20-%20Standard.docx)
 
     * Includes DataPredict™, DataPredict™ Neural, DataPredict™ Axon and DataPredict™ Zero.
 

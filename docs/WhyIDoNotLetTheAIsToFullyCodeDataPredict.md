@@ -54,7 +54,7 @@ Below, I will list what I kept encountering despite me using the latest AI techn
 
 * The AI seem to never even apply Inheritance, Composition, DRY, SOLID, and Design Patterns properly that is common in my codebase. I literally need this to make sure my code to be maintainable. I also need it to be readable for everyone including the AIs.
 
-* My codes are already interacting with each other in the most very strange way, with a very strange external API. Because of this strangeness (which is required for my machine learning library), a single API code change breaks every other interacting codes.
+* My DataPredict™ library codes for individual objects are already interacting with each other in the most very strange way, with their own very strange external API. Because of this strangeness that is required for DataPredict™ library, a single DataPredict™ API code change breaks every other interacting codes.
 
 * The AI can be easily confused if the algorithm has these two conditions:
 

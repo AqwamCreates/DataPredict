@@ -52,7 +52,7 @@ Below, I will list what I kept encountering despite me using the latest AI techn
 
 * Whenever I attempt to do time complexity and space complexity analysis for optimizations relating to matrix operations, it kept changing whenever I regenerate the AIs' texts despite the same prompt. It can be made worse if I made it to show the individual steps.
 
-* The AI seem to never even apply Composition, Inheritance, SOLID, DRY, and Design Patterns properly that is common in my codebase. I literally need this to make sure my code to be maintainable. I also need it to be readable for everyone including the AIs.
+* The AI seem to never even apply Inheritance, Composition, DRY, SOLID, and Design Patterns properly that is common in my codebase. I literally need this to make sure my code to be maintainable. I also need it to be readable for everyone including the AIs.
 
 * My codes are already interacting with each other in the most very strange way, with a very strange external API. Because of this strangeness (which is required for my machine learning library), a single API code change breaks every other interacting codes.
 
@@ -94,7 +94,7 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 * Bachelor Software Engineering Group Project. This subject what got me to fully learn how to code in Lua and Roblox's game engine, Roblox Studio, for almost one year because our group were developing a Roblox game back then. While this is unintentional, this knowledge proved useful for coding a native Lua machine learning library like DataPredict™. Also, since I was the new leader for this group, I realized that integrating other people's codes can be quite painful. This in turn reflects back to my code designs including the DataPredict™ library where I would make sure that that my libraries are easy to integrate with the existing codebases. 
 
-* Bachelor Software Maintenance: This subject allows me to be efficient in adding and extending algoritms since this subject has trained me to be more disciplined in Composition, Inheritance, SOLID, DRY, and Design Patterns for all kinds of codebases including DataPredict™.
+* Bachelor Software Maintenance: This subject allows me to be efficient in adding and extending algoritms since this subject has trained me to be more disciplined in Inheritance, Composition, DRY, SOLID, and Design Patterns for all kinds of codebases including DataPredict™.
 
 * Bachelor Human Computer Interaction: This subject allowed me to create DataPredict™'s API designs that are comfortable for those who are not used to apply machine learning to their projects. If the users feel that the API design is uncomfortable to use, they are likely to think that the machine learning stuff are complicated.
 

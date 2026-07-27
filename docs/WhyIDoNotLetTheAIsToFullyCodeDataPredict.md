@@ -102,7 +102,7 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 * Programming And Algorithms: This subject allows me to understand how pointers work, which is quite common in Lua. I also learnt recursion here which is important for creating N-dimensional tensor library, TensorL, where it uses nested Lua tables to represent the tensors.
 
-* Mathematics For Computer Scientists 1 & 2: The first part of the subject allowed me to read complicated mathematical notations, but I was still not good back then until I had a lot of practice when implementing DataPredict™'s algorithms from mathematical formulations. The second part of the subject is what allowed me to implement the adjoint method for matrix inversion to code.
+* Mathematics For Computer Scientists 1 & 2: The first part of the subject allowed me to read complicated mathematical notations, but I was still not good back then until I had a lot of practice when implementing DataPredict™'s algorithms from mathematical formulations. The second part of the subject is what allowed me to implement the adjugate method for matrix inversion to code.
 
 * Algorithm Correctness And Efficiency: This subject allows me to understand what redudant calculations can be removed or cached during all of the algorithms' optimization. This enables all of these algorithms to train between game frames.
 

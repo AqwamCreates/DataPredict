@@ -100,7 +100,9 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 * Bachelor Machine Learning: This subject acted as more of a suplement to my online courses. However, I did extract some of the useful machine learning algorithms that I had not learn from my online courses and implemented it directly to DataPredict™ library.
 
-* Bachelor Computer Vision: This subject Again, this subject acted as more of a suplement to my online courses. But this time around, there's not much useful knowledge I can extract from other than refreshing my existing knowledge.
+* Bachelor Computer Vision: Again, this subject acted as more of a suplement to my online courses. But this time around, there's not much useful knowledge I can extract from other than refreshing my existing knowledge.
+
+* Masters Data Science: This subject made me realize the business value of the DataPredict™ library, leading me to write comprehensive [high-value project tutorials](HighValueProjectTutorials.md). It also enabled me to add new statistical algorithms (like variants of Least Squares), solvers (like Gauss-Newton) and many more. These statistical algorithms served the same purpose to machine learning library where they learn patterns from data, but a bit more sample efficient than the machine learning algorithms.
 
 ### Online Course Knowledge
 

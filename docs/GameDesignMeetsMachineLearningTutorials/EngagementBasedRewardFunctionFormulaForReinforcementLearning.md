@@ -2,13 +2,13 @@
 
 ## Priority List For Engagement
 
-* Priority 1: Be merciful (Retention)
+1. Be merciful (Retention)
 
-* Priority 2: Be fair (Limiter)
+2. Be fair (Limiter)
 
-* Priority 3: Be adaptable (Variety)
+3. Be adaptable (Variety)
 
-* Priority 4: Be accurate (Base Reward)
+4. Be accurate (Base Reward)
 
 ## Component Requirements For Reward Function
 

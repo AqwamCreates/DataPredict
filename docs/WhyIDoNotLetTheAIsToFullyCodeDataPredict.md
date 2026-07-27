@@ -90,6 +90,10 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 * A-Levels' Mathematics: This subject allows me to do first derivatives which is one of the A-Levels mathematics' topics. However, this don't generally cover derivatives involving matrices and tensors.
 
+* Bachelor's Programming And Algorithms: This subject allows me to understand how pointers work, which is quite common in Lua.
+
+* Bachelor's Mathematics For Computer Scientists 1 & 2: The first part of the subject allowed me to read complicated mathematical notations, but I was still not good back then until I had a lot of practice when implementing DataPredict™'s algorithms from mathematical formulations. The second part of the subject is what allowed me to implement the adjoint method for matrix inversion to code.
+
 * Bachelor's Algorithm Correctness And Efficiency: This subject allows me to understand what redudant calculations can be removed or cached during all of the algorithms' optimization. This enables all of these algorithms to train between game frames.
 
 * Bachelor's Software Engineering Group Project. This subject what got me to fully learn how to code in Lua and Roblox's game engine, Roblox Studio, for almost one year because our group were developing a Roblox game back then. While this is unintentional, this knowledge proved useful for coding a native Lua machine learning library like DataPredict™. Also, since I was the new leader for this group, I realized that integrating other people's codes can be quite painful. This in turn reflects back to my code designs including the DataPredict™ library where I would make sure that that my libraries are easy to integrate with the existing codebases. 
@@ -101,6 +105,8 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 * Bachelor's Machine Learning: This subject acted as more of a suplement to my online courses. However, I did extract some of the useful machine learning algorithms that I had not learn from my online courses and implemented it directly to DataPredict™ library.
 
 * Bachelor's Computer Vision: Again, this subject acted as more of a suplement to my online courses. But this time around, there's not much useful knowledge I can extract from other than refreshing my existing knowledge.
+
+* Bachelor's Professional Ethics In Computing: This allowed me to realize law-related value for DataPredict™, as well as learn how contracts work that is required for producing DataPredict™'s licenses.
 
 * Master's Data Science: This subject made me realize the business value of the DataPredict™ library, leading me to write comprehensive [high-value project tutorials](HighValueProjectTutorials.md) for the DataPredict™ library. It also enabled me to add new statistical algorithms (like variants of Least Squares), solvers (like Gauss-Newton) and many more. These statistical algorithms served the same purpose to machine learning library where they learn patterns from data, but a bit more sample efficient than the machine learning algorithms.
 

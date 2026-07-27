@@ -7,7 +7,7 @@
 | Prediction            | Predicts the output values for a given set of inputs. |
 | Control               | Controls the in-game events for higher retention.     |
 | Pre-Mortem Detection  | Detects if a player is about to leave.                |
-| Post-Mortem Detection | Detects if a player left at an unsual timing.         |
+| Post-Mortem Detection | Detects if a player left at an unusual timing.        |
 
 ## Prediction Models
 

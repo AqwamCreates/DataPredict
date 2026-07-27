@@ -82,7 +82,7 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 * Bachelor Algorithm Correctness And Efficiency: This subject allows me to understand what redudant calculations can be removed or cached during all of the algorithms' optimization. This enables all of these algorithms to train between game frames.
 
-* Bachelor Software Engineering Group Project. This subject what got me to fully learn how to code in Lua and Roblox's game engine, Roblox Studio, for almost one year because our group were developing a Roblox game back then. While this is unintentional, this knowledge proved useful for coding a native Lua machine learning library like DataPredict™.
+* Bachelor Software Engineering Group Project. This subject what got me to fully learn how to code in Lua and Roblox's game engine, Roblox Studio, for almost one year because our group were developing a Roblox game back then. While this is unintentional, this knowledge proved useful for coding a native Lua machine learning library like DataPredict™. Also, since I was the new leader for this group, I realized that integrating other people's codes can be quite painful. This in turn reflects back to my code designs including the DataPredict™ library where I would make sure that that my libraries are easy to integrate with the existing codebases. 
 
 * Bachelor Software Maintenance: This subject allows me to be efficient in adding and extending algoritms since this subject has trained me to be more disciplined in Composition, Inheritance, SOLID, DRY, and Design Patterns for all kinds of codebases including DataPredict™.
 

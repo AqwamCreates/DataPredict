@@ -90,7 +90,7 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 * Bachelor Machine Learning: This subject acted as more of a suplement to my online courses. However, I did extract some of the useful machine learning algorithms that I had not learn from my online courses and implemented it directly to DataPredict™ library.
 
-* Computer Vision: This subject Again, this subject acted as more of a suplement to my online courses. But this time around, there's not much useful knowledge I can extract from other than refreshing my existing knowledge.
+* Bachelor Computer Vision: This subject Again, this subject acted as more of a suplement to my online courses. But this time around, there's not much useful knowledge I can extract from other than refreshing my existing knowledge.
 
 ### Online Course Knowledge
 

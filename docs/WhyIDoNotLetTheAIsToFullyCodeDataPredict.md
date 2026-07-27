@@ -90,7 +90,7 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 * A-Levels' Mathematics: This subject allows me to do first derivatives which is one of the A-Levels mathematics' topics. However, this don't generally cover derivatives involving matrices and tensors.
 
-* Bachelor's Programming And Algorithms: This subject allows me to understand how pointers work, which is quite common in Lua.
+* Bachelor's Programming And Algorithms: This subject allows me to understand how pointers work, which is quite common in Lua. I also learnt recursion here which is important for creating N-dimensional tensor library, TensorL, where it uses nested Lua tables to represent the tensors.
 
 * Bachelor's Mathematics For Computer Scientists 1 & 2: The first part of the subject allowed me to read complicated mathematical notations, but I was still not good back then until I had a lot of practice when implementing DataPredict™'s algorithms from mathematical formulations. The second part of the subject is what allowed me to implement the adjoint method for matrix inversion to code.
 

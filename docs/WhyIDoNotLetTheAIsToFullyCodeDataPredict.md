@@ -88,7 +88,7 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 ### Formal Knowledge
 
-* IGCSE's Business Studies: This subject creates a foundation for creating a product that is competitive or better to the existing ones. This also allowed me to understand on how to price DataPredict library for commercial uses.
+* IGCSE's Business Studies: This subject creates a foundation for creating products that are competitive or better to the existing ones. This also allowed me to understand on how to price DataPredict™ library for commercial uses.
 
 * A-Levels' Mathematics: This subject allows me to do first derivatives which is one of the A-Levels mathematics' topics. However, this don't generally cover derivatives involving matrices and tensors.
 

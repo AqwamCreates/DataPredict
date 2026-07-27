@@ -88,7 +88,11 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 ### Formal Knowledge
 
+* IGCSE's Business Studies: This subject creates a foundation for creating a product that is competitive or better to the existing ones. This also allowed me to understand on how to price DataPredict library for commercial uses.
+
 * A-Levels' Mathematics: This subject allows me to do first derivatives which is one of the A-Levels mathematics' topics. However, this don't generally cover derivatives involving matrices and tensors.
+
+* A-Levels' Physics: While this subject is unrelated to machine learning, it allowed me to explore game development easily due to games have a lot of physics simulation. As a result, this indirectly lead me to Roblox game development and eventually made me aware of machine learning technological gap in the Roblox's and Lua's ecosystem. Without this subject, I would probably never build DataPredict™ library as this library is built for Roblox and pure Lua.
 
 * Bachelor's Programming And Algorithms: This subject allows me to understand how pointers work, which is quite common in Lua. I also learnt recursion here which is important for creating N-dimensional tensor library, TensorL, where it uses nested Lua tables to represent the tensors.
 

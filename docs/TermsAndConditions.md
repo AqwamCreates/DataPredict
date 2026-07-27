@@ -50,7 +50,7 @@ These terms and conditions (“Agreement”) is a legal agreement between you (o
 
 * The User may not remove codes that the Licensor has released under Apache 2.0 license pursuant to this Agreement.
 
-* The User agrees that release of Interacting assets under Apache 2.0 license constitutes reasonable alternative consideration and benefit in lieu for the use and posession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
+* The User agrees that release of Interacting assets under Apache 2.0 license constitutes reasonable alternative consideration and benefit in lieu for the use and possession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
 
 * The Apache 2.0 license can be viewed here: https://choosealicense.com/licenses/apache-2.0/.
 

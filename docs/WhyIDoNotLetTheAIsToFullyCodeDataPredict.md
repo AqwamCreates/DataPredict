@@ -88,23 +88,23 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 ### Formal Knowledge
 
-* A-Levels Mathematics: This subject allows me to do first derivatives which is one of the A-Levels mathematics' topics. However, this don't generally cover derivatives involving matrices and tensors.
+* A-Levels' Mathematics: This subject allows me to do first derivatives which is one of the A-Levels mathematics' topics. However, this don't generally cover derivatives involving matrices and tensors.
 
-* Bachelor Algorithm Correctness And Efficiency: This subject allows me to understand what redudant calculations can be removed or cached during all of the algorithms' optimization. This enables all of these algorithms to train between game frames.
+* Bachelor's Algorithm Correctness And Efficiency: This subject allows me to understand what redudant calculations can be removed or cached during all of the algorithms' optimization. This enables all of these algorithms to train between game frames.
 
-* Bachelor Software Engineering Group Project. This subject what got me to fully learn how to code in Lua and Roblox's game engine, Roblox Studio, for almost one year because our group were developing a Roblox game back then. While this is unintentional, this knowledge proved useful for coding a native Lua machine learning library like DataPredict™. Also, since I was the new leader for this group, I realized that integrating other people's codes can be quite painful. This in turn reflects back to my code designs including the DataPredict™ library where I would make sure that that my libraries are easy to integrate with the existing codebases. 
+* Bachelor's Software Engineering Group Project. This subject what got me to fully learn how to code in Lua and Roblox's game engine, Roblox Studio, for almost one year because our group were developing a Roblox game back then. While this is unintentional, this knowledge proved useful for coding a native Lua machine learning library like DataPredict™. Also, since I was the new leader for this group, I realized that integrating other people's codes can be quite painful. This in turn reflects back to my code designs including the DataPredict™ library where I would make sure that that my libraries are easy to integrate with the existing codebases. 
 
-* Bachelor Software Maintenance: This subject allows me to be efficient in adding and extending algoritms since this subject has trained me to be more disciplined in Inheritance, Composition, DRY, SOLID, and Design Patterns for all kinds of codebases including DataPredict™.
+* Bachelor's Software Maintenance: This subject allows me to be efficient in adding and extending algoritms since this subject has trained me to be more disciplined in Inheritance, Composition, DRY, SOLID, and Design Patterns for all kinds of codebases including DataPredict™.
 
-* Bachelor Human Computer Interaction: This subject allowed me to create DataPredict™'s API designs that are comfortable for those who are not used to apply machine learning to their projects. If the users feel that the API design is uncomfortable to use, they are likely to think that the machine learning stuff are complicated.
+* Bachelor's Human Computer Interaction: This subject allowed me to create DataPredict™'s API designs that are comfortable for those who are not used to apply machine learning to their projects. If the users feel that the API design is uncomfortable to use, they are likely to think that the machine learning stuff are complicated.
 
-* Bachelor Machine Learning: This subject acted as more of a suplement to my online courses. However, I did extract some of the useful machine learning algorithms that I had not learn from my online courses and implemented it directly to DataPredict™ library.
+* Bachelor's Machine Learning: This subject acted as more of a suplement to my online courses. However, I did extract some of the useful machine learning algorithms that I had not learn from my online courses and implemented it directly to DataPredict™ library.
 
-* Bachelor Computer Vision: Again, this subject acted as more of a suplement to my online courses. But this time around, there's not much useful knowledge I can extract from other than refreshing my existing knowledge.
+* Bachelor's Computer Vision: Again, this subject acted as more of a suplement to my online courses. But this time around, there's not much useful knowledge I can extract from other than refreshing my existing knowledge.
 
-* Masters Data Science: This subject made me realize the business value of the DataPredict™ library, leading me to write comprehensive [high-value project tutorials](HighValueProjectTutorials.md) for the DataPredict™ library. It also enabled me to add new statistical algorithms (like variants of Least Squares), solvers (like Gauss-Newton) and many more. These statistical algorithms served the same purpose to machine learning library where they learn patterns from data, but a bit more sample efficient than the machine learning algorithms.
+* Master's Data Science: This subject made me realize the business value of the DataPredict™ library, leading me to write comprehensive [high-value project tutorials](HighValueProjectTutorials.md) for the DataPredict™ library. It also enabled me to add new statistical algorithms (like variants of Least Squares), solvers (like Gauss-Newton) and many more. These statistical algorithms served the same purpose to machine learning library where they learn patterns from data, but a bit more sample efficient than the machine learning algorithms.
 
-* Masters Business Modelling: While this subject not related to machine learning or statistics, the lecturer made us apply our existing knowledge to novel ways for business modelling. This has led to further expansion of DataPredict™'s features that would be useful for more advanced use cases.
+* Master's Business Modelling: While this subject not related to machine learning or statistics, the lecturer made us apply our existing knowledge to novel ways for business modelling. This has led to further expansion of DataPredict™'s features that would be useful for more advanced use cases.
 
 ### Online Course Knowledge
 

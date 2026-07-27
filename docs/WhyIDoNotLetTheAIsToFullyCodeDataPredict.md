@@ -62,6 +62,8 @@ Below, I will list what I kept encountering despite me using the latest AI techn
  
   * Switch the ```predictedLabelBalue - labelValue``` to ```labelValue - predictedLabelBalue``` in mean squared error cost function and its first derivatives.
 
+* When it comes to building a pure Lua tensor library to be used by DataPredict™, they have this bias towards making this library towards object-oriented programming approach. The AIs will insist on saying object-oriented programming being more performant when compared to purely functional one due to the so-called "memory allocation" savings when creating new tensors. However, this is not true since both object-oriented programming and functional programming approaches requires memory allocations for creating new tensors. On top of that the AIs did not take account of performance overhead from having metamethods from object-oriented programming approach. They may also cite broadcasting and deep copy inefficiencies as an exclusive problem to the functional programming approach, when you technically can create similar inefficiencies with the object-oriented programming approach.
+
 ## History Of Building DataPredict™ With AIs
 
 Do you want to know why DataPredict™ is overly verbose? 

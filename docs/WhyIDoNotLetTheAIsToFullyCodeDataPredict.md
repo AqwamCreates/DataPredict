@@ -1,5 +1,15 @@
 # [High Value Project Tutorials](HighValueProjectTutorials.md) - Why I Do Not Let The AIs To Fully Code DataPredict™
 
+* [Introduction](#introduction)
+
+* [Common Issues Encountered With AI-Generated Codes](#common-issues-encountered-with-ai-generated-codes)
+
+* [History Of Building DataPredict™ With AIs]()
+
+* [The Absurd Requirements For Building DataPredict™]
+
+* [Conclusion]()
+
 ## Introduction
 
 Some people want to argue that they don't have to pay for a comprehensive pure Lua machine learning library and they'll just ask the AIs to fully code a DataPredict™ competitor.

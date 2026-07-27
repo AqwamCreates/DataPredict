@@ -44,7 +44,7 @@ These terms and conditions (“Agreement”) is a legal agreement between you (o
 
   * Provide all User's Interacting assets to Licensor for review;
  
-  * Release any or all User's Interacting assets under Apache 2.0 license either to publicly, privately to Licensor, to designated third parties or a combination of any of them;
+  * Release any or all User's Interacting assets under Apache 2.0 license either to publicly, privately to Licensor, to Licensor's third parties or a combination of any of them;
  
   * Determine the timing and manner of such release.
 

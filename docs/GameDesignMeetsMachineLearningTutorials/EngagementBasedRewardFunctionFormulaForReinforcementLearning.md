@@ -8,7 +8,7 @@
 
 3. Be adaptable (Variety)
 
-4. Be accurate (Base Performance)
+4. Be accurate (Performance)
 
 ## Component Requirements For Reward Function
 

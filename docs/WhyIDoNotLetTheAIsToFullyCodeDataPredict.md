@@ -104,6 +104,12 @@ After the completion of my A-Levels and before my enrollment to the university, 
 
 * Deep Learning: This is where I build upon my existing machine learning knowledge where I deal first derivatives from matrices to tensors. This is where I really learn on how broadcasted tensors leads to collapsed first derivative tensors and accumulate the gradients along the broadcasted axis. In addition, I also learnt how algorithms can learn from images, texts and audio from this subject. While it looked complicated when I first started this course, I eventually get it once I write these algorithms by hand many times in the DataPredict™ library.
 
+### Experience Knowledge
+
+* Whenever I encounter gradient-based optimization algorithms, I would look into multiple websites for first derivatives and eventually do gradient descent or ascent formulation. Eventually, this makes my brain automatically create the first derivatives formulation without needing to visit the websites except in hard cases.
+
+* For algorithms I never implemented in DataPredict™, I generally looked into multiple websites to see all the optimization formulation and see the individual steps before translating into code. I tend to skip algorithms that has mathematical notations that are hard to read and converted to code. From there, I take on the more easier ones first, which sometimes ends uo leading me to converting harder algorithms to code.
+
 ## Conclusion
 
 If anyone thinking they can simply let the AI to fully code a library like DataPredict™, I would tell them to spend their AIs' tokens somewhere else.

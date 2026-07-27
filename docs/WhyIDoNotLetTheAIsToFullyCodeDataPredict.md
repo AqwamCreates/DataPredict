@@ -114,6 +114,8 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 * Bachelor's Professional Ethics In Computing: This subject allowed me to realize law-related value of the DataPredict™ library. I also learnt how contracts actually work, which is required for producing DataPredict™'s licenses.
 
+* Bachelor's Fundamentals Of Information Visualizations: This subject allowed me to understand different data types for machine learning, which leads to me implement rare algorithms like Ordinal Regression and many more to the DataPredict™ library.
+
 * Master's Data Science: This subject made me realize the business value of the DataPredict™ library, leading me to write comprehensive [high-value project tutorials](HighValueProjectTutorials.md) for the DataPredict™ library. It also enabled me to add new statistical algorithms (like variants of Least Squares), solvers (like Gauss-Newton) and many more. These statistical algorithms served the same purpose to machine learning library where they learn patterns from data, but a bit more sample efficient than the machine learning algorithms.
 
 * Master's Business Modelling: While this subject not related to machine learning or statistics, the lecturer made us apply our existing knowledge to novel ways for business modelling. This has led to further expansion of DataPredict™'s features that would be useful for more advanced use cases.

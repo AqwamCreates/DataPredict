@@ -78,7 +78,7 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 ### Formal Knowledge
 
-* A-Levels Mathematics: This subject allows me to do first derivatives which is one of the A-Levels mathematics' topics. However, these don't generally cover derivatives involving tensors and matrices.
+* A-Levels Mathematics: This subject allows me to do first derivatives which is one of the A-Levels mathematics' topics. However, this don't generally cover derivatives involving matrices and tensors.
 
 * Bachelor Algorithm Correctness And Efficiency: This subject allows me to understand what redudant calculations can be removed or cached during all of the algorithms' optimization. This enables all of these algorithms to train between game frames.
 
@@ -92,15 +92,17 @@ While I told everyone that building DataPredict™ requires a near-PhD knowledge
 
 ### Online Course Knowledge
 
-After the completion of my A-Levels and before my enrollment to the university, I had taken up several online knowledge
+After the completion of my A-Levels and before my enrollment to the university, I had taken up several online knowledge just to evaluate what university courses that fits me the most before I make an irreversible decision.
 
-* Machine Learning: This subject is where I become comfortable to extend my A-Levels first derivative knowledge to 
+* Machine Learning: This subject is where I become comfortable to extend my A-Levels first derivative knowledge to matrices. Not to mention, this course helped me separated different parts of the gradient-based optimization algorithms into these main parts:
 
-* Deep Learning:
+  * Calculation and derivative of hypothesis functions.
+ 
+  * Calculation and derivative of cost functions.
+ 
+  * Gradient descent.
 
-### Experience Knowledge
-
-
+* Deep Learning: This is where I build upon my existing machine learning knowledge where I deal first derivatives from matrices to tensors. This is where I really learn on how broadcasted tensors leads to collapsed first derivative tensors and accumulate the gradients along the broadcasted axis. In addition, I also learnt how algorithms can learn from images, texts and audio from this subject. While it looked complicated when I first started this course, I eventually get it once I write these algorithms by hand many times in the DataPredict™ library.
 
 ## Conclusion
 

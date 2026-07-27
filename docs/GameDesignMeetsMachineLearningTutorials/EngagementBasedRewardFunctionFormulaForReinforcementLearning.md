@@ -4,7 +4,7 @@
 
 1. Be merciful (Retention)
 
-2. Be fair (Limiter)
+2. Be fair (Equalize To Humans' skills)
 
 3. Be adaptable (Variety)
 

@@ -2,7 +2,7 @@
 
 > Section 2: Mental Illnesses History
 
-## IGCSE Mental Illness History
+## IGCSE Mental Illnesses History
 
 I studied my IGCSE in Muscat International School (MIS), where the school is located in Muscat, Oman.
 
@@ -10,7 +10,7 @@ During IGCSE, I had developed what people called as maladaptive daydreaming. You
 
 My maladaptive daydreaming wasn't that intrusive back then and didn't really impact my grades, so I thought this would go away on its own. In here, I would listen to my music through my headphones, pace around inside my bedroom and jump on my bed for hours. Nevertheless, I still had high grades where I mostly get A except for English (where the teacher did a poor job of doing her job in teaching).
 
-## A-Levels Mental Illness History
+## A-Levels Mental Illnesses History
 
 I studied my A-levels in International Islamic School Of Malaysia (IISM), where the school is located in Selangor, Malaysia. The hostel I was staying in was a part of International Islamic University Of Malaysia (IIUM). The school was offering 1.5 years A-levels program instead of the usual 2 years program. I had enrolled to this school around 2018.
 

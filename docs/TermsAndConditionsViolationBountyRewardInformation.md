@@ -104,15 +104,15 @@ In here, we use a point system to determine the overall evidence strength. Each 
 
 #### Evidence Points Conversion Table
 
-| Evidence                                                                                                  | Evidence Point(s) | Reason                                                                                                                        |
-|-----------------------------------------------------------------------------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------|
-| A screenshot of of the library in a file or a folder.                                                     | 1                 | It could be an evidence planted by the bounty hunter(s) themselves.                                                           |
-| An official statement of an asset that uses the library's functionalities without disclosing the library. | 1                 | It could be a different library.                                                                                              |
-| An internal discussion related to integrating the library's functionalities between the co-workers.       | 1                 | It could be just a plan to integrate the library's functionalities without using the library itself.                          |
-| Any mention of the library directly by the employees.                                                     | 2                 | It may be just a discussion, but it does show the awareness of the library's existence.                                       |
-| Any mention of the library directly by the top-level leadership.                                          | 3                 | It may be just a discussion, but it does show the awareness of the library's existence and intentional plans to integrate it. |
-| It is a required part for the company's assets like the company's source codes.                           | 4                 | The library is now in the employees' awareness and the top-level executives may be involved.                                  | 
-| The violator(s) brags about violating the library's license.                                              | ∞                 | There goes the assumption of innocence...                                                                                     |
+| Evidence                                                                                                      | Evidence Point(s) | Reason                                                                                                                        |
+|---------------------------------------------------------------------------------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| A screenshot of of the library in a file or a folder.                                                         | 1                 | It could be an evidence planted by the bounty hunter(s) themselves.                                                           |
+| An official statement of an asset that uses the library's functionalities without disclosing the library.     | 1                 | It could be a different library.                                                                                              |
+| An internal discussion related to integrating the library's functionalities between the co-workers.           | 1                 | It could be just a plan to integrate the library's functionalities without using the library itself.                          |
+| Any mention of the library directly by the employees.                                                         | 2                 | It may be just a discussion, but it does show the awareness of the library's existence.                                       |
+| Any mention of the library directly by the top-level leadership.                                              | 3                 | It may be just a discussion, but it does show the awareness of the library's existence and intentional plans to integrate it. |
+| It is a required part for the company's assets like the company's source codes.                               | 4                 | The library is now in the employees' awareness and the top-level executives may be involved.                                  | 
+| The violator(s) brags about explicitly violating the library's license regardless it is in public or private. | ∞                 | There goes the assumption of innocence...                                                                                     |
 
 ## Summary
 

@@ -26,7 +26,7 @@
 
 * [Measurement Of Engagement](GameDesignMeetsMachineLearningTutorials/MeasurementOfEngagement.md)
 
-* [Designing Constructive Engagement Events](GameDesignMeetsMachineLearningTutorials/DesigningConstructiveEngagementEvents.md) (Incomplete)
+* [Designing Non-Destructive Engagement Events](GameDesignMeetsMachineLearningTutorials/DesigningNonDestructiveEngagementEvents.md) (Incomplete)
 
 * [Engagement-Based Reward Function Formula For Reinforcement Learning](GameDesignMeetsMachineLearningTutorials/EngagementBasedRewardFunctionFormulaForReinforcementLearning.md)
 

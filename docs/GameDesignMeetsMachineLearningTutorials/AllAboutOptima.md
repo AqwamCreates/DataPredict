@@ -1,6 +1,4 @@
-# All About Optimum
-
-To Complete.
+# All About Optima
 
 ## Interpreting Local And Global Optimum In Game Design
 

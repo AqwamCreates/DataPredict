@@ -19,7 +19,7 @@ On the surface, these two may look like the same. However, the difference lies o
 
 * In reinforcement learning, we don't provide the output, but instead a score of how good the output is to reach a stated goal when the algorithm is given a particular input.
 
-In other words, supervised learning "translates" the input to a solution, while reinforcement learning "searches" a solution for a given input.
+In other words, the supervised learning algorithms "translates" the input to a solution, while the reinforcement learning algorithms "searches" a solution for a given input.
 
 ## What's Your Goal?
 

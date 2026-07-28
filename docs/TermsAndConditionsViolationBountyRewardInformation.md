@@ -92,7 +92,7 @@ The individual responsible for the false accusation or defamation will be requir
 
 ## Determining The Strength Of Evidence
 
-In here, we use a point system to determine the overall evidence strength. Each piece of evidence has certain amount evidence point(s) that will be contributed to the total evidence point(s). Also note that the overall evidence strength also indicates the severity of false accusations if all evidence are fabricated.
+In here, we use an evidence point system to determine the overall evidence strength. Each piece of evidence has certain amount evidence point(s) that will be contributed to the total evidence point(s). Also note that the overall evidence strength also indicates the severity of false accusations if all evidence are fabricated.
 
 ### Evidence Strength Conversion Table
 

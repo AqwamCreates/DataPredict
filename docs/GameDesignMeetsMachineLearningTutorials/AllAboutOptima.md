@@ -1,6 +1,6 @@
 # All About Optima
 
-## Interpreting Local And Global Optimum In Game Design
+## Interpreting Local And Global Optimum
 
 * Local Optimum -> The best score for a subset of input values.
  

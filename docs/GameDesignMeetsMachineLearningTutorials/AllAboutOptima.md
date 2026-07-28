@@ -4,7 +4,7 @@
 
 * Local Optimum -> The best score for a subset of input values.
  
-* Global Optimum -> The best score for every single input values.
+* Global Optimum -> The best score for a maximum number of input values. This maximum number of input values can lead to the best score for every single input values.
 
 ## Interpreting Minima And Maxima
 

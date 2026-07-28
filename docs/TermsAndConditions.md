@@ -114,11 +114,11 @@ In the event that the User uses the Library for cheating and exploiting, cheat a
 
 * Mitigation Costs: The User shall cover the costs incurred by the Licensor in their efforts to mitigate and prevent the effects of cheating and exploiting, cheat and exploit distribution, anti-cheat and anti-exploit evasion, or anti-cheat and anti-exploit evasion distribution.
 
-The determination of compensatory damages shall be made by a court of competent jurisdiction, and the User shall be legally bound to fulfill their obligations regarding such damages. The User understands that the Licensor reserves the right to pursue any available legal remedies to enforce these compensatory damages. Only the monetary forms of compensation will be accepted.
+The determination of compensatory damages shall be made by a court of competent jurisdiction, and the User shall be legally bound to fulfil their obligations regarding such damages. The User understands that the Licensor reserves the right to pursue any available legal remedies to enforce these compensatory damages. Only the monetary forms of compensation will be accepted.
 
 ## Waiver of Confidentiality Rights
 
-The User acknowledges and agrees that, in the event Licensor have a reasonable belief of a violation of this Agreement, Licensor may request User provide relevant assets for review. User may assert confidentiality, but the User's refusal may be considered in determining the violation. The User also agrees that the User will not interfere the Licensor's review from the User's Third Parties. The User also must not retaliate against, threaten, or take legal action against any of the User's Third Parties for interacting with Licensor as a result of Licensor's review from the User's Third Parties under this Agreement.
+The User acknowledges and agrees that, in the event Licensor have a reasonable belief of a violation of this Agreement, Licensor may request User provide relevant assets for review. User may assert confidentiality, but the User's refusal may be considered in determining the violation. The User also agrees that the User will not interfere the Licensor's review from the User's Third Parties. The User also must not retaliate against, threaten, or take legal action against any of the User's Third Parties for interacting with Licensor during the Licensor's review from the User's Third Parties under this Agreement.
 
 ## In Relation Of User's Third Parties
 

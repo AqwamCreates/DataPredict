@@ -92,7 +92,7 @@ The individual responsible for the false accusation or defamation will be requir
 
 ## Determining The Strength Of Evidence
 
-In here, we use a point system to determine the overall evidence strength. Each piece of evidence has certain amount evidence point(s) that will be contributed to the total evidence point(s).
+In here, we use a point system to determine the overall evidence strength. Each piece of evidence has certain amount evidence point(s) that will be contributed to the total evidence point(s). Also note that the overall evidence strength also indicates the severity of false accusations if all evidence are fabricated.
 
 ### Evidence Strength Conversion Table
 
@@ -102,7 +102,7 @@ In here, we use a point system to determine the overall evidence strength. Each 
 | 4 - 6                   | Medium            | The bounty hunter(s) are asked to keep an eye on the potential violation. |
 | >= 7                    | High              | The bounty hunter(s) are now tasked with gathering evidence.              |
 
-#### Evidence Points Conversion Table
+### Evidence Points Conversion Table
 
 | Evidence                                                                                                      | Evidence Point(s) | Reason                                                                                                                        |
 |---------------------------------------------------------------------------------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------|

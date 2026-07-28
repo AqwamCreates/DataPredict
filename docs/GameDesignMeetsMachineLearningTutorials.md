@@ -14,7 +14,7 @@
 
 ## The Basics
 
-* [Choosing The Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheGoalForTheModel.md) (Incomplete)
+* [Choosing The Goal For The Model](GameDesignMeetsMachineLearningTutorials/ChoosingTheGoalForTheModel.md)
 
 * [All About Optimum](GameDesignMeetsMachineLearningTutorials/AllAboutOptimum.md) (Incomplete)
 

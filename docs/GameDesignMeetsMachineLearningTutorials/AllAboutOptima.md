@@ -2,9 +2,9 @@
 
 ## Interpreting Local And Global Optimum In Game Design
 
-* Local Optimum -> The best solution for anything related to the current game session.
+* Local Optimum -> The best score for a subset of input values.
  
-* Global Optimum -> The best solution for all game sessions.
+* Global Optimum -> The best score for every single input values.
 
 ## Interpreting Minima And Maxima
 
@@ -22,4 +22,4 @@ Maxima is basically the highest score that an algorithm could achieve if the alg
 
 In supervised learning, the algorithm's main goal is to find a local or global minima because its aim is to minimize the the translation difference when translating from input to outputs.
 
-In reinforcement learning, the algorithm's main goal is to find a local or global maxima because its aim is to maximize the score that leads to a stated goal. 
+In reinforcement learning, the algorithm's main goal is to find a local or global maxima because its aim is to maximize the score that leads to a stated goal.

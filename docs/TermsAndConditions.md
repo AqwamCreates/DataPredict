@@ -122,11 +122,11 @@ The User acknowledges and agrees that, in the event Licensor have a reasonable b
 
 ## In Relation Of User's Third Parties
 
-* The User acknowledges that if the Library is used or possesed by the User's Third Parties, the User would be liable for User's Third Parties' use and possesion of the Library.
+* The User acknowledges that if the Library is used or possessed by the User's Third Parties, the User would be liable for User's Third Parties' use and possession of the Library.
 
-* The User may avoid liability for User's Third Parties' violations if:
+* The User may avoid liability for User's Third Parties' violations if the User meets all of these conditions:
 
-  * The User had written agreement with User's Third Party requiring compliance;
+  * The User has a written agreement with User's Third Party requiring compliance;
   
   * The User made reasonable efforts to monitor compliance;
   

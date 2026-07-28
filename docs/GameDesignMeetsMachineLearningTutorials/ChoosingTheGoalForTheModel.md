@@ -23,7 +23,7 @@ In other words, the supervised learning algorithms "translates" the input to a s
 
 ## What's Your Goal?
 
-* Goal Maximization -> Use "measurement of engagement" metrics as rewards and combine it with reinforcement learning models.
+* To Achieve A Goal -> Use "measurement of engagement" metrics as rewards and combine it with reinforcement learning models.
 
 * Prediction -> Use regression and classification models.
 

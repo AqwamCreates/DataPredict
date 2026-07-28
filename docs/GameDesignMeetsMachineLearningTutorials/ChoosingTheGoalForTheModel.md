@@ -2,12 +2,12 @@
 
 In the general artificial intelligence space, they generally perform these tasks:
 
-| Task                     | Explanation                                                                                               | 
-|--------------------------|-----------------------------------------------------------------------------------------------------------|
-| Supervised Learning      | Learns patterns between the input features and the output features.                                       |
-| Unsupervised Learning    | Learns patterns within the input features.                                                                |
-| Semi-Supervised Learning | Use Supervised Learning To Learn Through Unsupervised Learning.                                           |
-| Reinforcement Learning   | Learns what actions to take for a set of input features that maximizes the likelihood of reaching a goal. |
+| Task                     | Explanation                                                                                                        | 
+|--------------------------|--------------------------------------------------------------------------------------------------------------------|
+| Supervised Learning      | Learns patterns between the input features and the output features.                                                |
+| Unsupervised Learning    | Learns patterns within the input features.                                                                         |
+| Semi-Supervised Learning | Use Supervised Learning predictions on inputs features that have unknown output features as its own training data. |
+| Reinforcement Learning   | Learns what actions to take for a set of input features that maximizes the likelihood of reaching a goal.          |
 
 * Note: Generative AIs falls under supervised learning because they require output features like text, images and audios. The generation part is the result of predicting from the input features.
 
@@ -23,7 +23,7 @@ In other words, the supervised learning algorithms "translates" the input to a s
 
 ## What's Your Goal?
 
-* Goal Maximization -> Use "measurement of fun" metrics as rewards and combine it with reinforcement learning models.
+* Goal Maximization -> Use "measurement of engagement" metrics as rewards and combine it with reinforcement learning models.
 
 * Prediction -> Use regression and classification models.
 

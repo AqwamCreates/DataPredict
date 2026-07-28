@@ -35,6 +35,6 @@ Technically, you can use both supervised learning and reinforcement learning for
 
 * Supervised learning will train faster than reinforcement learning as the output features provides an "anchor" for determining the hidden pattern between inputs and the outputs.
 
-* Reinforcement learning allows you to define an abstract measurement of fun (that are specific to individual players) into a single value.
+* Reinforcement learning allows you to define an abstract measurement of fun (that are specific to individual players) into a single value and use that to find the best output for a given input.
 
 In other words, the supervised learning tries to maximize the pattern-matching, while the reinforcement learning maximizes the likelihood of reaching the goal. They are complementary to each other in what they output.

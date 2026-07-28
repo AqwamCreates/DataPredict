@@ -24,9 +24,9 @@
 
 * [Making Games Engaging Instead Of Accurate](GameDesignMeetsMachineLearningTutorials/MakingEngagingFunInsteadOfAccurate.md) (Incomplete)
 
-* [Designing Constructive Engagement Events](GameDesignMeetsMachineLearningTutorials/DesigningConstructiveEngagementEvents.md)
-
 * [Measurement Of Engagement](GameDesignMeetsMachineLearningTutorials/MeasurementOfEngagement.md)
+
+* [Designing Constructive Engagement Events](GameDesignMeetsMachineLearningTutorials/DesigningConstructiveEngagementEvents.md)
 
 * [Engagement-Based Reward Function Formula For Reinforcement Learning](GameDesignMeetsMachineLearningTutorials/EngagementBasedRewardFunctionFormulaForReinforcementLearning.md)
 

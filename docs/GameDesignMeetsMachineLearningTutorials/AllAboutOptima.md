@@ -28,4 +28,4 @@ In reinforcement learning, the algorithm's main goal is to find a local or globa
 
 In the general artificial intelligence, we always aim for global optimum as it gives the best solution for a lot of input values. However, it is not always possible for the algorithm to achieve this and it will eventually end up with a local optimum. 
 
-This is because most algorithms uses the score difference to perform the weight update step. When the score difference is zero, there aren't enough information for what direction the weights should take or how big the change is for the weights. This scenario generally happens when the algorithms couldn't explore other weight values that are faraway from the current weights that is used by the algorithm.
+This is because most algorithms uses the score difference to perform the weight update step. When the score difference is zero, there aren't enough information for what direction the weights should take or how big the change is for the weights. This scenario generally happens when an algorithm couldn't explore other weight values that are faraway from the current weights that is used by the algorithm.

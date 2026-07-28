@@ -1,8 +1,8 @@
 # Choosing The Goal For The Model
 
-In the general artificial intelligence space, they generally perform these tasks:
+In the general artificial intelligence space, there are multiple methods on how algorithms can learn from patterns.
 
-| Task                     | Explanation                                                                                                        | 
+| Method                   | Explanation                                                                                                        | 
 |--------------------------|--------------------------------------------------------------------------------------------------------------------|
 | Supervised Learning      | Learns patterns between the input features and the output features.                                                |
 | Unsupervised Learning    | Learns patterns within the input features.                                                                         |
@@ -28,3 +28,13 @@ In other words, the supervised learning algorithms "translates" the input to a s
 * Prediction -> Use regression and classification models.
 
 * Best Middle Values -> Use clustering models.
+
+## Supervised Learning VS Reinforcement Learning For Retention
+
+Technically, you can use both supervised learning and reinforcement learning for retention. However, each of these methods have their own strengths and weakness.
+
+* Supervised learning will train faster than reinforcement learning as the output features provides an "anchor" for determining the hidden pattern between inputs and the outputs.
+
+* Reinforcement learning allows you to define an abstract measurement of fun (that are specific to individual players) into a single value.
+
+In other words, the supervised learning tries to maximize the pattern-matching, while the reinforcement learning maximizes the likelihood of reaching the goal. They are complementary to each other in what they output.

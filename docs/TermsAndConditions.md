@@ -48,7 +48,7 @@ These terms and conditions (“Agreement”) is a legal agreement between you (o
  
   * Determine the timing and manner of such release.
 
-* Nothing in this Agreement shall be construed as granting User any license, right, title, or interest in or to LoreReactor itself. All rights to LoreReactor remain exclusively with Licensor. The Apache 2.0 release obligation applies solely to User's Interacting assets and does not extend to, modify, or affect the licensing terms of the Library.
+* Nothing in this Agreement shall be construed as granting User any license, right, title, or interest in or to the Library itself. All rights to the Library remain exclusively with Licensor. The Apache 2.0 release obligation applies solely to User's Interacting assets and does not extend to, modify, or affect the licensing terms of the Library.
 
 * The User may not remove codes that the Licensor has released under Apache 2.0 license pursuant to this Agreement.
 

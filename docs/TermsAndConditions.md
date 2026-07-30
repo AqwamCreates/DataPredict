@@ -116,7 +116,7 @@ In the event that the User uses the Library for cheating and exploiting, cheat a
 
 * Mitigation Costs: The User shall cover the costs incurred by the Licensor in their efforts to mitigate and prevent the effects of cheating and exploiting, cheat and exploit distribution, anti-cheat and anti-exploit evasion, or anti-cheat and anti-exploit evasion distribution.
 
-The determination of compensatory damages shall be made by a court of competent jurisdiction, and the User shall be legally bound to fulfil their obligations regarding such damages. The User understands that the Licensor reserves the right to pursue any available legal remedies to enforce these compensatory damages. No other forms of compensation will be accepted.
+The determination of compensatory damages shall be made by a court of competent jurisdiction, and the User shall be legally bound to fulfil their obligations regarding such damages. The User understands that the Licensor reserves the right to pursue any available legal remedies to enforce these compensatory damages. Only the monetary forms of compensation will be accepted.
 
 ## Waiver of Confidentiality Rights
 

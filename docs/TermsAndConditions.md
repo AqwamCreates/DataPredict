@@ -2,7 +2,7 @@
 
 ## License
 
-These terms and conditions (“Agreement”) is a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Machine, Deep And Reinforcement Learning Library) (“Library”) within this terms and conditions. By using the Library, User, agrees to be bound by the terms of this Agreement.
+These terms and conditions (“Agreement”) is a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Library (or formerly known as Aqwam’s Machine, Deep And Reinforcement Learning Library) (“Library”) within this terms and conditions. By using the Library, User agrees to be bound by the terms of this Agreement.
 
 ## Definitions
 
@@ -47,6 +47,8 @@ These terms and conditions (“Agreement”) is a legal agreement between you (o
   * Release any or all User's Interacting assets under Apache 2.0 license either to publicly, privately to Licensor, to Licensor's third parties or a combination of any of them;
  
   * Determine the timing and manner of such release.
+
+* Nothing in this Agreement shall be construed as granting User any license, right, title, or interest in or to LoreReactor itself. All rights to LoreReactor remain exclusively with Licensor. The Apache 2.0 release obligation applies solely to User's Interacting assets and does not extend to, modify, or affect the licensing terms of the Library.
 
 * The User may not remove codes that the Licensor has released under Apache 2.0 license pursuant to this Agreement.
 

@@ -10,7 +10,7 @@ The worse case is that the model either predicts too early or too late for appro
 
 ## Targeting Systems
 
-The worse case is that the model will just miss the players, which is a desirable property for games since they are more focused in making the AI fun and escapable instead of accurate and difficult.
+The worse case is that the model will just miss the players, which is a desirable property for games since they are more focused in making the AIs fun and playable instead of accurate and difficult.
 
 * [Creating Distance-Minimization-Based Clustering Targeting Model](TargetingSystems/CreatingDistanceMinimizationBasedClusteringTargetingModel.md)
 

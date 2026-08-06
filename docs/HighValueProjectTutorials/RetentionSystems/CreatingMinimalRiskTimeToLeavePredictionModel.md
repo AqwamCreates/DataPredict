@@ -4,7 +4,7 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 Currently, you need these to produce the model:
 
-* Factorization Machine
+* Ordinary Least Squares, Ridge Regression or Bayesian Linear Regression
 
 * A player data that is stored in matrix
 

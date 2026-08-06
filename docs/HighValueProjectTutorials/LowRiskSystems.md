@@ -1,4 +1,4 @@
-# Low Risk Systems
+# Low-Risk Systems
 
 ## Retention Systems
 

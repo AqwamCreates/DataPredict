@@ -15,6 +15,10 @@
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
+* [Creating Minimal-Risk Time-To-Leave Prediction Model](RetentionSystems/CreatingMinimalRiskTimeToLeavePredictionModel.md)
+
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+
 * [Creating Advanced Time-To-Leave Prediction Model](RetentionSystems/CreatingAdvancedTimeToLeavePredictionModel.md)
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.

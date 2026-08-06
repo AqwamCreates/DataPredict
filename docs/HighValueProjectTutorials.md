@@ -58,6 +58,7 @@
 
 | System                                                                                           | Properties                                                                                          | Minimal Implementation Time With DataPredict |
 |--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|----------------------------------------------|
+| [LowRisk](HighValueProjectTutorials/LowRiskSystems.md)                                           | Models that could instantly work without greatly negative impact your projects.                     | 30 minutes                                   |
 | [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave prediction and leave detection.                               | 30 minutes - 6 hours                         |
 | [Economy](HighValueProjectTutorials/EconomySystems.md)                                           | Maximize the value of in-game items and events.                                                     | 30 minutes - 1 hour                          |
 | [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                           | 2 hours                                      |

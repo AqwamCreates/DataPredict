@@ -4,7 +4,7 @@ Hello guys! Today, I will be showing you on how to create a probability-based mo
 
 Currently, you need these to produce the model:
 
-* A neural network model
+* A neural network model or factorization machine model
 
 * A player data that is stored in matrix
 

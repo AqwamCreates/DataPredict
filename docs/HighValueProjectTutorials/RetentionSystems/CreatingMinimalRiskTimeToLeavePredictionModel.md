@@ -4,11 +4,12 @@ Hello guys! Today, I will be showing you on how to create a retention-based mode
 
 Before we could start, you need to choose appropriate model for your project as shown below:
 
-| Model                      | Property                                                                                          | Notes                                                                     |
-|----------------------------|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
-| Ordinary Least Squares     | Tries to learn patterns from all datapoints including any outliers.                               | Have high potential on memorizing the pattern instead of generalizing it. |             
-| Ridge Regression           | Reduces the influence of some data points (especially the outliers) to maintain predictive power. | Requires you to adjust lambda values to make it suitable for your data.   |
-| Bayesian Linear Regression | Allows you to include how uncertain you are with the data.                                        | A lot of parameters to adjust to make it suitable for your data.          |
+| Model                      | Property                                                                                          | Notes                                                                           |
+|----------------------------|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| Ordinary Least Squares     | Tries to learn patterns from all datapoints including any outliers.                               | Have high potential on memorizing the pattern instead of generalizing it.       |             
+| Ridge Regression           | Reduces the influence of some data points (especially the outliers) to maintain predictive power. | Requires you to adjust lambda values to make it suitable for your data.         |
+| Bayesian Linear Regression | Allows you to include how uncertain you are with the data.                                        | A lot of parameters to adjust to make it suitable for your data.                |
+| Recursive Least Squares    | Best for training with streams of data, not requiring you to actually need the full dataset.      | Has the highest number of parameters to adjust compared to others in this list. |
 
 You also need a player data that is stored in matrix that exceeds the number of features.
 

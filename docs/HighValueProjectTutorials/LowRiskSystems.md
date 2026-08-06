@@ -36,7 +36,7 @@ The worse case scenario is that the model will just miss the players, which is a
 
   * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
 
-## Load Shedding
+## Load Shedding Systems
 
 The worse case scenario is that the model will place the asset that are far away from the players, but this isn't a problem given that most games literally place assets at random places for players to collect.
 

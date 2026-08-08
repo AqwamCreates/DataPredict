@@ -10,12 +10,12 @@
 
 ## Through Public Settlement
 
-| Entity | Project That Violates The License | Description Of The Violation | Estimated Violation Start Date | Estimated Violation End Date |
-|--------|-----------------------------------|------------------------------|--------------------------------|------------------------------|
+| Entity | Project That Violates The License | Description Of The Violation | Estimated Violation Start Date | Estimated Violation End Date | Compensation |
+|--------|-----------------------------------|------------------------------|--------------------------------|------------------------------|--------------|
 
 ## Through Court Order
 
-| Entity | Project That Violates The License | Description Of The Violation | Estimated Violation Start Date | Estimated Violation End Date |
-|--------|-----------------------------------|------------------------------|--------------------------------|------------------------------|
+| Entity | Project That Violates The License | Description Of The Violation | Estimated Violation Start Date | Estimated Violation End Date | Compensation |
+|--------|-----------------------------------|------------------------------|--------------------------------|------------------------------|--------------|
 
 TO DO: Transfer a huge list of entities into these two tables.

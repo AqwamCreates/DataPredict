@@ -2,7 +2,7 @@
 
 ## Disclaimer
 
-* We will use this list as part of the marketing strategy to attract sales. Nothing is more convincing than saying "DataPredict™ is so good, that it leads to companies violating the license!"
+* We will use this list as part of the marketing strategy to attract sales. Nothing is more convincing than saying "DataPredict™ is so good that it leads to companies violating the license!"
 
 * Note that we treat private settlement as equal value of "White-Label" license due to lack of public DataPredict™ attribution throughout the duration of violating the license. Fail to pay over this threshold along with money paid for the whistleblower(s) and pro-bono lawyer(s) means that you are required to perform public settlement.
 

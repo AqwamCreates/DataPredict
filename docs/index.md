@@ -22,7 +22,7 @@
 
   * Standard and White-Label tiers available for commercial projects.
 
-* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md) and [Terms And Conditions Enforcement Information](TermsAndConditionsEnforcementInformation.md). Doubt the enforcement? You can have a look at the [List Of Entities Who Violated The License And Settled](ListOfEntitiesWhoViolatedTheLicenseAndSettled.md)
+* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md) and [Terms And Conditions Enforcement Information](TermsAndConditionsEnforcementInformation.md). Doubt the enforcement? You can have a look at the [List Of Entities Who Violated The License And Settled](ListOfEntitiesWhoViolatedTheLicenseAndSettled.md).
 
 ![DataPredictIconSmall](https://github.com/AqwamCreates/DataPredict/assets/67371914/1122cce4-747b-4054-88f0-2685414b0d73)
 

@@ -18,4 +18,4 @@
 | Violating Entity | Violating Project | Description Of The Violation | Estimated Violation Start Date | Estimated Violation End Date | Compensation |
 |------------------|-------------------|------------------------------|--------------------------------|------------------------------|--------------|
 
-TO DO: Transfer a huge list of entities into these two tables.
+TO DO: Apparently, a large number of them preferred private settlement... Just waiting my first victim for the public settlement and court order lists.

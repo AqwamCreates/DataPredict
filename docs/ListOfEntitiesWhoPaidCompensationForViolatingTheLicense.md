@@ -1,4 +1,4 @@
-# List Of Entities Who Violated The License And Paid Compensation For Violating The License
+# List Of Entities Who Paid Compensation For Violating The License
 
 ## Disclaimer
 

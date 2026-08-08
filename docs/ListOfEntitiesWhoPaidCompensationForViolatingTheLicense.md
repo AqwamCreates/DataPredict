@@ -8,7 +8,7 @@
 
 * For entities who accepts public settlement, the lack of public DataPredict™ attribution under the "Standard" license can be compensated by revealing the names here.
 
-* Apparently, all of them preferred private settlement... Just waiting my first victim for the public settlement and court order lists.
+* Apparently, all of them preferred private settlement... We're just waiting my first victim for the public settlement and court order lists.
 
 ## Through Public Settlement
 

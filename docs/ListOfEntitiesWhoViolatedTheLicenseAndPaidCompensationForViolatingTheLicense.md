@@ -8,6 +8,8 @@
 
 * For entities who accepts public settlement, the lack of public DataPredict™ attribution under the "Standard" license can be compensated by revealing the names here.
 
+* Apparently, a large number of them preferred private settlement... Just waiting my first victim for the public settlement and court order lists.
+
 ## Through Public Settlement
 
 | Violating Entity | Violating Project | Description Of The Violation | Estimated Violation Start Date | Estimated Violation End Date | Compensation |
@@ -17,5 +19,3 @@
 
 | Violating Entity | Violating Project | Description Of The Violation | Estimated Violation Start Date | Estimated Violation End Date | Compensation |
 |------------------|-------------------|------------------------------|--------------------------------|------------------------------|--------------|
-
-TO DO: Apparently, a large number of them preferred private settlement... Just waiting my first victim for the public settlement and court order lists.

@@ -34,7 +34,7 @@
   
 * You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 
-* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md) and [Terms And Conditions Enforcement Information](TermsAndConditionsEnforcementInformation.md).
+* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md) and [Terms And Conditions Enforcement Information](TermsAndConditionsEnforcementInformation.md). Doubt the enforcement? You can have a look at the [List Of Entities Who Paid Compensation For Violating The Terms And Conditions](ListOfEntitiesWhoPaidCompensationForViolatingTheTermsAndConditions.md).
 
 * I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
 
@@ -58,6 +58,7 @@
 
 | System                                                                                           | Properties                                                                                          | Minimal Implementation Time With DataPredict |
 |--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|----------------------------------------------|
+| [Low-Risk](HighValueProjectTutorials/LowRiskSystems.md)                                          | Models that instantly work without greatly impacting your project negatively.                       | 30 minutes                                   |
 | [Retention](HighValueProjectTutorials/RetentionSystems.md)                                       | Handles play time maximization, leave prediction and leave detection.                               | 30 minutes - 6 hours                         |
 | [Economy](HighValueProjectTutorials/EconomySystems.md)                                           | Maximize the value of in-game items and events.                                                     | 30 minutes - 1 hour                          |
 | [Recommendation](HighValueProjectTutorials/RecommendationSystems.md)                             | Improves the likelihood of selling items.                                                           | 2 hours                                      |

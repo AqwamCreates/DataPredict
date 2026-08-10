@@ -120,7 +120,7 @@ I also shoved one of the Malaysia's criminal law: Act 611, Child Act 2001, Secti
 
 My parents just laughed at my face and dared me to sue them. Eventually, he couldn't take my complaints anymore, he ordered me to get out and prepare luggages for the train station. I KEPT EVERYTHING IN MY BEDROOM WITH ME EXCEPT FOR SOME BOOKS.
 
-Then, my 2nd youngest brother suddenly developed schizophrenia while studying in a an oversea German university. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months.
+Then, my 2nd youngest brother suddenly developed schizophrenia while studying in a an oversea German university without any fault of anyone, including my parents. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months.
 
 Then, the German government had warned my parents that he needs to get treated to continue studying in Germany's university. So, my parents did, despite having the same job issues due to stigma and driving license revocation issue in Malaysia like me. Without resistance. 
 
@@ -204,6 +204,8 @@ I also amped my complaints about my father's statements of driving license revoc
 
 Eventually, father immediately enforced his kicking out decision. However, They would put me to my parents' unoccupied second house in a condominium that my parents recently bought in Cyberjaya instead of the train station that they previously offered to me. The German government intervention against my parents for my 2nd youngest brother may have strongly played a part here. Not to mention, I did cite to them the criminal law for a section of child neglect involving lack of medical care, but unsure if that also plays a role as well.
 
+Only fucking then my father apologized on a WhatsApp message! Wait, wait, wait! Does anybody see the irony of this?! My father apologized after fucking kicking me out, completely rendering that apology useless! The time for apologizing was DURING THE TIME I GOT MY PUBLIC HEALTHCARE TREATMENT FOR THE FIRST TIME AND THEY SAW NO DRIVING LICENSE REVOCATION FOR OVER THE LONG TIME. LIAR LIAR LIAR. HIS APOLOGY IS AS HALF-ASSED JUST LIKE THE SPEED OF ME GETTING MY MENTAL ILLNESS TREATMENT. EXTREMELY MEANINGLESS TO THE EXTREMELY ACTUAL FUCK.
+
 When I moved there with my luggages, my father wanted a surveillance camera watching at me in the kitchen so he can observe me so that I don't go kill myself. The camera broked and I decided not care about fixing it, because I couldn't care shit about his "care" when he never fucking owns up to it. My father noticed that the camera is broken because they could not get any feeds from that camera and ended up asking me to fix it multiple times. I just ignored his requests.
 
 I'M FUCKING SURE THIS IS FOR MY PARENTS TO SAVE THEIR OWN FUCKING ASSES IF I DO DECIDE TO KILL MYSELF. NOT TO MENTION, WHEN THAT SURVEILLANCE CAMERA BROKE, THEY MAKE NO REPLACEMENT SINCE I WOULDN'T EVEN BOTHER TO FIX IT. THIS MEANT THAT THEIR "CARING" ABOUT ME WAS ACTUALLY SHORT-LIVED AND REACTIVE. THERE'S NO FUCKING WAY I COULD CARE ABOUT MY PARENTS NOW ONCE I REALIZED THIS. I COULDN'T CARE LESS IF I HAD KILLED MYSELF AND MAKE MY PARENTS LOOK BAD. IN FACT, I PREFER IT IF MY PARENTS LOOK BAD BECAUSE THEY FUCKING ARE!
@@ -220,4 +222,7 @@ In common cases, I wouldn't even notice mispellings that I made as I type on key
 
 I also quit from all of my family's WhatsApp group. I had also attempts of them trying to bring me back to the family's WhatsApp group, which I ended up leaving again. I had one instance that my father formed a group between my father, my mother and me, before he posted a link to an online certification course. I also left that group immediately as well.
 
-I also still eat Samyang 2x Spicy Ramen, but instead of just self-harming, I either used them for stress relief, boredom, self-harming or any combinations of them. Sometime I would subtitute Samyang 2x Spicy Ramen with Samyang 2x Spicy Sauce as they are more economical and I could apply the sauce anywhere I wanted with the tradeoff of not having the ramen or the garnishing itself. Though the ramen part is fixable just by buying the ramen on its own.
+I also still eat Samyang 2x Spicy Ramen, but instead of just self-harming, I either used them for stress relief, boredom, self-harming or any combinations of them. Sometime I would substitute Samyang 2x Spicy Ramen with Samyang 2x Spicy Sauce as they are more economical and I could apply the sauce anywhere I wanted with the trade-off of not having the ramen or the garnishing itself. Though the ramen part is fixable just by buying the ramen on its own.
+
+I also I noticed something... My parents are actually active in denying about giving me my mental illnesses treatment back then and that leads them to blame on my own attributes that don't even exist! I mean, who the fuck deny a person saying "I am sick and I need treatment" to something like saying "You don't exercise enough." That is like saying "I have a diarrhea" and the other say "Your diet is poor."  
+

@@ -1,0 +1,230 @@
+# [Retention Systems](../RetentionSystems.md) - Creating Low-Risk Time-To-Leave Prediction Model
+
+Hello guys! Today, I will be showing you on how to create a retention-based model that could predict when the player will leave.
+
+Before we could start, you need to choose appropriate model for your project as shown below:
+
+| Model                              | Property                                                                                          | Notes                                                                           |
+|------------------------------------|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| Ordinary Least Squares Regression  | Tries to learn patterns from all datapoints including any outliers.                               | Have high potential on memorizing the pattern instead of generalizing it.       |             
+| Ridge Regression                   | Reduces the influence of some data points (especially the outliers) to maintain predictive power. | Requires you to adjust lambda values to make it suitable for your data.         |
+| Bayesian Linear Regression         | Allows you to include how uncertain you are with the data to improve predictive power.            | A lot of parameters to adjust to make it suitable for your data.                |
+| Recursive Least Squares Regression | Best for training with single datapoints, not requiring you to have a full dataset.               | Has the highest number of parameters to adjust compared to others in this list. |
+
+You also need a player data that is stored in matrix that exceeds the number of features.
+
+## Setting Up
+
+Before we train our model, we will first need to construct a regression model as shown below.
+
+```lua
+
+local DataPredict = require(DataPredict)
+
+local LeavePredictionModel = DataPredict.Models.OrdinaryLeastSquares.new()
+
+```
+
+## Upon Player Join
+
+In here, what you need to do is:
+
+* Store initial player data as a vector of numbers.
+
+* Store the initial time that the player joined.
+
+Below, we will show you how to create this:
+
+```lua
+
+local playerDataVector = {
+    {
+        1, -- We're just adding 1 here to add "bias".
+        numberOfCurrencyAmount,
+        numberOfItemsAmount,
+        math.log(timePlayedInCurrentSession), -- Compared to our simpler models, we're adding natural logarithm transformation here for better view of how this feature interacts with others.
+        math.log(timePlayedInAllSessions),
+        healthAmount
+    }
+}
+
+local recordedTime = os.time()
+
+```
+
+If you want to add more data instead of relying on the initial data point, you actually can and this will improve the prediction accuracy. But keep in mind that this means you have to store more data. I recommend that for every 10 seconds, you store a new entry. Below, I will show how it is done.
+
+```lua
+
+local playerDataMatrix = {}
+  
+local recordedTimeArray = {}
+  
+local snapshotIndex = 1
+  
+local function snapshotData()
+  
+ playerDataMatrix[snapshotIndex] = {
+
+    1,
+    numberOfCurrencyAmount,
+    numberOfItemsAmount,
+    math.log(timePlayedInCurrentSession),
+    math.log(timePlayedInAllSessions),
+    healthAmount
+
+  }
+  
+  recordedTimeArray[snapshotIndex] = os.time()
+  
+  snapshotIndex = snapshotIndex + 1
+
+end
+
+```
+
+## Upon Player Leave
+
+By the time the player leaves, it is time for us to train the model. But first, we need to calculate the difference.
+
+```lua
+
+local timeToLeave = os.time() - recordedTime
+
+local logTimeToLeave = math.log(timeToLeave) 
+
+local wrappedLogTimeToLeave = {
+
+    {logTimeToLeave}
+
+} -- Need to wrap this as our models can only accept matrices.
+
+local costArray = LeavePredictionModel:train(playerDataVector, wrappedLogTimeToLeave)
+
+```
+
+This should give you a model that predicts a rough estimate when they'll leave.
+
+Then, you must save the model parameters to Roblox's DataStores for future use.
+
+```lua
+
+local ModelParameters = LeavePredictionModel:getModelParameters()
+
+```
+
+## Model Parameters Loading 
+
+In here, we will use our model parameters so that it can be used to load out models. There are three cases in here:
+
+1. The player is a first-time player.
+
+2. The player is a returning player.
+
+3. Every player uses the same global model.
+
+### Case 1: The Player Is A First-Time Player
+
+Under this case, this is a new player that plays the game for the first time. In this case, we do not know how this player would act.
+
+We have a multiple way to handle this issue:
+
+* We create a "global" model that trains from every player, and then make a deep copy of the model parameters and load it into our models.
+
+* We take from other players' existing model parameters and load it into our models.
+
+### Case 2: The Player Is A Returning Player
+
+Under this case, you can continue using the existing model parameters that was saved in Roblox's Datastores.
+
+```lua
+
+LeavePredictionModel:setModelParameters(ModelParameters)
+
+```
+
+### Case 3: Every Player Uses The Same Global Model
+
+Under this case, the procedure is the same to case 2 except that you need to:
+
+* Load model parameters upon server start.
+
+* Perform auto-save with the optional ability of merging with saved model parameters from other servers.
+
+## Prediction Handling
+
+In other to produce predictions from our model, we must perform this operation:
+
+```lua
+
+local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, math.log(timePlayedInCurrentSession), math.log(timePlayedInAllSessions), healthAmount}}
+
+local predictedLabelVector = LeavePredictionModel:predict(currentPlayerDataVector)
+
+```
+
+Once you receive the predicted label vector, you can grab the pure number output by doing this:
+
+```lua
+
+local logTimeToLeavePrediction = predictedLabelVector[1][1]
+
+local timeToLeavePrediction = math.exp(logTimeToLeavePrediction) -- Since we used natural logarithm transformation, we just need to exponentiate it to get the true time-to-leave prediction value.
+
+```
+
+## Prediction Handling
+
+In other to produce predictions from our model, we must perform this operation:
+
+```lua
+
+local currentPlayerDataVector = {{1, numberOfCurrencyAmount, numberOfItemsAmount, timePlayedInCurrentSession, timePlayedInAllSessions, healthAmount}}
+
+local predictedLabelVector = LeavePredictionModel:predict(currentPlayerDataVector)
+
+```
+
+## Ideas On How To Handle Prediction
+
+### "Intervene Now" Method
+
+```lua
+
+local function onPredict(Player, timeToLeavePrediction)
+
+    if (timeToLeavePrediction > 60) then return end -- Can be changed instead of less than 60 seconds.
+
+    createEvent(Player) --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
+
+end
+
+```
+
+### "Intervene Later" Method
+
+```lua
+
+local isDelayActive = false
+
+local function onPredict(Player, timeToLeavePrediction)
+
+    if (isDelayActive) then return end
+
+    isDelayActive = true
+
+    task.wait(timeToLeavePrediction)
+
+    isDelayActive = false
+
+    createEvent(Player) --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
+
+end
+
+```
+
+## Conclusion
+
+This tutorial showed you on how to create "time to leave" prediction model that allows you to extend your players' playtime. All you need is some data, some models and a bit of practice to get this right!
+
+That's all for today and see you later!

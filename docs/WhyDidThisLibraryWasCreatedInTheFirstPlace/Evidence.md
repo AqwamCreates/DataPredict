@@ -12,7 +12,7 @@ There goes the assumption of innocence for the criminal law: Act 611, Child Act 
 
 > "a parent or guardian or other person legally liable to maintain a child shall be deemed to have neglected him in a manner likely to cause him physical or emotional injury if, being able to so provide from his own resources, he fails to provide adequate food, clothing, medical or dental treatment, lodging or care for the child"
 
-Not knowing the severity otherwise? Well, we can force a court order to investigate the whole A-Level division for International Islamic School Of Malaysia. Also, my diaries are there as well.
+Not knowing the severity otherwise? Well, we can force a court order to investigate the whole A-Level division for International Islamic School Of Malaysia. Also, my diary entries are there as well.
 
 ### First Diary Record Of Me Asking For Treatment During A-Levels
 

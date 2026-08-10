@@ -4,7 +4,7 @@
 
 * We will use this list as part of the marketing strategy to attract sales. Nothing is more convincing than saying "DataPredict™ is so good that it leads to companies violating the license!"
 
-* Note that we treat private settlement as equal value of "White-Label" license due to lack of public DataPredict™ attribution throughout the duration of terms and conditions. Fail to pay over this threshold along with money paid for the whistleblower(s) and pro-bono lawyer(s) means that you are required to perform public settlement.
+* Note that we treat private settlement as equal value of "White-Label" license due to lack of public DataPredict™ attribution throughout the duration of terms and conditions violations. Fail to pay over this threshold along with money paid for the whistleblower(s) and pro-bono lawyer(s) means that you are required to perform public settlement.
 
 * For entities who accepts public settlement, the lack of public DataPredict™ attribution under the "Standard" license can be compensated by revealing the names here.
 

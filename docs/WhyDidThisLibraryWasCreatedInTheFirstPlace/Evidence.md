@@ -14,9 +14,9 @@ There goes the assumption of innocence for the criminal law: Act 611, Child Act 
 
 Not knowing the severity otherwise? Well, we can force a court order to investigate the whole A-Level division for International Islamic School Of Malaysia. Also, my diaries are there as well.
 
-### First Diary Record Of Maladaptive Daydreaming During A-Levels
+### First Diary Record Of Me Asking For Treatment
 
-* The diary name is Lily.
+<img src="Evidence/DiaryEntries/IMG_20260811_000800.jpg" width="300"/>
 
 ### Whatsapp Messages For Initial Delay In A-Levels
 
@@ -24,7 +24,7 @@ Not knowing the severity otherwise? Well, we can force a court order to investig
 
 * You can verify age based on how worn out the card is. It is quite suprising why I still have this in my wallet for over all these years. I thank my younger selves for this!
 
-<img src="Evidence/Photographs/ZomboDroid_11072026051930.jpg" alt="Both sides of my worn out school counselor's business card." width="300"/>
+<img src="Evidence/Photographs/ZomboDroid_11072026051930.jpg" alt="Both sides of my worn out school counselor's business card." width="1000"/>
 
 ### Grades Over The Years (IGCSE, A-Levels, Bachelor Degree)
 

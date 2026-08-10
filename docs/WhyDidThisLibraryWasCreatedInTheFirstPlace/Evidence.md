@@ -10,7 +10,9 @@
 
 There goes the assumption of innocence for the criminal law: Act 611, Child Act 2001, Section 31(4), where it stated: 
 
-> "a parent or guardian or other person legally liable to maintain a child shall be deemed to have neglected him in a manner likely to cause him physical or emotional injury if, being able to so provide from his own resources, he fails to provide adequate food, clothing, medical or dental treatment, lodging or care for the child" 
+> "a parent or guardian or other person legally liable to maintain a child shall be deemed to have neglected him in a manner likely to cause him physical or emotional injury if, being able to so provide from his own resources, he fails to provide adequate food, clothing, medical or dental treatment, lodging or care for the child"
+
+Not knowing the severity otherwise? Well, we can force a court order to investigate the whole A-Level school.
 
 ### First Diary Record Of Maladaptive Daydreaming During A-Levels
 

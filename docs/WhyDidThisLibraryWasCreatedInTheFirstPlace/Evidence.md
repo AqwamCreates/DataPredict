@@ -4,7 +4,7 @@
  
 ## Evidence Due To My Mental Illness Treatment Delay By My Parents
 
-### Admission Of Guilt By My Parents
+### Admission Of Guilt By My Parents After Kicking Me Out For Me Complaining About Delayed Treatment
 
 <img src="Evidence/WhatsAppMessages/Screenshot_2026-07-11-04-44-48-253_com.whatsapp.jpg" alt="My father's addmision of guilt on WhatsApp." width="300"/>
 

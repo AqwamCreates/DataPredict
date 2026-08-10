@@ -8,6 +8,10 @@
 
 <img src="Evidence/WhatsAppMessages/Screenshot_2026-07-11-04-44-48-253_com.whatsapp.jpg" alt="My father's addmision of guilt on WhatsApp." width="300"/>
 
+There goes the assumption of innocence for criminal law: Act 611, Child Act 2001, Section 31(4), where it stated: 
+
+> "a parent or guardian or other person legally liable to maintain a child shall be deemed to have neglected him in a manner likely to cause him physical or emotional injury if, being able to so provide from his own resources, he fails to provide adequate food, clothing, medical or dental treatment, lodging or care for the child" 
+
 ### First Diary Record Of Maladaptive Daydreaming During A-Levels
 
 * The diary name is Lily.

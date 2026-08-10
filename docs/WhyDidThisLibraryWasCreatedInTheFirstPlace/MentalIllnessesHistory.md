@@ -224,5 +224,5 @@ I also quit from all of my family's WhatsApp group. I had also attempts of them 
 
 I also still eat Samyang 2x Spicy Ramen, but instead of just self-harming, I either used them for stress relief, boredom, self-harming or any combinations of them. Sometime I would substitute Samyang 2x Spicy Ramen with Samyang 2x Spicy Sauce as they are more economical and I could apply the sauce anywhere I wanted with the trade-off of not having the ramen or the garnishing itself. Though the ramen part is fixable just by buying the ramen on its own.
 
-I also I noticed something... My parents are actually active in denying about giving me my mental illnesses treatment back then and that leads them to blame on my own attributes that don't even exist! I mean, who the fuck deny a person saying "I am sick and I need treatment" to something like saying "You don't exercise enough." That is like saying "I have a diarrhoea" and the other say "Your diet is poor."  
+I also I noticed something... My parents are actually active in denying about giving me my mental illnesses treatment back then and that leads them to blame on my own attributes that don't even exist! I mean, who the fuck deny a person saying "I am sick and I need treatment" to something like saying "You don't exercise enough." That is like saying "I have a diarrhea" and the other say "Your diet is poor."  
 

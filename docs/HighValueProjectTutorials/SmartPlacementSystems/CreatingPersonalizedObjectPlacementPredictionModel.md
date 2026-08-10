@@ -105,13 +105,13 @@ local function appendPlacementData(Player, positionXPlacement, positionYPlacemen
 
   objectRarityValue,
   objectCost,
-  isInteractable,
-  isAWallObject,
-  isALivingRoomObject,
-  isAKitchenObject,
-  isABathroomObject,
-  isABedroomObject,
-  isAGardenObject,
+  isInteractable, -- This only accepts 1 and 0. Additionally, you can also use 1 and -1.
+  isAWallObject, -- Same as above.
+  isALivingRoomObject, -- Same as above.
+  isAKitchenObject, -- Same as above.
+  isABathroomObject, -- Same as above.
+  isABedroomObject, -- Same as above.
+  isAGardenObject, -- Same as above.
 
   objectLength,
   objectWidth,

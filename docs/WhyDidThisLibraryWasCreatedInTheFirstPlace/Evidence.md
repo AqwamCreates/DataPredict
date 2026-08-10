@@ -24,7 +24,7 @@ Notice that it is 9th January 2019. I was born in 23rd January 2002. I was sixte
 
 ### The School Counselor Business Card
 
-* You can verify age based on how worn out the card is. It is quite suprising why I still have this in my wallet for over all these years. I thank my younger selves for this!
+* You can verify age based on how worn out the card is. It is quite suprising why I still have this in my wallet for over all these years. I thank my younger self for this!
 
 <img src="Evidence/Photographs/ZomboDroid_11072026051930.jpg" alt="Both sides of my worn out school counselor's business card." width="300"/>
 

@@ -14,8 +14,10 @@
 
 | Violating Entity | Violating Project | Description Of The Violation | Estimated Violation Start Date | Estimated Violation End Date | Compensation |
 |------------------|-------------------|------------------------------|--------------------------------|------------------------------|--------------|
+|                  |                   |                              |                                |                              |              |
 
 ## Through Court Order
 
 | Violating Entity | Violating Project | Description Of The Violation | Estimated Violation Start Date | Estimated Violation End Date | Compensation |
 |------------------|-------------------|------------------------------|--------------------------------|------------------------------|--------------|
+|                  |                   |                              |                                |                              |              |

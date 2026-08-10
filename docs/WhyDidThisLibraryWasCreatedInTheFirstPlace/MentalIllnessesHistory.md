@@ -120,7 +120,7 @@ I also shoved one of the Malaysia's criminal law: Act 611, Child Act 2001, Secti
 
 My parents just laughed at my face and dared me to sue them. Eventually, he couldn't take my complaints anymore, he ordered me to get out and prepare luggages for the train station. I KEPT EVERYTHING IN MY BEDROOM WITH ME EXCEPT FOR SOME BOOKS.
 
-Then, my 2nd youngest brother suddenly developed schizophrenia while studying in a an oversea German university. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months.
+Then, my 2nd youngest brother suddenly developed schizophrenia while studying in a an oversea German university without any fault of anyone including my parents. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months.
 
 Then, the German government had warned my parents that he needs to get treated to continue studying in Germany's university. So, my parents did, despite having the same job issues due to stigma and driving license revocation issue in Malaysia like me. Without resistance. 
 

@@ -18,7 +18,7 @@
 
 * By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
 
-  * Small developers and non-B2B organizations earning ≤5K USD within 365 days (not per 365 days) can use DataPredict™ for free, provided that you include DataPredict™ attribution to the general public on your projects.
+  * Small developers and non-B2B organizations earning ≤5K USD of overall gross revenue within 365 days (not per 365 days) can use DataPredict™ for free, provided that you include DataPredict™ attribution to the general public on your projects.
 
   * Standard and White-Label tiers available for commercial projects.
 

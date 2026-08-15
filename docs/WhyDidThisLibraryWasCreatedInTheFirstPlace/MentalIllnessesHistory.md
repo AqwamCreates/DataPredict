@@ -130,7 +130,7 @@ Suddenly, my mother gave me a good news that I wouldn't get kicked out of the ho
 
 Suddenly, after my younger's brother mental health treatment, they now suddenly care about my mental illnesses.
 
-Only fucking then my father apologized on a WhatsApp message! Does anybody see the irony of this?! My father apologized after attempting to kick me out, completely rendering that apology useless! The time for apologizing was DURING THE TIME I GOT MY PUBLIC HEALTHCARE TREATMENT FOR THE FIRST TIME AND THEY SAW NO DRIVING LICENSE REVOCATION FOR OVER THE LONG TIME. HIS APOLOGY IS AS HALF-ASSED JUST LIKE THE SPEED OF ME GETTING MY MENTAL ILLNESS TREATMENT. EXTREMELY MEANINGLESS TO THE EXTREMELY ACTUAL FUCK.
+Only fucking then my father apologized on a WhatsApp message! Does anybody see the irony of this?! My father apologized after attempting to kick me out to the train station, completely rendering that apology useless! The time for apologizing was DURING THE TIME I GOT MY PUBLIC HEALTHCARE TREATMENT FOR THE FIRST TIME AND THEY SAW NO DRIVING LICENSE REVOCATION FOR OVER THE LONG TIME. HIS APOLOGY IS AS HALF-ASSED JUST LIKE THE SPEED OF ME GETTING MY MENTAL ILLNESS TREATMENT. EXTREMELY MEANINGLESS TO THE EXTREMELY ACTUAL FUCK.
 
 Then, my father asked me to watch my 2nd youngest brother at midnight and offered to pay some money... This is because my 2nd youngest brother had the tendency of wanting to go outside in the middle of the night.
 
@@ -227,4 +227,3 @@ I also quit from all of my family's WhatsApp group. I had also attempts of them 
 I also still eat Samyang 2x Spicy Ramen, but instead of just self-harming, I either used them for stress relief, boredom, self-harming or any combinations of them. Sometime I would substitute Samyang 2x Spicy Ramen with Samyang 2x Spicy Sauce as they are more economical and I could apply the sauce anywhere I wanted with the trade-off of not having the ramen or the garnishing itself. Though the ramen part is fixable just by buying the ramen on its own.
 
 I also I noticed something... My parents are actually active in denying about giving me my mental illnesses treatment back then and that leads them to blame on my own attributes that don't even exist! I mean, who the fuck deny a person saying "I am sick and I need treatment" to something like saying "You don't exercise enough." That is like saying "I have a diarrhea" and the other say "Your diet is poor."
-

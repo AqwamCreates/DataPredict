@@ -200,7 +200,9 @@ Liar. So fucking liar.
 
 At this point, I fucking rejected the offer to watch my schizophrenic younger brother in midnight out of anger. I then told my parents that is their problem since they did not fix my mental illness problem early hence I have no interest in helping them out. They can go fuck themselves taking care of my younger brother and stress about it.
 
-I also amped my complaints about my father's statements of driving license revocation and stigmatization in jobs on top of this hypocritical treatment to my 2nd youngest brother.
+I also amped my complaints about my father's statements of driving license revocation and stigmatization in jobs on top of this hypocritical treatment to my 2nd youngest brother. I also requested for all of his sources regarding the license revocation. ALL OF IT.
+
+UNITL TO THIS DAY, HE HAVE NOT GIVEN A SINGLE SOURCE OF SUCH LICENSE REVOCATION POLICY. NOT EVEN THE ONES FROM SOCIAL MEDIAS. I GAVE LOTS OF TIME FOR HIM TO ACTUALLY TO COLLECT IT. HE HAD PRODUCED NONE OF IT UNTIL THIS DAY.
 
 Eventually, father immediately enforced his kicking out decision. However, They would put me to my parents' unoccupied second house in a condominium that my parents recently bought in Cyberjaya instead of the train station that they previously offered to me. The German government intervention against my parents for my 2nd youngest brother may have strongly played a part here. Not to mention, I did cite to them the criminal law for a section of child neglect involving lack of medical care, but unsure if that also plays a role as well.
 
@@ -224,5 +226,5 @@ I also quit from all of my family's WhatsApp group. I had also attempts of them 
 
 I also still eat Samyang 2x Spicy Ramen, but instead of just self-harming, I either used them for stress relief, boredom, self-harming or any combinations of them. Sometime I would substitute Samyang 2x Spicy Ramen with Samyang 2x Spicy Sauce as they are more economical and I could apply the sauce anywhere I wanted with the trade-off of not having the ramen or the garnishing itself. Though the ramen part is fixable just by buying the ramen on its own.
 
-I also I noticed something... My parents are actually active in denying about giving me my mental illnesses treatment back then and that leads them to blame on my own attributes that don't even exist! I mean, who the fuck deny a person saying "I am sick and I need treatment" to something like saying "You don't exercise enough." That is like saying "I have a diarrhea" and the other say "Your diet is poor."  
+I also I noticed something... My parents are actually active in denying about giving me my mental illnesses treatment back then and that leads them to blame on my own attributes that don't even exist! I mean, who the fuck deny a person saying "I am sick and I need treatment" to something like saying "You don't exercise enough." That is like saying "I have a diarrhea" and the other say "Your diet is poor."
 

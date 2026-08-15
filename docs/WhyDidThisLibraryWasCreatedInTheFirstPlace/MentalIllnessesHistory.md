@@ -130,6 +130,8 @@ Suddenly, my mother gave me a good news that I wouldn't get kicked out of the ho
 
 Suddenly, after my younger's brother mental health treatment, they now suddenly care about my mental illnesses.
 
+Only fucking then my father apologized on a WhatsApp message! Does anybody see the irony of this?! My father apologized after attempting to kick me out, completely rendering that apology useless! The time for apologizing was DURING THE TIME I GOT MY PUBLIC HEALTHCARE TREATMENT FOR THE FIRST TIME AND THEY SAW NO DRIVING LICENSE REVOCATION FOR OVER THE LONG TIME. HIS APOLOGY IS AS HALF-ASSED JUST LIKE THE SPEED OF ME GETTING MY MENTAL ILLNESS TREATMENT. EXTREMELY MEANINGLESS TO THE EXTREMELY ACTUAL FUCK.
+
 Then, my father asked me to watch my 2nd youngest brother at midnight and offered to pay some money... This is because my 2nd youngest brother had the tendency of wanting to go outside in the middle of the night.
 
 One day, my father received a call from my mother that my 2nd youngest brother was missing as they both went to shopping.
@@ -205,8 +207,6 @@ I also amped my complaints about my father's statements of driving license revoc
 UNITL TO THIS DAY, HE HAVE NOT GIVEN A SINGLE SOURCE OF SUCH LICENSE REVOCATION POLICY. NOT EVEN THE ONES FROM SOCIAL MEDIAS. I GAVE LOTS OF TIME FOR HIM TO ACTUALLY TO COLLECT IT. HE HAD PRODUCED NONE OF IT UNTIL THIS DAY.
 
 Eventually, father immediately enforced his kicking out decision. However, They would put me to my parents' unoccupied second house in a condominium that my parents recently bought in Cyberjaya instead of the train station that they previously offered to me. The German government intervention against my parents for my 2nd youngest brother may have strongly played a part here. Not to mention, I did cite to them the criminal law for a section of child neglect involving lack of medical care, but unsure if that also plays a role as well.
-
-Only fucking then my father apologized on a WhatsApp message! Wait, wait, wait! Does anybody see the irony of this?! My father apologized after fucking kicking me out, completely rendering that apology useless! The time for apologizing was DURING THE TIME I GOT MY PUBLIC HEALTHCARE TREATMENT FOR THE FIRST TIME AND THEY SAW NO DRIVING LICENSE REVOCATION FOR OVER THE LONG TIME. LIAR LIAR LIAR. HIS APOLOGY IS AS HALF-ASSED JUST LIKE THE SPEED OF ME GETTING MY MENTAL ILLNESS TREATMENT. EXTREMELY MEANINGLESS TO THE EXTREMELY ACTUAL FUCK.
 
 When I moved there with my luggages, my father wanted a surveillance camera watching at me in the kitchen so he can observe me so that I don't go kill myself. The camera broked and I decided not care about fixing it, because I couldn't care shit about his "care" when he never fucking owns up to it. My father noticed that the camera is broken because they could not get any feeds from that camera and ended up asking me to fix it multiple times. I just ignored his requests.
 

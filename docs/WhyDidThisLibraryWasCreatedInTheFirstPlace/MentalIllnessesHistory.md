@@ -156,7 +156,7 @@ There was no such policy.
 
 At best, this is what I got: JPJ official policy regarding mental illnesses on the government websites that existed since 2011 showed that the license is revoked based on strict criteria. Not to mention, even if revoked, JPJ would restore them. This is also for vocational driving license, and I couldn't find the version for personal driving license. It is extremely likely that the driving license would be far more lenient. In addition, I had also considered the potential confusion that the driving license would be revoked either way regardless of health conditions.
 
-My worldview slowly collided with the reality of what I saw as I climb down the stairs.
+My worldview slowly collided with the reality of what I saw as I climb down the stairs. Not to mention, I could feel my body starts to become more stiff as I climb down the stairs.
 
 My first instinct was... to shove the fucking policy to my father's face and on the WhatsApp message. I began laughing hysterically and started mocking to my father about his statement of "Chinese and Indians abuse mental OKU diagnosis to get out of severe punishments for severe car accidents by bribing psychologists or psychiatrists for diagnosis, hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". It ranged from me saying these in a mocking tone:
 

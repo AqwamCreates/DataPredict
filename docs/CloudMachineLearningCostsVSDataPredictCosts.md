@@ -22,7 +22,7 @@
 
 The table assumes that:
 
-* The game has an average play time of 10 minutes.
+* The game has an average session time of 10 minutes.
 
 * A single machine learning model is required to perform constant training and predictions.
 
@@ -52,7 +52,7 @@ Note: Not to be confused with concurrent users.
 
 The table assumes that:
 
-* The game has an average play time of 10 minutes.
+* The game has an average session time of 10 minutes.
 
 * A single machine learning model is required to perform constant training and predictions.
 

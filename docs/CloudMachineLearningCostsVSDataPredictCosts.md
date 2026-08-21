@@ -67,6 +67,3 @@ The table assumes that:
 | Monthly Net Revenue Per Player (After ML) | $0.490                 | $0.475                    | $0.133        | $0.312          | $0.417           |
 | Profit Margin Per Player (After ML)       | 98%                    | 95%                       | 27%           | 62%             | 82%              |
 | ML Cost as % of Revenue Per Player        | 2%                     | 5%                        | 73%           | 38%             | 18%              |
-| Break-Even Player Count (Monthly)         | 1 player               | 1 player                  | 1,362 players | 670 players     | 298 players      |
-
-> Break-Even Player Count (Monthly) = Fixed cloud costs ÷ (ARPU - ML cost/player)

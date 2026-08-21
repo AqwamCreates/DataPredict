@@ -26,7 +26,7 @@ The table assumes that:
 
 * A single machine learning model is required to perform constant training and predictions.
 
-* Single CPU only.
+* Single CPU per player.
 
 Note: Not to be confused with concurrent users. 
 
@@ -56,7 +56,7 @@ The table assumes that:
 
 * A single machine learning model is required to perform constant training and predictions.
 
-* Single CPU only.
+* Single CPU per player.
 
 | Metric                                    | DataPredict (Standard) | DataPredict (White-Label) | Google Cloud | Microsoft Azure | Amazon SageMaker |
 |-------------------------------------------|------------------------|---------------------------|--------------|-----------------|------------------|

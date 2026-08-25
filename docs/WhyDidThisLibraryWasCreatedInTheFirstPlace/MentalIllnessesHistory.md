@@ -8,7 +8,7 @@ I studied my IGCSE in Muscat International School (MIS), where the school is loc
 
 During IGCSE, I had developed what people called as maladaptive daydreaming. You can think of like obsessive-compulsive disorder (OCD), but your compulsions are in a form of daydreaming. This term didn't really have much scientific backing back then, and so the most closest diagnosis you can get is the obsessive-compulsive disorder.
 
-My maladaptive daydreaming wasn't that intrusive back then and didn't really impact my grades, so I thought this would go away on its own. In here, I would listen to my music through my headphones, pace around inside my bedroom and jump on my bed for hours. Nevertheless, I still had high grades where I mostly get A except for English (where the teacher did a poor job of doing her job in teaching).
+My maladaptive daydreaming wasn't that intrusive back then and didn't really impact my grades, so I thought this would go away on its own. In here, I would listen to my music through my headphones, pace around inside my bedroom and jump on my bed for hours as I talk to characters in my extreme imagination. Nevertheless, I still had high grades where I mostly get A except for English (where the teacher did a poor job of doing her job in teaching).
 
 ## A-Levels Mental Illnesses History
 
@@ -220,7 +220,7 @@ Shame that I had to move back to the main house eventually since that second hou
 
 ## The Aftermath
 
-In common cases, I wouldn't even notice mispellings that I made as I type on keyboards. In addition, I wouldn't notice that a sentence wouldn't even formatted properly or make any sense, despite me being exposed to English like for over 10 years. I still occassionaly hear the knocking on my bathroom walls when I am inside, which only stops when I leave to my bedroom attached to it. I also ocassionaly feel things climbing on my feet as I work and play using my laptop on my desk. I also occasionaly hear voices calling my name. In very rare cases, I thought I ordered something I wanted in restaurants, just to end up noticing that I received a different order. When I looked at my receipts, I had ordered something that I did not order.
+In common cases, I wouldn't even notice misspellings that I made as I type on keyboards. I would also mumble to myself as if I am talking to other people in my imagination without my awareness and without any trigger, despite my ability trying to supress it before ending up failing due to exhaustion from lowered stress handling threshold. In addition, I wouldn't notice that a sentence wouldn't even formatted properly or make any sense, despite me being exposed to English like for over 10 years. I still occasionally hear the knocking on my bathroom walls when I am inside, which only stops when I leave to my bedroom attached to it. I also occasionally feel things climbing on my feet as I work and play using my laptop on my desk. I also occasionally hear voices calling my name. In very rare cases, I thought I ordered something I wanted in restaurants, just to end up noticing that I received a different order. When I looked at my receipts, I had ordered something that I did not order.
 
 I also quit from all of my family's WhatsApp group. I had also attempts of them trying to bring me back to the family's WhatsApp group, which I ended up leaving again. I had one instance that my father formed a group between my father, my mother and me, before he posted a link to an online certification course. I also left that group immediately as well.
 

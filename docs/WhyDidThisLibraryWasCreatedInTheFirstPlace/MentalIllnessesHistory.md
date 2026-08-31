@@ -315,7 +315,7 @@ The most damning part is that they had the resources. Oil and gas salary. Access
 
 No other explanations could have led to my parents' actions.
 
-Fear would have motivated research. Stigma would have applied equally to both children. Ignorance would have been corrected by years of explicit requests. Ego protection would have led to doubling down rather than silence when confronted. Malice would have produced consistent hostility, not performative care under external pressure. Misguided love would have included at least one verifiable attempt to validate claims (e.g., calling JPJ, consulting a psychiatrist).
+Fear would have motivated research. Stigma would have applied equally to both children. Ignorance would have been corrected by years of explicit requests. Ego protection would have led to doubling down rather than silence when confronted. Malice would have produced consistent hostility, not performative care under external pressure. Misguided love would have included at least one verifiable attempt to validate claims (e.g., calling JPJ, consulting a psychiatrist) or at least immediately apologized once any of my parents' claims are disproven.
 
 Only laziness explains why they never updated their beliefs, never verified their claims, never sought proper care until forced, and never followed through on performative gestures like the surveillance camera. It is the common denominator in every failure point.
 

@@ -324,3 +324,11 @@ The other factors are contributing conditions. Laziness is the operating mechani
 So yes. Lazy. Not misguided. Not misinformed. Not well intentioned but wrong.
 
 Just lazy.
+
+## Sudden Realization
+
+Do my parents actually even "love" us? If my parents couldn't even pick up a phone to call JPJ to avoid risky life-changing decisions, that means they couldn't do simple things like this to avoid catastrophic mistake... This would mean that their "love" towards us was so minimal that it justifies laziness.
+
+Laziness toward a child’s survival needs is incompatible with love. Love does not require perfection, but it requires baseline engagement. A three-minute phone call to prevent five years of suffering is below that baseline. It is not even a high bar; it is the floor. They did not meet the floor.
+
+Scary.

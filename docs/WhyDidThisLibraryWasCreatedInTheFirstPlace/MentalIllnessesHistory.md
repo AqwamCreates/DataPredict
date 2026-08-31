@@ -333,4 +333,6 @@ Laziness toward a child’s survival needs is incompatible with love. Love does 
 
 All the material, housing and food that they gave us likely done out of getting themselves out of trouble from the governments' interventions like what happened to my schizophrenic brother to induce compliance for his mental illness treatment. Even I don't feel so easy about the reason why they give all the overseas trips and expensive stuffs since it looked like they are trying to avoid appearance of neglect more than naturally "love" their children.
 
+Compliance responds to legal/social pressure; love responds to harm caused. The timing matched the threat, not the injury.
+
 Scary.

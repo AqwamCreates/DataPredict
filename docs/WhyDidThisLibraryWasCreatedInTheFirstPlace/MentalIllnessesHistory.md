@@ -232,6 +232,57 @@ I also I noticed something... My parents are actually active in denying about gi
 
 Consequently, my father tried to claim that I mistook him for "making broad overgeneralization about stigma in jobs" after my many complaints about me still getting a job while diagnosed. I quickly made him shut up by asking him "What's the point of your plan where you hid the fact that you didn't get me diagnosed in A-Levels because you are worried that my worries and anxieties of potential unemployment could lead me to destroy my grades?" This attempt of shifting goalpost backfired spectacularly because he can't deny he did that to me and not just words that he could argue against.
 
-My parents also tried to say, "You haven't seen that even more visibly mentally ill people are working as Grab driver while you complain about us delaying your treatment." I literally facepalmed at their faces, since they literally proved my point that even someone who is visibly mentally ill can get a job, completely invalidating the reason why they delayed my treatment in the first place. I just wanted to laugh at them because it was too funny for me to see that they try to ignore the fact I am complaining because they lack accountability and lack owning up their mistakes in the first place!
+My parents also tried to say, "You haven't seen that even more visibly mentally ill people are working as Grab driver while you complain about us delaying your treatment. Let me show you videos of such people being able to work despite more severe mental illnesses than yours." I literally facepalmed at their faces, since they literally proved my point that even someone who is visibly mentally ill can get a job, completely invalidating the reason why they delayed my treatment in the first place. I just wanted to laugh at them because it was too funny for me to see that they try to ignore the fact I am complaining because they lack accountability and lack owning up their mistakes in the first place!
 
 Not to mention, my father is now worried about my mental illnesses after all these shits they pulled out. I ended up telling him, "Why now? I begged for it like many years ago. You had so many chances to deal with it." My father went silent because he couldn't answer that without self-incrimination as I am now looking for the real reason why they delayed my treatment instead of the fake protection excuses.
+
+## Let's Count On How Many Contradictions My Parents Made!
+
+There's just too many to count as separate things. They stack up and show a pattern.
+
+**On employment:**
+1.  "You will not be able to get a job." → I got employed.
+2.  "Higher-paying jobs will discriminate." → Contradicts #1; admits #1 was false.
+3.  "Visibly mentally ill people work as Grab drivers; let me show you videos of such people being able to work despite more severe mental illnesses than yours." → Contradicts both #1 and #2; proves employment is possible regardless of visibility or severity.
+4.  Used #3 to shame me for complaining about delayed treatment → But #3 invalidates the original reason for withholding treatment; they gathered video proof that goes against their own position while thinking it would shut me up.
+5.  Focused #3 entirely on my complaint rather than admitting delayed treatment was the real problem → Shows they couldn't connect their own proof to their own mistake; still no accountability even when holding evidence that disproves them.
+
+**On driving licenses:**
+6.  "Diagnosis means automatic revocation." → JPJ policy shows no such rule.
+7.  "JPJ and KKM use separate systems, so revocation isn't immediate." → Contradicts #6; shifts from certainty to bureaucratic delay.
+8.  "Chinese and Indians bribe psychologists to abuse OKU diagnosis, hence general revocation rule." → Contradicts #6 and #7; makes up a story about ethnic bribery.
+9.  Cannot produce any source for #6, #7, or #8 after months of being asked → Contradicts how sure they sounded when saying all three.
+10. Official JPJ policy exists since 2011 showing conditional, restorable revocation for vocational licenses only → Contradicts the blanket claim in #6, #7, #8.
+11. News articles confirm mental health patients can still drive → Contradicts #6, #7, #8.
+
+**On protection vs. neglect:**
+12. "We delayed treatment to protect you from stigma and license loss." → Treatment withheld during my active deterioration, suicidal thoughts, brain fog.
+13. Brother received immediate treatment in Germany despite identical supposed risks → Contradicts #12; protection was selective.
+14. German government intervention preceded brother's treatment → Suggests outside pressure, not parental care, drove action.
+15. Apology came only after citing criminal neglect law and attempted ejection → Contradicts the idea that past actions were protective; looks like giving in under threat, not real regret.
+16. Apology delivered via WhatsApp, not face-to-face → Doesn't match the seriousness of what happened (if they even meant it).
+17. No mention of specific harms in apology → Contradicts the point of apologizing at all.
+
+**On my complaints:**
+18. "You're overgeneralizing about stigma." → But stigma claim was used as a real reason for medical decisions.
+19. When confronted with #18, went silent → Can't explain #18 alongside what they actually did.
+20. Accused me of scaring brother when I mocked license fabrication → Brother's reaction never confirmed; accusation was just to stop me talking, not to protect him.
+
+**On money:**
+21. Complained private treatment was expensive (RM200 consultation + RM200 meds/month).
+22. Public healthcare available at RM5/consultation including meds.
+23. I proposed switching to public to address #21 → Parents asked why I needed it "so badly."
+24. Father worked in oil & gas in Oman for 8+ years → Contradicts the money excuse in #21.
+25. Demanded I justify need while simultaneously complaining about cost → Can't hold both at once without sounding ridiculous.
+
+**On surveillance/care:**
+26. Installed camera to prevent suicide → Framed as care.
+27. Camera broke; I didn't fix it; parents didn't replace it → Contradicts #26; care depended on me obeying.
+28. Asked me repeatedly to fix camera → Cared about the feed working, not about me being okay.
+29. Offered payment for midnight caretaking of brother → Made care transactional after years of refusing free care for me.
+
+**On family communication:**
+30. Formed WhatsApp group to share certification course → Tried to reconnect.
+31. I left immediately → Rejected fake normalcy.
+32. Mother panics when I don't contact her → But no panic during years of untreated crisis.
+33. Push-pull between kicking me out and inviting short visits → Can't decide if I belong or not.

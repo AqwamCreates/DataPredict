@@ -307,7 +307,7 @@ They were **lazy**.
 
 Even the surveillance camera fits. Installing one is easy. Maintaining it and checking in genuinely and following through with consistent care requires ongoing effort. When it broke and I did not fix it, they did not replace it either. Replacing it would have meant admitting the original gesture was performative and actually caring would have required work they never intended to put in.
 
-The German government intervention did not change their values. It just made inaction inconvenient for them. Even then, their response to me afterward was still half assed with a meaningless apology and a request for me to babysit my schizophrenic brother at midnight and continued silence on sources.
+The German government intervention did not change their values. It just made inaction inconvenient for them. Even then, their response to me afterward was still half assed with a meaningless apology and a request for me to babysit my schizophrenic brother at midnight and continued silence on sources. My father paying me to manage my schizophrenic brother’s night-time wandering was laziness repackaged as opportunity.
 
 Laziness disguised as concern. Laziness dressed up as protection. Laziness that cost me five years of untreated mental illnesses and academic collapse and suicidal ideation and hair loss and lost skills I am now trying to rebuild.
 

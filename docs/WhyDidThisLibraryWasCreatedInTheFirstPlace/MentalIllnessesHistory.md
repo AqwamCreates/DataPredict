@@ -94,9 +94,7 @@ Eventually, they reluctantly changed it to public healthcare one after me kept p
 
 Once changed, I fully expect that I won't be able to go for therapy often due to 1-month waiting time. While having therapy sessions would be nice, I figured that I could perform "Habit Reversal Therapy" (HRT) and "Exposure And Response Prevention" (ERP) by myself, where the medications I received actually significantly make it easier for me to break out from maladaptive daydreaming rituals that I stated before. I did my best to literally flood my rituals away by filling up with playing games, watching anime series and stuff that requires a lot of my brain power. Meanwhile, I would heavily avoid listening to songs as it would trigger my maladaptive daydreaming rituals.
 
-Eventually, we did switch to the public healthcare for my mental illness treatment after my father kept dragging his foot on stigma from jobs and driving license revocation.
-
-Surprise, surprise. What did I found once I get the mental illness treatment in the public healthcare for over couple of months. From here, I got these diagnosis: GAD, OCD and high-functioning autism. I got Brintellix for my medication. The counselling was on a monthly basis at first, but sometime it can stretch to two months once I am stable with the medication that I was given with.
+Also... Surprise, surprise. What did I found once I get the mental illness treatment in the public healthcare for over couple of months. From here, I got these diagnosis: GAD, OCD and high-functioning autism. I got Brintellix for my medication. The counselling was on a monthly basis at first, but sometime it can stretch to two months once I am stable with the medication that I was given with.
 
 Then, I realized something. There was no mention from the public healthcare that my driving license is revoked when I got my diagnosis. So, I brought this up to my father.
 

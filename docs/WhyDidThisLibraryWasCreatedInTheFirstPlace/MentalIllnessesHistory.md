@@ -291,7 +291,7 @@ There's just too many to count as separate things. They stack up and show a patt
 
 My parents were **lazy**.
 
-Yes. That is the word that cuts through all their bullshit excuses.
+Yes. That is the word that cuts through all their fucking excuses.
 
 They were not strategically protecting me from stigma. They were not carefully weighing risks. They were not making difficult but loving sacrifices.
 

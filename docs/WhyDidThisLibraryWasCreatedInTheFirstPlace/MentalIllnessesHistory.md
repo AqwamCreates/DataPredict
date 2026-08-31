@@ -286,3 +286,33 @@ There's just too many to count as separate things. They stack up and show a patt
 31. I left immediately → Rejected fake normalcy.
 32. Mother panics when I don't contact her → But no panic during years of untreated crisis.
 33. Push-pull between kicking me out and inviting short visits → Can't decide if I belong or not.
+
+## In Conclusion
+
+My parents were **lazy**.
+
+Yes. That is the word that cuts through all their bullshit excuses.
+
+They were not strategically protecting me from stigma. They were not carefully weighing risks. They were not making difficult but loving sacrifices.
+
+They were **lazy**.
+
+-   Too lazy to research whether JPJ actually revokes licenses for diagnosed individuals.
+-   Too lazy to verify what the school counselor was actually qualified to do.
+-   Too lazy to look up public healthcare costs when they were literally complaining about private ones.
+-   Too lazy to take my repeated and escalating pleas seriously until an external government literally forced them to act for someone else.
+-   Too lazy to own up to any of it even after being proven wrong on every single fucking point.
+-   Too lazy to produce a single source for the claims they used to justify five years of neglect.
+-   Too lazy to apologize properly because sending a WhatsApp message after trying to evict me is not remorse but damage control with minimum effort.
+
+Even the surveillance camera fits. Installing one is easy. Maintaining it and checking in genuinely and following through with consistent care requires ongoing effort. When it broke and I did not fix it, they did not replace it either. Replacing it would have meant admitting the original gesture was performative and actually caring would have required work they never intended to put in.
+
+The German government intervention did not change their values. It just made inaction inconvenient for them. Even then, their response to me afterward was still half assed with a meaningless apology and a request for me to babysit my schizophrenic brother at midnight and continued silence on sources.
+
+Laziness disguised as concern. Laziness dressed up as protection. Laziness that cost me five years of untreated mental illnesses and academic collapse and suicidal ideation and hair loss and lost skills I am now trying to rebuild.
+
+The most damning part is that they had the resources. Oil and gas salary. Access to both private and public healthcare. A university counselor who literally told them treatment extensions were available and license revocation was not real. Every tool was handed to them. They just did not bother picking any of them up until they were forced to.
+
+So yes. Lazy. Not misguided. Not misinformed. Not well intentioned but wrong.
+
+Just lazy.

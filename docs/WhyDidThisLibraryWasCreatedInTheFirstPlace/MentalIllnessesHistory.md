@@ -297,13 +297,13 @@ They were not strategically protecting me from stigma. They were not carefully w
 
 They were **lazy**.
 
--   Too lazy to research whether JPJ actually revokes licenses for diagnosed individuals.
--   Too lazy to verify what the school counselor was actually qualified to do.
--   Too lazy to look up public healthcare costs when they were literally complaining about private ones.
--   Too lazy to take my repeated and escalating pleas seriously until an external government literally forced them to act for someone else.
--   Too lazy to own up to any of it even after being proven wrong on every single fucking point.
--   Too lazy to produce a single source for the claims they used to justify five years of neglect.
--   Too lazy to apologize properly because sending a WhatsApp message after trying to evict me is not remorse but damage control with minimum effort.
+* Too lazy to research whether JPJ actually revokes licenses for diagnosed individuals.
+* Too lazy to verify what the school counselor was actually qualified to do.
+* Too lazy to look up public healthcare costs when they were literally complaining about private ones.
+* Too lazy to take my repeated and escalating pleas seriously until an external government literally forced them to act for someone else.
+* Too lazy to own up to any of it even after being proven wrong on every single fucking point.
+* Too lazy to produce a single source for the claims they used to justify five years of neglect.
+* Too lazy to apologize properly because sending a WhatsApp message after trying to evict me is not remorse but damage control with minimum effort.
 
 Even the surveillance camera fits. Installing one is easy. Maintaining it and checking in genuinely and following through with consistent care requires ongoing effort. When it broke and I did not fix it, they did not replace it either. Replacing it would have meant admitting the original gesture was performative and actually caring would have required work they never intended to put in.
 

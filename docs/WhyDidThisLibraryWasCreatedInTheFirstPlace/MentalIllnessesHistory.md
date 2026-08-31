@@ -124,7 +124,7 @@ My parents just laughed at my face and dared me to sue them. Eventually, he coul
 
 Then, my 2nd youngest brother suddenly developed schizophrenia while studying in a an oversea German university without any fault of anyone, including my parents. I was also told that my younger brother was in the Germany's healthcare facilities to treat his schizophrenia, and had blocked my father from fetching him for over unknown amount of months.
 
-Then, the German government had warned my parents that he needs to get treated to continue studying in Germany's university. So, my parents did, despite having the same job issues due to stigma and driving license revocation issue in Malaysia like me. Without resistance. 
+Then, the German government had warned my parents that he needs to get treated to continue studying in Germany's university. So, my parents did, despite having the same job issues due to stigma and driving license revocation issue in Malaysia like me. Without resistance. I am unsure if my parents had funded my schizophrenic brother's treatment in Germany during the early stages of the German government's intervention. 
 
 Even better yet for him, he was treated early during his first year of overseas study in the Germany's university, giving him a good chance of getting good grades upon graduation.
 

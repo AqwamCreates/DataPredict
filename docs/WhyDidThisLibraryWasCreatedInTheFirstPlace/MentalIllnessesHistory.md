@@ -311,7 +311,7 @@ The German government intervention did not change their values. It just made ina
 
 Laziness disguised as concern. Laziness dressed up as protection. Laziness that cost me five years of untreated mental illnesses and academic collapse and suicidal ideation and hair loss and lost skills I am now trying to rebuild.
 
-The most damning part is that they had the resources. Oil and gas salary. Access to both private and public healthcare. A university counselor who literally told them treatment extensions were available and license revocation was not real. Every tool was handed to them. They just did not bother picking any of them up until they were forced to.
+The most damning part is that they had the resources. Oil and gas salary. Access to both private and public healthcare. JPJ website and phone numbers. Every tool was handed to them. They just did not bother picking any of them up until they were forced to.
 
 No other explanations could have led to my parents' actions.
 

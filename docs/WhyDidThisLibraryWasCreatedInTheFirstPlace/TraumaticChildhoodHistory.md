@@ -8,7 +8,7 @@
 
 ## Primary
 
-* I had three bullies who are slightly older than me where they decided to strip me naked in public right in front of my primary religious school. This puts me feeling "shame" at highest level and I still remember it from this day. What makes it worse, however, was that no adults were stopping this despite me begging for help from them. And at that point, my brain just went blank, where my brain just decided that there was no point in feeling shame as the alternative of getting help is not there. After that blank... everything about my surroundings feel... surreal. It felt like I was dissociating from the world... until I entered secondary education. I don't really blame my parents back then because they can't really help me while they were at work.
+* I had three bullies who are slightly older than me where they decided to strip me naked in public right in front of my primary religious school in Malaysia. This puts me feeling "shame" at highest level and I still remember it from this day. What makes it worse, however, was that no adults were stopping this despite me begging for help from them. And at that point, my brain just went blank, where my brain just decided that there was no point in feeling shame as the alternative of getting help is not there. After that blank... everything about my surroundings feel... surreal. It felt like I was dissociating from the world... until I entered secondary education. I don't really blame my parents back then because they can't really help me while they were at work.
 
 * My mother tend to shout, throw things and physically abuse my father. I do not know the reasons behind these fights.
 

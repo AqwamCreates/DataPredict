@@ -4,7 +4,7 @@
 
 ## Kindergarten
 
-* A Muslim Indonesian maid poured a hot water on me immediately after she heating a kettle on the stove out of frustration. It is very likely that she went over the tipping point due to my mother's constant reminders that the maid cannot keep her nails long or using fake long nails. I would often see my mother complain about it whenever the maid cooks with such long nails. It led to my parents sending to a clinic to apply some sort of white cream all over my body.
+* A Muslim Indonesian maid poured a hot water on me immediately after she heating a kettle on the stove out of frustration. It is very likely that she went over the tipping point due to my mother's constant reminders that the maid cannot keep her nails long or using fake long nails. I would often see my mother complain about it whenever the maid cooks with such long nails. It led to my parents sending to a clinic in Malaysia to apply some sort of white cream all over my body.
 
 ## Primary
 

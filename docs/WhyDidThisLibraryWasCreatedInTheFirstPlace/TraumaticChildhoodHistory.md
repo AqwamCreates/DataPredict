@@ -30,4 +30,4 @@
  
     * My father already tried to alleviate some of her chores by sending my younger brother and I to our schools in Oman during the early morning.
    
-  * By the time that my grandmother from my mother side died, my father took this opportunity to actually make the whole family stay at my grandmother's house from my father side, without considering how this would make my mother upset.
+  * By the time that my grandmother from my mother side died, my father took this opportunity to actually make the whole family stay at my grandmother's house from my father side whenever it is "Hari Raya", without considering how this would make my mother upset.

@@ -5,3 +5,5 @@
 * [Mental Illnesses History](WhyDidThisLibraryWasCreatedInTheFirstPlace/MentalIllnessesHistory.md)
 
 * [Evidence](WhyDidThisLibraryWasCreatedInTheFirstPlace/Evidence.md)
+
+* [Traumatic Childhood History](WhyDidThisLibraryWasCreatedInTheFirstPlace/TraumaticChildhoodHistory.md)

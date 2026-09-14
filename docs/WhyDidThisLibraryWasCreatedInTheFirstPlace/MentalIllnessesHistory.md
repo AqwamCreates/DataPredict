@@ -236,6 +236,26 @@ My parents also tried to say, "You haven't seen that even more visibly mentally 
 
 Not to mention, my father is now worried about my mental illnesses after all these shits they pulled out. I ended up telling him, "Why now? I begged for it like many years ago. You had so many chances to deal with it." My father went silent because he couldn't answer that without self-incrimination as I am now looking for the real reason why they delayed my treatment instead of the fake protection excuses.
 
+## Let's Count How Many I Asked For Mental Illness Treatment!
+
+1. Prior my father's comment on "you are homesick", "you don't exercise enough" and "don't diagnose yourself". Refer to diary entry evidence.
+
+2. Prior to my attempted suicide back in A-levels from the fourth floor of the apartment hostel.
+
+3. Prior getting the A-Level school counselor.
+
+4. Upon me realizing that the school counselor isn't helping with my untreated mental illnesses. Refer to my school counselor card from A-levels.
+
+5. Upon me arriving back to Oman where my family are still living in after extending A-levels, prior my father revealing the reason why he did not send me to get a treatment in Malaysia under the reason of "You will not get a job if you get a diagnosis".
+
+6. Upon me attempting to commit suicide by placing a plastic bag on my face to suffocate myself.
+
+7. Upon me crying in my bathroom toilet and started breaking the lid of the toilet bowl seat in my old home in Oman because I was so frustrated that I did not get my mental illness treatment. This is where I ended up eventually getting treatment in Oman. I stopped because of COVID and my father's complaint on how expensive it is.
+
+8. While I was getting my driving license during my first year of my bachelor degree in Malaysia, where my father invoked "JPJ will automatically revoke the driving license upon diagnosis".
+
+9. While I was at the third year of university, where my father only gave the green light to get treated in Malaysia because my university counselor told me that the driving license will not get revoked upon diagnosis, nor it would impact my job search significantly depending on if you disclose your diagnosis mental illnesses or not.
+
 ## Let's Count On How Many Contradictions My Parents Made!
 
 There's just too many to count as separate things. They stack up and show a pattern.

@@ -168,7 +168,7 @@ My first instinct was... to shove the fucking policy to my father's face and on 
 
 * "Oh no!"
 
-My father was so pissed off at this and told me to calm down with his angry voice. He stated that I am scaring my 2nd youngest brother when I acted hysterically and mockingly. He also told me that "I shouldn't believe things on the internet". HELLO?! THIS IS FROM OFFICIAL GOVERNMENT POLICY! WHERE DID THE FUCK MY FATHER GET HIS SOURCES FROM?! FACEBOOK?! (I mean it is kind of plausible because he spent too much time on "racial discrimination", but even then people can make shit up and will try defending lack of proof as "it contains personal information" and "I don't have to prove it to random strangers"!)
+My father was so pissed off at this and told me to calm down with his angry voice. He stated that I am scaring my 2nd youngest brother when I acted hysterically and mockingly. He also told me that "I shouldn't believe things on the internet". HELLO?! THIS IS FROM OFFICIAL GOVERNMENT POLICY! WHERE DID THE FUCK MY FATHER GET HIS SOURCES FROM?! FACEBOOK?! (I mean it is kind of plausible because he spent too much time on "racial discrimination", but even then people can make shit up and will try defending lack of proof as "it contains personal information" and "I don't have to prove it to random strangers"! I think he rode off on being high on validation from people having this view about this thing, making him think that whatever thoughts he have would be always correct.)
 
 I don't believe one bit that my 2nd youngest brother would be scared of my act. Feels like it was more of an ego-saving attempt that he does not want me to talk about this.
 

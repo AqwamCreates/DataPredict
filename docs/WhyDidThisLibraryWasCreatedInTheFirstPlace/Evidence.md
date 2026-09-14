@@ -44,6 +44,10 @@ Notice that it is 9th January 2019. I was born in 23rd January 2002. I was sixte
 
 * [Medical Examination Standard For Vocational Driving License (2011)](https://www.jpj.gov.my/wp-content/uploads/2022/11/MED-EXAMINATION-STANDARDS.pdf)
 
+* [Medical Examination Standard For Disabled Drivers' Licensing (2011)](https://www.scribd.com/document/936942450/Disabled-Drivers-Licensing) - ISBN 978-98-3433-90-2
+
+* [Medical Examination Standard For Vocational Driving License (2016)](https://drtamil.me/wp-content/uploads/2016/01/kkm_buku_vocational_examination_standard.pdf)
+
 Note: Notice that these are for vocational driving license, not a personal one. Hence, the rules are likely more relaxed for personal driving license. If you read the policies further, you will notice that the revocation is limited to a subset of mental illnesses, but even then it can be restored if the person is receiving treatment.
 
 #### News

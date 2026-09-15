@@ -346,15 +346,3 @@ The other factors are contributing conditions. Laziness is the operating mechani
 So yes. Lazy. Not misguided. Not misinformed. Not well intentioned but wrong.
 
 Just lazy.
-
-## Sudden Realization
-
-Do my parents actually even "love" us? If my parents couldn't even pick up a phone to call JPJ to avoid risky life-changing decisions, that means they couldn't do simple things like this to avoid catastrophic mistake... This would mean that their "love" towards us was so minimal that it justifies laziness.
-
-Laziness toward a child’s survival needs is incompatible with love. Love does not require perfection, but it requires baseline engagement. A three-minute phone call to prevent five years of suffering is below that baseline. It is not even a high bar; it is the floor. They did not meet the floor.
-
-All the material, housing and food that they gave us likely done out of getting themselves out of trouble from the governments' interventions like what happened to my schizophrenic brother to induce compliance for his mental illness treatment. Even I don't feel so easy about the reason why they give all the overseas trips and expensive stuffs since it looked like they are trying to avoid appearance of neglect more than naturally "love" their children.
-
-Compliance responds to legal/social pressure; love responds to harm caused. The timing matched the threat, not the injury.
-
-Scary.

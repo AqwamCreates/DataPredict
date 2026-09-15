@@ -44,7 +44,7 @@ I continued begging for the mental illness treatment to my parents. Eventually..
 
 Then the rare instances of voices calling my name without any unidentified source. The same goes rare instances of hearing and feeling the vibrations from my phone, but my phone wasn't receiving any notifications or calls.
 
-Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it wass filled with teachers and classes. Multiple classes actually. My parents are unaware of this.
+Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it was filled with teachers and classes. Multiple classes actually. My parents are unaware of this.
 
 I remembered one of the instance of me crying was in a Physics practical class, where the physics teacher looked particularly moody today. That being said, that doesn't stop me from crying there, which ended up prompting her to help me with the practical stuff that I was trying to do. I could see her helping me out of annoyance and probably a hint of guilt.
 

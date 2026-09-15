@@ -252,9 +252,11 @@ Not to mention, my father is now worried about my mental illnesses after all the
 
 7. Upon me crying in my bathroom toilet and started breaking the lid of the toilet bowl seat in my old home in Oman because I was so frustrated that I did not get my mental illness treatment. This is where I ended up eventually getting treatment in Oman. I stopped because of COVID and my father's complaint on how expensive it is.
 
-8. While I was getting my driving license during my first year of my bachelor degree in Malaysia, where my father invoked "JPJ will automatically revoke the driving license upon diagnosis".
+8. While I was getting my driving license during my first year of my bachelor degree in Malaysia, where my father invoked "JPJ will automatically revoke the driving license upon diagnosis" and "It is normal to be anxious while driving for the first time and need to practice."
 
-9. While I was at the third year of university, where my father only gave the green light to get treated in Malaysia because my university counselor told me that the driving license will not get revoked upon diagnosis, nor it would impact my job search significantly depending on if you disclose your diagnosis mental illnesses or not.
+9. Me failing the driving exam twice with the same reasoning as 8.
+
+10. While I was at the third year of university, where my father only gave the green light to get treated in Malaysia because my university counselor told me that the driving license will not get revoked upon diagnosis, nor it would impact my job search significantly depending on if you disclose your diagnosis mental illnesses or not.
 
 ## Let's Count On How Many Contradictions My Parents Made!
 

@@ -248,7 +248,7 @@ Not to mention, my father is now worried about my mental illnesses after all the
 
 5. Upon me arriving back to Oman where my family are still living in after extending A-levels, prior my father revealing the reason why he did not send me to get a treatment in Malaysia under the reason of "You will not get a job if you get a diagnosis".
 
-6. Upon me attempting to commit suicide by placing a plastic bag on my face to suffocate myself.
+6. Upon me attempting to commit suicide by placing a plastic bag on my face to suffocate myself in that same house in Oman.
 
 7. Upon me crying in my bathroom toilet and started breaking the lid of the toilet bowl seat in my old home in Oman because I was so frustrated that I did not get my mental illness treatment. This is where I ended up eventually getting treatment in Oman. I stopped because of COVID and my father's complaint on how expensive it is.
 

@@ -156,7 +156,7 @@ Until... I looked into the JPJ and KKM official websites.
 
 There was no such policy.
 
-At best, this is what I got: JPJ official policy regarding mental illnesses on the government websites that existed since 2011 showed that the license is revoked based on strict criteria. Not to mention, even if revoked, JPJ would restore them. This is also for vocational driving license, and I couldn't find the version for personal driving license. It is extremely likely that the driving license would be far more lenient. In addition, I also had considered the potential confusion that the driving license would be revoked either way regardless of health conditions because the drivers would be evaluated based on how safe they can drive.
+At best, this is what I got: JPJ official policy regarding mental illnesses on the government websites that existed since 2011 showed that the license is revoked based on strict criteria. Not to mention, even if revoked, JPJ would restore them. This is also for vocational driving license, and I couldn't find the version for personal driving license. It is extremely likely that the driving license would be far more lenient. In addition, I also had considered the potential confusion that the driving license would be revoked either way regardless of health conditions because the drivers would be evaluated based on how safely people can drive which may or may not take health conditions and criminal behaviours into account.
 
 My worldview slowly collided with the reality of what I saw as I climb down the stairs. Not to mention, I could feel my body starts to become more stiff as I climb down the stairs.
 

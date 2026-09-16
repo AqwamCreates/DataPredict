@@ -14,6 +14,10 @@ There goes the assumption of innocence for the criminal law: Act 611, Child Act 
 
 Not knowing the severity otherwise? Well, we can force a court order to investigate the whole A-Levels division for International Islamic School Of Malaysia. Also, my diary entries are there as well.
 
+### Indirect Admission Of Guilt By My Father + Corroborating Evidence To My Claims Of His Statement Of Delaying Treatment Due To Job Stigma.
+
+<img src="Evidence/WhatsAppMessages/Screenshot_2026-09-17-00-18-07-585_com.whatsapp.jpg" alt="My father's rationale on justifying on not getting me treated early." width="300"/>
+
 ### First Diary Record Of Me Asking For Treatment During A-Levels
 
 <img src="Evidence/DiaryEntries/FirstDiaryRecordOfMeAskingForTreatmentDuringTheALevels/IMG_20260811_000800.jpg" width="1000"/>

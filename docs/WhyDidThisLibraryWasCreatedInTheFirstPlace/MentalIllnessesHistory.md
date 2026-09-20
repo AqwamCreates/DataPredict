@@ -140,11 +140,11 @@ One day, my father received a call from my mother that my 2nd youngest brother w
 
 I don't remember what I said, but something like my father delayed treatment for me, but not for him.
 
-My father tried to justify with "Chinese and Indians abuse mental OKU diagnosis to get out of severe punishments for severe car accidents by bribing psychologists or psychiatrists for diagnosis, hence the Malaysian government have a general rule on to revoke driving license on diagnosis received". My father attempted to use... online newspaper articles as evidence.
+My father tried to justify with "Chinese and Indians abuse mental OKU diagnosis to get out of severe punishments for severe car accidents by bribing psychologists or psychiatrists for diagnosis, hence the Malaysian government have a general rule on to revoke driving license when you get into a car crash while you have a mental illness diagnosis". My father attempted to use... online newspaper articles as evidence. Keyword: Attempted, not actually found it.
 
 This is where my brain just... snapped.
 
-My father... is... using... newspaper... as... evidence...
+My father... is... using... online... newspaper... as... evidence...
 
 And... he... can't... find.. it... for... something... that... he... had... justified... using... it... on... me...
 

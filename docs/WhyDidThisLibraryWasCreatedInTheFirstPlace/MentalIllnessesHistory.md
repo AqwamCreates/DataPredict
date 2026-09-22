@@ -202,6 +202,8 @@ My father is a liar. Liar! I'm telling you he is a liar on the greatest proporti
 
 Liar. So fucking liar.
 
+TO BE EVEN MORE PRECISE ABOUT WHAT I MEANT ABOUT "LIAR" IS THAT MY FATHER GENERATES EXPLANATION THAT SERVES THE MOMENT WITHOUT REGARDLESS IF THEY ARE TRUE OR NOT, AND THEN DISCARD THEM WHEN THEY STOP BEING USEFUL. 
+
 At this point, I fucking rejected the offer to watch my schizophrenic younger brother in midnight out of anger. I then told my parents that is their problem since they did not fix my mental illness problem early hence I have no interest in helping them out. They can go fuck themselves taking care of my younger brother and stress about it.
 
 I also amped my complaints about my father's statements of driving license revocation and stigmatization in jobs on top of this hypocritical treatment to my 2nd youngest brother. I also requested for all of his sources regarding the license revocation. ALL OF IT.
@@ -210,7 +212,7 @@ UNITL TO THIS DAY, HE HAVE NOT GIVEN A SINGLE SOURCE OF SUCH LICENSE REVOCATION 
 
 Eventually, father immediately enforced his kicking out decision. However, They would put me to my parents' unoccupied second house in a condominium that my parents recently bought in Cyberjaya instead of the train station that they previously offered to me. The German government intervention against my parents for my 2nd youngest brother may have strongly played a part here. Not to mention, I did cite to them the criminal law for a section of child neglect involving lack of medical care, but unsure if that also plays a role as well.
 
-When I moved there with my luggages, my father wanted a surveillance camera watching at me in the kitchen so he can observe me so that I don't go kill myself. The camera broked and I decided not care about fixing it, because I couldn't care shit about his "care" when he never fucking owns up to it. My father noticed that the camera is broken because they could not get any feeds from that camera and ended up asking me to fix it multiple times. I just ignored his requests.
+When I moved there with my luggages, my father wanted a surveillance camera watching at me in the kitchen so he can observe me so that I don't go kill myself. The camera broke and I decided not care about fixing it, because I couldn't care shit about his "care" when he never fucking owns up to it. My father noticed that the camera is broken because they could not get any feeds from that camera and ended up asking me to fix it multiple times. I just ignored his requests.
 
 I'M FUCKING SURE THIS IS FOR MY PARENTS TO SAVE THEIR OWN FUCKING ASSES IF I DO DECIDE TO KILL MYSELF. NOT TO MENTION, WHEN THAT SURVEILLANCE CAMERA BROKE, THEY MAKE NO REPLACEMENT SINCE I WOULDN'T EVEN BOTHER TO FIX IT. THIS MEANT THAT THEIR "CARING" ABOUT ME WAS ACTUALLY SHORT-LIVED AND REACTIVE. THERE'S NO FUCKING WAY I COULD CARE ABOUT MY PARENTS NOW ONCE I REALIZED THIS. I COULDN'T CARE LESS IF I HAD KILLED MYSELF AND MAKE MY PARENTS LOOK BAD. IN FACT, I PREFER IT IF MY PARENTS LOOK BAD BECAUSE THEY FUCKING ARE!
 

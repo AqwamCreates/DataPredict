@@ -202,7 +202,7 @@ My father is a liar. Liar! I'm telling you he is a liar on the greatest proporti
 
 Liar. So fucking liar.
 
-TO BE EVEN MORE PRECISE ABOUT WHAT I MEANT ABOUT "LIAR" IS THAT MY FATHER GENERATES EXPLANATION THAT SERVES THE MOMENT WITHOUT REGARDLESS IF THEY ARE TRUE OR NOT, AND THEN DISCARD THEM WHEN THEY STOP BEING USEFUL. 
+TO BE EVEN MORE PRECISE ABOUT WHAT I MEANT ABOUT BY "LIAR": MY FATHER GENERATES EXPLANATION THAT SERVES THE MOMENT WITHOUT REGARDLESS IF THEY ARE TRUE OR NOT, AND THEN DISCARD THEM WHEN THEY STOP BEING USEFUL. 
 
 At this point, I fucking rejected the offer to watch my schizophrenic younger brother in midnight out of anger. I then told my parents that is their problem since they did not fix my mental illness problem early hence I have no interest in helping them out. They can go fuck themselves taking care of my younger brother and stress about it.
 

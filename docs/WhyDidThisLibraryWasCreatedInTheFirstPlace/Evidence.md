@@ -18,6 +18,8 @@ Not knowing the severity otherwise? Well, we can force a court order to investig
 
 <img src="Evidence/WhatsAppMessages/Screenshot_2026-09-17-00-18-07-585_com.whatsapp.jpg" alt="My father's rationale on justifying on not getting me treated early." width="300"/>
 
+Notice that once he went for "You write like this" in nis first message. This meant that my father at least read the parts of "Mental Illnesses History" that contains me swearing at them. Otherwise, he would ignore it. Not to mention, he went for an attack instead of denial, so it is reasonable to assume that the facts were accurate.
+
 ### First Diary Record Of Me Asking For Treatment During A-Levels
 
 <img src="Evidence/DiaryEntries/FirstDiaryRecordOfMeAskingForTreatmentDuringTheALevels/IMG_20260811_000800.jpg" width="1000"/>

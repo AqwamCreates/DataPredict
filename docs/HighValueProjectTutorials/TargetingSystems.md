@@ -46,7 +46,7 @@
 
 ## Straight-Line-Based
 
-* Creating Distance-Minimization-Based Straght-Line Targeting Model
+* Creating Distance-Minimization-Based Straight-Line Targeting Model
 
   * Use multiple SVR / SVM to determine straight line.
 

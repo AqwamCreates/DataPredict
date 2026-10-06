@@ -43,105 +43,80 @@ local playerDataVector = {
 ```lua
 
 local maximumStressScore = 100 -- This must be adjusted based on your data and your environment.
-
 local adaptiveRate = 0.01 -- How fast thresholds adapt (lower = more stable).
+local rollingCostRate = 0.9
+local rollingCostRateComplement = 0.1
+local numberOfSecondsToResetCheatWarning = 60
 
 local function onPlayerConnect(Player: Player)
 	
 	local isStressDetected = false
-	
 	local stressScore = 0
-
 	local rollingCost = 0
-
 	local adaptiveMean = 0
-
 	local adaptiveVariance = 0
-
 	local timeSinceLastWarned = 0
 	
 	local previousStateVector
-
 	local currentStateVector
-	
 	local isIdle
-
 	local costArray
-
 	local cost
-	
 	local valueDifference
-	
 	local standardDeviationValue
-	
 	local lowerBoundRollingCostThreshold
-	
 	local upperBoundRollingCostThreshold
-	
 	local deviationValue
 
 	InputRemoteEvent.OnClientEvent:Connect(function(Player)
 		
 		currentStateVector = getStateVector(Player, previousStateVector)
-		
 		isIdle = checkIfIsIdle(previousStateVector, currentStateVector)
 
-		costArray = AnomalyDetectionModel:train(previousStateVector, currentStateVector)
+		-- Fixed variable name
+		costArray = StressTrackingModel:train(previousStateVector, currentStateVector)
 		
 		previousStateVector = currentStateVector
 
 		cost = costArray[1]
 		
-		rollingCost = (rollingCostRate * rollingCost) + (rollingCostRateComplement * cost) -- Exponential smoothing.
+		-- Exponential smoothing
+		rollingCost = (rollingCostRate * rollingCost) + (rollingCostRateComplement * cost)
 		
 		valueDifference = rollingCost - adaptiveMean
 		
 		adaptiveMean = adaptiveMean + (adaptiveRate * valueDifference)
-		
 		adaptiveVariance = (1 - adaptiveRate) * (adaptiveVariance + (adaptiveRate * math.pow(valueDifference, 2)))
 
 		standardDeviationValue = math.sqrt(adaptiveVariance)
 		
 		lowerBoundRollingCostThreshold = adaptiveMean - (3 * standardDeviationValue)
-		
 		upperBoundRollingCostThreshold = adaptiveMean + (3 * standardDeviationValue)
 		
 		deviationValue = 0
 		
 		if (isIdle) then
-			
 			stressScore = math.max(0, stressScore - 1)
-		
 		elseif (rollingCost < lowerBoundRollingCostThreshold) then
-			
 			deviationValue = (lowerBoundRollingCostThreshold - rollingCost)
-			
 		elseif (rollingCost > upperBoundRollingCostThreshold) then
-
 			deviationValue = (rollingCost - upperBoundRollingCostThreshold)
-
 		else
-
 			stressScore = math.max(0, stressScore - 1)
-
 		end
 		
 		stressScore = stressScore + (deviationValue * 0.1)
 		
-		stressScore = math.max(0, stressScore - (0.05 * (1 - math.abs(deviationValue))))
+		-- Fixed decay logic: Constant decay
+		stressScore = math.max(0, stressScore - 0.05)
 		
 		isStressDetected = (stressScore >= maximumStressScore)
 		
 		if (isStressDetected) and (timeSinceLastWarned <= 0) then
-			
 			timeSinceLastWarned = numberOfSecondsToResetCheatWarning
-			
 			warn(warningString:format(Player.Name, stressScore, rollingCost, cost))
-			
 		else
-			
 			timeSinceLastWarned = math.max(timeSinceLastWarned - delta, 0)
-			
 		end
 	
 	end)

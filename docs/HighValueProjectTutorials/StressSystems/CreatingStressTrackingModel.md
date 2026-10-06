@@ -46,7 +46,7 @@ local maximumStressScore = 100 -- This must be adjusted based on your data and y
 local adaptiveRate = 0.01 -- How fast thresholds adapt (lower = more stable).
 local rollingCostRate = 0.9
 local rollingCostRateComplement = 0.1
-local numberOfSecondsToResetCheatWarning = 60
+local numberOfSecondsToResetStressWarning = 60
 
 local function onPlayerConnect(Player: Player)
 	
@@ -113,7 +113,7 @@ local function onPlayerConnect(Player: Player)
 		isStressDetected = (stressScore >= maximumStressScore)
 		
 		if (isStressDetected) and (timeSinceLastWarned <= 0) then
-			timeSinceLastWarned = numberOfSecondsToResetCheatWarning
+			timeSinceLastWarned = numberOfSecondsToResetStressWarning
 			warn(warningString:format(Player.Name, stressScore, rollingCost, cost))
 		else
 			timeSinceLastWarned = math.max(timeSinceLastWarned - delta, 0)

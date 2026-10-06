@@ -1,20 +1,10 @@
 # Targeting Systems
 
-## Straight-Line-Based
+## Predictive
 
-* Creating Distance-Minimization-Based Straght-Line Targeting Model
+* Creating Movement Prediction 
 
-  * Use multiple SVR / SVM to determine straight line.
-
-   * Note that each model must only have one-column input and output, representing each dimension.
-   
-   * Additionally, use the output as the same as input, so that the models will learn to create hard decision boundaries which can be extracted from the model parameters.
- 
-   * Also for SVM's outputs, just use sign function on inputs.
-
-  * Questionable implementation at best. However, I will not stop game designers from making their games look "smart".
-    
-  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.
+  * Using Kalman filters to predict player positions for leading shots or Area-Of-Effect attacks.
 
 ## Cluster-Based
 
@@ -53,3 +43,19 @@
     * The model will likely do a lot of exploration before it can hit a single player. Once that particular location is marked as "reward location", the model will might overfocus on it.
 
   * Minimal implementation takes a minimum of 2 hours using DataPredict™.
+
+## Straight-Line-Based
+
+* Creating Distance-Minimization-Based Straght-Line Targeting Model
+
+  * Use multiple SVR / SVM to determine straight line.
+
+   * Note that each model must only have one-column input and output, representing each dimension.
+   
+   * Additionally, use the output as the same as input, so that the models will learn to create hard decision boundaries which can be extracted from the model parameters.
+ 
+   * Also for SVM's outputs, just use sign function on inputs.
+
+  * Questionable implementation at best. However, I will not stop game designers from making their games look "smart".
+    
+  * Minimal implementation takes a minimum of 30 minutes using DataPredict™.

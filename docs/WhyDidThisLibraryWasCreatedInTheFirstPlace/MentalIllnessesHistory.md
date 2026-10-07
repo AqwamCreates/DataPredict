@@ -345,6 +345,6 @@ Only laziness explains why they never updated their beliefs, never verified thei
 
 The other factors are contributing conditions. Laziness is the operating mechanism.
 
-So yes. Lazy. Not misguided. Not misinformed. Not well intentioned but wrong.
+So yes. Lazy. Not misguided. Not misinformed. Not well-intentioned but wrong.
 
 Just lazy.

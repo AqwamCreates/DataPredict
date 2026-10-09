@@ -20,7 +20,7 @@
  
   * Talk about how she would get into prison because I committed suicide.
  
-  * Literally threw my small phone at me to the point the screen broke.
+  * Literally threw my small HTC Wildfire S phone at me to the point the screen broke.
 
 * My mother tend to shout, throw things and physically abuse my father. The reasons could be any of these:
 

@@ -38,9 +38,9 @@ TableModel.__index = TableModel
 
 setmetatable(TableModel, IterativeMethodBaseModel)
 
-local defaultMaximumNumberOfIterations = 10
+local defaultMaximumNumberOfIterations = 500
 
-local defaultLearningRate = 0.1
+local defaultLearningRate = 0.3
 
 local defaultActivationFunction = "None"
 

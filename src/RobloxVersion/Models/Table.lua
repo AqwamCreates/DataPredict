@@ -899,6 +899,8 @@ function TableModel:train(featureVector, labelVector)
 		logisticMatrix = labelVector
 
 	end
+	
+	local activationFunction = self.activationFunction
 
 	local lossFunctionToApply = lossFunctionList[self.costFunction]
 
@@ -928,11 +930,11 @@ function TableModel:train(featureVector, labelVector)
 
 		zMatrix = self:getOutputMatrix(featureVector, true)
 
-		activationMatrix = activateLayer(zMatrix, self.activationFunction)
+		activationMatrix = activateLayer(zMatrix, activationFunction)
 
 		lossGradientMatrix = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, activationMatrix, logisticMatrix)
 
-		derivativeMatrix = deriveLayer(activationMatrix, zMatrix, self.activationFunction)
+		derivativeMatrix = deriveLayer(activationMatrix, zMatrix, activationFunction)
 
 		layerCostMatrix = AqwamTensorLibrary:multiply(lossGradientMatrix, derivativeMatrix)
 

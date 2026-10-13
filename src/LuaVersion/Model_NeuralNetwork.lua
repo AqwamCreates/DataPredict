@@ -476,6 +476,8 @@ local lossFunctionList = {
 
 	["SquaredHingeLoss"] = function (h, y) return math.pow(math.max(0, (1 - (h * y))), 2) end,
 
+	["PerceptronLoss"] = function (h, y) return math.max(0, -(h * y)) end,
+	
 	["BinaryCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue) + (1 - labelValue) * math.log(1 - generatedLabelValue)) end,
 
 	["CategoricalCrossEntropy"] = function(generatedLabelValue, labelValue) return -(labelValue * math.log(generatedLabelValue)) end,
@@ -507,6 +509,16 @@ local lossFunctionGradientList = {
 		local scale = ((margin > 0) and margin) or 0
 
 		return -(2 * y * scale)
+
+	end,
+	
+	["PerceptronLoss"] = function (h, y) 
+
+		local value = (h * y)
+
+		if (value > 0) then return 0 end
+
+		return -value
 
 	end,
 

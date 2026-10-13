@@ -242,7 +242,9 @@ function BinaryRegressionModel:calculateLossFunctionDerivativeVector(lossGradien
 	
 	local binaryFunctionDerivativeVector = AqwamTensorLibrary:applyFunction(binaryFunctionGradientList[self.binaryFunction], self.hypothesisVector, self.zVector)
 	
-	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, binaryFunctionDerivativeVector, lossGradientVector)
+	lossGradientVector = AqwamTensorLibrary:multiply(lossGradientVector, binaryFunctionDerivativeVector)
+	
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, lossGradientVector)
 
 	if (self.areGradientsSaved) then self.Gradients = lossFunctionDerivativeVector end
 

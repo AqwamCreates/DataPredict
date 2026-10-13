@@ -1010,9 +1010,9 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		local learningRate = learningRateArray[layerNumber]
 
-		local Regularizer = RegularizerArray[layerNumber]
-
 		local Optimizer = OptimizerArray[layerNumber]
+		
+		local Regularizer = RegularizerArray[layerNumber]
 
 		local costFunctionDerivativeMatrix = costFunctionDerivativeMatrixArray[weightNumber]
 

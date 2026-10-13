@@ -38,6 +38,8 @@ TableModel.__index = TableModel
 
 setmetatable(TableModel, IterativeMethodBaseModel)
 
+local defaultMaximumNumberOfIterations = 10
+
 local defaultLearningRate = 0.1
 
 local defaultCostFunction = "MeanSquaredError"
@@ -645,6 +647,8 @@ function TableModel.new(parameterDictionary)
 	setmetatable(NewTableModel, TableModel)
 
 	NewTableModel:setName("Table")
+	
+	NewTableModel.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	NewTableModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
 

@@ -20,6 +20,8 @@ Table.new(learningRate: number, Optimizer: Optimizer: Object, FeaturesList: {any
 
 * ClassesList: A list containing all the classes.
 
+* costFunction: The function to calculate the cost of each training. Available options are:
+
 | Function                   | Input Range (From Final Activation Layer And Label Vector) | Output Range | Characteristics                                  | Use Cases                                                              |
 |----------------------------|------------------------------------------------------------|--------------|--------------------------------------------------|------------------------------------------------------------------------|
 | MeanSquaredError (Default) | (-∞, ∞)                                                    | [0, ∞)       | Quadratic penalty, sensitive to outliers         | Regression with normally distributed errors, when outliers are minimal |

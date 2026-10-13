@@ -54,7 +54,7 @@ local Others = script.Others
 
 AqwamMachineDeepAndReinforcementLearningLibrary.Models = {
 	
-	-- Regression - 22 Models
+	-- Regression - 23 Models
 
 	LinearRegression = require(Models.LinearRegression),
 	

@@ -1022,7 +1022,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		local weightMatrix = ModelParameters[weightNumber]
 
-		if (Regularizer ~= 0) then
+		if (Regularizer) then
 
 			local regularizationDerivativeMatrix = Regularizer:calculate(weightMatrix, hasBiasNeuronOnCurrentLayer)
 
@@ -1032,7 +1032,7 @@ function NeuralNetworkModel:gradientDescent(costFunctionDerivativeMatrixArray, n
 
 		costFunctionDerivativeMatrix = AqwamTensorLibrary:divide(costFunctionDerivativeMatrix, numberOfData)
 
-		if (Optimizer ~= 0) then
+		if (Optimizer) then
 
 			costFunctionDerivativeMatrix = Optimizer:calculate(learningRate, costFunctionDerivativeMatrix, weightMatrix)
 
@@ -1104,7 +1104,7 @@ function NeuralNetworkModel:calculateCost(hypothesisMatrix, logisticMatrix)
 
 		Regularizer = RegularizerArray[layerNumber + 1]
 
-		if (Regularizer ~= 0) then 
+		if (Regularizer) then 
 			
 			totalCost = totalCost + Regularizer:calculateCost(weightMatrix, hasBiasNeuron) 
 			
@@ -1336,9 +1336,9 @@ function NeuralNetworkModel:createLayers(numberOfNeuronsArray, activationFunctio
 
 		activationFunctionArray[layer] = ((layer == 1) and "None") or activationFunction
 
-		OptimizerArray[layer] = OptimizerArray[layer] or 0
+		OptimizerArray[layer] = OptimizerArray[layer] or false
 
-		RegularizerArray[layer] = RegularizerArray[layer] or 0
+		RegularizerArray[layer] = RegularizerArray[layer] or false
 		
 		dropoutRateArray[layer] = dropoutRate
 		
@@ -1426,9 +1426,9 @@ function NeuralNetworkModel:addLayer(numberOfNeurons, hasBiasNeuron, activationF
 
 	table.insert(self.learningRateArray, learningRate)
 
-	table.insert(self.OptimizerArray, Optimizer or 0)
+	table.insert(self.OptimizerArray, Optimizer or false)
 
-	table.insert(self.RegularizerArray, Regularizer or 0)
+	table.insert(self.RegularizerArray, Regularizer or false)
 
 	table.insert(self.dropoutRateArray, dropoutRate)
 	
@@ -1462,11 +1462,11 @@ function NeuralNetworkModel:setLayer(layerNumber, hasBiasNeuron, activationFunct
 
 	Regularizer = self:getValueOrDefaultValue(Regularizer, self.RegularizerArray[layerNumber])
 
-	Regularizer = Regularizer or 0
+	Regularizer = Regularizer or false
 
 	Optimizer = self:getValueOrDefaultValue(Optimizer, self.OptimizerArray[layerNumber])
 
-	Optimizer = Optimizer or 0
+	Optimizer = Optimizer or false
 	
 	Solver = self:getValueOrDefaultValue(Solver, self.SolverArray[layerNumber])
 
@@ -1524,17 +1524,13 @@ function NeuralNetworkModel:setLayerProperty(layerNumber, property, value)
 
 		value = self:getValueOrDefaultValue(value, self.OptimizerArray[layerNumber])
 
-		value = value or 0
-
-		self.OptimizerArray[layerNumber] = value
+		self.OptimizerArray[layerNumber] = value or false
 
 	elseif (property == "Regularizer") then
 
 		value = self:getValueOrDefaultValue(value, self.RegularizerArray[layerNumber])
 
-		value = value or 0
-
-		self.RegularizerArray[layerNumber] = value or 0
+		self.RegularizerArray[layerNumber] = value or false
 
 	elseif (property == "DropoutRate") then
 
@@ -1582,7 +1578,7 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 
 		local Optimizer = self.OptimizerArray[layerNumber]
 
-		if (Optimizer ~= 0) then
+		if (Optimizer) then
 
 			return Optimizer
 
@@ -1596,7 +1592,7 @@ function NeuralNetworkModel:getLayerProperty(layerNumber, property)
 
 		local Regularizer = self.RegularizerArray[layerNumber]
 
-		if (Regularizer ~= 0) then
+		if (Regularizer) then
 
 			return Regularizer
 
@@ -1638,19 +1634,11 @@ function NeuralNetworkModel:getLayer(layerNumber)
 
 	local Optimizer = self.OptimizerArray[layerNumber]
 
-	if (Optimizer == 0) then
-
-		Optimizer = nil
-
-	end
+	if (not Optimizer) then Optimizer = nil end
 
 	local Regularizer = self.RegularizerArray[layerNumber]
 
-	if (Regularizer == 0) then
-
-		Regularizer = nil
-
-	end
+	if (not Regularizer) then Regularizer = nil end
 
 	return self.numberOfNeuronsArray[layerNumber], (self.hasBiasNeuronArray[layerNumber] == 1), self.activationFunctionArray[layerNumber], self.learningRateArray[layerNumber], Optimizer, Regularizer, self.dropoutRateArray[layerNumber], self.SolverArray[layerNumber]
 
@@ -1975,7 +1963,7 @@ function NeuralNetworkModel:train(featureMatrix, labelVector)
 
 		for i, Optimizer in ipairs(self.OptimizerArray) do
 
-			if (Optimizer ~= 0) then Optimizer:reset() end
+			if (Optimizer) then Optimizer:reset() end
 
 		end
 
@@ -1999,7 +1987,7 @@ function NeuralNetworkModel:reset()
 
 	for i, Optimizer in ipairs(self.OptimizerArray) do
 
-		if (Optimizer ~= 0) then Optimizer:reset() end
+		if (Optimizer) then Optimizer:reset() end
 
 	end
 	
@@ -2253,30 +2241,26 @@ function NeuralNetworkModel:showDetails()
 	
 	stringToPrint = stringToPrint .. "\n\nCost Function: " .. costFunction .. "\n\n"
 	
-	if (ClassesList) then
-		
-		if (ClassesList ~= 0) then
-			
-			local availableClassesString = "Available Classes: "
-			
-			local numberOfClasses = #ClassesList
-			
-			for i, class in ipairs(ClassesList) do
-				
-				if (type(class) ~= "string") then class = tostring(class) end
-				
-				if (i ~= 1) then availableClassesString = availableClassesString .. " " end
-				
-				availableClassesString = availableClassesString .. class
-				
-				if (i < numberOfClasses) then availableClassesString = availableClassesString .. "," end
-				
-			end
-			
-			stringToPrint = stringToPrint .. availableClassesString
-			
+	if (type(ClassesList) == "table") then
+
+		local availableClassesString = "Available Classes: "
+
+		local numberOfClasses = #ClassesList
+
+		for i, class in ipairs(ClassesList) do
+
+			if (type(class) ~= "string") then class = tostring(class) end
+
+			if (i ~= 1) then availableClassesString = availableClassesString .. " " end
+
+			availableClassesString = availableClassesString .. class
+
+			if (i < numberOfClasses) then availableClassesString = availableClassesString .. "," end
+
 		end
-		
+
+		stringToPrint = stringToPrint .. availableClassesString
+
 	end
 	
 	print(stringToPrint .. "\n")

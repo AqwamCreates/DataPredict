@@ -42,9 +42,9 @@ local defaultMaximumNumberOfIterations = 10
 
 local defaultLearningRate = 0.1
 
-local defaultCostFunction = "MeanSquaredError"
-
 local defaultActivationFunction = "None"
+
+local defaultCostFunction = "MeanSquaredError"
 
 local epsilon = 1e-14
 
@@ -651,10 +651,10 @@ function TableModel.new(parameterDictionary)
 	NewTableModel.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
 
 	NewTableModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+	
+	NewTableModel.activationFunction = parameterDictionary.activationFunction or defaultActivationFunction
 
 	NewTableModel.costFunction = parameterDictionary.costFunction or defaultCostFunction
-
-	NewTableModel.activationFunction = parameterDictionary.activationFunction or defaultActivationFunction
 
 	NewTableModel.Optimizer = parameterDictionary.Optimizer
 

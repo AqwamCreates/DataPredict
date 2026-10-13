@@ -28,9 +28,9 @@
 
 local AqwamTensorLibrary = require("AqwamTensorLibrary")
 
-local ZTableFunction = require("Core_ZTableFunction")
-
 local IterativeMethodBaseModel = require("Model_IterativeMethodBaseModel")
+
+local ZTableFunction = require("Core_ZTableFunction")
 
 local TableModel = {}
 

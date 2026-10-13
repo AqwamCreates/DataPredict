@@ -18,7 +18,16 @@ Table.new(learningRate: number, Optimizer: Optimizer: Object, FeaturesList: {any
 
 * FeaturesList: A list containing all the features.
 
-* ClassesList: A list containing all the classes. 
+* ClassesList: A list containing all the classes.
+
+| Function                   | Input Range (From Final Activation Layer And Label Vector) | Output Range | Characteristics                                  | Use Cases                                                              |
+|----------------------------|------------------------------------------------------------|--------------|--------------------------------------------------|------------------------------------------------------------------------|
+| MeanSquaredError (Default) | (-∞, ∞)                                                    | [0, ∞)       | Quadratic penalty, sensitive to outliers         | Regression with normally distributed errors, when outliers are minimal |
+| MeanAbsoluteError          | (-∞, ∞)                                                    | [0, ∞)       | Linear penalty, robust to outliers               | Robust regression, when dataset contains outliers, median prediction   |
+| HingeLoss                  | (-∞, ∞)                                                    | (0, ∞)       | Creates max-margin decision boundary             | Maximum margin classification, text categorization                     |
+| SquaredHingeLoss           | (-∞, ∞)                                                    | (0, ∞)       | Creates sensitive max-margin decision boundary   | Sensitive maximum margin classification, text categorization           |
+| PerceptronLoss             | (-∞, ∞)                                                    | (0, ∞)       | Adjusts the boundary when incorrectly classified | Margin classification, text categorization                             |
+| BinaryCrossEntropy         | (0, 1)                                                     | (0, ∞)       | Penalizes confident wrong predictions heavily    | Probabilistic-based classification                                     |
 
 #### Returns:
 

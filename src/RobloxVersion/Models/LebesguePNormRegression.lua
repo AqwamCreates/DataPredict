@@ -1,0 +1,311 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local GradientMethodBaseModel = require(script.Parent.GradientMethodBaseModel)
+
+local Solvers = script.Parent.Parent.Solvers
+
+local LebesguePNormRegressionModel = {}
+
+LebesguePNormRegressionModel.__index = LebesguePNormRegressionModel
+
+setmetatable(LebesguePNormRegressionModel, GradientMethodBaseModel)
+
+local defaultMaximumNumberOfIterations = 500
+
+local defaultLearningRate = 0.3
+
+local defaultPValue = 1.5 -- 2 is for "Mean Squared Error". 1 is for "Mean Absolute Error".
+
+local defaultSolver = "GaussNewton"
+
+local function functionToApply(h, y)
+	
+	return math.abs(h - y)
+	
+end
+
+function LebesguePNormRegressionModel:calculateCost(hypothesisVector, labelVector, hasBias)
+
+	if (type(hypothesisVector) == "number") then hypothesisVector = {{hypothesisVector}} end
+
+	local costVector = AqwamTensorLibrary:applyFunction(functionToApply, hypothesisVector, labelVector)
+	
+	costVector = AqwamTensorLibrary:power(costVector, self.pValue)
+
+	local totalCost = AqwamTensorLibrary:sum(costVector)
+	
+	local Regularizer = self.Regularizer
+
+	if (Regularizer) then totalCost = totalCost + Regularizer:calculateCost(self.ModelParameters, hasBias) end
+
+	local averageCost = totalCost / #labelVector
+
+	return averageCost
+
+end
+
+function LebesguePNormRegressionModel:calculateHypothesisVector(featureMatrix, saveFeatureMatrix)
+
+	local hypothesisVector = AqwamTensorLibrary:dotProduct(featureMatrix, self.ModelParameters)
+
+	if (saveFeatureMatrix) then self.featureMatrix = featureMatrix end
+
+	return hypothesisVector
+
+end
+
+function LebesguePNormRegressionModel:calculateLossFunctionDerivativeVector(lossGradientVector)
+
+	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
+
+	local lossFunctionDerivativeVector = self.Solver:calculate(self.ModelParameters, self.featureMatrix, nil, lossGradientVector)
+
+	if (self.areGradientsSaved) then self.lossFunctionDerivativeVector = lossFunctionDerivativeVector end
+
+	return lossFunctionDerivativeVector
+
+end
+
+function LebesguePNormRegressionModel:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
+
+	if (type(lossFunctionDerivativeVector) == "number") then lossFunctionDerivativeVector = {{lossFunctionDerivativeVector}} end
+	
+	local ModelParameters = self.ModelParameters
+	
+	local Regularizer = self.Regularizer
+	
+	local Optimizer = self.Optimizer
+	
+	local learningRate = self.learningRate
+
+	if (Regularizer) then
+
+		local regularizationDerivatives = Regularizer:calculate(ModelParameters, hasBias)
+
+		lossFunctionDerivativeVector = AqwamTensorLibrary:add(lossFunctionDerivativeVector, regularizationDerivatives)
+
+	end
+
+	lossFunctionDerivativeVector = AqwamTensorLibrary:divide(lossFunctionDerivativeVector, numberOfData)
+
+	if (Optimizer) then 
+
+		lossFunctionDerivativeVector = Optimizer:calculate(learningRate, lossFunctionDerivativeVector, ModelParameters) 
+
+	else
+
+		lossFunctionDerivativeVector = AqwamTensorLibrary:multiply(learningRate, lossFunctionDerivativeVector)
+
+	end
+
+	self.ModelParameters = AqwamTensorLibrary:subtract(ModelParameters, lossFunctionDerivativeVector)
+
+end
+
+function LebesguePNormRegressionModel:update(lossGradientVector, hasBias, clearAllMatrices)
+
+	if (type(lossGradientVector) == "number") then lossGradientVector = {{lossGradientVector}} end
+
+	local numberOfData = #lossGradientVector
+
+	local lossFunctionDerivativeVector = self:calculateLossFunctionDerivativeVector(lossGradientVector)
+
+	self:gradientDescent(lossFunctionDerivativeVector, numberOfData, hasBias)
+
+	if (clearAllMatrices) then 
+
+		self.featureMatrix = nil
+
+		self.lossFunctionDerivativeVector = nil
+
+	end
+
+end
+
+function LebesguePNormRegressionModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	parameterDictionary.maximumNumberOfIterations = parameterDictionary.maximumNumberOfIterations or defaultMaximumNumberOfIterations
+
+	local NewLebesguePNormRegressionModel = GradientMethodBaseModel.new(parameterDictionary)
+
+	setmetatable(NewLebesguePNormRegressionModel, LebesguePNormRegressionModel)
+	
+	NewLebesguePNormRegressionModel:setName("LebesguePNormRegression")
+
+	NewLebesguePNormRegressionModel.learningRate = parameterDictionary.learningRate or defaultLearningRate
+
+	NewLebesguePNormRegressionModel.pValue = parameterDictionary.pValue or defaultPValue
+
+	NewLebesguePNormRegressionModel.Optimizer = parameterDictionary.Optimizer
+
+	NewLebesguePNormRegressionModel.Regularizer = parameterDictionary.Regularizer
+	
+	NewLebesguePNormRegressionModel.Solver = parameterDictionary.Solver or require(Solvers[defaultSolver]).new({isLinear = true})
+
+	return NewLebesguePNormRegressionModel
+
+end
+
+function LebesguePNormRegressionModel:setOptimizer(Optimizer)
+
+	self.Optimizer = Optimizer
+
+end
+
+function LebesguePNormRegressionModel:setRegularizer(Regularizer)
+
+	self.Regularizer = Regularizer
+
+end
+
+function LebesguePNormRegressionModel:setSolver(Solver)
+
+	self.Solver = Solver
+
+end
+
+function LebesguePNormRegressionModel:train(featureMatrix, labelVector)
+	
+	local numberOfData = #featureMatrix
+
+	if (numberOfData ~= #labelVector) then error("The feature matrix and the label vector does not contain the same number of rows.") end
+	
+	local numberOfFeatures = #featureMatrix[1]
+	
+	local ModelParameters = self.ModelParameters
+
+	if (ModelParameters) then
+
+		if (numberOfFeatures ~= #ModelParameters) then error("The number of features are not the same as the model parameters.") end
+
+	else
+
+		self.ModelParameters = self:initializeMatrixBasedOnMode({numberOfFeatures, 1})
+
+	end
+	
+	local pValue = self.pValue
+	
+	local maximumNumberOfIterations = self.maximumNumberOfIterations
+
+	local Optimizer = self.Optimizer
+	
+	local hasBias = self:checkIfFeatureMatrixHasBias(featureMatrix)
+	
+	local pValueMinusOne = pValue - 1
+	
+	local lossFunctionGradientFunctionToApply = function(h, y)
+		
+		local differenceValue = h - y
+		
+		local signValue = math.sign(differenceValue)
+		
+		local absoluteDifferenceValue = math.abs(differenceValue)
+		
+		local powerAbsoluteDifferenceValue = math.pow(absoluteDifferenceValue, pValueMinusOne)
+		
+		return (pValue * signValue * powerAbsoluteDifferenceValue)
+		
+	end
+
+	local costArray = {}
+
+	local numberOfIterations = 0
+	
+	local cost
+	
+	repeat
+
+		numberOfIterations = numberOfIterations + 1
+
+		self:iterationWait()
+
+		local hypothesisVector = self:calculateHypothesisVector(featureMatrix, true)
+
+		cost = self:calculateCostWhenRequired(numberOfIterations, function()
+
+			return self:calculateCost(hypothesisVector, labelVector, hasBias)
+
+		end)
+
+		if (cost) then 
+
+			table.insert(costArray, cost)
+
+			self:printNumberOfIterationsAndCost(numberOfIterations, cost)
+
+		end
+
+		local lossGradientVector = AqwamTensorLibrary:applyFunction(lossFunctionGradientFunctionToApply, hypothesisVector, labelVector)
+
+		self:update(lossGradientVector, hasBias, true)
+
+	until (numberOfIterations >= maximumNumberOfIterations) or self:checkIfTargetCostReached(cost) or self:checkIfConverged(cost) or self:checkIfNan(cost)
+
+	if (self.isOutputPrinted) then
+
+		if (cost == math.huge) then warn("The model diverged.") end
+
+		if (cost ~= cost) then warn("The model produced nan (not a number) values.") end
+
+	end
+	
+	if (self.autoResetConvergenceCheck) then self:resetConvergenceCheck() end
+
+	if (Optimizer) and (self.autoResetOptimizers) then Optimizer:reset() end
+	
+	if (self.autoResetSolvers) then self.Solver:reset() end
+
+	return costArray
+
+end
+
+function LebesguePNormRegressionModel:predict(featureMatrix)
+	
+	local ModelParameters = self.ModelParameters
+	
+	if (not ModelParameters) then
+		
+		ModelParameters = self:initializeMatrixBasedOnMode({#featureMatrix[1], 1})
+		
+		self.ModelParameters = ModelParameters
+		
+	end
+
+	local predictedVector = AqwamTensorLibrary:dotProduct(featureMatrix, ModelParameters)
+
+	return predictedVector
+
+end
+
+return LebesguePNormRegressionModel

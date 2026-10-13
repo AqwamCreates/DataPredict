@@ -1,0 +1,107 @@
+# [API Reference](../../API.md) - [Models](../Models.md) - LebesguePNormRegression
+
+LebesguePNormRegression is a supervised machine learning model that predicts continuous values (e.g. 1.2, -32, 90, -1.2 and etc. ). It uses iterative calculations to find the best model parameters.
+
+## Stored Model Parameters
+
+Contains a matrix.  
+
+* ModelParameters[I][J]: Value of matrix at row I and column J. The rows are the features.
+
+## Constructors
+
+### new()
+
+Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
+
+```
+LebesguePNormRegression.new(maximumNumberOfIterations: integer, learningRate: number, costFunction: string): ModelObject
+```
+
+#### Parameters:
+
+* maximumNumberOfIterations: How many times should the model needed to be trained.
+
+* learningRate: The speed at which the model learns. Recommended that the value is set between 0 to 1.
+
+* pValue: Controls how the model is trained. 2 is for "Mean Squared Error". 1 is for "Mean Absolute Error". [Default: 1.5]
+
+#### Returns:
+
+* ModelObject: The generated model object.
+
+## Functions
+
+### setOptimizer()
+
+Set optimizer for the model by inputting the optimizer object.
+
+```
+LebesguePNormRegression:setOptimizer(Optimizer: OptimizerObject)
+```
+
+#### Parameters:
+
+* Optimizer: The optimizer object to be used.
+
+### setRegularizer()
+
+Set a regularization for the model by inputting the optimizer object.
+
+```
+LebesguePNormRegression:setRegularizer(Regularizer: RegularizerObject)
+```
+
+#### Parameters:
+
+* Regularizer: The regularizer to be used.
+
+### setSolver()
+
+Set a solver for the model by inputting the optimizer object.
+
+```
+LebesguePNormRegression:setSolver(Solver: SolverObject)
+```
+
+#### Parameters:
+
+* Solver: The solver to be used.
+
+### train()
+
+Train the model.
+
+```
+LebesguePNormRegression:train(featureMatrix: matrix, labelVector: matrix): number[]
+```
+
+#### Parameters:
+
+* featureMatrix: Matrix containing data.
+
+* labelVector: A (n x 1) matrix containing values related to featureMatrix.
+
+#### Returns:
+
+* costArray: An array containing cost values.
+
+### predict()
+
+Predict the value for a given data.
+
+```
+LebesguePNormRegression:predict(featureMatrix: matrix): matrix
+```
+
+#### Parameters:
+
+* featureMatrix: Matrix containing data.
+
+#### Returns:
+
+* predictedVector: A vector containing values that are predicted by the model.
+
+## Inherited From
+
+* [GradientMethodBaseModel](GradientMethodBaseModel.md)

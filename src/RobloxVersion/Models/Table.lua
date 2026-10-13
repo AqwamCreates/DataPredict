@@ -476,6 +476,36 @@ local lossFunctionGradientList = {
 
 }
 
+local minimumOutputValueList = {
+
+	["0"] = {"Exponent", "Sigmoid", "HardSigmoid", "BinaryStep", "SoftPlus", "ArcTangent", "Gaussian", "Softmax", "StableSoftmax", "LogitInverseLink", "ProbitInverseLink", "LogLogInverseLink", "Complementary_LogLogInverseLink", "LogInverseLink", "InverseInverseLink", "SquareRootInverseLink", "SquareInverseInverseLink"},
+
+	["-1"] = {"Tanh", "ReLU", "LeakyReLU", "ELU", "SiLU", "BipolarSigmoid", "SoftSign", "Swish", "Mish", "Maxout", "None", "LogitLink", "ProbitLink", "LogLogLink", "Complementary_LogLogLink", "LogLink", "InverseLink", "SquareRootLink", "SquareInverseLink"},
+
+}
+
+local function getCutOffValueList()
+
+	local cutOffValueList = {}
+
+	for stringMinimumOutputValue, binaryFunctionArray in pairs(minimumOutputValueList) do
+
+		for _, binaryFunction in ipairs(binaryFunctionArray) do
+
+			local minimumOutputValue = tonumber(stringMinimumOutputValue)
+
+			cutOffValueList[binaryFunction] = (1 + minimumOutputValue) / 2
+
+		end
+
+	end
+
+	return cutOffValueList
+
+end
+
+local cutOffValueList = getCutOffValueList()
+
 local function activateLayer(zMatrix, activationFunctionName)
 
 	local numberOfData = #zMatrix
@@ -790,7 +820,11 @@ function TableModel:convertLabelVectorToLogisticMatrix(labelVector)
 
 	local numberOfClasses = #ClassesList
 
-	local logisticMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, 0)
+	local incorrectLabelValue = 0
+
+	if table.find(minimumOutputValueList["-1"], self.activationFunction) then incorrectLabelValue = -1 end
+
+	local logisticMatrix = AqwamTensorLibrary:createTensor({numberOfData, numberOfClasses}, incorrectLabelValue)
 
 	local label
 
@@ -964,25 +998,49 @@ function TableModel:predict(featureVector, returnOriginalOutput)
 
 	local class
 
+	local activationFunction = self.activationFunction
+
+	local minimumOutputValue = (table.find(minimumOutputValueList["0"], activationFunction) and 0) or -1
+
+	local cutOffValue = cutOffValueList[activationFunction]
+
 	for i, unwrappedOutputVector in ipairs(activationMatrix) do
 
-		maximumValue = -math.huge
+		if (#unwrappedOutputVector == 1) then
 
-		highestClassIndex = nil
+			maximumValue = unwrappedOutputVector[1]
 
-		for classIndex, value in ipairs(unwrappedOutputVector) do
+			if (#ClassesList <= 0) then
 
-			if (value > maximumValue) then
+				class = ((maximumValue < cutOffValue) and minimumOutputValue) or 1
 
-				maximumValue = value
+			else
 
-				highestClassIndex = classIndex
+				class = ((maximumValue < cutOffValue) and ClassesList[1]) or ClassesList[2]
 
 			end
 
-		end
+		else
 
-		class = ClassesList[highestClassIndex]
+			maximumValue = -math.huge
+
+			highestClassIndex = nil
+
+			for classIndex, value in ipairs(unwrappedOutputVector) do
+
+				if (value > maximumValue) then
+
+					maximumValue = value
+
+					highestClassIndex = classIndex
+
+				end
+
+			end
+
+			class = ClassesList[highestClassIndex]
+
+		end
 
 		outputVector[i] = {class}
 

@@ -44,17 +44,18 @@ FactorizationMachine.new(maximumNumberOfIterations: integer, learningRate: numbe
 | ComplementaryLogLog | (0, 1)       | Right-Skewed          | Rare Events Prediction: In-App Purchases, Time-To-Leave Prediction         |
 | LogLog              | (0, 1)       | Left-Skewed           | Common Events Prediction: Tutorial Completion, Early Wins, First Purchases |
 
-* costFunction: The function to calculate the cost of each training. Available options are: 
+* costFunction: The function to calculate the cost of each training. Available options are:
 
-| Function                   | Input Range (From Binary Function Output And Label Vector) | Output Range | Characteristics                                 | Use Cases                                                              |
-|----------------------------|------------------------------------------------------------|--------------|-------------------------------------------------|------------------------------------------------------------------------|
-| MeanSquaredError (Default) | (-∞, ∞)                                                    | [0, ∞)       | Quadratic penalty, sensitive to outliers        | Regression with normally distributed errors, when outliers are minimal |
-| MeanAbsoluteError          | (-∞, ∞)                                                    | [0, ∞)       | Linear penalty, robust to outliers              | Robust regression, when dataset contains outliers, median prediction   |
-| MeanPoissonDeviance        | (-∞, ∞)                                                    | (0, ∞)       | Right-skewed    | Rate-Based                                     |
-| MeanGammaDeviance          | (-∞, ∞)                                                    | (0, ∞)       | Right-skewed    | Probabilistic-based classification                                     |
-| HingeLoss                  | (-∞, ∞)                                                    | (0, ∞)       | Creates max-margin decision boundary            | Maximum margin classification, text categorization                     |
-| SquaredHingeLoss           | (-∞, ∞)                                                    | (0, ∞)       | Creates sensitive max-margin decision boundary  | Sensitive maximum margin classification, text categorization                     |
-| BinaryCrossEntropy         | (0, 1)                                                     | (0, ∞)       | Penalizes confident wrong predictions heavily   | Probabilistic-based classification                                     |
+| Function                   | Input Range (From Binary Function Output And Label Vector) | Output Range | Characteristics                                  | Use Cases                                                              |
+|----------------------------|------------------------------------------------------------|--------------|--------------------------------------------------|------------------------------------------------------------------------|
+| MeanSquaredError (Default) | (-∞, ∞)                                                    | [0, ∞)       | Quadratic penalty, sensitive to outliers         | Regression with normally distributed errors, when outliers are minimal |
+| MeanAbsoluteError          | (-∞, ∞)                                                    | [0, ∞)       | Linear penalty, robust to outliers               | Robust regression, when dataset contains outliers, median prediction   |
+| MeanPoissonDeviance        | (-∞, ∞)                                                    | (0, ∞)       | Right-skewed                                     | Rate-Based                                                             |
+| MeanGammaDeviance          | (-∞, ∞)                                                    | (0, ∞)       | Right-skewed                                     | Probabilistic-based classification                                     |
+| HingeLoss                  | (-∞, ∞)                                                    | (0, ∞)       | Creates max-margin decision boundary             | Maximum margin classification, text categorization                     |
+| SquaredHingeLoss           | (-∞, ∞)                                                    | (0, ∞)       | Creates sensitive max-margin decision boundary   | Sensitive maximum margin classification, text categorization           |
+| PerceptronLoss             | (-∞, ∞)                                                    | (0, ∞)       | Adjusts the boundary when incorrectly classified | Margin classification, text categorization                             |
+| BinaryCrossEntropy         | (0, 1)                                                     | (0, ∞)       | Penalizes confident wrong predictions heavily    | Probabilistic-based classification                                     |
 
 
 #### Returns:

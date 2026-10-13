@@ -2051,7 +2051,7 @@ function NeuralNetworkModel:showDetails()
 	
 	-- Calculate the maximum length for each column.
 	
-	local maximumNumberOfLayersLength = string.len("Layer")
+	local maximumLayerLength = string.len("Layer")
 	
 	local maximumNumberOfNeuronsLength = string.len("Number Of Neurons")
 	
@@ -2097,7 +2097,7 @@ function NeuralNetworkModel:showDetails()
 		
 		if (type(Solver) == "table") then solverName = Solver:getName() end
 
-		maximumNumberOfLayersLength = math.max(maximumNumberOfLayersLength, string.len(tostring(i)))
+		maximumLayerLength = math.max(maximumLayerLength, string.len(tostring(i)))
 
 		maximumNumberOfNeuronsLength = math.max(maximumNumberOfNeuronsLength, string.len(tostring(numberOfNeuronsArray[i])))
 
@@ -2125,7 +2125,7 @@ function NeuralNetworkModel:showDetails()
 
 	stringToPrint ..= "Layer Details: \n\n"
 
-	stringToPrint ..= "+-" .. string.rep("-", maximumNumberOfLayersLength) .. "-+-" ..
+	stringToPrint ..= "+-" .. string.rep("-", maximumLayerLength) .. "-+-" ..
 		string.rep("-", maximumNumberOfNeuronsLength) .. "-+-" ..
 		string.rep("-", maximumHasBiasNeuronLength) .. "-+-" ..
 		string.rep("-", maximumActivationFunctionLength) .. "-+-" ..
@@ -2136,7 +2136,7 @@ function NeuralNetworkModel:showDetails()
 		string.rep("-", maximumSolverLength) .. "-+" .. 
 		"\n"
 
-	stringToPrint ..= "| " .. string.format("%-" .. maximumNumberOfLayersLength .. "s", "Layer") .. " | " ..
+	stringToPrint ..= "| " .. string.format("%-" .. maximumLayerLength .. "s", "Layer") .. " | " ..
 		string.format("%-" .. maximumNumberOfNeuronsLength .. "s", "Number Of Neurons") .. " | " ..
 		string.format("%-" .. maximumHasBiasNeuronLength .. "s", "Has Bias Neuron") .. " | " ..
 		string.format("%-" .. maximumActivationFunctionLength .. "s", "Activation Function") .. " | " ..
@@ -2148,7 +2148,7 @@ function NeuralNetworkModel:showDetails()
 		"\n"
 
 
-	stringToPrint ..= "+-" .. string.rep("-", maximumNumberOfLayersLength) .. "-+-" ..
+	stringToPrint ..= "+-" .. string.rep("-", maximumLayerLength) .. "-+-" ..
 		string.rep("-", maximumNumberOfNeuronsLength) .. "-+-" ..
 		string.rep("-", maximumHasBiasNeuronLength) .. "-+-" ..
 		string.rep("-", maximumActivationFunctionLength) .. "-+-" ..
@@ -2205,7 +2205,7 @@ function NeuralNetworkModel:showDetails()
 
 		end
 
-		local layerText = "| " .. string.format("%-" .. maximumNumberOfLayersLength .. "s", i) .. " "
+		local layerText = "| " .. string.format("%-" .. maximumLayerLength .. "s", i) .. " "
 
 		local numberOfNeuronsText = "| " .. string.format("%-" .. maximumNumberOfNeuronsLength .. "s", numberOfNeuronsArray[i]) .. " "
 
@@ -2229,7 +2229,7 @@ function NeuralNetworkModel:showDetails()
 
 	end
 
-	stringToPrint ..= "+-" .. string.rep("-", maximumNumberOfLayersLength) .. "-+-" ..
+	stringToPrint ..= "+-" .. string.rep("-", maximumLayerLength) .. "-+-" ..
 		string.rep("-", maximumNumberOfNeuronsLength) .. "-+-" ..
 		string.rep("-", maximumHasBiasNeuronLength) .. "-+-" ..
 		string.rep("-", maximumActivationFunctionLength) .. "-+-" ..

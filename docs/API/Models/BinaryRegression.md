@@ -40,13 +40,14 @@ BinaryRegression.new(maximumNumberOfIterations: integer, learningRate: number, b
 
 * costFunction: The function to calculate the cost and cost derivaties of each training. Available options are:
 
-| Function                     | Input Range (From Binary Function Output And Label Vector) | Output Range | Characteristics                                 | Use Cases                                                              |
-|------------------------------|------------------------------------------------------------|--------------|-------------------------------------------------|------------------------------------------------------------------------|
-| BinaryCrossEntropy (Default) | (0, 1)                                                     | (0, ∞)       | Penalizes confident wrong predictions heavily   | Probabilistic-based classification                                     |
-| SquaredHingeLoss             | (-∞, ∞)                                                    | (0, ∞)       | Creates sensitivemax-margin decision boundary   | Sensitive maximum margin classification, text categorization           |
-| HingeLoss                    | (-∞, ∞)                                                    | (0, ∞)       | Creates max-margin decision boundary            | Maximum margin classification, text categorization                     |
-| MeanSquaredError             | (-∞, ∞)                                                    | (0, ∞)       | Quadratic penalty, sensitive to outliers        | Regression with normally distributed errors, when outliers are minimal |
-| MeanAbsoluteError            | (-∞, ∞)                                                    | (0, ∞)       | Linear penalty, robust to outliers              | Robust regression, when dataset contains outliers, median prediction   |
+| Function                     | Input Range (From Binary Function Output And Label Vector) | Output Range | Characteristics                                  | Use Cases                                                              |
+|------------------------------|------------------------------------------------------------|--------------|--------------------------------------------------|------------------------------------------------------------------------|
+| BinaryCrossEntropy (Default) | (0, 1)                                                     | (0, ∞)       | Penalizes confident wrong predictions heavily    | Probabilistic-based classification                                     |
+| PerceptronLoss               | (-∞, ∞)                                                    | (0, ∞)       | Adjusts the boundary when incorrectly classified | Margin classification, text categorization                             |
+| SquaredHingeLoss             | (-∞, ∞)                                                    | (0, ∞)       | Creates sensitivemax-margin decision boundary    | Sensitive maximum margin classification, text categorization           |
+| HingeLoss                    | (-∞, ∞)                                                    | (0, ∞)       | Creates max-margin decision boundary             | Maximum margin classification, text categorization                     |
+| MeanSquaredError             | (-∞, ∞)                                                    | (0, ∞)       | Quadratic penalty, sensitive to outliers         | Regression with normally distributed errors, when outliers are minimal |
+| MeanAbsoluteError            | (-∞, ∞)                                                    | (0, ∞)       | Linear penalty, robust to outliers               | Robust regression, when dataset contains outliers, median prediction   |
 
 #### Returns:
 

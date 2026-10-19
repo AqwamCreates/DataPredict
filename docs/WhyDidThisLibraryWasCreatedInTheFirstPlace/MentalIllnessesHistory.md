@@ -328,7 +328,7 @@ They were **lazy**.
 * Too lazy to produce a single source for the claims they used to justify five years of neglect.
 * Too lazy to apologize properly because sending a WhatsApp message after trying to evict me is not remorse but damage control with minimum effort.
 
-Even the surveillance camera fits. Installing one is easy. Maintaining it and checking in genuinely and following through with consistent care requires ongoing effort. When it broke and I did not fix it, they did not replace it either. Replacing it would have meant admitting the original gesture was performative and actually caring would have required work they never intended to put in.
+Even the surveillance camera fits. Installing one is easy. Maintaining it and checking in genuinely and following through with consistent care requires ongoing effort. When it broke and I did not fix it, they did not replace it either. Replacing the camera only happens to people who aren't lazy and do not care if I disobeyed fixing orders since they would care about my health.
 
 The German government intervention did not change their values. It just made inaction inconvenient for them. Even then, their response to me afterward was still half assed with a meaningless apology and a request for me to babysit my schizophrenic brother at midnight and continued silence on sources. My father paying me to manage my schizophrenic brother’s night-time wandering was laziness repackaged as opportunity.
 

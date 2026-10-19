@@ -42,7 +42,7 @@ It ranges from "You're homesick", "You don't exercise enough", "You need white-n
 
 I continued begging for the mental illness treatment to my parents. Eventually... The maladaptive daydreaming got so bad that I began looking ways for self-harming myself, so we now have a new mental illness to deal with: severe depression. I was a little too coward for direct self-harm, but I ended up self-harming through Samyang 2x Spicy Ramen often. I often bought these ramen from the university's shop. My parents are unaware of this.
 
-Then the rare instances of voices calling my name without any unidentified source. The same goes rare instances of hearing and feeling the vibrations from my phone, but my phone wasn't receiving any notifications or calls.
+Then, the rare instances of voices calling my name without any unidentified source. The same goes rare instances of hearing and feeling the vibrations from my phone, but my phone wasn't receiving any notifications or calls.
 
 Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it was filled with teachers and classes. Multiple classes actually. My parents are unaware of this.
 

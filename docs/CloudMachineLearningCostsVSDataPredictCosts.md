@@ -28,6 +28,8 @@ The table assumes that:
 
 * Single CPU per player.
 
+* Worse case scenario if the machine learning do not lead to any observable profit.
+
 Note: Not to be confused with concurrent users. 
 
 | Total Monthly Player Count | DataPredict™ | Google Cloud               | Microsoft Azure            | Amazon SageMaker           |
@@ -57,6 +59,8 @@ The table assumes that:
 * A single machine learning model is required to perform constant training and predictions.
 
 * Single CPU per player.
+
+* Worse case scenario if the machine learning do not lead to any observable profit.
 
 | Metric                                    | DataPredict (Standard) | DataPredict (White-Label) | Google Cloud  | Microsoft Azure | Amazon SageMaker |
 |-------------------------------------------|------------------------|---------------------------|---------------|-----------------|------------------|

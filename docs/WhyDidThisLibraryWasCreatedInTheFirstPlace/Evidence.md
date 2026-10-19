@@ -8,6 +8,40 @@
 
 <img src="Evidence/WhatsAppMessages/Screenshot_2026-07-11-04-44-48-253_com.whatsapp.jpg" alt="My father's addmision of guilt on WhatsApp at July 21 2025." width="300"/>
 
+#### Translation
+
+**Contact:** Dad MY
+
+*[System]* Dad MY turned off disappearing messages. *Change timer*
+
+**July 21, 2025**
+
+> Please forgive all of Dad's mistakes, okay.. because I didn't look after Harish perfectly back then.
+>
+> Sorry that Dad didn't know Harish was being bullied while at the transit home.
+>
+> Sorry for not bringing Harish to see a psychiatrist.
+>
+> There really are a lot of wrongs I've done, because I didn't know — or didn't truly pay attention to — Harish's mental health.
+>
+> God willing, we will help Harish again.
+>
+> Harish can stay at our house for as long as you want. No need to worry about looking for a place to rent.
+>
+> Let's live together in that house, okay.
+>
+> *12:09 PM*
+
+> I am so sorry for all my ignorance that has hurt your entire life.
+>
+> *12:10 PM*
+
+> Please forgive me
+>
+> *12:10 PM*
+
+**August 10, 2025**
+
 There goes the assumption of innocence for the criminal law: Act 611, Child Act 2001, Section 31(4), where it stated: 
 
 > "a parent or guardian or other person legally liable to maintain a child shall be deemed to have neglected him in a manner likely to cause him physical or emotional injury if, being able to so provide from his own resources, he fails to provide adequate food, clothing, medical or dental treatment, lodging or care for the child"

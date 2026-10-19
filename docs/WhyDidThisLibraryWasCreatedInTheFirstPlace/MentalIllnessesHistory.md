@@ -238,6 +238,8 @@ My parents also tried to say, "You haven't seen that even more visibly mentally 
 
 Not to mention, my father is now worried about my mental illnesses after all these shits they pulled out. I ended up telling him, "Why now? I begged for it like many years ago. You had so many chances to deal with it." My father went silent because he couldn't answer that without self-incrimination as I am now looking for the real reason why they delayed my treatment instead of the fake protection excuses. Plus, a bonus from him talking about how there's a big market for mental illnesses, as if it could erase the fact he actually delayed my mental illness treatment.
 
+My father also had attempted "I got bullied and got over it, why not you?" There's a fucking big difference between a random stranger who has no obligation on keeping you healthy, while a parent has an obligation to actually keep their children healthy. In addition, the blatant difference in how my father actually delaying my mental illnesses treatment and immediately treat my second younger brother's schizophrenia removed any explanation that this restriction is applied on principle.
+
 ## Let's Count How Many I Asked For Mental Illness Treatment!
 
 1. Prior my father's comment on "you are homesick", "you don't exercise enough" and "don't diagnose yourself". Refer to diary entry evidence.

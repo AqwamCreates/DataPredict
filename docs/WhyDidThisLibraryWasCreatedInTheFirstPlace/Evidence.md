@@ -8,7 +8,7 @@
 
 <img src="Evidence/WhatsAppMessages/Screenshot_2026-07-11-04-44-48-253_com.whatsapp.jpg" alt="My father's addmision of guilt on WhatsApp at July 21 2025." width="300"/>
 
-#### Translation
+#### Translation From Malay
 
 **Contact:** Dad MY
 
@@ -39,8 +39,6 @@
 > Please forgive me
 >
 > *12:10 PM*
-
-**August 10, 2025**
 
 There goes the assumption of innocence for the criminal law: Act 611, Child Act 2001, Section 31(4), where it stated: 
 

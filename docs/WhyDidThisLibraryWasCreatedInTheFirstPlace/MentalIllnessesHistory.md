@@ -272,44 +272,43 @@ There's just too many to count as separate things. They stack up and show a patt
 5.  Focused #3 entirely on my complaint rather than admitting delayed treatment was the real problem → Shows they couldn't connect their own proof to their own mistake; still no accountability even when holding evidence that disproves them.
 
 **On driving licenses:**
-6.  "Diagnosis means automatic revocation." → JPJ policy shows no such rule.
-7.  "JPJ and KKM use separate systems, so revocation isn't immediate." → Contradicts #6; shifts from certainty to bureaucratic delay.
-8.  "Chinese and Indians bribe psychologists to abuse OKU diagnosis, hence general revocation rule." → Contradicts #6 and #7; makes up a story about ethnic bribery.
-9.  Cannot produce any source for #6, #7, or #8 after months of being asked → Contradicts how sure they sounded when saying all three.
-10. Official JPJ policy exists since 2011 showing conditional, restorable revocation for vocational licenses only → Contradicts the blanket claim in #6, #7, #8.
-11. News articles confirm mental health patients can still drive → Contradicts #6, #7, #8.
+1. "Diagnosis means automatic revocation." → JPJ policy shows no such rule.
+2. "JPJ and KKM use separate systems, so revocation isn't immediate." → Contradicts #1; shifts from certainty to bureaucratic delay.
+3. "Chinese and Indians bribe psychologists to abuse OKU diagnosis, hence general revocation rule." → Contradicts #2 and #3; makes up a story about ethnic bribery.
+4. Cannot produce any source for #2, #3, or #4 after months of being asked → Contradicts how sure they sounded when saying all three.
+5. Official JPJ policy exists since 2011 showing conditional, restorable revocation for vocational licenses only → Contradicts the blanket claim in #2, #3, #4.
+6. News articles confirm mental health patients can still drive → Contradicts #2, #3, #4.
 
 **On protection vs. neglect:**
-12. "We delayed treatment to protect you from stigma and license loss." → Treatment withheld during my active deterioration, suicidal thoughts, brain fog.
-13. Brother received immediate treatment in Germany despite identical supposed risks → Contradicts #12; protection was selective.
-14. German government intervention preceded brother's treatment → Suggests outside pressure, not parental care, drove action.
-15. Apology came only after citing criminal neglect law and attempted ejection → Contradicts the idea that past actions were protective; looks like giving in under threat, not real regret.
-16. Apology delivered via WhatsApp, not face-to-face → Doesn't match the seriousness of what happened (if they even meant it).
-17. No mention of specific harms in apology → Contradicts the point of apologizing at all.
+1. "We delayed treatment to protect you from stigma and license loss." → Treatment withheld during my active deterioration, suicidal thoughts, brain fog.
+2. Brother received immediate treatment in Germany despite identical supposed risks → Contradicts #1; protection was selective.
+3. German government intervention preceded brother's treatment → Suggests outside pressure, not parental care, drove action.
+4. Apology came only after citing criminal neglect law and attempted ejection → Contradicts the idea that past actions were protective; looks like giving in under threat, not real regret.
+5. Apology delivered via WhatsApp, not face-to-face → Doesn't match the seriousness of what happened (if they even meant it).
+6. No mention of specific harms in apology → Contradicts the point of apologizing at all.
 
 **On my complaints:**
-18. "You're overgeneralizing about stigma." → But stigma claim was used as a real reason for medical decisions.
-19. When confronted with #18, went silent → Can't explain #18 alongside what they actually did.
-20. Accused me of scaring brother when I mocked license fabrication → Brother's reaction never confirmed; accusation was just to stop me talking, not to protect him.
+1. "You're overgeneralizing about stigma." → But stigma claim was used as a real reason for medical decisions.
+2. When confronted with #1, went silent → Can't explain #1 alongside what they actually did.
+3. Accused me of scaring brother when I mocked license fabrication → Brother's reaction never confirmed; accusation was just to stop me talking, not to protect him.
 
 **On money:**
-21. Complained private treatment was expensive (RM200 consultation + RM200 meds/month).
-22. Public healthcare available at RM5/consultation including meds.
-23. I proposed switching to public to address #21 → Parents asked why I needed it "so badly."
-24. Father worked in oil & gas in Oman for 8+ years → Contradicts the money excuse in #21.
-25. Demanded I justify need while simultaneously complaining about cost → Can't hold both at once without sounding ridiculous.
+1. Complained private treatment was expensive (RM200 consultation + RM200 meds/month).
+2. Public healthcare available at RM5/consultation including meds.
+3. I proposed switching to public to address #1 → Parents asked why I needed it "so badly."
+4. Father worked in oil & gas in Oman for 8+ years → Contradicts the money excuse in #1.
+5. Demanded I justify need while simultaneously complaining about cost → Can't hold both at once without sounding ridiculous.
 
 **On surveillance/care:**
-26. Installed camera to prevent suicide → Framed as care.
-27. Camera broke; I didn't fix it; parents didn't replace it → Contradicts #26; care depended on me obeying.
-28. Asked me repeatedly to fix camera → Cared about the feed working, not about me being okay.
-29. Offered payment for midnight caretaking of brother → Made care transactional after years of refusing free care for me.
+1. Installed camera to prevent suicide → Framed as care.
+2. Camera broke; I didn't fix it; parents didn't replace it → Contradicts #1; care depended on me obeying.
+3. Asked me repeatedly to fix camera → Cared about the feed working, not about me being okay.
+4. Offered payment for midnight caretaking of brother → Made care transactional after years of refusing free care for me.
 
 **On family communication:**
-30. Formed WhatsApp group to share certification course → Tried to reconnect.
-31. I left immediately → Rejected fake normalcy.
-32. Mother panics when I don't contact her → But no panic during years of untreated crisis.
-33. Push-pull between kicking me out and inviting short visits → Can't decide if I belong or not.
+1. Formed WhatsApp group to share certification course → Tried to reconnect → I left immediately → Rejected fake normalcy.
+2. Mother panics when I don't contact her → But no panic during years of untreated crisis.
+3. Push-pull between kicking me out and inviting short visits → Can't decide if I belong or not.
 
 ## In Conclusion
 

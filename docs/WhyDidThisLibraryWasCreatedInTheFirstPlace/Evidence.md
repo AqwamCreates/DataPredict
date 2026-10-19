@@ -20,6 +20,10 @@ Not knowing the severity otherwise? Well, we can force a court order to investig
 
 Notice that once he went for "You write like this" in his first message. This meant that my father at least read the parts of "Mental Illnesses History" that contains me swearing at them. Otherwise, he would ignore it. Not to mention, he went for an attack instead of denial, so it is reasonable to assume that the facts were accurate. My father's messages are sent at 16 September 2026.
 
+#### Note To Self
+
+The reason why I deleted messages multiple times because I want to avoid the "edited" tag that could raise doubts to anyone. Hence, I would delete and redo the writing for these messages multiple times until I am satisfied with these messages.
+
 ### First Diary Record Of Me Asking For Treatment During A-Levels
 
 <img src="Evidence/DiaryEntries/FirstDiaryRecordOfMeAskingForTreatmentDuringTheALevels/IMG_20260811_000800.jpg" width="1000"/>

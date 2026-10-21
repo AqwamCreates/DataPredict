@@ -52,6 +52,16 @@ Not knowing the severity otherwise? Well, we can force a court order to investig
 
 Notice that once he went for "You write like this" in his first message. This meant that my father at least read the parts of "Mental Illnesses History" that contains me swearing at them. Otherwise, he would ignore it. Not to mention, he went for an attack instead of denial, so it is reasonable to assume that the facts were accurate. My father's messages are sent at 16 September 2026.
 
+Funnily enough we can also infer other things, where my father validated:
+
+* My "Job Stigma" claim: He withheld treatment because of his fear of job stigma. He told me no one will hire him because of his mental health.
+
+* My "Lazy" claim: I wrote a whole section about how he dismiss my neurological/psychiatric symptoms as a lack of effort. He replied, "you are just lazy."
+
+* My need for the document: I literally made it public because he "change his stories." He immediately changed the subject from medical neglect to my supposed laziness.
+
+* My "Liar" accusation: I spent paragraphs detailing how he shift the goalposts and make excuses. When confronted, he didn't say "I'm sorry" or "Let's talk." He shifted the blame straight onto me.
+
 #### Note To Self
 
 The reason why I deleted messages multiple times because I want to avoid the "edited" tag that could raise doubts to anyone. Hence, I would delete and redo the writing for these messages multiple times until I am satisfied with these messages.

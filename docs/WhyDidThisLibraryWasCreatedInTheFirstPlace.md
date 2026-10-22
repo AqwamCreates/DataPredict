@@ -8,4 +8,4 @@
 
 * [Traumatic Childhood History](WhyDidThisLibraryWasCreatedInTheFirstPlace/TraumaticChildhoodHistory.md)
 
-* [Extras](Extras.md) - Take it as a grain of salt due to lack of physical evidence. Assume this is just a delusional claim that I may or may not hallucinated.
+* [Extras](WhyDidThisLibraryWasCreatedInTheFirstPlace/Extras.md) - Take it as a grain of salt due to lack of physical evidence. Assume this is just a delusional claim that I may or may not hallucinated.

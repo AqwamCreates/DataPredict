@@ -24,4 +24,4 @@ When my father pulled my schizophrenic younger brother away, I told to my father
 
 I can sense the amount of profound regret when he didn't realize that their own sons could actually outpower their own father and could probably hit back at my father.
 
-My next plan when it comes to my schizophrenic younger brother involves... I am not going to attack back and let him finish the chokehold right in front of cameras that my father added inside the house for some reason. Then, we will have a real crime scene here.
+My next plan when it comes to my schizophrenic younger brother involves... I am not going to attack back and let him finish the chokehold right in front of cameras that my father added inside of the house for some reason. Then, we will have a real crime scene here.

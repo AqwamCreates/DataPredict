@@ -4,6 +4,18 @@
 >
 > Take it as a grain of salt due to lack of physical evidence. Assume this is just a delusional claim that I may or may not hallucinated.
 
+## On My Mother With Her "Doa Will Come True" Threat.
+
+My mother would say stuff like "If I pray bad things about you, it would come true" and uses religion about doa becoming true or not. She would often use it on me when I act out like the injustice of not getting treatment.
+
+I then went for this attack "Funny your god decided to inflict pain on you and show me the truth by inflicting my brother with schizophrenia. After all, everything is under God's control, isn't it? Seems like even your own god disagrees with you.
+
+I prefer if it was on my father or my mother though, but I wouldn't deny the effectiveness of having equal starting points from both me and my younger brother to make me really see the contradiction so clearly."
+
+She then make a passing comment about "jobs" and stuff like that because he was unemployed for quite a while.
+
+I replied: "Didn't you pray for that? Deal with it."
+
 ## On My Schizophrenic Younger Brother
 
 Apparently my own schizophrenic second youngest brother decided to physically attack me because he couldn't stand me complaining about the delayed treatment to everywhere including the family WhatsApp group, when near my parents and so on. I was profoundly... Unimpressed. Given that he does weight-lifting, he is actually physically stronger than me so he have the ability to kill me if he wants to. I mean he tried a chokehold on me while I was pinned on the ground and my father tried to pull him away.

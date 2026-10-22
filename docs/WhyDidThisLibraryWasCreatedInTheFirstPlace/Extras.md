@@ -12,7 +12,7 @@ I then went for this attack "Funny your god decided to inflict pain on you and s
 
 I prefer if it was on my father or my mother though, but I wouldn't deny the effectiveness of having equal starting points from both me and my younger brother to make me really see the contradiction so clearly."
 
-She then make a passing comment about "jobs" and stuff like that because he was unemployed for quite a while.
+She then make a passing comment about "jobs" and stuff like that because I was unemployed for quite a while.
 
 I replied: "Didn't you pray for that? Deal with it."
 

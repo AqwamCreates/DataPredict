@@ -4,7 +4,7 @@
 >
 > Take it as a grain of salt due to lack of physical evidence. Assume this is just a delusional claim that I may or may not hallucinated.
 
-## On My Mother With Her "Doa Will Come True" Threat.
+## On My Mother With Her "Doa Will Come True" Threat
 
 My mother would say stuff like "If I pray bad things about you, it would come true" and uses religion about doa becoming true or not. She would often use it on me when I act out like the injustice of not getting treatment.
 

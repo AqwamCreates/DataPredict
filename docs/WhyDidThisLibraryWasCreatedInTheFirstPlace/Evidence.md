@@ -4,7 +4,7 @@
  
 ## Evidence Due To My Mental Illness Treatment Delay By My Parents
 
-### Admission Of Guilt By My Parents After Attempted Me Out For Me Complaining About Delayed Treatment And My Younger Brother's Mental Illness Diagnosis In Germany.
+### Admission Of Guilt By My Father In WhatsApp After Attempted Me Out For Me Complaining About Delayed Treatment And My Younger Brother's Mental Illness Diagnosis In Germany.
 
 <img src="Evidence/WhatsAppMessages/Screenshot_2026-07-11-04-44-48-253_com.whatsapp.jpg" alt="My father's addmision of guilt on WhatsApp at July 21 2025." width="300"/>
 
@@ -46,7 +46,7 @@ There goes the assumption of innocence for the criminal law: Act 611, Child Act 
 
 Not knowing the severity otherwise? Well, we can force a court order to investigate the whole A-Levels division for International Islamic School Of Malaysia. Also, my diary entries are there as well.
 
-### Indirect Admission Of Guilt By My Father After Receiving This Website's Link + Corroborating Evidence To My Claims Of His Statement Of Delaying Treatment Due To Job Stigma.
+### Indirect Admission Of Guilt By My Father In WhatsApp After Receiving This Website's Link + Corroborating Evidence To My Claims Of His Statement Of Delaying Treatment Due To Job Stigma.
 
 <img src="Evidence/WhatsAppMessages/Screenshot_2026-09-17-00-18-07-585_com.whatsapp.jpg" alt="My father's rationale on justifying on not getting me treated early." width="300"/>
 

@@ -14,6 +14,10 @@
 
 * [Production Deployment And Consulting](ProductionDeploymentAndConsulting.md)
 
+## Research
+
+* [Papers Citing DataPredict](PapersCitingDataPredict.md)
+
 ## Terms And Conditions Information
 
 * By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).

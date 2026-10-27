@@ -6,4 +6,4 @@
 - Publication date: October 6, 2026
 - Publication: NHSJS
 
-**Relevance to DataPredict:** The paper cites DataPredict and its Self-Learning Sword-Fighting AIs example as prior work related to reinforcement learning implemented within Roblox. The authors subsequently investigate and quantitatively evaluate their own in-engine reinforcement-learning setup.
+Relevance to DataPredict: The paper cites DataPredict and its Self-Learning Sword-Fighting AIs example as prior work related to reinforcement learning implemented within Roblox. The authors subsequently investigate and quantitatively evaluate their own in-engine reinforcement-learning setup.

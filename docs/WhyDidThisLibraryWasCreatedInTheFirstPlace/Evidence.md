@@ -80,6 +80,8 @@ Notice that it is 9th January 2019. I was born in 23rd January 2002. I was sixte
 
 #### Transcription
 
+> Wednesday 9th January 2019
+>
 > My own hardwork and time was wasted in the worst way possible. That fact alone is enough to tear myself to suicide. No matter how much work I put in, my efforts will be heavily wasted.
 >
 > Twi days ago, I asked for my father I need anti-depressant - I was scared high for major depression and chronic depression. I told everything about it.

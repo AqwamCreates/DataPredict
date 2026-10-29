@@ -42,7 +42,7 @@ It ranges from "You're homesick", "You don't exercise enough", "You need white-n
 
 I continued begging for the mental illness treatment to my parents. Eventually... The maladaptive daydreaming got so bad that I began looking ways for self-harming myself, so we now have a new mental illness to deal with: severe depression. I was a little too coward for direct self-harm, but I ended up self-harming through Samyang 2x Spicy Ramen often. I often bought these ramen from the university's shop. My parents are unaware of this.
 
-Then the rare instances of voices calling my name without any unidentified source. The same goes rare instances of hearing and feeling the vibrations from my phone, but my phone wasn't receiving any notifications or calls.
+Then, the rare instances of voices calling my name without any unidentified source. The same goes rare instances of hearing and feeling the vibrations from my phone, but my phone wasn't receiving any notifications or calls.
 
 Again, I continued begging for mental illness treatment while the clock is ticking. I began crying in classes despite it was filled with teachers and classes. Multiple classes actually. My parents are unaware of this.
 
@@ -212,7 +212,7 @@ UNITL TO THIS DAY, HE HAVE NOT GIVEN A SINGLE SOURCE OF SUCH LICENSE REVOCATION 
 
 Eventually, father immediately enforced his kicking out decision. However, They would put me to my parents' unoccupied second house in a condominium that my parents recently bought in Cyberjaya instead of the train station that they previously offered to me. The German government intervention against my parents for my 2nd youngest brother may have strongly played a part here. Not to mention, I did cite to them the criminal law for a section of child neglect involving lack of medical care, but unsure if that also plays a role as well.
 
-When I moved there with my luggages, my father wanted a surveillance camera watching at me in the kitchen so he can observe me so that I don't go kill myself. The camera broke and I decided not care about fixing it, because I couldn't care shit about his "care" when he never fucking owns up to it. My father noticed that the camera is broken because they could not get any feeds from that camera and ended up asking me to fix it multiple times. I just ignored his requests.
+When I moved there with my luggages, my father wanted a surveillance camera watching at me in the kitchen so he can observe me so that I don't go kill myself. The camera broke and I decided not care about fixing it, because I couldn't care shit about his "care" when he never fucking owns up to it. My father noticed that the camera is broken because they could not get any feeds from that camera and ended up asking me to fix it multiple times. I just ignored his requests. No attempts to deliver a new camera to replace the old one. A caring parent would literally have replaced the whole camera even if the camera is suspected to be slightly broken.
 
 I'M FUCKING SURE THIS IS FOR MY PARENTS TO SAVE THEIR OWN FUCKING ASSES IF I DO DECIDE TO KILL MYSELF. NOT TO MENTION, WHEN THAT SURVEILLANCE CAMERA BROKE, THEY MAKE NO REPLACEMENT SINCE I WOULDN'T EVEN BOTHER TO FIX IT. THIS MEANT THAT THEIR "CARING" ABOUT ME WAS ACTUALLY SHORT-LIVED AND REACTIVE. THERE'S NO FUCKING WAY I COULD CARE ABOUT MY PARENTS NOW ONCE I REALIZED THIS. I COULDN'T CARE LESS IF I HAD KILLED MYSELF AND MAKE MY PARENTS LOOK BAD. IN FACT, I PREFER IT IF MY PARENTS LOOK BAD BECAUSE THEY FUCKING ARE!
 
@@ -224,7 +224,7 @@ Shame that I had to move back to the main house eventually since that second hou
 
 ## The Aftermath
 
-In common cases, I wouldn't even notice misspellings that I made as I type on keyboards. I would also audibly mumble to myself as if I am talking to other people in my imagination without my awareness and without any trigger, despite my ability trying to supress it before ending up failing due to exhaustion from lowered stress handling threshold. In addition, I wouldn't notice that a sentence wouldn't even formatted properly or make any sense, despite me being exposed to English like for over 10 years. I still occasionally hear the knocking on my bathroom walls when I am inside, which only stops when I leave to my bedroom attached to it. I also occasionally feel things climbing on my feet as I work and play using my laptop on my desk. I also occasionally hear voices calling my name. In very rare cases, I thought I ordered something I wanted in restaurants, just to end up noticing that I received a different order. When I looked at my receipts, I had ordered something that I did not order.
+In common cases, I wouldn't even notice misspellings that I made as I type on keyboards. I would also audibly mumble to myself as if I am talking to other people in my imagination without my awareness and without any trigger, despite my ability trying to supress it before ending up failing due to exhaustion from lowered stress handling threshold. In addition, I wouldn't notice that a sentence wouldn't even formatted properly or make any sense, despite me being exposed to English like for over 10 years. I still occasionally hear the knocking on my bathroom walls when I am inside, which only stops when I leave to my bedroom attached to it. I also occasionally feel things climbing on my feet as I work and play using my laptop on my desk. I also occasionally hear voices calling my name. In very rare cases, I thought I ordered something I wanted in restaurants, just to end up noticing that I received a different order. When I looked at my receipts, I had ordered something that I did not order. Now, I keep on hearing ambulance sirens in both of my ears, but my left ear hear it the loudest. The ambulance sirens played ever since after I trapped my father with questions about why the rules do not apply to my younger brother while applying it to me.
 
 I also quit from all of my family's WhatsApp group. I had also attempts of them trying to bring me back to the family's WhatsApp group, which I ended up leaving again. I had one instance that my father formed a group between my father, my mother and me, before he posted a link to an online certification course. I also left that group immediately as well.
 
@@ -237,6 +237,8 @@ Consequently, my father tried to claim that I mistook him for "making broad over
 My parents also tried to say, "You haven't seen that even more visibly mentally ill people are working as Grab driver while you complain about us delaying your treatment. Let me show you videos of such people being able to work despite more severe mental illnesses than yours." I literally facepalmed at their faces, since they literally proved my point that even someone who is visibly mentally ill can get a job, completely invalidating the reason why they delayed my treatment in the first place. I just wanted to laugh at them because it was too funny for me to see that they try to ignore the fact I am complaining because they lack accountability and lack owning up their mistakes in the first place!
 
 Not to mention, my father is now worried about my mental illnesses after all these shits they pulled out. I ended up telling him, "Why now? I begged for it like many years ago. You had so many chances to deal with it." My father went silent because he couldn't answer that without self-incrimination as I am now looking for the real reason why they delayed my treatment instead of the fake protection excuses. Plus, a bonus from him talking about how there's a big market for mental illnesses, as if it could erase the fact he actually delayed my mental illness treatment.
+
+My father also had attempted "I got bullied and got over it, why not you?" There's a fucking big difference between a random stranger who has no obligation on keeping you healthy, while a parent has an obligation to actually keep their children healthy. In addition, the blatant difference in how my father actually delaying my mental illnesses treatment and immediately treat my second younger brother's schizophrenia removed any explanation that this restriction is applied on principle.
 
 ## Let's Count How Many I Asked For Mental Illness Treatment!
 
@@ -272,44 +274,43 @@ There's just too many to count as separate things. They stack up and show a patt
 5.  Focused #3 entirely on my complaint rather than admitting delayed treatment was the real problem → Shows they couldn't connect their own proof to their own mistake; still no accountability even when holding evidence that disproves them.
 
 **On driving licenses:**
-6.  "Diagnosis means automatic revocation." → JPJ policy shows no such rule.
-7.  "JPJ and KKM use separate systems, so revocation isn't immediate." → Contradicts #6; shifts from certainty to bureaucratic delay.
-8.  "Chinese and Indians bribe psychologists to abuse OKU diagnosis, hence general revocation rule." → Contradicts #6 and #7; makes up a story about ethnic bribery.
-9.  Cannot produce any source for #6, #7, or #8 after months of being asked → Contradicts how sure they sounded when saying all three.
-10. Official JPJ policy exists since 2011 showing conditional, restorable revocation for vocational licenses only → Contradicts the blanket claim in #6, #7, #8.
-11. News articles confirm mental health patients can still drive → Contradicts #6, #7, #8.
+1. "Diagnosis means automatic revocation." → JPJ policy shows no such rule.
+2. "JPJ and KKM use separate systems, so revocation isn't immediate." → Contradicts #1; shifts from certainty to bureaucratic delay.
+3. "Chinese and Indians bribe psychologists to abuse OKU diagnosis, hence general revocation rule." → Contradicts #2 and #3; makes up a story about ethnic bribery.
+4. Cannot produce any source for #2, #3, or #4 after months of being asked → Contradicts how sure they sounded when saying all three.
+5. Official JPJ policy exists since 2011 showing conditional, restorable revocation for vocational licenses only → Contradicts the blanket claim in #2, #3, #4.
+6. News articles confirm mental health patients can still drive → Contradicts #2, #3, #4.
 
 **On protection vs. neglect:**
-12. "We delayed treatment to protect you from stigma and license loss." → Treatment withheld during my active deterioration, suicidal thoughts, brain fog.
-13. Brother received immediate treatment in Germany despite identical supposed risks → Contradicts #12; protection was selective.
-14. German government intervention preceded brother's treatment → Suggests outside pressure, not parental care, drove action.
-15. Apology came only after citing criminal neglect law and attempted ejection → Contradicts the idea that past actions were protective; looks like giving in under threat, not real regret.
-16. Apology delivered via WhatsApp, not face-to-face → Doesn't match the seriousness of what happened (if they even meant it).
-17. No mention of specific harms in apology → Contradicts the point of apologizing at all.
+1. "We delayed treatment to protect you from stigma and license loss." → Treatment withheld during my active deterioration, suicidal thoughts, brain fog.
+2. Brother received immediate treatment in Germany despite identical supposed risks → Contradicts #1; protection was selective.
+3. German government intervention preceded brother's treatment → Suggests outside pressure, not parental care, drove action.
+4. Apology came only after citing criminal neglect law and attempted ejection → Contradicts the idea that past actions were protective; looks like giving in under threat, not real regret.
+5. Apology delivered via WhatsApp, not face-to-face → Doesn't match the seriousness of what happened (if they even meant it).
+6. No mention of specific harms in apology → Contradicts the point of apologizing at all.
 
 **On my complaints:**
-18. "You're overgeneralizing about stigma." → But stigma claim was used as a real reason for medical decisions.
-19. When confronted with #18, went silent → Can't explain #18 alongside what they actually did.
-20. Accused me of scaring brother when I mocked license fabrication → Brother's reaction never confirmed; accusation was just to stop me talking, not to protect him.
+1. "You're overgeneralizing about stigma." → But stigma claim was used as a real reason for medical decisions.
+2. When confronted with #1, went silent → Can't explain #1 alongside what they actually did.
+3. Accused me of scaring brother when I mocked license fabrication → Brother's reaction never confirmed; accusation was just to stop me talking, not to protect him.
 
 **On money:**
-21. Complained private treatment was expensive (RM200 consultation + RM200 meds/month).
-22. Public healthcare available at RM5/consultation including meds.
-23. I proposed switching to public to address #21 → Parents asked why I needed it "so badly."
-24. Father worked in oil & gas in Oman for 8+ years → Contradicts the money excuse in #21.
-25. Demanded I justify need while simultaneously complaining about cost → Can't hold both at once without sounding ridiculous.
+1. Complained private treatment was expensive (RM200 consultation + RM200 meds/month).
+2. Public healthcare available at RM5/consultation including meds.
+3. I proposed switching to public to address #1 → Parents asked why I needed it "so badly."
+4. Father worked in oil & gas in Oman for 8+ years → Contradicts the money excuse in #1.
+5. Demanded I justify need while simultaneously complaining about cost → Can't hold both at once without sounding ridiculous.
 
 **On surveillance/care:**
-26. Installed camera to prevent suicide → Framed as care.
-27. Camera broke; I didn't fix it; parents didn't replace it → Contradicts #26; care depended on me obeying.
-28. Asked me repeatedly to fix camera → Cared about the feed working, not about me being okay.
-29. Offered payment for midnight caretaking of brother → Made care transactional after years of refusing free care for me.
+1. Installed camera to prevent suicide → Framed as care.
+2. Camera broke; I didn't fix it; parents didn't replace it → Contradicts #1; care depended on me obeying.
+3. Asked me repeatedly to fix camera → Cared about the feed working, not about me being okay.
+4. Offered payment for midnight caretaking of brother → Made care transactional after years of refusing free care for me.
 
 **On family communication:**
-30. Formed WhatsApp group to share certification course → Tried to reconnect.
-31. I left immediately → Rejected fake normalcy.
-32. Mother panics when I don't contact her → But no panic during years of untreated crisis.
-33. Push-pull between kicking me out and inviting short visits → Can't decide if I belong or not.
+1. Formed WhatsApp group to share certification course → Tried to reconnect → I left immediately → Rejected fake normalcy.
+2. Mother panics when I don't contact her → But no panic during years of untreated crisis.
+3. Push-pull between kicking me out and inviting short visits → Can't decide if I belong or not.
 
 ## In Conclusion
 
@@ -329,7 +330,7 @@ They were **lazy**.
 * Too lazy to produce a single source for the claims they used to justify five years of neglect.
 * Too lazy to apologize properly because sending a WhatsApp message after trying to evict me is not remorse but damage control with minimum effort.
 
-Even the surveillance camera fits. Installing one is easy. Maintaining it and checking in genuinely and following through with consistent care requires ongoing effort. When it broke and I did not fix it, they did not replace it either. Replacing it would have meant admitting the original gesture was performative and actually caring would have required work they never intended to put in.
+Even the surveillance camera fits. Installing one is easy. Maintaining it and checking in genuinely and following through with consistent care requires ongoing effort. When it broke and I did not fix it, they did not replace it either. Replacing the camera only happens to people who aren't lazy and do not care if I disobeyed fixing orders since they would care about my health.
 
 The German government intervention did not change their values. It just made inaction inconvenient for them. Even then, their response to me afterward was still half assed with a meaningless apology and a request for me to babysit my schizophrenic brother at midnight and continued silence on sources. My father paying me to manage my schizophrenic brother’s night-time wandering was laziness repackaged as opportunity.
 

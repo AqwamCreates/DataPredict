@@ -4,9 +4,41 @@
  
 ## Evidence Due To My Mental Illness Treatment Delay By My Parents
 
-### Admission Of Guilt By My Parents After Attempted Me Out For Me Complaining About Delayed Treatment And My Younger Brother's Mental Illness Diagnosis In Germany.
+### Admission Of Guilt By My Father In WhatsApp After Attempted Me Out For Me Complaining About Delayed Treatment And My Younger Brother's Mental Illness Diagnosis In Germany.
 
-<img src="Evidence/WhatsAppMessages/Screenshot_2026-07-11-04-44-48-253_com.whatsapp.jpg" alt="My father's addmision of guilt on WhatsApp." width="300"/>
+<img src="Evidence/WhatsAppMessages/Screenshot_2026-07-11-04-44-48-253_com.whatsapp.jpg" alt="My father's addmision of guilt on WhatsApp at July 21 2025." width="300"/>
+
+#### Translation From Malay
+
+**Contact:** Dad MY
+
+*[System]* Dad MY turned off disappearing messages. *Change timer*
+
+**July 21, 2025**
+
+> Please forgive all of Dad's mistakes, okay.. because I didn't look after Harish perfectly back then.
+>
+> Sorry that Dad didn't know Harish was being bullied while at the transit home.
+>
+> Sorry for not bringing Harish to see a psychiatrist.
+>
+> There really are a lot of wrongs I've done, because I didn't know — or didn't truly pay attention to — Harish's mental health.
+>
+> God willing, we will help Harish again.
+>
+> Harish can stay at our house for as long as you want. No need to worry about looking for a place to rent.
+>
+> Let's live together in that house, okay.
+>
+> *12:09 PM*
+
+> I am so sorry for all my ignorance that has hurt your entire life.
+>
+> *12:10 PM*
+
+> Please forgive me
+>
+> *12:10 PM*
 
 There goes the assumption of innocence for the criminal law: Act 611, Child Act 2001, Section 31(4), where it stated: 
 
@@ -14,17 +46,50 @@ There goes the assumption of innocence for the criminal law: Act 611, Child Act 
 
 Not knowing the severity otherwise? Well, we can force a court order to investigate the whole A-Levels division for International Islamic School Of Malaysia. Also, my diary entries are there as well.
 
-### Indirect Admission Of Guilt By My Father After Receiving This Website's Link + Corroborating Evidence To My Claims Of His Statement Of Delaying Treatment Due To Job Stigma.
+### Indirect Admission Of Guilt By My Father In WhatsApp After Receiving This Website's Link + Corroborating Evidence To My Claims Of His Statement Of Delaying Treatment Due To Job Stigma.
 
 <img src="Evidence/WhatsAppMessages/Screenshot_2026-09-17-00-18-07-585_com.whatsapp.jpg" alt="My father's rationale on justifying on not getting me treated early." width="300"/>
 
+#### Transcription
+
+> You write this snd for sure nobody will hire you on public post.. why  hire person with mental health when we have tenth of thousands other health individuals
+>
+> I know Malaysia job market and you are just lazy because you are too comfortable.
+
 Notice that once he went for "You write like this" in his first message. This meant that my father at least read the parts of "Mental Illnesses History" that contains me swearing at them. Otherwise, he would ignore it. Not to mention, he went for an attack instead of denial, so it is reasonable to assume that the facts were accurate. My father's messages are sent at 16 September 2026.
+
+Funnily enough we can also infer other things, where my father validated:
+
+* My "Job Stigma" claim: He withheld treatment because of his fear of job stigma. He told me no one will hire me because of my mental health.
+
+* My "Lazy" claim: I wrote a whole section about how he dismiss my neurological/psychiatric symptoms as a lack of effort. He replied, "you are just lazy."
+
+* My need for the document: I literally made it public because he "change his stories." He immediately changed the subject from medical neglect to my supposed laziness.
+
+* My "Liar" accusation: I spent paragraphs detailing how he shift the goalposts and make excuses. When confronted, he didn't say "I'm sorry" or "Let's talk." He shifted the blame straight onto me.
+
+#### Note To Self
+
+The reason why I deleted messages multiple times because I want to avoid the "edited" tag that could raise doubts to anyone. Hence, I would delete and redo the writing for these messages multiple times until I am satisfied with these messages.
 
 ### First Diary Record Of Me Asking For Treatment During A-Levels
 
 <img src="Evidence/DiaryEntries/FirstDiaryRecordOfMeAskingForTreatmentDuringTheALevels/IMG_20260811_000800.jpg" width="1000"/>
 
-Notice that it is 9th January 2019. I was born in 23rd January 2002. I was sixteen years old before turning to seventeen in two weeks.
+Notice that it is 9th January 2019. I was born in 23rd January 2002. I was sixteen years old before turning to seventeen in two weeks. Also, apologies for some English issues! I remembered my brain was pretty hazy back then with this.
+
+#### Transcription
+
+> Wednesday 9th January 2019
+>
+> My own hardwork and time was wasted in the worst way possible. That fact alone is enough to tear myself to suicide. No matter how much work I put in, my efforts will be heavily wasted.
+>
+> Twi days ago, I asked for my father I need anti-depressant - I was scared high for major depression and chronic depression. I told everything about it.
+>
+> "Don't do self research", my father replied, in WhatsApp.
+>
+> I doubt he believed me and told me. I just need to sleep and exercise. I fucking did and nothing changes. I never knew my father is such a sadist.
+> Maladaptive daydreaming, major depression, chronic depression, social anxiety, and bipolar (recently discovered) was what I had my lifetime.
 
 ### Whatsapp Messages For Initial Delay In A-Levels
 

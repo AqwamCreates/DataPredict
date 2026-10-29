@@ -28,6 +28,8 @@ The table assumes that:
 
 * Single CPU per player.
 
+* Worse case scenario if the machine learning do not lead to any observable increase in profit.
+
 Note: Not to be confused with concurrent users. 
 
 | Total Monthly Player Count | DataPredict™ | Google Cloud               | Microsoft Azure            | Amazon SageMaker           |
@@ -43,10 +45,10 @@ Note: Not to be confused with concurrent users.
 | License Type Based On Gross Revenue Per Company / Organization / Group / Individual | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          | Licensing Cost When A Project Earns 5K / 10K / 100K / 1M USD Per Month |
 |-------------------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|------------------------------------------------------------------------|
 | Non-B2B + Less Than Or Equal To 5K USD Within 365 Days (Not Per 365 Days)           | 0%                                                        | Requires Public Disclosure Of DataPredict | Not Applicable                                                         |
-| Standard                                                                            | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 89 USD / 160 USD / 1300 USD / 10,530 USD                               |
+| Standard                                                                            | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict | 100 USD / 177 USD / 1278 USD / 10,000 USD                               |
 | White-Label                                                                         | 5%                                                        | None                                      | 250 USD / 500 USD / 5000 USD / 50,000 USD                              |
 
-* Note: At the $5,000/year revenue mark, the licensing fee is approximately $8/month for "Standard" license. Collecting micro-payments of this size creates administrative overhead that exceeds the revenue itself. Therefore, we subsidize 100% of costs for organizations under this threshold. We only begin billing when your success generates a fee large enough to be meaningful for both parties.
+* Note: At the $5,000/year revenue mark, the licensing fee is approximately $16/month for "Standard" license. Collecting micro-payments of this size creates administrative overhead that exceeds the revenue itself. Therefore, we subsidize 100% of costs for organizations under this threshold. We only begin billing when your success generates a fee large enough to be meaningful for both parties.
 
 ## Full Cost & Profitability Comparison Per Player
 
@@ -57,6 +59,8 @@ The table assumes that:
 * A single machine learning model is required to perform constant training and predictions.
 
 * Single CPU per player.
+
+* Worse case scenario if the machine learning do not lead to any observable increase in profit.
 
 | Metric                                    | DataPredict (Standard) | DataPredict (White-Label) | Google Cloud  | Microsoft Azure | Amazon SageMaker |
 |-------------------------------------------|------------------------|---------------------------|---------------|-----------------|------------------|

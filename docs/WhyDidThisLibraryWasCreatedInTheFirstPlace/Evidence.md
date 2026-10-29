@@ -60,7 +60,7 @@ Notice that once he went for "You write like this" in his first message. This me
 
 Funnily enough we can also infer other things, where my father validated:
 
-* My "Job Stigma" claim: He withheld treatment because of his fear of job stigma. He told me no one will hire him because of his mental health.
+* My "Job Stigma" claim: He withheld treatment because of his fear of job stigma. He told me no one will hire me because of my mental health.
 
 * My "Lazy" claim: I wrote a whole section about how he dismiss my neurological/psychiatric symptoms as a lack of effort. He replied, "you are just lazy."
 

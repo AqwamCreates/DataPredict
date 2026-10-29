@@ -76,7 +76,18 @@ The reason why I deleted messages multiple times because I want to avoid the "ed
 
 <img src="Evidence/DiaryEntries/FirstDiaryRecordOfMeAskingForTreatmentDuringTheALevels/IMG_20260811_000800.jpg" width="1000"/>
 
-Notice that it is 9th January 2019. I was born in 23rd January 2002. I was sixteen years old before turning to seventeen in two weeks.
+Notice that it is 9th January 2019. I was born in 23rd January 2002. I was sixteen years old before turning to seventeen in two weeks. Also, apologies for some English issues! I remembered my brain was pretty hazy back then with this.
+
+#### Transcription
+
+> My own hardwork and time was wasted in the worst way possible. That fact alone is enough to tear myself to suicide. No matter how much work I put in, my efforts will be heavily wasted.
+>
+> Twi days ago, I asked for my father I need anti-depressant - I was scared high for major depression and chronic depression. I told everything about it.
+>
+> "Don't do self research", my father replied, in WhatsApp.
+>
+> I doubt he believed me and told me. I just need to sleep and exercise. I fucking did and nothing changes. I never knew my father is such a sadist.
+> Maladaptive daydreaming, major depression, chronic depression, social anxiety, and bipolar (recently discovered) was what I had my lifetime.
 
 ### Whatsapp Messages For Initial Delay In A-Levels
 

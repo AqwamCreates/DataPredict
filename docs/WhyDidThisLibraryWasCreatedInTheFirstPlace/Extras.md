@@ -33,3 +33,5 @@ On 29 October 2026, I want to double check on the "expensive" claim is a valid r
 What's interesting is that my father complained about the cost for my initial treatment, plus the direct government treatment to my schizophrenic second younger brother. So, they care about money more than their sons' health. Cheapskate.
 
 Note to self, use the criminal law: Act 611, Child Act 2001, Section 31(4) to force an investigation if these properties exists.
+
+OH NO! I JUST REALIZED THIS LINKS TO SECOND CONDOMINIUM HOUSE CAMERA AS WELL. Because technically, you can ship the cameras to the condominium, so laziness excuse shouldn't hold up here.

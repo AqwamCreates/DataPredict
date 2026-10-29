@@ -2,7 +2,7 @@
 
 > Extras
 >
-> Take it as a grain of salt due to lack of physical evidence. Assume this is just a delusional claim that I may or may not hallucinated. It might even be a very vivid dream.
+> Take it as a grain of salt due to lack of physical evidence. Assume this is just a delusional claim that I may or may not hallucinated. It might even be the very vivid nightmares.
 
 ## Secondary
 

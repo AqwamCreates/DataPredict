@@ -86,7 +86,7 @@ As a result, I have became paranoid about my first derivatives and made sure the
 
 ## The Absurd Requirements For Building DataPredict™
 
-While I told everyone that building DataPredict™ requires a near-PhD knowledge, I never really covered in depth what it actually entails. Below, I will tell you what knowledge I had used when applying DataPredict.
+While I told everyone that building DataPredict™ requires a near-PhD knowledge, I never really covered in depth what it actually needs. Below, I will tell you what knowledge I had used when applying DataPredict.
 
 ### Formal Knowledge
 

@@ -349,3 +349,7 @@ The other factors are contributing conditions. Laziness is the operating mechani
 So yes. Lazy. Not misguided. Not misinformed. Not well-intentioned but wrong.
 
 Just lazy.
+
+## Information From The Future At October 31 2026.
+
+I somehow managed to get information why my father got my schizophrenic brother immediately treated in Malaysia. Apparently, my father has to sign a guarantee that my schizophrenic younger brother would have its treatment continued in Malaysia in order to release him from Germany. However, if the job stigma still holds true in his mind, he should have stopped the treatment immediately in Malaysia once my schizophrenic brother is in Malaysia once my schizophrenic brother plans to study in Malaysia instead.

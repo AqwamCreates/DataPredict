@@ -356,4 +356,4 @@ I somehow managed to get information why my father got my schizophrenic brother 
 
 ## Information From The Future At 2 November 2026.
 
-Welp, seem like I am getting kicked out again at 7:20 am at Malaysia time.
+Welp, seem like I am getting kicked out again at 7:20 am at Malaysia time. It was then changed to 2:00 pm at the same day. Then my father made it at 1:00 pm at the same day, which is now I am already kicked out again.

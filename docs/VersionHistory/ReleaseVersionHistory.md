@@ -53,7 +53,7 @@
 
 | Version                 | Number Of Models | Number Of Optimizers | Number Of Others | Number Of Experience Replays | Number Of Value Schedulers | Number Of Quick Setups | Backward Incompatible Changes |
 |-------------------------|------------------|----------------------|------------------|------------------------------|----------------------------|------------------------|-------------------------------|
-| [1.22](Release/1-21.md) | 37               | 11                   | 15               | 3                            | 2                          | 2                      | No                            |
+| [1.22](Release/1-22.md) | 37               | 11                   | 15               | 3                            | 2                          | 2                      | No                            |
 | [1.21](Release/1-21.md) | 35               | 11                   | 15               | 3                            | 2                          | 2                      | No                            |
 | [1.20](Release/1-20.md) | 35               | 11                   | 14               | 3                            | 2                          | 2                      | Yes                           |
 | [1.19](Release/1-19.md) | 35               | 11                   | 14               | 3                            | 2                          | 2                      | Yes                           |

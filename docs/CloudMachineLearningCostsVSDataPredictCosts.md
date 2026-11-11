@@ -60,7 +60,7 @@ The table assumes that:
 
 * Single CPU per player.
 
-* Worse case scenario if the machine learning do not lead to any observable increase in profit.
+* Worse case scenario if the machine learning itself do not lead to any observable increase in profit.
 
 | Metric                                    | DataPredict (Standard) | DataPredict (White-Label) | Google Cloud  | Microsoft Azure | Amazon SageMaker |
 |-------------------------------------------|------------------------|---------------------------|---------------|-----------------|------------------|

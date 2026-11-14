@@ -360,6 +360,6 @@ Welp, seem like I am getting kicked out again at 7:20 am at Malaysia time. It wa
 
 ## Information From The Future At 14 November 2026.
 
-Oh for fuck sake, I noticed another way that his excuses doesn't stand up to scrutiny.
+Oh for fuck sake! I noticed another way that his excuses doesn't stand up to scrutiny.
 
 If we generously assume that the KKM (the one responsible for my mental health diagnosis) and JPJ (the one responsible for my JPJ license) do use separate "systems", doesn't that mean KKM actually does its job on not disclosing my mental health diagnosis because I didn't get my driving license revoked by JPJ? This would literally translate to jobs not being able to directly access your mental health diagnosis because KKM will not disclose my mental illnesses diagnosis automatically.

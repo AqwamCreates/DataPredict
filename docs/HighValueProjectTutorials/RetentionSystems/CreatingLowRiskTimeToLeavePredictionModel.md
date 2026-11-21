@@ -205,17 +205,17 @@ end
 
 ```lua
 
-local isDelayActive = false
+local isDelayActiveArray = {}
 
 local function onPredict(Player, timeToLeavePrediction)
 
-    if (isDelayActive) then return end
+    if (isDelayActiveArray[Player]) then return end
 
-    isDelayActive = true
+    isDelayActiveArray[Player] = true
 
     task.wait(timeToLeavePrediction)
 
-    isDelayActive = false
+    isDelayActiveArray[Player] = false
 
     createEvent(Player) --- Do a logic here to extend the play time. For example, bonus currency multiplier duration or random event.
 

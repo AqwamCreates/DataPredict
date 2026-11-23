@@ -352,7 +352,9 @@ Just lazy.
 
 ## Information From The Future At 31 October 2026.
 
-I somehow managed to get information why my father got my schizophrenic brother immediately treated in Malaysia. Apparently, my father has to sign a guarantee that my schizophrenic younger brother would have its treatment continued in Malaysia in order to release him from Germany. However, if the job stigma still holds true in his mind, he should have done the private healthcare treatment immediately in Malaysia instead of government healthcare treatment. It would be even better to continue the treatment overseas like the German hospital that my schizophrenic younger brother was placed in previously, given that my father was so desperate in trying to make me to avoid job stigma in Malaysia by treating me overseas in Oman.
+I somehow managed to get information why my father got my schizophrenic brother immediately treated in Malaysia. Apparently, my father has to sign a guarantee that my schizophrenic younger brother would have its treatment continued in Malaysia in order to release him from Germany. However, if the "job stigma" and "driving license revocation" still holds true in his mind, he should have done the treatment in private healthcare instead of the public healthcare. In fact, it would be even better to continue the treatment overseas like the German hospital that my schizophrenic younger brother was placed in previously, given that my father was so desperate in trying to make me to avoid job stigma in Malaysia by treating me overseas in Oman.
+
+However, this was not the case since my schizophrenic younger brother was treated in the public healthcare immediately. So, it was a total contradiction on how he applies the so-called "job stigma" and "driving license revocation" rules.
 
 ## Information From The Future At 2 November 2026.
 

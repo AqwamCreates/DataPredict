@@ -352,7 +352,7 @@ Just lazy.
 
 ## Information From The Future At 31 October 2026.
 
-I somehow managed to get information why my father got my schizophrenic brother immediately treated in Malaysia. Apparently, my father has to sign a guarantee that my schizophrenic younger brother would have its treatment continued in Malaysia in order to release him from Germany. However, if the job stigma still holds true in his mind, he should have stopped the treatment immediately in Malaysia once my schizophrenic brother is in Malaysia once my schizophrenic brother plans to study in Malaysia instead.
+I somehow managed to get information why my father got my schizophrenic brother immediately treated in Malaysia. Apparently, my father has to sign a guarantee that my schizophrenic younger brother would have its treatment continued in Malaysia in order to release him from Germany. However, if the job stigma still holds true in his mind, he should have done the private healthcare treatment immediately in Malaysia instead of government healthcare treatment. It would be even better to continue the treatment overseas like the German hospital that my schizophrenic younger brother was placed in previously, given that my father was so desperate in trying to make me to avoid job stigma in Malaysia by treating me overseas in Oman.
 
 ## Information From The Future At 2 November 2026.
 

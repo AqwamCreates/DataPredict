@@ -62,7 +62,7 @@ This pretty much proves that my parents tried to kick me out back then. You do n
 >
 > I know Malaysia job market and you are just lazy because you are too comfortable.
 
-Notice that once he went for "You write like this" in his first message. This meant that my father at least read the parts of "Mental Illnesses History" that contains me swearing at them. Otherwise, he would ignore it. Not to mention, he went for an attack instead of denial, so it is reasonable to assume that the facts were accurate. My father's messages are sent at 16 September 2026.
+Notice that once my father went for "You write like this" in his first message. This meant that my father at least read the parts of "Mental Illnesses History" that contains me swearing at them. Otherwise, he would not show any indication of him reading it. Not to mention, he went for an attack instead of denial, so it is reasonable to assume that the facts were accurate. My father's messages are sent at 16 September 2026.
 
 Funnily enough we can also infer other things, where my father validated:
 

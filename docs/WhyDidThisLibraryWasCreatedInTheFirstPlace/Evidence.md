@@ -46,6 +46,12 @@ There goes the assumption of innocence for the criminal law: Act 611, Child Act 
 
 Not knowing the severity otherwise? Well, we can force a court order to investigate the whole A-Levels division for International Islamic School Of Malaysia. Also, my diary entries are there as well.
 
+Also, I want you to notice these two sentences:
+
+> Harish can stay at our house for as long as you want. No need to worry about looking for a place to rent.
+
+This pretty much proves that my parents tried to kick me out back then. You do not offer to "stay" at your own house without paying rent if the alternative of "stay" option does not exist. This means, the other option was the opposite of "stay", which is known as "kicking out".
+
 ### Indirect Admission Of Guilt By My Father In WhatsApp After Receiving This Website's Link + Corroborating Evidence To My Claims Of His Statement Of Delaying Treatment Due To Job Stigma.
 
 <img src="Evidence/WhatsAppMessages/Screenshot_2026-09-17-00-18-07-585_com.whatsapp.jpg" alt="My father's rationale on justifying on not getting me treated early." width="300"/>
